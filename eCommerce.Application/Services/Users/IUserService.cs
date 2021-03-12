@@ -7,6 +7,19 @@ namespace eCommerce.Application.Services.Users
 {
     public interface IUserService
     {
-        Task<bool> CheckValidUserAsync(string username, string password);
+        /// <summary>
+        /// Checks and returns user if the username and password are valid
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        Task<UserReturnModels.User> GetValidUserAsync(string username, string password);
+
+        /// <summary>
+        /// Registers user
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<Guid> RegisterUserAsync(UserRequestModels.RegisterUser rq);
     }
 }

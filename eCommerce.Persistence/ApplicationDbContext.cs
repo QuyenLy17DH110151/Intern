@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace Billing365.Infra.Persistence
+namespace eCommerce.Persistence
 {
     public class ApplicationDbContext : DbContext, IUnitOfWork
     {

@@ -9,10 +9,11 @@ namespace eCommerce.Domain.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        User Add(User company);
+        User Add(User user);
 
-        void Update(User company);
+        void Update(User user);
 
         Task<User> GetByIdAsync(Guid id);
+        Task<User> GetUserByUsernameAsync(string username);
     }
 }

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Billing365.Infra.Persistence
+namespace eCommerce.Persistence
 {
     public static class ConfigurationExtensions
     {
@@ -55,7 +55,7 @@ namespace Billing365.Infra.Persistence
         {
             if (typeof(IAuditable).IsAssignableFrom(builder.Metadata.ClrType))
             {
-                builder.Property(nameof(IAuditable.CreatedBy));
+                builder.Property(nameof(IAuditable.CreatedBy)).IsRequired();
             }
         }
 
