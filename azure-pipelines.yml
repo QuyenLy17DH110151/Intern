@@ -45,7 +45,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: '**/eCommerce.Web.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    arguments: '--configuration $(configuration) --output $(build.artifactstagingdirectory)'
     zipAfterPublish: false
 
 - task: PublishBuildArtifacts@1
