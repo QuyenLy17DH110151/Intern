@@ -17,6 +17,7 @@ pool:
 
 variables:
   configuration: release
+  project: '**/eCommerce.FrontStore.csproj'
 
 steps:
 - task: UseDotNet@2
@@ -29,7 +30,7 @@ steps:
   displayName: 'Restore .NET'
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
+    projects: $(project)
     feedsToUse: 'select'
 
 - task: NodeTool@0
@@ -56,7 +57,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: '**/eCommerce.FrontStore.csproj'
+    projects: $(project)
     arguments: '--configuration $(configuration) --output $(build.artifactstagingdirectory)'
     zipAfterPublish: false
 
