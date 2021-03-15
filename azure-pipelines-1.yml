@@ -10,14 +10,14 @@ trigger:
       - master
   paths:
     include:
-      - eCommerce.WebAdmin
+      - eCommerce.FrontStore
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
   configuration: release
-  project: '**/eCommerce.WebAdmin.csproj'
+  project: '**/eCommerce.FrontStore.csproj'
 
 steps:
 - task: UseDotNet@2
@@ -46,6 +46,13 @@ steps:
     customCommand: 'install -g @angular/cli@latest'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build'
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration $(configuration)'
+
+- task: DotNetCoreCLI@2
   displayName: 'Publish'
   inputs:
     command: 'publish'
@@ -58,5 +65,5 @@ steps:
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'eCommerce-webadmin'
+    ArtifactName: 'eCommerce-frontstore'
     publishLocation: 'Container'
