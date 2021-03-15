@@ -48,11 +48,11 @@ namespace eCommerce.Web
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
-                app.UseSpaStaticFiles();
-                //app.UseSpaStaticFiles(new StaticFileOptions
-                //{
-                //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "AngularApps"))
-                //});
+                //app.UseSpaStaticFiles();
+                app.UseSpaStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "AngularApps"))
+                });
             }
 
             app.UseRouting();
@@ -87,6 +87,11 @@ namespace eCommerce.Web
                     {
                         spa.UseProxyToSpaDevelopmentServer("http://localhost:4100/");
                     }
+
+                    spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                    {
+                        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "AngularApps/Admin"))
+                    };
                 });
             }).MapWhen(context => context.Request.Path.ToString().ToLower().StartsWith("/store"), admin =>
             {
