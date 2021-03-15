@@ -4,7 +4,13 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  batch: true
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - eCommerce.WebAdmin
 
 pool:
   vmImage: 'windows-latest'
@@ -50,7 +56,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: '**/eCommerce.Web.csproj'
+    projects: '**/eCommerce.WebAdmin.csproj'
     arguments: '--configuration $(configuration) --output $(build.artifactstagingdirectory)'
     zipAfterPublish: false
 
@@ -58,5 +64,5 @@ steps:
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'eCommerce-web'
+    ArtifactName: 'eCommerce-webadmin'
     publishLocation: 'Container'
