@@ -47,7 +47,7 @@ namespace eCommerce.Persistence.Repositories
             return user;
         }
 
-        public async Task<PaginatedResult<User>> SearchAsync(UserSearchRequest rq)
+        public async Task<PaginatedResult<User>> SearchAsync(SearchUserModel rq)
         {
             // filter
             var queryObject = QueryObject<User>.Empty;
@@ -59,7 +59,13 @@ namespace eCommerce.Persistence.Repositories
             }
 
             // orderby
-            rq.Sort.ToList().ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
+            if (!rq.Sort.Any())
+            {
+                rq.Sort.Add(new SortItem { FieldName = nameof(User.IdentityKey) });
+            }
+
+            rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
+
 
             // execute
             var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination);

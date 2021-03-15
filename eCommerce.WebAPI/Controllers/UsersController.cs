@@ -1,4 +1,5 @@
 ﻿using eCommerce.Application.Services.Users;
+using eCommerce.Domain.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,11 @@ namespace eCommerce.WebAPI.Controllers
             _userService = userService;
         }
 
-
+        [HttpGet]
+        public async Task<ActionResult<PaginatedResult<UserReturnModels.User>>> Search([FromQuery]UserRequestModels.Search rq)
+        {
+            var users = await _userService.SearchUsersAsync(rq);
+            return users;
+        }
     }
 }

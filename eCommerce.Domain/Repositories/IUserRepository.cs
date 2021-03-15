@@ -1,5 +1,7 @@
 ﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,5 +17,6 @@ namespace eCommerce.Domain.Repositories
 
         Task<User> GetByIdAsync(Guid id);
         Task<User> GetUserByUsernameAsync(string username);
+        Task<PaginatedResult<User>> SearchAsync(SearchUserModel rq);
     }
 }

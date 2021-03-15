@@ -57,7 +57,7 @@ namespace eCommerce.WebAPI.Controllers
         [HttpPost("logout")]
         public ActionResult Logout()
         {
-            var userName = User.Identity?.Name;
+            var userName = User.Identity.Name;
             _jwtAuthManager.RemoveRefreshTokenByUsername(userName);
             return Ok();
         }
