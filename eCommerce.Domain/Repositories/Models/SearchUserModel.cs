@@ -5,12 +5,12 @@ using System.Text;
 
 namespace eCommerce.Domain.Repositories.Models
 {
-    public class UserSearchRequest
+    public class SearchUserModel
     {
         public string Keyword { get; set; }
 
         public Pagination Pagination { get; set; } = new Pagination();
 
-        public IEnumerable<SortItem> Sort { get; set; } = new List<SortItem>();
+        public List<SortItem> Sort { get; set; } = new List<SortItem>();
     }
 }

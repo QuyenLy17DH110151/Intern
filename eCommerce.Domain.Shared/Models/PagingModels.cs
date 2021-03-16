@@ -15,9 +15,18 @@ namespace eCommerce.Domain.Shared.Models
 
     public class Pagination
     {
-        public int PageIndex { get; set; } = 0;
+        private int _pageIndex;
+        public int PageIndex 
+        {
+            get => _pageIndex == 0 ? 0 : _pageIndex;
+            set => _pageIndex = value;
+        }
 
-        public int ItemsPerPage { get; set; } = 10;
-
+        private int _itemsPerPage;
+        public int ItemsPerPage 
+        {
+            get => _itemsPerPage == 0 ? 10 : _itemsPerPage;
+            set => _itemsPerPage = value;
+        }
     }
 }

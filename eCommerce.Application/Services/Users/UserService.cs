@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Repositories;
+using eCommerce.Domain.Repositories.Models;
+using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +19,17 @@ namespace eCommerce.Application.Services.Users
         {
             _userRepo = userRepo;
             _mapper = mapper;
+        }
+
+        public async Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq)
+        {
+            var users = await _userRepo.SearchAsync(new SearchUserModel 
+            { 
+                Keyword = rq.SearchTerm, 
+                Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize }, 
+            });
+
+            return _mapper.Map<PaginatedResult<UserReturnModels.User>>(users);
         }
 
         public async Task<UserReturnModels.User> GetValidUserAsync(string username, string password)
@@ -36,7 +49,7 @@ namespace eCommerce.Application.Services.Users
             return null;
         }
 
-        public async Task<Guid> RegisterUserAsync(UserRequestModels.RegisterUser rq)
+        public async Task<Guid> RegisterUserAsync(UserRequestModels.Register rq)
         {
             var user = new User
             {

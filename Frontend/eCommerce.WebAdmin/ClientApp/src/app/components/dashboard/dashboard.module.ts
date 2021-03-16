@@ -9,18 +9,22 @@ import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartistModule } from 'ng-chartist';
 import { SharedModule } from '../../shared/shared.module';
+import { UserClient } from 'src/app/api-clients/user.client';
 
 @NgModule({
-  declarations: [DashboardComponent],
-  imports: [
-    CommonModule,
-    DashboardRoutingModule,
-    CountToModule,
-    SharedModule,
-    ChartsModule,
-    Ng2GoogleChartsModule,
-    NgxChartsModule,
-    ChartistModule
-  ]
+    declarations: [DashboardComponent],
+    imports: [
+        CommonModule,
+        DashboardRoutingModule,
+        CountToModule,
+        SharedModule,
+        ChartsModule,
+        Ng2GoogleChartsModule,
+        NgxChartsModule,
+        ChartistModule
+    ],
+    providers: [
+        UserClient
+    ]
 })
 export class DashboardModule { }

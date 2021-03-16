@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eCommerce.Domain.Shared.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,13 @@ namespace eCommerce.Application.Services.Users
         /// </summary>
         /// <param name="rq"></param>
         /// <returns></returns>
-        Task<Guid> RegisterUserAsync(UserRequestModels.RegisterUser rq);
+        Task<Guid> RegisterUserAsync(UserRequestModels.Register rq);
+
+        /// <summary>
+        /// Searchs users
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq);
     }
 }

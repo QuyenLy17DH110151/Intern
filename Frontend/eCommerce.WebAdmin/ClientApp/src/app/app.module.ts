@@ -20,32 +20,35 @@ import { InvoiceModule } from './components/invoice/invoice.module';
 import { SettingModule } from './components/setting/setting.module';;
 import { ReportsModule } from './components/reports/reports.module';
 import { AuthModule } from './components/auth/auth.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserAnimationsModule,
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    AppRoutingModule,
-    DashboardModule,
-    InvoiceModule,
-    SettingModule,
-    ReportsModule,
-    AuthModule,
-    SharedModule,
-    LocalizationModule,
-    ProductsModule,
-    SalesModule,
-    VendorsModule,
-    CouponsModule,
-    PagesModule,
-    MediaModule,
-    MenusModule,
-    UsersModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+    ],
+    imports: [
+        BrowserAnimationsModule,
+        BrowserModule.withServerTransition({ appId: 'serverApp' }),
+        HttpClientModule,
+
+        AppRoutingModule,
+        DashboardModule,
+        InvoiceModule,
+        SettingModule,
+        ReportsModule,
+        AuthModule,
+        SharedModule,
+        LocalizationModule,
+        ProductsModule,
+        SalesModule,
+        VendorsModule,
+        CouponsModule,
+        PagesModule,
+        MediaModule,
+        MenusModule,
+        UsersModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
