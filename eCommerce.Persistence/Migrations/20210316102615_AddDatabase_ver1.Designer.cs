@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerce.Persistence;
 
 namespace eCommerce.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210316102615_AddDatabase_ver1")]
+    partial class AddDatabase_ver1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,15 +63,8 @@ namespace eCommerce.Persistence.Migrations
                     b.Property<string>("BuyerName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("BuyerPhone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("BuyerPhone")
+                        .HasColumnType("int");
 
                     b.Property<int>("IdentityKey")
                         .ValueGeneratedOnAdd()
@@ -78,16 +73,10 @@ namespace eCommerce.Persistence.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("Prices")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("ProductId")
@@ -96,8 +85,8 @@ namespace eCommerce.Persistence.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id")
                         .HasAnnotation("SqlServer:Clustered", false);
