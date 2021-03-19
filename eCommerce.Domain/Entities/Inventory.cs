@@ -5,7 +5,7 @@ using System.Text;
 
 namespace eCommerce.Domain.Entities
 {
-    public class Inventory:Entity
+    public class Inventory : Entity
     {
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
