@@ -14,8 +14,8 @@ namespace eCommerce.Domain.Repositories
         Product Add(Product product);
         void Update(Product product);
 
-        Task<Product> GetByProIdAsync(Guid id);
-        Task<Product> GetByCatIdAsync(Guid catId);
+        Task<Product> GetByIdAsync(Guid id);
+        Task<Product> GetByCategoryIdAsync(Guid catId);
         Task<IEnumerable<Product>> GetAllAsync();
         Task<PaginatedResult<Product>> SearchAsync(SearchProductModel req);
     }

@@ -11,21 +11,21 @@ namespace eCommerce.Application.Services.Products
         /// <summary>
         /// Searchs products
         /// </summary>
-        /// <param name="proId"></param>
+        /// <param name="proId">productId</param>
         /// <returns></returns>
         Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsAsync(ProductRequestModels.Search req);
 
         /// <summary>
         /// Get all products have CategoryId equal catId
         /// </summary>
-        /// <param name="catId"></param>
+        /// <param name="catId">categoryId</param>
         /// <returns></returns>
         Task<ProductReturnModels.Product> GetProductByCatIdAsync(Guid catId);
 
         /// <summary>
-        /// Get all prođucts in Database.
+        /// Get all products in Database.
         /// </summary>
-        /// <param name="proId"></param>
+        /// <param name="proId">productId</param>
         /// <returns></returns>
         Task<ProductReturnModels.Product> GetAllProductAsync(Guid proId); //return list
     }
