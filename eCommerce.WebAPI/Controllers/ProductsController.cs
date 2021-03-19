@@ -22,8 +22,8 @@ namespace eCommerce.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductReturnModels.Product>>> Search([FromQuery] ProductRequestModels.Search req)
         {
-            var users = await _productService.SearchProductsAsync(req);
-            return users;
+            var product = await _productService.SearchProductsAsync(req);
+            return product;
         }
     }
 }

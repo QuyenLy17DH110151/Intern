@@ -18,7 +18,7 @@ namespace eCommerce.Application.Services.Products
             public Guid CategoryId { get; set; }
         }
 
-        public class MappingProfile : Profile  //Tác dụng là gì?
+        public class MappingProfile : Profile
         {
             public MappingProfile()
             {
