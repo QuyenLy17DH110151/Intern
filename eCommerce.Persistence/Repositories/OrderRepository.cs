@@ -26,45 +26,45 @@ namespace eCommerce.Persistence.Repositories
             _genericRepo = new GenericRepository<Order>(_dbContext.Set<Order>());
         }
 
-        public async Task<PaginatedResult<Order>> searchAsync(SearchOrderModel rq)
+        public async Task<PaginatedResult<Order>> SearchAsync(SearchOrderModel rq)
         {
             var queryObject = QueryObject<Order>.Empty;
 
             //filter after date
 
-            if (checkStartDate(rq.StartDate))
+            if (CheckStartDate(rq.StartDate))
             {
                 var startDate = rq.StartDate;
-                queryObject.And(new OrderQueryObject.QueryAferDate(startDate));
+                queryObject.And(new OrderQueryObject.OrderDateAfter(startDate));
             }
 
             //fliter begin date
 
-            if (checkEndDate(rq.EndDate))
+            if (CheckEndDate(rq.EndDate))
             {
                 var endDate = rq.EndDate;
-                queryObject.And(new OrderQueryObject.QueryBeforeDate(endDate));
+                queryObject.And(new OrderQueryObject.OrderDateBefore(endDate));
             }
 
             //fliter sum price bigger
 
-            if (checkPrice(rq.SumPriceBigger))
+            if (CheckPrice(rq.SumPriceBigger))
             {
                 var priceBigger = rq.SumPriceBigger;
-                queryObject.And(new OrderQueryObject.QueryPriceBigger(priceBigger));
+                queryObject.And(new OrderQueryObject.TotalPriceBigger(priceBigger));
             }
 
             //fliter sum price smaller
-            if (checkPrice(rq.SumPriceSmaller))
+            if (CheckPrice(rq.SumPriceSmaller))
             {
                 var priceSmaller = rq.SumPriceSmaller;
-                queryObject.And(new OrderQueryObject.QueryPriceSmaller(priceSmaller));
+                queryObject.And(new OrderQueryObject.TotalPriceSmaller(priceSmaller));
             }
             //fliter status
             if (rq.Status != null)
             {
                 var status = rq.Status;
-                queryObject.And(new OrderQueryObject.QueryStatus(status));
+                queryObject.And(new OrderQueryObject.HasStatus(status));
             }
 
             //fliter id product
@@ -72,14 +72,14 @@ namespace eCommerce.Persistence.Repositories
             if(rq.IdProduct != null)
             {
                 var idProduct = rq.IdProduct;
-                queryObject.And(new OrderQueryObject.QueryIdProduct(idProduct));
+                queryObject.And(new OrderQueryObject.HasProduct(idProduct));
             }
 
             //fliter username seller
-            if (!string.IsNullOrWhiteSpace(rq.UsernameSeller))
+            if (!string.IsNullOrWhiteSpace(rq.SellerUsername))
             {
-                var usernameSeller = rq.UsernameSeller;
-                queryObject.And(new OrderQueryObject.QueryUsernameSeller(usernameSeller));
+                var usernameSeller = rq.SellerUsername;
+                queryObject.And(new OrderQueryObject.SellByUser(usernameSeller));
             }
             //order by
 
@@ -94,7 +94,7 @@ namespace eCommerce.Persistence.Repositories
             return result;
         }
 
-        private bool checkPrice(Decimal price)
+        private bool CheckPrice(Decimal price)
         {
             if (price == null)
             {
@@ -107,7 +107,7 @@ namespace eCommerce.Persistence.Repositories
             return true;
         }
 
-        private bool checkEndDate(DateTime endDate)
+        private bool CheckEndDate(DateTime endDate)
         {
             if (endDate == null)
             {
@@ -122,7 +122,7 @@ namespace eCommerce.Persistence.Repositories
             return true;
         }
 
-        private bool checkStartDate(DateTime startDate)
+        private bool CheckStartDate(DateTime startDate)
         {
             if(startDate == null)
             {

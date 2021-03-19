@@ -8,7 +8,6 @@ namespace eCommerce.Domain.Entities
 {
     public class Order : Entity, IAuditable
     {
-        public Guid id { get; set; }
         public DateTime OrderDate { get; set; }
         public string Address { get; set; }
         public string BuyerName { get; set; }

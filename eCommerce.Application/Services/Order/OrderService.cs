@@ -22,7 +22,7 @@ namespace eCommerce.Application.Services.Order
 
         public async Task<PaginatedResult<OrderReturnModel.Order>> SearchOrdersAsync(OrderRequestModels.Search rq)
         {
-            var order = await _orderRepo.searchAsync(
+            var order = await _orderRepo.SearchAsync(
                 new SearchOrderModel
                 {
                     StartDate = rq.StartDate,
@@ -31,7 +31,7 @@ namespace eCommerce.Application.Services.Order
                     SumPriceSmaller = rq.SumPriceSmaller,
                     Status = rq.Status,
                     IdProduct = rq.IdProduct,
-                    UsernameSeller = rq.UsernameSeller,
+                    SellerUsername = rq.SellerUsername,
                     Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
                 });
             return _mapper.Map<PaginatedResult<OrderReturnModel.Order>>(order);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eCommerce.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,11 +17,11 @@ namespace eCommerce.Application.Services.Order
 
             public decimal SumPriceSmaller { get; set; }
 
-            public string Status { get; set; }
+            public OrderStatuses Status { get; set; }
 
             public string IdProduct { get; set; }
 
-            public string UsernameSeller { get; set; }
+            public string SellerUsername { get; set; }
 
             public int PageIndex { get; set; }
 

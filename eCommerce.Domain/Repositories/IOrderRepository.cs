@@ -9,6 +9,6 @@ namespace eCommerce.Domain.Repositories
 {
     public interface IOrderRepository : IRepository<Order>
     {
-        Task<PaginatedResult<Order>> searchAsync(SearchOrderModel searchOrderModel);
+        Task<PaginatedResult<Order>> SearchAsync(SearchOrderModel searchOrderModel);
     }
 }

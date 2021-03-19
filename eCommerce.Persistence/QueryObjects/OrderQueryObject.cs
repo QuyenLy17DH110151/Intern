@@ -1,4 +1,5 @@
 ﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Enums;
 using eCommerce.Domain.Seedwork;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace eCommerce.Persistence.QueryObjects
 {
     public static class OrderQueryObject
     {
-        public class QueryAferDate : QueryObject<Order>
+        public class OrderDateAfter : QueryObject<Order>
         {
             private DateTime _dateTime;
 
-            public QueryAferDate(DateTime dateTime)
+            public OrderDateAfter(DateTime dateTime)
             {
                 _dateTime = dateTime;
             }
@@ -24,11 +25,11 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
-        public class QueryBeforeDate : QueryObject<Order>
+        public class OrderDateBefore : QueryObject<Order>
         {
             private DateTime _dateTime;
 
-            public QueryBeforeDate(DateTime dateTime)
+            public OrderDateBefore(DateTime dateTime)
             {
                 _dateTime = dateTime;
             }
@@ -39,42 +40,42 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
-        public class QueryPriceBigger : QueryObject<Order>
+        public class TotalPriceBigger : QueryObject<Order>
         {
             private Decimal _price;
 
-            public QueryPriceBigger(decimal price)
+            public TotalPriceBigger(decimal price)
             {
                 _price = price;
             }
 
             protected override Expression<Func<Order, bool>> AsExpression()
             {
-                return o => o.Prices * o.Quantity >= _price;
+                return o => o.Price * o.Quantity >= _price;
             }
         }
 
-        public class QueryPriceSmaller : QueryObject<Order>
+        public class TotalPriceSmaller : QueryObject<Order>
         {
             private Decimal _price;
 
-            public QueryPriceSmaller(decimal price)
+            public TotalPriceSmaller(decimal price)
             {
                 _price = price;
             }
 
             protected override Expression<Func<Order, bool>> AsExpression()
             {
-                return o => o.Prices * o.Quantity <= _price;
+                return o => o.Price * o.Quantity <= _price;
 
             }
         }
 
-        public class QueryStatus : QueryObject<Order>
+        public class HasStatus : QueryObject<Order>
         {
-            private bool _status;
+            private OrderStatuses _status;
 
-            public QueryStatus(bool status)
+            public HasStatus(OrderStatuses status)
             {
                 _status = status;
             }
@@ -85,10 +86,10 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
-        public class QueryIdProduct : QueryObject<Order>
+        public class HasProduct : QueryObject<Order>
         {
             private string _idProduct;
-            public QueryIdProduct(string idProduct)
+            public HasProduct(string idProduct)
             {
                 _idProduct = idProduct;
             }
@@ -99,10 +100,10 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
-        public class QueryUsernameSeller : QueryObject<Order>
+        public class SellByUser : QueryObject<Order>
         {
             private string _username;
-            public QueryUsernameSeller(String username)
+            public SellByUser(string username)
             {
                 _username = username;
             }

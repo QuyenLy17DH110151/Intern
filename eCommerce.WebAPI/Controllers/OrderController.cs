@@ -1,9 +1,6 @@
 ﻿using eCommerce.Application.Services.Order;
 using eCommerce.Domain.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI.Controllers
