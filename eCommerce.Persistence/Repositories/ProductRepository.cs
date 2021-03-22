@@ -74,5 +74,15 @@ namespace eCommerce.Persistence.Repositories
             var result = await _genericRepo.SearchAsync(queryObject, req.Pagination);
             return result;
         }
+
+        public Task<Product> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Product> GetByCategoryIdAsync(Guid catId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
