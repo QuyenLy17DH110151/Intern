@@ -38,89 +38,36 @@ export class NavService {
 
 	MENUITEMS: Menu[] = [
 		{
-			path: '/dashboard/default', title: 'Dashboard', icon: 'home', type: 'link', badgeType: 'primary', active: false
+			title: 'Login',path: '/auth/login', icon: 'log-in', type: 'link', active: false
 		},
 		{
-			title: 'Products', icon: 'box', type: 'sub', active: false, children: [
-				{
-					title: 'Physical', type: 'sub', children: [
-						{ path: '/products/physical/category', title: 'Category', type: 'link' },
-						{ path: '/products/physical/sub-category', title: 'Sub Category', type: 'link' },
-						{ path: '/products/physical/product-list', title: 'Product List', type: 'link' },
-						{ path: '/products/physical/product-detail', title: 'Product Detail', type: 'link' },
-						{ path: '/products/physical/add-product', title: 'Add Product', type: 'link' },
-					]
-				},
-				{
-					title: 'digital', type: 'sub', children: [
-						{ path: '/products/digital/digital-category', title: 'Category', type: 'link' },
-						{ path: '/products/digital/digital-sub-category', title: 'Sub Category', type: 'link' },
-						{ path: '/products/digital/digital-product-list', title: 'Product List', type: 'link' },
-						{ path: '/products/digital/digital-add-product', title: 'Add Product', type: 'link' },
-					]
-				},
-			]
-		},
-		{
-			title: 'Sales', icon: 'dollar-sign', type: 'sub', active: false, children: [
-				{ path: '/sales/orders', title: 'Orders', type: 'link' },
-				{ path: '/sales/transactions', title: 'Transactions', type: 'link' },
-			]
-		},
-		{
-			title: 'Coupons', icon: 'tag', type: 'sub', active: false, children: [
-				{ path: '/coupons/list-coupons', title: 'List Coupons', type: 'link' },
-				{ path: '/coupons/create-coupons', title: 'Create Coupons', type: 'link' },
-			]
-		},
-		{
-			title: 'Pages', icon: 'clipboard', type: 'sub', active: false, children: [
-				{ path: '/pages/list-page', title: 'List Page', type: 'link' },
-				{ path: '/pages/create-page', title: 'Create Page', type: 'link' },
-			]
-		},
-		{
-			title: 'Media', path: '/media', icon: 'camera', type: 'link', active: false
-		},
-		{
-			title: 'Menus', icon: 'align-left', type: 'sub', active: false, children: [
-				{ path: '/menus/list-menu', title: 'Menu Lists', type: 'link' },
-				{ path: '/menus/create-menu', title: 'Create Menu', type: 'link' },
-			]
+			title: 'Reset password',path: '/auth/reset-password', icon: 'settings', type: 'link', active: false
 		},
 		{
 			title: 'Users', icon: 'user-plus', type: 'sub', active: false, children: [
 				{ path: '/users/list-user', title: 'User List', type: 'link' },
 				{ path: '/users/create-user', title: 'Create User', type: 'link' },
+				{ path: '/users/lockout-user', title: 'Lockout User', type: 'link' },
 			]
 		},
 		{
-			title: 'Vendors', icon: 'users', type: 'sub', active: false, children: [
-				{ path: '/vendors/list-vendors', title: 'Vendor List', type: 'link' },
-				{ path: '/vendors/create-vendors', title: 'Create Vendor', type: 'link' },
+			title: 'Products', icon: 'box', type: 'sub', active: false, children: [
+				{ path: '/products/list-product', title: 'Product List', type: 'link' },
+				{ path: '/products/list-product-category', title: 'Product Categori List', type: 'link' },
+				{ path: '/products/create-product', title: 'Create Product', type: 'link' },
+				{ path: '/products/details-product', title: 'Details Product', type: 'link' },
 			]
 		},
 		{
-			title: 'Localization', icon: 'chrome', type: 'sub', children: [
-				{ path: '/localization/translations', title: 'Translations', type: 'link' },
-				{ path: '/localization/currency-rates', title: 'Currency Rates', type: 'link' },
-				{ path: '/localization/taxes', title: 'Taxes', type: 'link' },
+			title: 'Inventory',path: '/inventory', icon: 'box', type: 'link', active: false
+		},
+		{
+			title: 'Order', icon: 'box', type: 'sub', active: false, children: [
+				{ path: '/order/list-order', title: 'Order List', type: 'link' },
+				{ path: '/order/details-order', title: 'Order Details', type: 'link' },
+				{ path: '/order/status-order', title: 'Order Status', type: 'link' },
 			]
 		},
-		{
-			title: 'Reports', path: '/reports', icon: 'bar-chart', type: 'link', active: false
-		},
-		{
-			title: 'Settings', icon: 'settings', type: 'sub', children: [
-				{ path: '/settings/profile', title: 'Profile', type: 'link' },
-			]
-		},
-		{
-			title: 'Invoice', path: '/invoice', icon: 'archive', type: 'link', active: false
-		},
-		{
-			title: 'Login',path: '/auth/login', icon: 'log-in', type: 'link', active: false
-		}
 	]
 	// Array
 	items = new BehaviorSubject<Menu[]>(this.MENUITEMS);
