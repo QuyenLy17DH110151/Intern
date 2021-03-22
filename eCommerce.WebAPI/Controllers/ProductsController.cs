@@ -25,5 +25,17 @@ namespace eCommerce.WebAPI.Controllers
             var product = await _productService.SearchProductsAsync(req);
             return product;
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ProductReturnModels.Product>> Create([FromBody] ProductRequestModels.Create req)
+        {
+            //if ()
+
+            //    return NotFound();
+
+            var productId = await _productService.CreateAsync(req);
+
+            return await _productService.GetProductByIdAsync(productId);
+        }
     }
 }

@@ -16,17 +16,17 @@ namespace eCommerce.Application.Services.Products
         Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsAsync(ProductRequestModels.Search req);
 
         /// <summary>
-        /// Get all products have CategoryId equal catId
+        /// Create new product
         /// </summary>
-        /// <param name="catId">categoryId</param>
-        /// <returns></returns>
-        Task<ProductReturnModels.Product> GetProductByCatIdAsync(Guid catId);
+        /// <param name="request"></param>
+        /// <returns>ProductId</returns>
+        Task<Guid> CreateAsync(ProductRequestModels.Create request);
 
         /// <summary>
-        /// Get all products in Database.
+        /// Get a product by Id
         /// </summary>
-        /// <param name="proId">productId</param>
-        /// <returns></returns>
-        Task<ProductReturnModels.Product> GetAllProductAsync(Guid proId); //return list
+        /// <param name="Id">Product Id</param>
+        /// <returns>ProductReturnModels.Product</returns>
+        Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id);
     }
 }

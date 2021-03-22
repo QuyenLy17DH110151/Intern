@@ -14,8 +14,8 @@ namespace eCommerce.Persistence.Repositories
 {
     class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly GenericRepository<Product> _genericRepo;
+        private readonly ApplicationDbContext _dbContext; //user...
+        private readonly GenericRepository<Product> _genericRepo;  //product
 
         public IUnitOfWork UnitOfWork => _dbContext;
 
@@ -27,7 +27,7 @@ namespace eCommerce.Persistence.Repositories
 
         public Product Add(Product product)
         {
-            return _genericRepo.Add(product);     
+            return _genericRepo.Add(product);    
         }
 
         public Task<IEnumerable<Product>> GetAllAsync()
@@ -38,11 +38,6 @@ namespace eCommerce.Persistence.Repositories
         public Task<Product> GetByCatIdAsync(Guid catId)
         {
             return _genericRepo.GetByIdAsync(catId);
-        }
-
-        public Task<Product> GetByProIdAsync(Guid id)
-        {
-            return _genericRepo.GetByIdAsync(id);
         }
 
         public void Update(Product product)
@@ -83,6 +78,11 @@ namespace eCommerce.Persistence.Repositories
         public Task<Product> GetByCategoryIdAsync(Guid catId)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<Product> GetProductByIdAsync(Guid id)
+        {
+            return _genericRepo.GetByIdAsync(id);
         }
     }
 }

@@ -15,7 +15,15 @@ namespace eCommerce.Application.Services.Products
 
             public decimal Price { get; set; }
 
-            public Guid CategoryId { get; set; }
+            public Category Category { get; set; }
+
+        }
+
+        public class Category
+        {
+            public Guid Id { get; set; }
+
+            public string Name { get; set; }
         }
 
         public class MappingProfile : Profile
@@ -23,6 +31,7 @@ namespace eCommerce.Application.Services.Products
             public MappingProfile()
             {
                 CreateMap<Domain.Entities.Product, Product>();
+                CreateMap<Domain.Entities.ProductCategory, Category>();
             }
         }
     }
