@@ -23,9 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{F092
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{A75B9E09-CFC7-402D-BE69-CD971203B7C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerce.WebAdmin", "Frontend\eCommerce.WebAdmin\eCommerce.WebAdmin.csproj", "{63C3140B-8620-441D-970D-5976D2A0273D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.WebAdmin", "Frontend\eCommerce.WebAdmin\eCommerce.WebAdmin.csproj", "{63C3140B-8620-441D-970D-5976D2A0273D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerce.FrontStore", "Frontend\eCommerce.FrontStore\eCommerce.FrontStore.csproj", "{7C681455-C7EB-413A-A26A-19571C699015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.FrontStore", "Frontend\eCommerce.FrontStore\eCommerce.FrontStore.csproj", "{7C681455-C7EB-413A-A26A-19571C699015}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
