@@ -3,7 +3,6 @@ import { LoginRequest } from './../../../api-clients/models/common.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserClient } from 'src/app/api-clients/_index';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -62,6 +61,9 @@ export class LoginComponent implements OnInit {
         res=>{
             console.log('res',res);
             localStorage.setItem('token',res.accessToken);
+            let tokenInfo = this.userClient.getDecodedAccessToken(res.accessToken);
+            console.log('token info user Name',tokenInfo.username);
+            localStorage.setItem('userName',tokenInfo.username)
             this.route.navigate(['dashboard/default']);
         },
         err=>console.log(err)

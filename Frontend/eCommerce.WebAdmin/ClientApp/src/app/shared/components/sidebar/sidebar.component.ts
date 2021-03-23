@@ -1,3 +1,4 @@
+import { UserClient } from 'src/app/api-clients/user.client';
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { NavService, Menu } from '../../service/nav.service';
@@ -89,5 +90,5 @@ export class SidebarComponent {
       this.url = reader.result;
     }
   }
-
+ userName:string=localStorage.getItem('userName');
 }

@@ -4,11 +4,13 @@ import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { JwtAuthResult, LoginRequest, PagedList, SearchRequest } from "./models/common.model";
 import { User } from "./models/user.model";
-
+import jwt_decode from 'jwt-decode';
 @Injectable()
 export class UserClient {
     apiEndpoint = `${environment.apiUrl}/Users`;
     apiToken = `${environment.apiUrl}/Token`;
+    apiTokenLogout = `${environment.apiUrl}/Token/logout`;
+    // helper = new JwtHelperService();
     constructor(protected httpClient: HttpClient) {
     }
 
@@ -26,4 +28,12 @@ export class UserClient {
     loggedIn(){
         return !! localStorage.getItem('token');
     }
+    getDecodedAccessToken(token: string): any {
+        try{
+            return jwt_decode(token);
+        }
+        catch(Error){
+            return null;
+        }
+  }
 }
