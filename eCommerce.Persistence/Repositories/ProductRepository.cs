@@ -4,6 +4,7 @@ using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace eCommerce.Persistence.Repositories
     {
         private readonly ApplicationDbContext _dbContext; //user...
         private readonly GenericRepository<Product> _genericRepo;  //product
+        private readonly GenericRepository<ProductPhoto> _photoGenericRepo;  //product
 
         public IUnitOfWork UnitOfWork => _dbContext;
 
@@ -23,6 +25,7 @@ namespace eCommerce.Persistence.Repositories
         {
             _dbContext = context;
             _genericRepo = new GenericRepository<Product>(_dbContext.Set<Product>());
+            _photoGenericRepo = new GenericRepository<ProductPhoto>(_dbContext.Set<ProductPhoto>());
         }
 
         public Product Add(Product product)
@@ -82,7 +85,12 @@ namespace eCommerce.Persistence.Repositories
 
         public Task<Product> GetProductByIdAsync(Guid id)
         {
-            return _genericRepo.GetByIdAsync(id);
+            return _genericRepo.GetByIdAsync(id, x => x.Include(m => m.Photos));
+        }
+
+        public ProductPhoto UploadPhoto(ProductPhoto photo)
+        {
+            return _photoGenericRepo.Add(photo);
         }
     }
 }

@@ -2,6 +2,7 @@
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -50,14 +51,35 @@ namespace eCommerce.Application.Services.Products
         public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)
         {
             var product = await _productRepo.GetProductByIdAsync(Id);
-
-            if (product == null)
-            {
-                return null; // return message: not found user???
-            }
+            if (product == null) throw new EntityNotFound("Product");
 
             return _mapper.Map<ProductReturnModels.Product>(product);
         }
 
+        public async Task<Guid> UploadPhotoAsync(ProductRequestModels.UploadPhoto request)
+        {
+            var photo = new ProductPhoto()
+            {
+                ProductId = request.ProductId,
+                Url = request.Url
+            };
+
+            _productRepo.UploadPhoto(photo);
+            await _productRepo.UnitOfWork.SaveChangesAsync();
+            return photo.ProductId;
+        }
+
+        // return all photo of product
+        //public async Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId)
+        //{
+        //    var photo = await _productRepo.GetPhotosByProductIdAsync(productId);
+
+        //    if (photo == null)
+        //    {
+        //        throw new EntityNotFound("photo");  // emit error
+        //    }
+
+        //    return _mapper.Map<ProductReturnModels.Photo>(photo);
+        //}
     }
 }

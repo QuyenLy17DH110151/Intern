@@ -7,12 +7,12 @@ using System.Text;
 
 namespace eCommerce.Persistence.EntityConfigurations
 {
-    class ProductPhotosConfiguration : IEntityTypeConfiguration<ProductPhotos>
+    class ProductPhotosConfiguration : IEntityTypeConfiguration<ProductPhoto>
     {
-        public void Configure(EntityTypeBuilder<ProductPhotos> builder)
+        public void Configure(EntityTypeBuilder<ProductPhoto> builder)
         {
             // table
-            builder.ToTable(nameof(ProductPhotos));
+            builder.ToTable(nameof(ProductPhoto));
             builder.ConfigureByConvention();
         }
     }

@@ -14,26 +14,30 @@ namespace eCommerce.WebAPI.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductsController(IProductService userService)
+        public ProductsController(IProductService productService)
         {
-            _productService = userService;
+            _productService = productService;
         }
 
-        [HttpGet]
+        [HttpGet("search")] //[GET] api/Product/search
         public async Task<ActionResult<PaginatedResult<ProductReturnModels.Product>>> Search([FromQuery] ProductRequestModels.Search req)
         {
             var product = await _productService.SearchProductsAsync(req);
             return product;
         }
 
-        [HttpPost]
+        [HttpPost] //[POST] api/Product
         public async Task<ActionResult<ProductReturnModels.Product>> Create([FromBody] ProductRequestModels.Create req)
         {
-            //if ()
-
-            //    return NotFound();
-
             var productId = await _productService.CreateAsync(req);
+
+            return await _productService.GetProductByIdAsync(productId);
+        }
+
+        [HttpPost("upload-photo")] //[POST] api/Product/upload-photo
+        public async Task<ActionResult<ProductReturnModels.Product>> UploadOne([FromBody] ProductRequestModels.UploadPhoto req)
+        {
+            var productId = await _productService.UploadPhotoAsync(req);
 
             return await _productService.GetProductByIdAsync(productId);
         }

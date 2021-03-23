@@ -9,13 +9,13 @@ namespace eCommerce.Application.Services.Products
     {
         public class Product
         {
-            public Guid Id { get; set; }
-
             public string Name { get; set; }
-
             public decimal Price { get; set; }
-
             public Category Category { get; set; }
+            public Guid OwnerId { get; set; }
+            public DateTime LastUpdated { get; set; }
+            public string LastUpdatedBy { get; set; }
+            public List<Photo> Photos { get; set; }
 
         }
 
@@ -26,12 +26,20 @@ namespace eCommerce.Application.Services.Products
             public string Name { get; set; }
         }
 
-        public class MappingProfile : Profile
+        public class Photo
+        {
+            //public Guid ProductId { get; set; }
+            public string Url { get; set; }
+            public Guid Id { get; set; }
+        }
+
+            public class MappingProfile : Profile
         {
             public MappingProfile()
             {
                 CreateMap<Domain.Entities.Product, Product>();
                 CreateMap<Domain.Entities.ProductCategory, Category>();
+                CreateMap<Domain.Entities.ProductPhoto, Photo>();
             }
         }
     }

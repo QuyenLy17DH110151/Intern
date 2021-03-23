@@ -28,5 +28,14 @@ namespace eCommerce.Application.Services.Products
         /// <param name="Id">Product Id</param>
         /// <returns>ProductReturnModels.Product</returns>
         Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id);
+
+        /// <summary>
+        /// Upload one photo
+        /// </summary>
+        /// <param name="request">Id of photo was uploaded</param>
+        /// <returns></returns>
+        Task<Guid> UploadPhotoAsync(ProductRequestModels.UploadPhoto request);
+
+        //Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId);
     }
 }

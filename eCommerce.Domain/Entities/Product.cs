@@ -16,6 +16,8 @@ namespace eCommerce.Domain.Entities
         public Guid OwnerId { get; set; }
         public User Owner { get; set; }
 
+        public List<ProductPhoto> Photos { get; set; }
+
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? LastUpdated { get; set; }
