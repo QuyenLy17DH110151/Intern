@@ -17,6 +17,7 @@ namespace eCommerce.ModuleRegister
         {
             Application.Module.Register(container, _services);
             Persistence.Module.Register(container, _services);
+            Notification.Module.Register(container, _services);
         }
     }
 }
