@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginRequest } from './../../../api-clients/models/common.model';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { UserClient } from 'src/app/api-clients/_index';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +13,7 @@ export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
   public registerForm: FormGroup;
-
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,private userClient: UserClient,private route:Router) {
     this.createLoginForm();
     this.createRegisterForm();
   }
@@ -35,16 +37,15 @@ export class LoginComponent implements OnInit {
     items: 1,
     dots: true
   };
-
   createLoginForm() {
     this.loginForm = this.formBuilder.group({
-      userName: [''],
+      username: [''],
       password: [''],
     })
   }
   createRegisterForm() {
     this.registerForm = this.formBuilder.group({
-      userName: [''],
+      username: [''],
       password: [''],
       confirmPassword: [''],
     })
@@ -54,8 +55,17 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit() {
-    
+  async onSubmit() {
+    // let token = await this.userClient.login(this.loginForm.value).toPromise();
+    // console.log(token);
+    let getToken = await this.userClient.loginAdmin(this.loginForm.value).subscribe(
+        res=>{
+            console.log('res',res);
+            localStorage.setItem('token',res.accessToken);
+            this.route.navigate(['dashboard/default']);
+        },
+        err=>console.log(err)
+    );
   }
 
 }

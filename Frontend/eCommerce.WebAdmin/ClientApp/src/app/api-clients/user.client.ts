@@ -2,13 +2,13 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { PagedList, SearchRequest } from "./models/common.model";
+import { JwtAuthResult, LoginRequest, PagedList, SearchRequest } from "./models/common.model";
 import { User } from "./models/user.model";
 
 @Injectable()
 export class UserClient {
     apiEndpoint = `${environment.apiUrl}/Users`;
-
+    apiToken = `${environment.apiUrl}/Token`;
     constructor(protected httpClient: HttpClient) {
     }
 
@@ -18,5 +18,12 @@ export class UserClient {
         };
 
         return this.httpClient.get<PagedList<User>>(this.apiEndpoint, options);
+    }
+
+    loginAdmin(rq: LoginRequest = new LoginRequest()):Observable<JwtAuthResult>{
+        return this.httpClient.post<JwtAuthResult>(this.apiToken,rq);
+    }
+    loggedIn(){
+        return !! localStorage.getItem('token');
     }
 }
