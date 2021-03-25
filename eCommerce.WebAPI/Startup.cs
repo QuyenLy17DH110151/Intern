@@ -130,6 +130,15 @@ namespace eCommerce.WebAPI
                     {securityScheme, new string[] { }}
                 });
             });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("PermissionAdmin",
+                     policy => policy.RequireRole("Admin"));
+                options.AddPolicy("PermissionSeller",
+                     policy => policy.RequireRole("Admin", "Seller"));
+            });
+
+
         }
 
         public void ConfigureContainer(ContainerBuilder container)

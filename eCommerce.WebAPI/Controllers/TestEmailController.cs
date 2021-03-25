@@ -1,4 +1,5 @@
 ﻿using eCommerce.Application.Services.Email;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,6 +24,26 @@ namespace eCommerce.WebAPI.Controllers
         public bool testEmail()
         {
             return _emailService.SendEmail("edommerce.intern2021@gmail.com", "nam03031999@gmail.com", "test", "hello");
+        }
+
+        [HttpGet("admin")]
+        [Authorize(Policy = "PermissionAdmin")]
+        public string testAdmin()
+        {
+            return "admin";
+        }
+
+        [HttpGet("seller")]
+        [Authorize(Policy = "PermissionSeller")]
+        public string testSeller()
+        {
+            return "seller";
+        }
+
+        [HttpGet("no")]
+        public string testNo()
+        {
+            return "no";
         }
     }
 }

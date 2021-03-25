@@ -4,9 +4,8 @@ using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Shared.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using EasyEncryption;
 
 namespace eCommerce.Application.Services.Users
 {
@@ -39,9 +38,9 @@ namespace eCommerce.Application.Services.Users
             {
                 return null;
             }
-
             // TODO: need to encrypt password and compare with PasswordHash
-            if (user.PasswordHash == password)
+            
+            if (user.PasswordHash == SHA.ComputeSHA256Hash(password))
             {
                 return _mapper.Map<UserReturnModels.User>(user);
             }
