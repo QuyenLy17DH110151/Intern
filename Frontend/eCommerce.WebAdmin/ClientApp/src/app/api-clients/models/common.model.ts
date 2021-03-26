@@ -22,20 +22,23 @@ export class NameValue {
     value = 0;
     name: string;
 }
-export class LoginRequest{
-    userName=[''];
-    password=[''];
-    constructor(userName=[''],password=['']) {
-        this.userName=userName;
-        this.password=password;
+
+export class LoginRequest {
+    userName: string;
+    password: string;
+    constructor(userName?: string, password?: string) {
+        this.userName = userName;
+        this.password = password;
     }
 }
-export class JwtAuthResult{
-    accessToken : string;
+
+export class JwtAuthResult {
+    accessToken: string;
     refreshToken: RefreshToken;
 }
-export class RefreshToken{
-    Username : string;
-    Value : string;
-    ExpireAt : Date;
+
+export class RefreshToken {
+    userName: string;
+    value: string;
+    expireAt: Date;
 }
