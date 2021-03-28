@@ -8,7 +8,7 @@ import { ResetPasswordComponent } from './components/auth/reset-password/reset-p
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login',
+    redirectTo: 'dashboard/default',
     pathMatch: 'full'
   },
   {

@@ -38,16 +38,12 @@ export class NavService {
 
 	MENUITEMS: Menu[] = [
 		{
-			title: 'Login',path: '/auth/login', icon: 'log-in', type: 'link', active: false
-		},
-		{
-			title: 'Reset password',path: '/auth/reset-password', icon: 'settings', type: 'link', active: false
+			path: '/dashboard/default', title: 'Dashboard', icon: 'home', type: 'link', badgeType: 'primary', active: true
 		},
 		{
 			title: 'Users', icon: 'user-plus', type: 'sub', active: false, children: [
 				{ path: '/users/list-user', title: 'User List', type: 'link' },
-				{ path: '/users/create-user', title: 'Create User', type: 'link' },
-				{ path: '/users/lockout-user', title: 'Lockout User', type: 'link' },
+				{ path: '/users/create-user', title: 'Create User', type: 'link' }
 			]
 		},
 		{
