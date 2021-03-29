@@ -23,5 +23,20 @@ namespace eCommerce.Persistence.QueryObjects
                 return s => s.Username.Contains(_keyword);
             }
         }
+
+        public class LockoutEndDate : QueryObject<User>
+        {
+            private DateTime? _lockoutEnd;
+
+            public LockoutEndDate(DateTime? lockoutEnd)
+            {
+                _lockoutEnd = lockoutEnd;
+            }
+
+            protected override Expression<Func<User, bool>> AsExpression()
+            {
+                return o => DateTime.Compare((DateTime)o.LockoutEnd, (DateTime)_lockoutEnd) > 0 || DateTime.Compare((DateTime)o.LockoutEnd, (DateTime)_lockoutEnd) == 0;
+            }
+        }
     }
 }

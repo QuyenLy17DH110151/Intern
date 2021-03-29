@@ -13,4 +13,8 @@ namespace eCommerce.Domain.Repositories.Models
 
         public List<SortItem> Sort { get; set; } = new List<SortItem>();
     }
+    public class ListUser : SearchUserModel
+    {
+        public DateTime? LockoutEnd { get; set; }
+    }
 }

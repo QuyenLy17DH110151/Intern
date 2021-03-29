@@ -20,10 +20,28 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedResult<UserReturnModels.User>>> Search([FromQuery]UserRequestModels.Search rq)
+        public async Task<ActionResult<PaginatedResult<UserReturnModels.User>>> Search([FromQuery] UserRequestModels.Search rq)
         {
             var users = await _userService.SearchUsersAsync(rq);
             return users;
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<PaginatedResult<UserReturnModels.ListUser>>> ListUser([FromQuery] UserRequestModels.ListUser rq)
+        {
+            var users = await _userService.ListUser(rq);
+            return users;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateLockoutUser([FromBody] UserRequestModels.LockoutEnd rq)
+        {
+            bool result = await _userService.UpdateLockoutUser(rq);
+            if (result == false)
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using eCommerce.Domain.Shared.Models;
+﻿using eCommerce.Domain.Shared;
+using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +24,15 @@ namespace eCommerce.Application.Services.Users
             public int PageSize { get; set; }
 
             public string Sort { get; set; }
+        }
+        public class ListUser : Search
+        {
+            public DateTime? LockoutEnd { get; set; }
+        }
+        public class LockoutEnd
+        {
+            public Guid Id { get; set; }
+            public DateTime? SetLockoutEnd { get; set; }
         }
     }
 }

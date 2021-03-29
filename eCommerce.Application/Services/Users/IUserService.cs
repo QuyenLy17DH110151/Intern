@@ -29,5 +29,13 @@ namespace eCommerce.Application.Services.Users
         /// <param name="rq"></param>
         /// <returns></returns>
         Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq);
+
+        /// <summary>
+        /// Searchs lockout status
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<PaginatedResult<UserReturnModels.ListUser>> ListUser(UserRequestModels.ListUser rq);
+        Task<bool> UpdateLockoutUser(UserRequestModels.LockoutEnd rq);
     }
 }

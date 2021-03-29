@@ -39,6 +39,7 @@ namespace eCommerce.Persistence.Repositories
         public void Update(User user)
         {
             _genericRepo.Update(user);
+            _dbContext.SaveChanges();
         }
 
         public async Task<User> GetUserByUsernameAsync(string username)
@@ -56,6 +57,37 @@ namespace eCommerce.Persistence.Repositories
             {
                 var keyword = rq.Keyword;
                 queryObject.And(new UserQueryObjects.ContainsKeyword(keyword));
+            }
+            // orderby
+            if (!rq.Sort.Any())
+            {
+                rq.Sort.Add(new SortItem { FieldName = nameof(User.IdentityKey) });
+            }
+
+            rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
+
+
+            // execute
+            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination);
+            return result;
+        }
+
+        public async Task<PaginatedResult<User>> ListUserAsync(ListUser rq)
+        {
+            // filter
+            var queryObject = QueryObject<User>.Empty;
+
+            if (!string.IsNullOrWhiteSpace(rq.Keyword))
+            {
+                var keyword = rq.Keyword;
+                queryObject.And(new UserQueryObjects.ContainsKeyword(keyword));
+            }
+
+            // filter lockout status
+            if (rq.LockoutEnd != null)
+            {
+                var lockoutEnd = rq.LockoutEnd;
+                queryObject.And(new UserQueryObjects.LockoutEndDate(lockoutEnd));
             }
 
             // orderby
