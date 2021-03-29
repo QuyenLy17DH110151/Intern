@@ -6,6 +6,7 @@ using eCommerce.Domain.Shared.Models;
 using System;
 using System.Threading.Tasks;
 using EasyEncryption;
+using eCommerce.Domain.Shared;
 
 namespace eCommerce.Application.Services.Users
 {
@@ -61,6 +62,25 @@ namespace eCommerce.Application.Services.Users
             await _userRepo.UnitOfWork.SaveChangesAsync();
 
             return user.Id;
+        }
+
+        public async Task<string> CreateUser(UserRequestModels.Create rq)
+        {
+            var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
+            if (user != null)
+            {
+                return null;
+            }
+            User u = new User();
+            u.Role = UserRoles.Seller;
+            u.FirstName = rq.FirstName;
+            u.LastName = rq.LastName;
+            u.Username = rq.Username;
+            
+            _userRepo.Add(u);
+
+            await _userRepo.UnitOfWork.SaveChangesAsync();
+            return u.Id + "";
         }
     }
 }

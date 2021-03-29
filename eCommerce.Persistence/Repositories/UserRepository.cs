@@ -28,7 +28,8 @@ namespace eCommerce.Persistence.Repositories
 
         public User Add(User user)
         {
-            return _genericRepo.Add(user);
+            User rp = _genericRepo.Add(user);
+            return rp;
         }
 
         public Task<User> GetByIdAsync(Guid id)

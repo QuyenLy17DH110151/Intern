@@ -1,4 +1,5 @@
-﻿using eCommerce.Domain.Shared.Models;
+﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,5 +30,6 @@ namespace eCommerce.Application.Services.Users
         /// <param name="rq"></param>
         /// <returns></returns>
         Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq);
+        Task<string> CreateUser(UserRequestModels.Create rq);
     }
 }

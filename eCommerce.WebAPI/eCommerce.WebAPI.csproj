@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.13" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.13" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -18,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\eCommerce.Application\eCommerce.Application.csproj" />
     <ProjectReference Include="..\eCommerce.Domain.Shared\eCommerce.Domain.Shared.csproj" />
+    <ProjectReference Include="..\eCommerce.Domain\eCommerce.Domain.csproj" />
     <ProjectReference Include="..\eCommerce.ModuleRegister\eCommerce.ModuleRegister.csproj" />
   </ItemGroup>
 

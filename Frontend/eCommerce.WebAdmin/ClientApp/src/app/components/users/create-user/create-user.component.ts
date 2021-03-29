@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { User } from 'src/app/api-clients/models/user.model';
+import { UserClient } from 'src/app/api-clients/user.client';
 
 @Component({
   selector: 'app-create-user',
@@ -7,26 +9,79 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./create-user.component.scss']
 })
 export class CreateUserComponent implements OnInit {
-  public accountForm: FormGroup;
+  public formUser: FormGroup;
   public permissionForm: FormGroup;
+  public user: User;
+  public erroFirstName: string = 'First Name not empty';
+  public erroLastName: string = 'Last Name not empty';
+  public erroUsername: string = 'Username not empty';
+  public isDisableButtonSubmit: boolean = true;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private userClient : UserClient) {
     this.createAccountForm();
-    this.createPermissionForm();
   }
 
   createAccountForm() {
-    this.accountForm = this.formBuilder.group({
-      fname: [''],
-      lname: [''],
-      email: [''],
-      password: [''],
-      confirmPwd: ['']
+    this.formUser = this.formBuilder.group({
+      firstName: [''],
+      lastName: [''],
+      username: ['']
     })
   }
-  createPermissionForm() {
-    this.permissionForm = this.formBuilder.group({
-    })
+
+  updateDisableButtonSubmit(){
+    if(this.erroFirstName==null && this.erroLastName==null && this.erroUsername==null){
+      this.isDisableButtonSubmit=false;
+      return;
+    }
+    this.isDisableButtonSubmit=true;
+  }
+
+  changeFirstName(){
+    if(this.formUser.value.firstName == ''){
+      this.erroFirstName = 'First Name not empty';
+    }
+    if(this.formUser.value.firstName!= ''){
+      this.erroFirstName = null;
+    }
+    this.updateDisableButtonSubmit();
+  }
+
+  changeLaststName(){
+    if(this.formUser.value.lastName == ''){
+      this.erroLastName = 'Last Name not empty';
+    }
+    if(this.formUser.value.lastName!= ''){
+      this.erroLastName = null;
+    }
+    this.updateDisableButtonSubmit()
+  }
+
+  changeUsername(){
+    if(this.formUser.value.username == ''){
+      this.erroUsername = 'Username not empty';
+    }
+    if (this.formUser.value.username != ''){
+      this.erroUsername = null;
+    }
+    if (this.formUser.value.username != ''&& !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.formUser.value.username ))
+    {
+      this.erroUsername = 'Username not email address';
+    }
+    
+    this.updateDisableButtonSubmit();
+  }
+
+  async saveUser() {
+    this.user = new User(this.formUser.value.firstName, this.formUser.value.lastName,this.formUser.value.username);
+    if(this.isDisableButtonSubmit==false){
+      this.userClient.createUser(this.user).subscribe((res) =>{
+        console.log(res);
+      }, 
+      (erro) =>{
+        console.log(erro);
+      });
+    }
   }
 
   ngOnInit() {

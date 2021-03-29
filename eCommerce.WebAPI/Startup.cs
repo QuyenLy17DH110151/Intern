@@ -1,10 +1,13 @@
 using Autofac;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
+using eCommerce.Application.Services.Users;
 using eCommerce.ModuleRegister;
 using eCommerce.WebAPI.Infrastructure.Config;
 using eCommerce.WebAPI.Infrastructure.Filters;
 using eCommerce.WebAPI.Infrastructure.Middlewares;
 using eCommerce.WebAPI.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -23,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI
 {
@@ -97,7 +99,9 @@ namespace eCommerce.WebAPI
                 x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 x.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
+            })
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequestModels.CreateValidator>());
+            services.AddTransient<IValidator<UserRequestModels.Create>, UserRequestModels.CreateValidator>();
 
             // Swagger
             services.AddSwaggerGen(c =>

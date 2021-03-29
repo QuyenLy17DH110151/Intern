@@ -1,5 +1,7 @@
 ﻿using eCommerce.Application.Services.Users;
+using eCommerce.Domain.Entities;
 using eCommerce.Domain.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,5 +27,13 @@ namespace eCommerce.WebAPI.Controllers
             var users = await _userService.SearchUsersAsync(rq);
             return users;
         }
+        [HttpPost]
+        [Authorize(Policy = "PermissionAdmin")]
+        public async Task<ActionResult<string>> CreateUser([FromBody] UserRequestModels.Create rq)
+        {
+            var id = await _userService.CreateUser(rq);
+            return id;
+        }
+
     }
 }
