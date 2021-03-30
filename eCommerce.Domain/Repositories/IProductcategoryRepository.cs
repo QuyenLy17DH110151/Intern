@@ -11,6 +11,15 @@ namespace eCommerce.Domain.Repositories
 {
     public interface IProductcategoryRepository : IRepository<ProductCategory>
     {
+        ProductCategory Create(ProductCategory productCategory);
+
+        void Update(ProductCategory productCategory);
+
+        void Delete(ProductCategory productCategory);
+
+        Task<ProductCategory> GetByIdAsync(Guid Id);        
         Task<PaginatedResult<ProductCategory>> SearchAsync(SearchProductCategoryModel rq);
+
+        Task<PaginatedResult<ProductCategory>> ListAsync(ListProductCategory rq);
     }
 }
