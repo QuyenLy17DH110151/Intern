@@ -13,13 +13,6 @@ namespace eCommerce.Application.Services.Users
             public Guid Id { get; set; }
 
             public string Username { get; set; }
-        }
-        public class ListUser
-        {
-            public string Username { get; set; }
-
-            public UserRoles Role { get; set; }
-
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public DateTime? LockoutEnd { get; set; }
@@ -27,13 +20,13 @@ namespace eCommerce.Application.Services.Users
             public string CreatedBy { get; set; }
             public DateTime? LastUpdated { get; set; }
             public string LastUpdatedBy { get; set; }
+            public UserRoles Role { get; set; }
         }
         public class MappingProfile : Profile
         {
             public MappingProfile()
             {
                 CreateMap<Domain.Entities.User, User>();
-                CreateMap<Domain.Entities.User, ListUser>();
             }
         }
     }

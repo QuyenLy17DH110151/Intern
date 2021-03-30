@@ -27,6 +27,7 @@ namespace eCommerce.Application.Services.Users
             {
                 Keyword = rq.SearchTerm,
                 Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
+                IsLockout = rq.IsLockout,
             });
 
             return _mapper.Map<PaginatedResult<UserReturnModels.User>>(users);
@@ -64,24 +65,30 @@ namespace eCommerce.Application.Services.Users
             return user.Id;
         }
 
-        public async Task<PaginatedResult<UserReturnModels.ListUser>> ListUser(UserRequestModels.ListUser rq)
+        public async Task<bool> LockoutUserAsync(Guid Id)
         {
-            var users = await _userRepo.ListUserAsync(new ListUser
-            {
-                Keyword = rq.SearchTerm,
-                Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
-            });
-
-            return _mapper.Map<PaginatedResult<UserReturnModels.ListUser>>(users);
-        }
-
-        public async Task<bool> UpdateLockoutUser(UserRequestModels.LockoutEnd rq)
-        {
-            var user = await _userRepo.GetByIdAsync(rq.Id);
+            var user = await _userRepo.GetByIdAsync(Id);
             if (user != null)
             {
                 user.LockoutEnd = DateTime.Now.AddDays(5);
                 _userRepo.Update(user);
+                await _userRepo.UnitOfWork.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UnlockUserAsync(Guid Id)
+        {
+            var user = await _userRepo.GetByIdAsync(Id);
+            if (user != null)
+            {
+                user.LockoutEnd = null;
+                _userRepo.Update(user);
+                await _userRepo.UnitOfWork.SaveChangesAsync();
                 return true;
             }
             else

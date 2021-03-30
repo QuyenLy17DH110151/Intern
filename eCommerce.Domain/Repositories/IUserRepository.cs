@@ -18,6 +18,5 @@ namespace eCommerce.Domain.Repositories
         Task<User> GetByIdAsync(Guid id);
         Task<User> GetUserByUsernameAsync(string username);
         Task<PaginatedResult<User>> SearchAsync(SearchUserModel rq);
-        Task<PaginatedResult<User>> ListUserAsync(ListUser rq);
     }
 }

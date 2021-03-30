@@ -24,18 +24,19 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
-        public class LockoutEndDate : QueryObject<User>
+        public class IsLockout : QueryObject<User>
         {
             private bool? _lockoutEnd;
 
-            public LockoutEndDate(bool? lockoutEnd)
+            public IsLockout(bool? lockoutEnd)
             {
                 _lockoutEnd = lockoutEnd;
             }
 
             protected override Expression<Func<User, bool>> AsExpression()
             {
-                return o => o.LockoutEnd != null && o.LockoutEnd <= DateTime.UtcNow;
+                //return o => o.LockoutEnd != null && o.LockoutEnd <= DateTime.UtcNow;
+                return o => o.LockoutEnd != null && o.LockoutEnd >= DateTime.UtcNow; ;
             }
         }
     }

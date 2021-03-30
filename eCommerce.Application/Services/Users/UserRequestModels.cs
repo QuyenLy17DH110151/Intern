@@ -24,14 +24,6 @@ namespace eCommerce.Application.Services.Users
             public int PageSize { get; set; }
 
             public string Sort { get; set; }
-        }
-        public class ListUser : Search
-        {
-            public bool IsLockout { get; set; }
-        }
-        public class LockoutEnd
-        {
-            public Guid Id { get; set; }
             public bool IsLockout { get; set; }
         }
     }
