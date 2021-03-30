@@ -15,6 +15,6 @@ namespace eCommerce.Domain.Repositories.Models
     }
     public class ListUser : SearchUserModel
     {
-        public DateTime? LockoutEnd { get; set; }
+        public bool IsLockout { get; set; }
     }
 }

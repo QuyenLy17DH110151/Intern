@@ -70,7 +70,6 @@ namespace eCommerce.Application.Services.Users
             {
                 Keyword = rq.SearchTerm,
                 Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
-                LockoutEnd = rq.LockoutEnd,
             });
 
             return _mapper.Map<PaginatedResult<UserReturnModels.ListUser>>(users);
@@ -81,7 +80,7 @@ namespace eCommerce.Application.Services.Users
             var user = await _userRepo.GetByIdAsync(rq.Id);
             if (user != null)
             {
-                user.LockoutEnd = rq.SetLockoutEnd;
+                user.LockoutEnd = DateTime.Now.AddDays(5);
                 _userRepo.Update(user);
                 return true;
             }

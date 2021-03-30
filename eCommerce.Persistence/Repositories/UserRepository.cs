@@ -84,10 +84,9 @@ namespace eCommerce.Persistence.Repositories
             }
 
             // filter lockout status
-            if (rq.LockoutEnd != null)
+            if (rq.IsLockout)
             {
-                var lockoutEnd = rq.LockoutEnd;
-                queryObject.And(new UserQueryObjects.LockoutEndDate(lockoutEnd));
+                queryObject.And(new UserQueryObjects.LockoutEndDate(rq.IsLockout));
             }
 
             // orderby

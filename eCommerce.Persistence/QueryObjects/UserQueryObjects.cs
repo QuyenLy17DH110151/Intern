@@ -26,16 +26,16 @@ namespace eCommerce.Persistence.QueryObjects
 
         public class LockoutEndDate : QueryObject<User>
         {
-            private DateTime? _lockoutEnd;
+            private bool? _lockoutEnd;
 
-            public LockoutEndDate(DateTime? lockoutEnd)
+            public LockoutEndDate(bool? lockoutEnd)
             {
                 _lockoutEnd = lockoutEnd;
             }
 
             protected override Expression<Func<User, bool>> AsExpression()
             {
-                return o => DateTime.Compare((DateTime)o.LockoutEnd, (DateTime)_lockoutEnd) > 0 || DateTime.Compare((DateTime)o.LockoutEnd, (DateTime)_lockoutEnd) == 0;
+                return o => o.LockoutEnd != null && o.LockoutEnd <= DateTime.UtcNow;
             }
         }
     }

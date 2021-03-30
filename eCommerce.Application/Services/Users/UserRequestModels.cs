@@ -27,12 +27,12 @@ namespace eCommerce.Application.Services.Users
         }
         public class ListUser : Search
         {
-            public DateTime? LockoutEnd { get; set; }
+            public bool IsLockout { get; set; }
         }
         public class LockoutEnd
         {
             public Guid Id { get; set; }
-            public DateTime? SetLockoutEnd { get; set; }
+            public bool IsLockout { get; set; }
         }
     }
 }
