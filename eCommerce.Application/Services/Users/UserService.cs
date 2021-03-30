@@ -2,6 +2,7 @@
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ namespace eCommerce.Application.Services.Users
             }
             else
             {
-                return false;
+                throw new EntityNotFound("user");
             }
         }
 
@@ -93,7 +94,7 @@ namespace eCommerce.Application.Services.Users
             }
             else
             {
-                return false;
+                throw new EntityNotFound("user");
             }
         }
     }
