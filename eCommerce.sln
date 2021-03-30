@@ -26,8 +26,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.WebAdmin", "Frontend\eCommerce.WebAdmin\eCommerce.WebAdmin.csproj", "{63C3140B-8620-441D-970D-5976D2A0273D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.FrontStore", "Frontend\eCommerce.FrontStore\eCommerce.FrontStore.csproj", "{7C681455-C7EB-413A-A26A-19571C699015}"
+<<<<<<< HEAD
+=======
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerce.Notification", "eCommerce.Notification\eCommerce.Notification.csproj", "{837FDC9B-C1E3-4D78-9AC9-25D8C9D68964}"
+>>>>>>> 6d440ecc96800466375ce1d34de4b8dde3ad71de
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
