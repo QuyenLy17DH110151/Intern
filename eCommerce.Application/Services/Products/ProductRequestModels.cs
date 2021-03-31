@@ -23,6 +23,10 @@ namespace eCommerce.Application.Services.Products
             public decimal Price { get; set; }
             public Guid CategoryId { get; set; }
             public Guid OwnerId { get; set; }
+            public string Description { get; set; }
+            public int Quantity { get; set; }  // có cần same vs navigate property???
+            public string PhotoString { get; set; }
+            public List<string> Photos { get; set; }
         }
 
         public class UploadPhoto

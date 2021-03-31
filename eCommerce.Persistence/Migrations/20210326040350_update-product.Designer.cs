@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerce.Persistence;
 
 namespace eCommerce.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210326040350_update-product")]
+    partial class updateproduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +34,7 @@ namespace eCommerce.Persistence.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -44,8 +46,7 @@ namespace eCommerce.Persistence.Migrations
                     b.HasAlternateKey("IdentityKey")
                         .HasAnnotation("SqlServer:Clustered", true);
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Inventory");
                 });
@@ -289,10 +290,8 @@ namespace eCommerce.Persistence.Migrations
             modelBuilder.Entity("eCommerce.Domain.Entities.Inventory", b =>
                 {
                     b.HasOne("eCommerce.Domain.Entities.Product", "Product")
-                        .WithOne("Inventory")
-                        .HasForeignKey("eCommerce.Domain.Entities.Inventory", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("eCommerce.Domain.Entities.Order", b =>

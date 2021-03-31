@@ -15,9 +15,9 @@ namespace eCommerce.Persistence.Repositories
 {
     class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDbContext _dbContext; //user...
-        private readonly GenericRepository<Product> _genericRepo;  //product
-        private readonly GenericRepository<ProductPhoto> _photoGenericRepo;  //product
+        private readonly ApplicationDbContext _dbContext;
+        private readonly GenericRepository<Product> _genericRepo;
+        private readonly GenericRepository<ProductPhoto> _photoGenericRepo;
 
         public IUnitOfWork UnitOfWork => _dbContext;
 
@@ -85,12 +85,18 @@ namespace eCommerce.Persistence.Repositories
 
         public Task<Product> GetProductByIdAsync(Guid id)
         {
-            return _genericRepo.GetByIdAsync(id, x => x.Include(m => m.Photos));
+            return _genericRepo.GetByIdAsync(id, x => x.Include(m => m.Photos).Include(m=>m.Inventory).Include(m=>m.Category));
         }
 
         public ProductPhoto UploadPhoto(ProductPhoto photo)
         {
             return _photoGenericRepo.Add(photo);
+        }
+
+        public async Task<int> GetQuantityByProductIdAsync(Guid id)
+        {
+            var inventory = await _dbContext.Set<Inventory>().SingleOrDefaultAsync(x => x.ProductId == id);
+            return inventory.Quantity;
         }
     }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CKEditorModule } from 'ngx-ckeditor';
+import { CKEditorModule as CKEditorModule1 } from 'ng2-ckeditor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -24,6 +25,9 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
+import {ProductService} from '../../shared/service/product.service'
+
+
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   maxFilesize: 50,
   url: 'https://httpbin.org/post',
@@ -32,12 +36,13 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 
 
 @NgModule({
-  declarations: [CategoryComponent, SubCategoryComponent, ProductListComponent, AddProductComponent, DigitalCategoryComponent, DigitalSubCategoryComponent, DigitalListComponent, DigitalAddComponent, ProductDetailComponent],
+  declarations: [CategoryComponent, SubCategoryComponent, ProductListComponent, DigitalCategoryComponent, DigitalSubCategoryComponent, DigitalListComponent, DigitalAddComponent, ProductDetailComponent, AddProductComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     CKEditorModule,
+    CKEditorModule1,
     ProductsRoutingModule,
     Ng2SmartTableModule,
     NgbModule,
@@ -49,7 +54,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
       provide: DROPZONE_CONFIG,
       useValue: DEFAULT_DROPZONE_CONFIG
     },
-    NgbActiveModal
+    NgbActiveModal,
+    ProductService
   ]
 })
 export class ProductsModule { }

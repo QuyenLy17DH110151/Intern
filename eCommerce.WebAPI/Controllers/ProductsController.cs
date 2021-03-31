@@ -1,5 +1,6 @@
 ﻿using eCommerce.Application.Services.Products;
 using eCommerce.Domain.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -26,12 +28,25 @@ namespace eCommerce.WebAPI.Controllers
             return product;
         }
 
-        [HttpPost] //[POST] api/Product
+        [HttpPost] //[POST] api/Products
         public async Task<ActionResult<ProductReturnModels.Product>> Create([FromBody] ProductRequestModels.Create req)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            req.Photos = req.PhotoString.Split(',').ToList();
             var productId = await _productService.CreateAsync(req);
 
-            return await _productService.GetProductByIdAsync(productId);
+            if(productId == null)
+            {
+                return BadRequest();
+            }
+
+            var product =  await _productService.GetProductByIdAsync(productId);
+            //return CreatedAtAction("GetProductByIdAsync", new { id = productId }, product);
+            return Ok(new { product = product });
         }
 
         [HttpPost("upload-photo")] //[POST] api/Product/upload-photo
@@ -41,5 +56,12 @@ namespace eCommerce.WebAPI.Controllers
 
             return await _productService.GetProductByIdAsync(productId);
         }
+
+        [HttpGet("{productId}")] //[POST] api/Product/:productId;
+        public async Task<ActionResult<ProductReturnModels.Product>> GetProductDetail(Guid productId)
+        {
+            return await _productService.GetProductByIdAsync(productId);
+        }
+
     }
 }

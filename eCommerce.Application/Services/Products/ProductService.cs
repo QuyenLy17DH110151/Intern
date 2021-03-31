@@ -6,6 +6,7 @@ using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,46 +41,63 @@ namespace eCommerce.Application.Services.Products
                 Name = request.Name,
                 Price = request.Price,
                 CategoryId = request.CategoryId,
-                OwnerId = request.OwnerId
+                OwnerId = request.OwnerId,
+
+                Inventory = new Inventory()
+                {
+                    Quantity = request.Quantity
+                },
+
+                Photos = request.Photos.Select(x => new ProductPhoto { Url = x }).ToList()
             };
 
-            _productRepo.Add(product);
+            //foreach(var photo in request.Photo)
+            //{
+            //    var p = new ProductPhoto()
+            //    {
+            //        Url = photo
+            //    };
+
+            //    product.Photos.Add(p);
+            //}
+           
+
+            _productRepo.Add(product); 
             await _productRepo.UnitOfWork.SaveChangesAsync();
             return product.Id;
         }
 
-        public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)
-        {
-            var product = await _productRepo.GetProductByIdAsync(Id);
-            if (product == null) throw new EntityNotFound("Product");
-
-            return _mapper.Map<ProductReturnModels.Product>(product);
-        }
-
-        public async Task<Guid> UploadPhotoAsync(ProductRequestModels.UploadPhoto request)
-        {
-            var photo = new ProductPhoto()
-            {
-                ProductId = request.ProductId,
-                Url = request.Url
-            };
-
-            _productRepo.UploadPhoto(photo);
-            await _productRepo.UnitOfWork.SaveChangesAsync();
-            return photo.ProductId;
-        }
-
-        // return all photo of product
-        //public async Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId)
-        //{
-        //    var photo = await _productRepo.GetPhotosByProductIdAsync(productId);
-
-        //    if (photo == null)
-        //    {
-        //        throw new EntityNotFound("photo");  // emit error
-        //    }
-
-        //    return _mapper.Map<ProductReturnModels.Photo>(photo);
-        //}
+    public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)
+    {
+        var product = await _productRepo.GetProductByIdAsync(Id);
+        if (product == null) throw new EntityNotFound("Product");
+        return _mapper.Map<ProductReturnModels.Product>(product);
     }
+
+    public async Task<Guid> UploadPhotoAsync(ProductRequestModels.UploadPhoto request)
+    {
+        var photo = new ProductPhoto()
+        {
+            ProductId = request.ProductId,
+            Url = request.Url
+        };
+
+        _productRepo.UploadPhoto(photo);
+        await _productRepo.UnitOfWork.SaveChangesAsync();
+        return photo.ProductId;
+    }
+
+    // return all photo of product
+    //public async Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId)
+    //{
+    //    var photo = await _productRepo.GetPhotosByProductIdAsync(productId);
+
+    //    if (photo == null)
+    //    {
+    //        throw new EntityNotFound("photo");  // emit error
+    //    }
+
+    //    return _mapper.Map<ProductReturnModels.Photo>(photo);
+    //}
+}
 }

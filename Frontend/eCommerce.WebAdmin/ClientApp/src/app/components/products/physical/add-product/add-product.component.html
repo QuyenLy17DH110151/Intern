@@ -19,7 +19,8 @@
                                             <li *ngFor="let item of url; let i=index">
                                                 <div class="box-input-file">
                                                     <input class="upload" type="file" (change)="readUrl($event,i)">
-                                                    <img class="imgUpload" alt="" [src]="item.img"></div>
+                                                    <img class="imgUpload" alt="" [src]="item.img">
+                                                </div> 
                                             </li>
                                         </ul>
                                     </div>
@@ -27,10 +28,11 @@
                             </div>
                         </div>
                         <div class="col-xl-7">
-                            <form class="needs-validation" [formGroup]="productForm" novalidate>
+                            <form class="needs-validation" [formGroup]="productForm" novalidate autocomplete="off"
+                                (ngSubmit)="onSubmit()">
                                 <div class="add-product-form">
                                     <div class="form-group row">
-                                        <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Title
+                                        <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Name
                                             :</label>
                                         <input class="form-control col-xl-8 col-sm-7" id="validationCustom01"
                                             type="text" [formControl]="productForm.controls['name']" required>
@@ -48,53 +50,52 @@
                                             Product Price is required.
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
-                                        <label for="validationCustom03" class="col-xl-3 col-sm-4 mb-0">Product Code
-                                            :</label>
-                                        <input class="form-control col-xl-8 col-sm-7" id="validationCustom03"
-                                            type="number" [formControl]="productForm.controls['code']" required="">
-                                        <div *ngIf="productForm.controls.code.touched && productForm.controls.code.errors?.required"
-                                            class="text text-danger">
-                                            Product <Code></Code> is required.
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="exampleFormControlSelect1" class="col-xl-3 col-sm-4 mb-0">Select
-                                            Size
+                                        <label for="exampleFormControlSelect1" class="col-xl-3 col-sm-4 mb-0">Category
                                             :</label>
                                         <select class="form-control digits col-xl-8 col-sm-7"
-                                            id="exampleFormControlSelect1">
-                                            <option>Small</option>
-                                            <option>Medium</option>
-                                            <option>Large</option>
-                                            <option>Extra Large</option>
+                                            id="exampleFormControlSelect1"
+                                            [formControl]="productForm.controls['categoryId']">
+                                            <option value="11e06484-b99d-48f1-80a5-90dd2082ca6d">Quần áo</option>
+                                            <option value="789e170e-ac90-41ee-830d-3e9e6f59d3e0">Giày dép</option>
+                                            <option value="889296ef-fca9-4f12-a2d8-a2a8bba0e5f1">Điện thoại</option>
                                         </select>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-sm-4 mb-0">Total Products :</label>
+                                        <label class="col-xl-3 col-sm-4 mb-0">Quantity :</label>
                                         <div class="qty-box1">
                                             <div class="input-group">
                                                 <i class="fa fa-minus btnGtr1" (click)=decrement()></i>
-                                                <input class="touchspin1 text-center" name="counter" [value]="counter"
-                                                    type="text">
+                                                <input type="number" class="touchspin1 text-center" name="counter"
+                                                    [formControl]="productForm.controls['quantity']" type="text">
                                                 <i class="fa fa-plus btnLess1" (click)=increment()></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-sm-4">Add Description :</label>
+                                        <label class="col-xl-3 col-sm-4">Description :</label>
                                         <div class="col-xl-8 col-sm-7 pl-0 description-sm">
-                                            <ck-editor id="editor1" language="en" [fullPage]="false"></ck-editor>
+                                            <!-- <ck-editor name="description" id="description" language="en" [fullPage]="true" [(ngModel)]="descriptionValue" [ngModelOptions]="{standalone: true}">
+                                            </ck-editor> -->
+                                            <input name="editor1" [(ngModel)]="descriptionValue" [ngModelOptions]="{standalone: true}"/>
+                                            <!-- <ckeditor [(ngModel)]="descriptionValue" #myckeditor="ngModel" name="myckeditor"
+                                                required debounce="500"
+                                                (ngModelChange)="onChange($event)">
+                                            </ckeditor> -->
                                         </div>
                                     </div>
+
                                 </div>
                             </form>
                             <div class="form-group row mb-0">
                                 <div class="product-buttons col-sm-8 offset-xl-3 offset-sm-4">
-                                    <button type="button" class="btn btn-primary mr-1">Add</button>
+                                    <button type="button" class="btn btn-primary mr-1" (click)="onSubmit()">Add</button>
                                     <button type="button" class="btn btn-light">Discard</button>
                                 </div>
                             </div>
+                            <pre>{{ productForm.value | json }}</pre>
+                            <pre>{{descriptionValue | json }}</pre>
                         </div>
                     </div>
                 </div>
