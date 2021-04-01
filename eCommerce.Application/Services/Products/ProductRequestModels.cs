@@ -10,11 +10,14 @@ namespace eCommerce.Application.Services.Products
         {
             public string SearchTerm { get; set; }
 
+            public string CategoryName { get; set; }
+
             public int PageIndex { get; set; }
 
             public int PageSize { get; set; }
 
             public string Sort { get; set; }
+            public Guid? Owner { get; set; }
         }
     }
 }

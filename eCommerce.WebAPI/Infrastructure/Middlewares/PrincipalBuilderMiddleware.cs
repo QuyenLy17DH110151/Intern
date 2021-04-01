@@ -23,7 +23,7 @@ namespace eCommerce.WebAPI.Infrastructure.Middlewares
 
             var username = "anonymous";
             string userId = null;
-
+            string role = null;
             if (context.User.Identity.IsAuthenticated)
             {
                 foreach (var claim in context.User.Claims)
@@ -36,11 +36,14 @@ namespace eCommerce.WebAPI.Infrastructure.Middlewares
                         case ClaimTypes.NameIdentifier:
                             userId = claim.Value;
                             break;
+                        case ClaimTypes.Role:
+                            userId = claim.Value;
+                            break;
                     }
                 }
             }
 
-            ctx.Principal = new UserPrincipal(userId, username);
+            ctx.Principal = new UserPrincipal(userId, username,role);
 
             await _next.Invoke(context);
         }
