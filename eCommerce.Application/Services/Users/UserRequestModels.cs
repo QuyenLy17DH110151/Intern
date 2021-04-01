@@ -1,4 +1,5 @@
-﻿using eCommerce.Domain.Shared.Models;
+﻿using eCommerce.Domain.Shared;
+using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +24,7 @@ namespace eCommerce.Application.Services.Users
             public int PageSize { get; set; }
 
             public string Sort { get; set; }
+            public bool IsLockout { get; set; }
         }
     }
 }
