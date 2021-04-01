@@ -66,7 +66,8 @@ export class LoginComponent implements OnInit {
     async onSubmit() {
         let getToken = await this.userClient
             .login(this.loginForm.value)
-            .subscribe(
+            .toPromise()
+            .then(
                 (res) => {
                     console.log('res', res);
                     localStorage.setItem('token', res.accessToken);

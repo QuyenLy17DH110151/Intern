@@ -8,15 +8,14 @@ import {
     PagedList,
     SearchRequest,
 } from './models/common.model';
-import { User } from './models/user.model';
-import jwt_decode from 'jwt-decode';
+import { ListUser, User } from './models/user.model';
 
 @Injectable()
 export class UserClient {
     apiEndpoint = `${environment.apiUrl}/Users`;
     apiToken = `${environment.apiUrl}/Token`;
     apiTokenLogout = `${environment.apiUrl}/Token/logout`;
-    // helper = new JwtHelperService();
+    apiGetAll = `${environment.apiUrl}/Users/GetAll`;
     constructor(protected httpClient: HttpClient) {}
 
     searchUsers(
@@ -31,5 +30,19 @@ export class UserClient {
 
     login(rq: LoginRequest = new LoginRequest()): Observable<JwtAuthResult> {
         return this.httpClient.post<JwtAuthResult>(this.apiToken, rq);
+    }
+
+    lockoutUser(Id: string) {
+        return this.httpClient.put(
+            `${environment.apiUrl}/Users/${Id}/Lockout`,
+            Id
+        );
+    }
+
+    unlockoutUser(Id: string) {
+        return this.httpClient.put(
+            `${environment.apiUrl}/Users/${Id}/Unlockout`,
+            Id
+        );
     }
 }

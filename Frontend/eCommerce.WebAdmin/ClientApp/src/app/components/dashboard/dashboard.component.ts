@@ -7,13 +7,13 @@ import { UserClient } from 'src/app/api-clients/_index';
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss']
+    styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
     public doughnutData = doughnutData;
     public pieData = pieData;
     constructor(private userClient: UserClient) {
-        Object.assign(this, { doughnutData, pieData })
+        Object.assign(this, { doughnutData, pieData });
     }
 
     // doughnut 2
@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit {
     public doughnutChartTooltip = chartData.doughnutChartTooltip;
 
     public chart5 = chartData.chart5;
-
 
     // lineChart
     public lineChartData = chartData.lineChartData;
@@ -68,17 +67,11 @@ export class DashboardComponent implements OnInit {
 
     public chart3 = chartData.chart3;
 
-
-
     // events
-    public chartClicked(e: any): void {
-    }
-    public chartHovered(e: any): void {
-    }
+    public chartClicked(e: any): void {}
+    public chartHovered(e: any): void {}
 
     async ngOnInit() {
         let users = await this.userClient.searchUsers().toPromise();
-        console.log(users);
     }
-
 }
