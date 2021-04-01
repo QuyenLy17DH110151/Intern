@@ -63,10 +63,11 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {}
 
-    async onSubmit() {
-        let getToken = await this.userClient
+    onSubmit() {
+        let getToken = this.userClient
             .login(this.loginForm.value)
-            .subscribe(
+            .toPromise()
+            .then(
                 (res) => {
                     console.log('res', res);
                     localStorage.setItem('token', res.accessToken);
