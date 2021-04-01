@@ -68,29 +68,6 @@ namespace eCommerce.Persistence.Repositories
         {
             _genericRepo.Delete(productCategory);
         }
-
-        public async Task<PaginatedResult<ProductCategory>> ListAsync(ListProductCategory rq)
-        {
-            // filter
-            var queryObject = QueryObject<ProductCategory>.Empty;
-
-            if (!string.IsNullOrWhiteSpace(rq.Keyword))
-            {
-                var keyword = rq.Keyword;
-                queryObject.And(new ProductCategoryQueryObjects.ContainsKeyword(keyword));
-            }
-
-            // orderby
-            if (!rq.Sort.Any())
-            {
-                rq.Sort.Add(new SortItem { FieldName = nameof(ProductCategory.IdentityKey) });
-            }
-
-            rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
-
-            // execute
-            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination);
-            return result;
-        }
+        
     }
 }

@@ -2,6 +2,7 @@
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using System;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace eCommerce.Application.Services.ProductCategory
             return _mapper.Map<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>(productcategories);
         }
         
-        async Task<Guid> IProductCategoryService.CreateProductCategory(ProductCategoryRequestModels.Create rq)
+        async Task<Guid> IProductCategoryService.CreateProductCategoryAsync(ProductCategoryRequestModels.Create rq)
         {
             var productCategory = new Domain.Entities.ProductCategory
             {
@@ -43,11 +44,11 @@ namespace eCommerce.Application.Services.ProductCategory
             return productCategory.Id;
         }
 
-        public async Task<Guid> UpdateProductCategory(ProductCategoryRequestModels.Update rq, Guid id)
+        public async Task<Guid> UpdateProductCategoryAsync(ProductCategoryRequestModels.Update rq, Guid id)
         {
             var productCategory = await _productCategoryRepo.GetByIdAsync(id);
             if (productCategory == null)
-                throw new Exception("Cannot find category");
+                throw new EntityNotFound("Cannot find category");
 
             productCategory.Name = rq.Name;
             _productCategoryRepo.Update(productCategory);
@@ -56,11 +57,11 @@ namespace eCommerce.Application.Services.ProductCategory
             return productCategory.Id;
         }
 
-        public async Task<Guid> DeleteProductCategory(Guid id)
+        public async Task<Guid> DeleteProductCategoryAsync(Guid id)
         {
             var productCategory = await _productCategoryRepo.GetByIdAsync(id);
             if (productCategory == null)
-                throw new Exception("Cannot find category");
+                throw new EntityNotFound("Cannot find category");
 
             _productCategoryRepo.Delete(productCategory);
             await _productCategoryRepo.UnitOfWork.SaveChangesAsync();
@@ -68,24 +69,14 @@ namespace eCommerce.Application.Services.ProductCategory
             return (productCategory.Id);
         }
 
-        public async Task<ProductCategoryReturnModels.ProductCategory> GetProductCategoryById(Guid id)
+        public async Task<ProductCategoryReturnModels.ProductCategory> GetProductCategoryByIdAsync(Guid id)
         {
             var productCategory = await _productCategoryRepo.GetByIdAsync(id);
             if (productCategory == null)
-                throw new Exception("Cannot find category");
+                throw new EntityNotFound("Cannot find category");
 
             return _mapper.Map<ProductCategoryReturnModels.ProductCategory>(productCategory);
         } 
-
-        public async Task<PaginatedResult<ProductCategoryReturnModels.ProductCategory>> ListProductCategoriesAsync(ProductCategoryRequestModels.Search rq)
-        {
-            var productcategories = await _productCategoryRepo.ListAsync(new ListProductCategory
-            {
-                Keyword = rq.SearchTerm,
-                Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
-            });
-
-            return _mapper.Map<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>(productcategories);
-        }
+        
     }
 }

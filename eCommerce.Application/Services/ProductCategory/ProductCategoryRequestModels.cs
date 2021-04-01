@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace eCommerce.Application.Services.ProductCategory
@@ -26,5 +27,6 @@ namespace eCommerce.Application.Services.ProductCategory
         {
             public string Name { get; set; }
         }
+        
     }
 }

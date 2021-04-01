@@ -22,46 +22,39 @@ namespace eCommerce.WebAPI.Controllers
             _productCategoryService = productCategoryService;
         }
 
-        [HttpGet("get")]
+        [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>> Search([FromQuery]ProductCategoryRequestModels.Search rq)
         {
             var productCategories = await _productCategoryService.SearchProductCategoriesAsync(rq);
             return productCategories;
-        }
+        }        
 
-        [HttpGet("getAllList")]
-        public async Task<ActionResult<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>> GetAllList([FromQuery]ProductCategoryRequestModels.Search rq)
-        {
-            var productCategories = await _productCategoryService.ListProductCategoriesAsync(rq);
-            return productCategories;
-        }
-
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<ActionResult> Create([FromBody]ProductCategoryRequestModels.Create rq)
         {
-            var productCategory = await _productCategoryService.CreateProductCategory(rq);
+            var productCategory = await _productCategoryService.CreateProductCategoryAsync(rq);
             if (productCategory == null)
                 return BadRequest();
 
-            var category = await _productCategoryService.GetProductCategoryById(productCategory);            
+            var category = await _productCategoryService.GetProductCategoryByIdAsync(productCategory);            
             return Ok( new { category= category});
         }
 
-        [HttpPut("update")]
+        [HttpPut]
         public async Task<ActionResult> Update([FromBody]ProductCategoryRequestModels.Update rq, Guid id)
         {
-            var productCategory = await _productCategoryService.UpdateProductCategory(rq, id); 
+            var productCategory = await _productCategoryService.UpdateProductCategoryAsync(rq, id); 
             if (productCategory == null)
                 return BadRequest();
 
-            var category = await _productCategoryService.GetProductCategoryById(productCategory);
+            var category = await _productCategoryService.GetProductCategoryByIdAsync(productCategory);
             return Ok(category);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var productCategory = await _productCategoryService.DeleteProductCategory(id);
+            var productCategory = await _productCategoryService.DeleteProductCategoryAsync(id);
             return Ok();
         }
 
