@@ -10,7 +10,7 @@ trigger:
       - master
   paths:
     include:
-      - eCommerce.FrontStore
+      - Frontend/eCommerce.FrontStore
 
 pool:
   vmImage: 'windows-latest'
