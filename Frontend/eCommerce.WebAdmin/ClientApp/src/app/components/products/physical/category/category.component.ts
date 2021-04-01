@@ -18,13 +18,13 @@ export class CategoryComponent implements OnInit {
 
   category: Category;
 
-  constructor(protected CategoryService: CategoryService) {
+  constructor(protected categoryService: CategoryService) {
 
-    this.getListCategory();
+
   }
 
   private getListCategory() {
-    this.CategoryService.getListCategory().subscribe(category => {
+    this.categoryService.getListCategory().subscribe(category => {
 
       this.category = category.items;
     });
@@ -32,7 +32,7 @@ export class CategoryComponent implements OnInit {
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
-      this.CategoryService.deleteCategory(event.data.id).subscribe(
+      this.categoryService.deleteCategory(event.data.id).subscribe(
         res => {
           event.confirm.resolve(event.newData);
           this.getListCategory();
@@ -48,7 +48,7 @@ export class CategoryComponent implements OnInit {
       "name": event.newData.name,
     };
 
-    this.CategoryService.updateCategory(event.data.id, data).subscribe(
+    this.categoryService.updateCategory(event.data.id, data).subscribe(
       res => {
         event.confirm.resolve(event.newData);
         this.getListCategory();
@@ -62,7 +62,7 @@ export class CategoryComponent implements OnInit {
     };
 
     if (window.confirm('Are you sure you want to create?')) {
-      this.CategoryService.addCategory(data).subscribe(
+      this.categoryService.addCategory(data).subscribe(
         res => {
           event.confirm.resolve(event.newData);
           this.getListCategory();
@@ -97,7 +97,7 @@ export class CategoryComponent implements OnInit {
   };
 
   ngOnInit() {
-
+    this.getListCategory();
   }
 
 }
