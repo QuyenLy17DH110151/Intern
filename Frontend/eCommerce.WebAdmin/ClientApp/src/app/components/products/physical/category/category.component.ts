@@ -1,64 +1,103 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { categoryDB } from '../../../../shared/tables/category';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
+import { HttpClient } from '@angular/common/http';
+import { CategoryService } from 'src/app/shared/service/category.service';
+import { Category } from 'src/app/api-clients/models/category.model';
+import { id } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss']
+  styleUrls: ['./category.component.scss'],
+  providers: [CategoryService]
 })
 export class CategoryComponent implements OnInit {
-  public closeResult: string;
-  public categories = []
 
-  constructor(private modalService: NgbModal) {
-    this.categories = categoryDB.category;
+
+  category: Category;
+
+  constructor(protected CategoryService: CategoryService) {
+
+    this.getListCategory();
   }
 
-  open(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  private getListCategory() {
+    this.CategoryService.getListCategory().subscribe(category => {
+
+      this.category = category.items;
     });
   }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+
+  onDeleteConfirm(event): void {
+    if (window.confirm('Are you sure you want to delete?')) {
+      this.CategoryService.deleteCategory(event.data.id).subscribe(
+        res => {
+          event.confirm.resolve(event.newData);
+          this.getListCategory();
+        }
+      )
     } else {
-      return `with: ${reason}`;
+      event.confirm.reject();
     }
   }
 
+  onEditConfirm(event): void {
+    var data = {
+      "name": event.newData.name,
+    };
+
+    this.CategoryService.updateCategory(event.data.id, data).subscribe(
+      res => {
+        event.confirm.resolve(event.newData);
+        this.getListCategory();
+      }
+    );
+  }
+
+  onCreateConfirm(event): void {
+    var data = {
+      "name": event.newData.name,
+    };
+
+    if (window.confirm('Are you sure you want to create?')) {
+      this.CategoryService.addCategory(data).subscribe(
+        res => {
+          event.confirm.resolve(event.newData);
+          this.getListCategory();
+        }
+      )
+    };
+
+  }
 
   public settings = {
+    delete: {
+      confirmDelete: true,
+    },
+    add: {
+      addButtonContent: '<i class="ion-ios-plus-outline"></i>',
+      createButtonContent: '<i class="ion-checkmark"></i>',
+      cancelButtonContent: '<i class="ion-close"></i>',
+      confirmCreate: true,
+    },
+    edit: {
+      confirmSave: true,
+    },
     actions: {
       position: 'right'
     },
     columns: {
-      img: {
-        title: 'Image',
-        type: 'html',
-      },
-      product_name: {
-        title: 'Name'
-      },
-      price: {
-        title: 'Price'
-      },
-      status: {
-        title: 'Status',
-        type: 'html',
-      },
-      category: {
-        title: 'Category',
+      name: {
+        title: 'Name',
       }
     },
+
   };
 
   ngOnInit() {
+
   }
 
 }
