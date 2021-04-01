@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 ﻿using eCommerce.Domain.Shared.Models;
 using FluentValidation;
-=======
 ﻿using eCommerce.Domain.Shared;
 using eCommerce.Domain.Shared.Models;
->>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -27,7 +27,6 @@ namespace eCommerce.WebAPI.Controllers
             var users = await _userService.SearchUsersAsync(rq);
             return users;
         }
-<<<<<<< HEAD
         [HttpPost]
         [Authorize(Policy = "PermissionAdmin")]
         public async Task<ActionResult<string>> CreateUser([FromBody] UserRequestModels.Create rq)
@@ -44,7 +43,6 @@ namespace eCommerce.WebAPI.Controllers
             return rp;
         }
 
-=======
 
         [HttpPut("{Id}/Lockout")]
         public async Task<ActionResult> LockoutUser(Guid Id)
@@ -67,6 +65,5 @@ namespace eCommerce.WebAPI.Controllers
             }
             return Ok();
         }
->>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
     }
 }

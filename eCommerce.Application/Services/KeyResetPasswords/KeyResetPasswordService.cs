@@ -20,13 +20,19 @@ namespace eCommerce.Application.Services.KeyResetPasswords
            
         }
 
+        private string genarateKeyParama(string email)
+        {
+            
+            DateTime now = DateTime.UtcNow;
+            string key = email + now.ToShortDateString() + SECRET;
+            return SHA.ComputeSHA256Hash(key);
+        }
+
         public async Task<string> Add(User u)
         {
             KeyResetPassword keyResetPassword = new KeyResetPassword();
             keyResetPassword.User = u;
-            DateTime now = DateTime.UtcNow;
-            string key = u.Username + now.ToShortDateString() + SECRET;
-            keyResetPassword.KeyParam = SHA.ComputeSHA256Hash(key);
+            keyResetPassword.KeyParam =genarateKeyParama(u.Username);
             _repo.Add(keyResetPassword);
             if (keyResetPassword.Id == null)
             {
@@ -43,9 +49,7 @@ namespace eCommerce.Application.Services.KeyResetPasswords
             {
                 return false;
             }
-            DateTime now = DateTime.UtcNow;
-            string key = username + now.ToShortDateString() + SECRET;
-            string keyParamHash = SHA.ComputeSHA256Hash(key);
+            string keyParamHash = genarateKeyParama(username);
             if (keyResetPassword.KeyParam == keyParamHash)
             {
                 _repo.Remove(keyResetPassword);

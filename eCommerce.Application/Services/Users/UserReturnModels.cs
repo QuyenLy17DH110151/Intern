@@ -13,11 +13,9 @@ namespace eCommerce.Application.Services.Users
             public Guid Id { get; set; }
 
             public string Username { get; set; }
-<<<<<<< HEAD
 
             public UserRoles Role { get; set; }
 
-=======
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public DateTime? LockoutEnd { get; set; }
@@ -25,8 +23,6 @@ namespace eCommerce.Application.Services.Users
             public string CreatedBy { get; set; }
             public DateTime? LastUpdated { get; set; }
             public string LastUpdatedBy { get; set; }
-            public UserRoles Role { get; set; }
->>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
         }
         public class MappingProfile : Profile
         {

@@ -73,7 +73,6 @@ namespace eCommerce.Application.Services.Users
             return user.Id;
         }
 
-<<<<<<< HEAD
         public async Task<string> CreateUser(UserRequestModels.Create rq)
         {
             var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
@@ -106,11 +105,18 @@ namespace eCommerce.Application.Services.Users
 
         public async Task<bool> UpdatePassword(UserRequestModels.UpdatePassword rq)
         {
+            //check token
             if (await _keyResetPasswordService.CheckKeyParam(rq.Username, rq.KeyParam))
             {
+                //get update password user
                 User user = await _userRepo.GetUserByUsernameAsync(rq.Username);
                 user.PasswordHash = SHA.ComputeSHA256Hash(rq.Password);
-=======
+                _userRepo.Update(user);
+                await _userRepo.UnitOfWork.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
         public async Task<bool> LockoutUserAsync(Guid Id)
         {
             var user = await _userRepo.GetByIdAsync(Id);
@@ -133,12 +139,10 @@ namespace eCommerce.Application.Services.Users
             if (user != null)
             {
                 user.LockoutEnd = null;
->>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
                 _userRepo.Update(user);
                 await _userRepo.UnitOfWork.SaveChangesAsync();
                 return true;
             }
-<<<<<<< HEAD
             return false;
         }
         private bool SendEmailChangPassword(string from, string to, string keyParam, string host)
@@ -160,12 +164,6 @@ namespace eCommerce.Application.Services.Users
             html += "</body>";
             html += "</html>";
             return _emailSender.SendEmail(from, to, "Reset password", html);
-=======
-            else
-            {
-                throw new EntityNotFound("user");
-            }
->>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
         }
     }
 }

@@ -10,14 +10,12 @@ const routes: Routes = [
     path:'login',
     component:LoginComponent,
   },
-<<<<<<< HEAD
-=======
+
   {
     path:'dashboard',
     component:DashboardComponent,
     canActivate:[AuthGuard]
   }
->>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
 ];
 
 @NgModule({
