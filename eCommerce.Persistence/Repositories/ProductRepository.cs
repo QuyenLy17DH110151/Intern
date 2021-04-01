@@ -59,6 +59,25 @@ namespace eCommerce.Persistence.Repositories
                 queryObject.And(new ProductQueryObjects.ContainsKeyword(keyword));
             }
 
+            // filter by category
+
+            if (!string.IsNullOrWhiteSpace(req.ProductCategoryName))
+            {
+                var keyword = req.ProductCategoryName;
+                queryObject.And(new ProductQueryObjects.FilterByCategory(keyword));
+            }
+
+            // filter by seller
+
+            if (req.Role=="Admin")
+            {
+                if (!string.IsNullOrWhiteSpace(req.Owner.ToString()))
+                {
+                    var ownerId = req.Owner;
+                    queryObject.And(new ProductQueryObjects.FilterBySeller(ownerId));
+                }
+            }
+
             // orderby
             if (!req.Sort.Any())
             {

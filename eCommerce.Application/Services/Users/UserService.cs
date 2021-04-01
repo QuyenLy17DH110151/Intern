@@ -2,6 +2,7 @@
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,11 @@ namespace eCommerce.Application.Services.Users
 
         public async Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq)
         {
-            var users = await _userRepo.SearchAsync(new SearchUserModel 
-            { 
-                Keyword = rq.SearchTerm, 
-                Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize }, 
+            var users = await _userRepo.SearchAsync(new SearchUserModel
+            {
+                Keyword = rq.SearchTerm,
+                Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
+                IsLockout = rq.IsLockout,
             });
 
             return _mapper.Map<PaginatedResult<UserReturnModels.User>>(users);
@@ -62,6 +64,38 @@ namespace eCommerce.Application.Services.Users
             await _userRepo.UnitOfWork.SaveChangesAsync();
 
             return user.Id;
+        }
+
+        public async Task<bool> LockoutUserAsync(Guid Id)
+        {
+            var user = await _userRepo.GetByIdAsync(Id);
+            if (user != null)
+            {
+                user.LockoutEnd = DateTime.Now.AddDays(5);
+                _userRepo.Update(user);
+                await _userRepo.UnitOfWork.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                throw new EntityNotFound("user");
+            }
+        }
+
+        public async Task<bool> UnlockUserAsync(Guid Id)
+        {
+            var user = await _userRepo.GetByIdAsync(Id);
+            if (user != null)
+            {
+                user.LockoutEnd = null;
+                _userRepo.Update(user);
+                await _userRepo.UnitOfWork.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                throw new EntityNotFound("user");
+            }
         }
     }
 }

@@ -58,6 +58,12 @@ namespace eCommerce.Persistence.Repositories
                 queryObject.And(new UserQueryObjects.ContainsKeyword(keyword));
             }
 
+            // filter lockout status
+            if (rq.IsLockout)
+            {
+                queryObject.And(new UserQueryObjects.IsLockout(rq.IsLockout));
+            }
+
             // orderby
             if (!rq.Sort.Any())
             {
@@ -71,5 +77,6 @@ namespace eCommerce.Persistence.Repositories
             var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination);
             return result;
         }
+
     }
 }

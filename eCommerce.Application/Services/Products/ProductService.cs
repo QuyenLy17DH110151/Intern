@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eCommerce.Domain.Entities;
+using eCommerce.Application.Shared;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Shared.Exceptions;
@@ -16,11 +17,13 @@ namespace eCommerce.Application.Services.Products
     {
         private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
+        private readonly ApplicationContext _appContext;
 
-        public ProductService(IProductRepository productRepo, IMapper mapper)
+        public ProductService(IProductRepository productRepo, IMapper mapper, ApplicationContext appContext)
         {
             _productRepo = productRepo;
             _mapper = mapper;
+            _appContext = appContext;
         }
 
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsAsync(ProductRequestModels.Search req)
@@ -29,7 +32,10 @@ namespace eCommerce.Application.Services.Products
             {
                 Keyword = req.SearchTerm,
                 Pagination = new Pagination { PageIndex = req.PageIndex, ItemsPerPage = req.PageSize },
-            });
+                ProductCategoryName = req.CategoryName,
+                Owner = req.Owner,
+                Role = _appContext.Principal.Role
+            }) ;
 
             return _mapper.Map<PaginatedResult<ProductReturnModels.Product>>(products);  //mapper khi get data from DB
         }
