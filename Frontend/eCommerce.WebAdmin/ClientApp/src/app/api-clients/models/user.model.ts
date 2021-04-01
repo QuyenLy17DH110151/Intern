@@ -1,14 +1,16 @@
 export class User {
-
-    username: string;
+    userName: string;
     firstName: string;
     lastName: string;
-
-    constructor( firstName: string, lastName: string, username: string){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-    }
-
-    
+    username: string;
+    role: UserRole;
+    lockoutEnd?: Date;
+    createDate: Date;
+    createBy: string;
+    lastUpdate?: Date;
+    lastUpdateBy: string;
+}
+export enum UserRole {
+    Admin = 1,
+    Seller,
 }

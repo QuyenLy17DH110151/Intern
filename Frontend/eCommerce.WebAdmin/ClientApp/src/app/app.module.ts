@@ -18,15 +18,14 @@ import { VendorsModule } from './components/vendors/vendors.module';
 import { UsersModule } from './components/users/users.module';
 import { LocalizationModule } from './components/localization/localization.module';
 import { InvoiceModule } from './components/invoice/invoice.module';
-import { SettingModule } from './components/setting/setting.module';;
+import { SettingModule } from './components/setting/setting.module';
 import { ReportsModule } from './components/reports/reports.module';
 import { AuthModule } from './components/auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-    ],
+    declarations: [AppComponent],
     imports: [
         BrowserAnimationsModule,
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -47,9 +46,10 @@ import { HttpClientModule } from '@angular/common/http';
         PagesModule,
         MediaModule,
         MenusModule,
-        UsersModule
+        UsersModule,
+        FormsModule,
     ],
     providers: [AuthGuard],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -11,7 +11,6 @@ namespace eCommerce.Application.Services.Users
         public class User
         {
             public Guid Id { get; set; }
-
             public string Username { get; set; }
 
             public UserRoles Role { get; set; }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CreateUserRequest } from 'src/app/api-clients/models/createUser.model';
 import { User } from 'src/app/api-clients/models/user.model';
 import { UserClient } from 'src/app/api-clients/user.client';
 
@@ -11,7 +12,7 @@ import { UserClient } from 'src/app/api-clients/user.client';
 export class CreateUserComponent implements OnInit {
   public formUser: FormGroup;
   public permissionForm: FormGroup;
-  public user: User;
+  public user: CreateUserRequest;
   public erroFirstName: string = 'First Name not empty';
   public erroLastName: string = 'Last Name not empty';
   public erroUsername: string = 'Username not empty';
@@ -73,7 +74,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   async saveUser() {
-    this.user = new User(this.formUser.value.firstName, this.formUser.value.lastName,this.formUser.value.username);
+    this.user = new CreateUserRequest(this.formUser.value.firstName, this.formUser.value.lastName,this.formUser.value.username);
     if(this.isDisableButtonSubmit==false){
       this.userClient.createUser(this.user).subscribe((res) =>{
         alert('Create User Success')

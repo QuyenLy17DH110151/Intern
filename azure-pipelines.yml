@@ -10,7 +10,7 @@ trigger:
       - master
   paths:
     include:
-      - eCommerce.WebAdmin
+      - Frontend/eCommerce.WebAdmin
 
 pool:
   vmImage: 'windows-latest'
