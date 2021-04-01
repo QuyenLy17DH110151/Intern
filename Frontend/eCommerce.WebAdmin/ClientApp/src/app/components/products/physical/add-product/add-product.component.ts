@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductService } from 'src/app/shared/service/product.service';
+import { FileUploadService } from 'src/app/shared/service/upload-image/uploadImage.service';
+import { FileUpload } from 'src/app/shared/service/upload-image/uploadImage.model';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-add-product',
@@ -10,28 +16,18 @@ import { ProductService } from 'src/app/shared/service/product.service';
 export class AddProductComponent implements OnInit {
     public productForm: FormGroup;
     public descriptionValue: string = '';
+    private basePath = '/uploads';
     message: any;
-    public url = [
-        {
-            img: 'assets/images/user.png',
-        },
-        {
-            img: 'assets/images/user.png',
-        },
-        {
-            img: 'assets/images/user.png',
-        },
-        {
-            img: 'assets/images/user.png',
-        },
-        {
-            img: 'assets/images/user.png',
-        },
-    ];
+    selectedFiles?: FileList;
+    fileUpload?: FileUpload;
+    percentage = 0;
 
     constructor(
         private fb: FormBuilder,
-        private productService: ProductService
+        private productService: ProductService,
+        private uploadService: FileUploadService,
+        private db: AngularFireDatabase,
+        private storage: AngularFireStorage
     ) {
         this.productForm = this.fb.group({
             name: [
@@ -55,11 +51,6 @@ export class AddProductComponent implements OnInit {
                     Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$'),
                 ],
             ],
-            quantity: 1,
-            description: '',
-            OwnerId: '',
-            //photoString: "photoPath1,photoPath2",
-            photos: '',
         });
     }
 
@@ -77,39 +68,85 @@ export class AddProductComponent implements OnInit {
     }
 
     //FileUpload
-    readUrl(event: any, i) {
-        if (event.target.files.length === 0) return;
-        //Image upload validation
-        var mimeType = event.target.files[0].type;
-        if (mimeType.match(/image\/*/) == null) {
-            return;
-        }
-        // Image upload
-        var reader = new FileReader();
-        reader.readAsDataURL(event.target.files[0]);
-        reader.onload = (_event) => {
-            this.url[i].img = reader.result.toString();
-        };
-    }
+    // readUrl(event: any, i) {
+    //     if (event.target.files.length === 0) return;
+    //     //Image upload validation
+    //     var mimeType = event.target.files[0].type;
+    //     if (mimeType.match(/image\/*/) == null) {
+    //         return;
+    //     }
+    //     // Image upload
+    //     var reader = new FileReader();
+    //     reader.readAsDataURL(event.target.files[0]);
+    //     reader.onload = (_event) => {
+    //         this.url[i].img = reader.result.toString();
+    //     };
+    // }
 
     ngOnInit(): void {}
 
     async onSubmit() {
-        this.productForm.patchValue({
-            description: this.descriptionValue,
-            OwnerId: this.getOwnerId(),
-        });
+        // this.productForm.patchValue({
+        //     description: this.descriptionValue,
+        //     OwnerId: this.getOwnerId(),
+        // });
 
-        const formData = this.productForm.value;
-        formData.photos = ['urlImage', 'image2'];
-        console.log(this.productForm.value);
-        let result = await this.productService
-            .addProduct(this.productForm.value)
+        //debugger;
+        const formData = {
+            ...this.productForm.value,
+            description: this.descriptionValue,
+            ownerId: this.getOwnerId(),
+            photos: [this.fileUpload.url]
+        };
+
+        console.log("data submit: ", formData);
+        await this.productService
+            .addProduct(formData)
             .toPromise()
-            .then((response) => console.log('Response: ', response));
+            .then((response) => {
+                if(response !== null) {
+                    alert("Them moi sp thanh cong!");
+                }
+            });
     }
 
     getOwnerId() {
         return localStorage.getItem('userId');
+    }
+
+    async uploadImage() {
+        if (this.selectedFiles) {
+            const file: File | null = this.selectedFiles.item(0);
+            this.selectedFiles = undefined;
+
+            if (file) {
+                this.fileUpload = new FileUpload(file);
+
+                const filePath = `${this.basePath}/${this.fileUpload.file.name}`;
+                const storageRef = this.storage.ref(filePath);
+                const uploadTask = this.storage.upload(
+                    filePath,
+                    this.fileUpload.file
+                );
+
+                uploadTask
+                    .snapshotChanges()
+                    .pipe(
+                        finalize(() => {
+                            storageRef
+                                .getDownloadURL()
+                                .subscribe((downloadURL) => {
+                                    this.fileUpload.url = downloadURL;
+                                    this.fileUpload.name = this.fileUpload.file.name;
+                                });
+                        })
+                    )
+                    .subscribe();
+            }
+        }
+    }
+
+    selectFile(event: any): void {
+        this.selectedFiles = event.target.files;
     }
 }

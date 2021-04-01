@@ -24,7 +24,7 @@ export class ProductDetailComponent implements OnInit {
     // };
     product: any;
 
-    @Input() productId = '9e916ad5-abff-4b5f-b49f-08d8f2938d75';
+    @Input() productId = '99ebeb9e-26c1-413f-0238-08d8f4f3cb37';
 
     public imagesRect: Image[] = [
         new Image(
@@ -87,6 +87,7 @@ export class ProductDetailComponent implements OnInit {
             .getProductDetail(this.productId)
             .toPromise();
         this.product = response;
+        console.log(this.product);
     }
 
     increment() {

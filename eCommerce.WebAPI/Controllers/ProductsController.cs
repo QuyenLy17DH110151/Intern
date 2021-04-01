@@ -36,7 +36,6 @@ namespace eCommerce.WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            req.Photos = req.PhotoString.Split(',').ToList();
             var productId = await _productService.CreateAsync(req);
 
             if(productId == null)
@@ -47,14 +46,6 @@ namespace eCommerce.WebAPI.Controllers
             var product =  await _productService.GetProductByIdAsync(productId);
             //return CreatedAtAction("GetProductByIdAsync", new { id = productId }, product);
             return Ok(new { product = product });
-        }
-
-        [HttpPost("upload-photo")] //[POST] api/Product/upload-photo
-        public async Task<ActionResult<ProductReturnModels.Product>> UploadOne([FromBody] ProductRequestModels.UploadPhoto req)
-        {
-            var productId = await _productService.UploadPhotoAsync(req);
-
-            return await _productService.GetProductByIdAsync(productId);
         }
 
         [HttpGet("{productId}")] //[POST] api/Product/:productId;

@@ -19,7 +19,6 @@ namespace eCommerce.Application.Services.Products
             public string LastUpdatedBy { get; set; }
 
             public List<Photo> Photos { get; set; }
-            public Inventory Inventory { get; set; }
             public string Description { get; set; }
         }
 

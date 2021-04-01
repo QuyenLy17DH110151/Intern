@@ -11,18 +11,28 @@
                         <div class="col-xl-5">
                             <div class="add-product">
                                 <div class="row">
-                                    <div class="col-xl-9 xl-50 col-sm-6 col-9">
-                                        <img src="assets/images/pro3/1.jpg" alt="" class="img-fluid image_zoom_1">
+                                    <div class="col-xl-10 xl-50 col-sm-6 col-10">
+                                        <img [src]="fileUpload?.url || ''" alt="" class="img-fluid image_zoom_1">
                                     </div>
-                                    <div class="col-xl-3 xl-50 col-sm-6 col-3">
-                                        <ul class="file-upload-product">
+                                    <div class="col-xl-2 xl-50 col-sm-6 col-2">
+
+                                        <label>
+                                            <input type="file" class="text-nowrap text-truncate"
+                                                (change)="selectFile($event)" />
+                                        </label>
+
+                                        <button class="btn btn-success btn-sm" [disabled]="!selectedFiles"
+                                            (click)="uploadImage()">
+                                            Upload
+                                        </button>
+                                        <!-- <ul class="file-upload-product">
                                             <li *ngFor="let item of url; let i=index">
                                                 <div class="box-input-file">
                                                     <input class="upload" type="file" (change)="readUrl($event,i)">
                                                     <img class="imgUpload" alt="" [src]="item.img">
-                                                </div> 
+                                                </div>
                                             </li>
-                                        </ul>
+                                        </ul> -->
                                     </div>
                                 </div>
                             </div>
@@ -63,26 +73,11 @@
                                         </select>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-sm-4 mb-0">Quantity :</label>
-                                        <div class="qty-box1">
-                                            <div class="input-group">
-                                                <i class="fa fa-minus btnGtr1" (click)=decrement()></i>
-                                                <input type="number" class="touchspin1 text-center" name="counter"
-                                                    [formControl]="productForm.controls['quantity']" type="text">
-                                                <i class="fa fa-plus btnLess1" (click)=increment()></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <label class="col-xl-3 col-sm-4">Description :</label>
                                         <div class="col-xl-8 col-sm-7 pl-0 description-sm">
-                                            <!-- <ck-editor name="description" id="description" language="en" [fullPage]="true" [(ngModel)]="descriptionValue" [ngModelOptions]="{standalone: true}">
-                                            </ck-editor> -->
-                                            <input name="editor1" [(ngModel)]="descriptionValue" [ngModelOptions]="{standalone: true}"/>
-                                            <!-- <ckeditor [(ngModel)]="descriptionValue" #myckeditor="ngModel" name="myckeditor"
-                                                required debounce="500"
-                                                (ngModelChange)="onChange($event)">
-                                            </ckeditor> -->
+                                            <textarea  name="editor1" [(ngModel)]="descriptionValue"
+                                                [ngModelOptions]="{standalone: true}" rows="4" cols="50">
+                                            </textarea>
                                         </div>
                                     </div>
 
@@ -94,8 +89,7 @@
                                     <button type="button" class="btn btn-light">Discard</button>
                                 </div>
                             </div>
-                            <pre>{{ productForm.value | json }}</pre>
-                            <pre>{{descriptionValue | json }}</pre>
+                            <!-- <pre>{{ productForm.value | json }}</pre> -->
                         </div>
                     </div>
                 </div>

@@ -43,11 +43,6 @@ namespace eCommerce.Application.Services.Products
                 CategoryId = request.CategoryId,
                 OwnerId = request.OwnerId,
 
-                Inventory = new Inventory()
-                {
-                    Quantity = request.Quantity
-                },
-
                 Photos = request.Photos.Select(x => new ProductPhoto { Url = x }).ToList()
             };
 
