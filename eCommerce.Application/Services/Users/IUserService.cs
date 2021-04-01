@@ -30,7 +30,7 @@ namespace eCommerce.Application.Services.Users
         /// <param name="rq"></param>
         /// <returns></returns>
         Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq);
-        Task<string> CreateUser(UserRequestModels.Create rq);
+        Task<Guid> CreateUserAsync(UserRequestModels.Create rq, string url);
         Task<bool> UpdatePassword(UserRequestModels.UpdatePassword rq);
 
 

@@ -9,10 +9,9 @@ namespace eCommerce.Notification
 {
     public class GmailEmailSender : IEmailSender
     {
-        public bool SendEmail(string from, string to, string subject, string content)
+        public void SendEmail(string from, string to, string subject, string content)
         {
-            try
-            {
+            
                 var email = new MimeMessage();
                 email.From.Add(MailboxAddress.Parse(from));
                 email.To.Add(MailboxAddress.Parse(to));
@@ -25,13 +24,8 @@ namespace eCommerce.Notification
                 smtp.Authenticate("edommerce.intern2021@gmail.com", "intern2021");
                 smtp.Send(email);
                 smtp.Disconnect(true);
-                return true;
-            }
-            catch (Exception exp)
-            {
-                System.Console.WriteLine(exp.ToString());
-                return false;
-            }
+                
+            
 
         }
 

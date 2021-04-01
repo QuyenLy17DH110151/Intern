@@ -27,7 +27,7 @@ namespace eCommerce.Persistence.Repositories
             return rp;
         }
 
-        public async Task<KeyResetPassword> findByUsername(string username)
+        public async Task<KeyResetPassword> FindByUsername(string username)
         {
             var keyResetPassword = await _dbContext.Set<KeyResetPassword>().SingleOrDefaultAsync(x => x.User.Username == username);
             return keyResetPassword;

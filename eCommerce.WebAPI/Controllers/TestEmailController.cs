@@ -1,4 +1,5 @@
 ﻿using eCommerce.Application.Notification;
+using eCommerce.WebAPI.Infrastructure.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,12 @@ namespace eCommerce.WebAPI.Controllers
     [ApiController]
     public class TestEmailController : ControllerBase
     {
+        private readonly ClientUrl _clienUrl;
+        public TestEmailController(ClientUrl clienUrl)
+        {
+            _clienUrl = clienUrl;
+        }
+
         /*private readonly IPattenSendEmail _pattenSendEmail;
 
         public TestEmailController(EmailResetPassword emailResetPassword)
@@ -43,7 +50,7 @@ namespace eCommerce.WebAPI.Controllers
         [HttpGet("no")]
         public string testNo()
         {
-            return "no";
+            return _clienUrl.URL;
         }
     }
 }

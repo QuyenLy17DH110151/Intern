@@ -10,7 +10,7 @@ namespace eCommerce.Domain.Repositories
     public interface IKeyResetPasswordRepository : IRepository<KeyResetPassword>
     {
         KeyResetPassword Add(KeyResetPassword keyResetPassword);
-        Task<KeyResetPassword> findByUsername(string username);
+        Task<KeyResetPassword> FindByUsername(string username);
         void Remove(KeyResetPassword keyResetPassword);
     }
 }

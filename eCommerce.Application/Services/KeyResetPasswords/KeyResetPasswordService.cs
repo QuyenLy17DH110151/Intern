@@ -9,20 +9,21 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Application.Services.KeyResetPasswords
 {
-    public class KeyResetPasswordService: IKeyResetPasswordService
+    public class KeyResetPasswordService : IKeyResetPasswordService
     {
         private const string SECRET = "ecommerce2021";
         private readonly IKeyResetPasswordRepository _repo;
 
+
         public KeyResetPasswordService(IKeyResetPasswordRepository keyResetPasswordRepository, IMapper mapper)
         {
             _repo = keyResetPasswordRepository;
-           
+
         }
 
         private string genarateKeyParama(string email)
         {
-            
+
             DateTime now = DateTime.UtcNow;
             string key = email + now.ToShortDateString() + SECRET;
             return SHA.ComputeSHA256Hash(key);
@@ -31,20 +32,16 @@ namespace eCommerce.Application.Services.KeyResetPasswords
         public async Task<string> Add(User u)
         {
             KeyResetPassword keyResetPassword = new KeyResetPassword();
+            keyResetPassword.Id = Guid.NewGuid();
             keyResetPassword.User = u;
-            keyResetPassword.KeyParam =genarateKeyParama(u.Username);
+            keyResetPassword.KeyParam = genarateKeyParama(u.Username);
             _repo.Add(keyResetPassword);
-            if (keyResetPassword.Id == null)
-            {
-                return null;
-            }
-            
             return keyResetPassword.KeyParam;
         }
 
-        public async Task<bool> CheckKeyParam(string username, string keyParam)
+        public async Task<bool> VerifyKeyAsync(string username, string keyParam)
         {
-            KeyResetPassword keyResetPassword = await _repo.findByUsername(username);
+            KeyResetPassword keyResetPassword = await _repo.FindByUsername(username);
             if (keyResetPassword == null)
             {
                 return false;

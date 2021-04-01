@@ -1,6 +1,7 @@
 ﻿using eCommerce.Application.Services.Users;
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Shared.Models;
+using eCommerce.WebAPI.Infrastructure.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,10 +16,12 @@ namespace eCommerce.WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ClientUrl _clienUrl;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, ClientUrl clienUrl)
         {
             _userService = userService;
+            _clienUrl = clienUrl;
         }
 
         [HttpGet]
@@ -29,10 +32,10 @@ namespace eCommerce.WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Policy = "PermissionAdmin")]
-        public async Task<ActionResult<string>> CreateUser([FromBody] UserRequestModels.Create rq)
+        public async Task<ActionResult<Guid>> CreateUser([FromBody] UserRequestModels.Create rq)
         {
-            var id = await _userService.CreateUser(rq);
-            return "Id User: " +id;
+            var id = await _userService.CreateUserAsync(rq, _clienUrl.URL);
+            return id;
         }
 
         [HttpPut]

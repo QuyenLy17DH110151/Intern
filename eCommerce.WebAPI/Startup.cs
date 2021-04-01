@@ -50,6 +50,8 @@ namespace eCommerce.WebAPI
 
             // JWT Auth
             var jwtTokenConfig = Configuration.GetSection("JwtTokenConfig").Get<JwtTokenConfig>();
+            var ClientUrl = Configuration.GetSection("ClientUrl").Get<ClientUrl>();
+            services.AddSingleton(ClientUrl);
             services.AddSingleton(jwtTokenConfig);
             services.AddAuthentication(x =>
             {
@@ -77,7 +79,7 @@ namespace eCommerce.WebAPI
             // Cors
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
+                options.AddPolicy("CorsPolicy", 
                     builder => builder
                         .SetIsOriginAllowed((host) => true)
                         .AllowAnyMethod()
@@ -101,12 +103,8 @@ namespace eCommerce.WebAPI
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             })
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequestModels.CreateValidator>());
+
             
-            //DI Valid
-            services.AddTransient<IValidator<UserRequestModels.Create>, UserRequestModels.CreateValidator>();
-            services.AddTransient<IValidator<UserRequestModels.UpdatePassword>, UserRequestModels.UpdatePasswordValidator>();
-
-
 
             // Swagger
             services.AddSwaggerGen(c =>
