@@ -27,7 +27,7 @@ namespace eCommerce.WebAPI.Controllers
         {
             var productCategories = await _productCategoryService.SearchProductCategoriesAsync(rq);
             return productCategories;
-        }        
+        }
 
         [HttpPost]
         public async Task<ActionResult> Create([FromBody]ProductCategoryRequestModels.Create rq)
@@ -36,14 +36,14 @@ namespace eCommerce.WebAPI.Controllers
             if (productCategory == null)
                 return BadRequest();
 
-            var category = await _productCategoryService.GetProductCategoryByIdAsync(productCategory);            
-            return Ok( new { category= category});
+            var category = await _productCategoryService.GetProductCategoryByIdAsync(productCategory);
+            return Ok(new { category = category });
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult> Update([FromBody]ProductCategoryRequestModels.Update rq, Guid id)
         {
-            var productCategory = await _productCategoryService.UpdateProductCategoryAsync(rq, id); 
+            var productCategory = await _productCategoryService.UpdateProductCategoryAsync(rq, id);
             if (productCategory == null)
                 return BadRequest();
 
@@ -51,7 +51,7 @@ namespace eCommerce.WebAPI.Controllers
             return Ok(category);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var productCategory = await _productCategoryService.DeleteProductCategoryAsync(id);
