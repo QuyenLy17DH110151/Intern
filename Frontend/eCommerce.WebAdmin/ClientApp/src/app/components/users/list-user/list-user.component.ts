@@ -94,7 +94,6 @@ export class ListUserComponent implements OnInit {
             console.log(event);
             event.confirm.resolve(event.newData);
             console.log(event.newData.id);
-            // this.LockoutUser(event.newData.id);
             console.log(event.newData.lockoutEnd);
             if (event.newData.lockoutEnd) {
                 this.LockoutUser(event.newData.id);
@@ -121,14 +120,14 @@ export class ListUserComponent implements OnInit {
         this.loadData();
         this.keyWordSearch = '';
     }
-    LockoutUser(id: string) {
-        this.userClient
+    async LockoutUser(id: string) {
+        await this.userClient
             .lockoutUser(id)
             .toPromise()
             .then(() => this.loadData());
     }
-    UnlockoutUser(id: string) {
-        this.userClient
+    async UnlockoutUser(id: string) {
+        await this.userClient
             .unlockoutUser(id)
             .toPromise()
             .then(() => this.loadData());

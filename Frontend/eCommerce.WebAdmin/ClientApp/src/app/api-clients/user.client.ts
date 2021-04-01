@@ -8,7 +8,7 @@ import {
     PagedList,
     SearchRequest,
 } from './models/common.model';
-import { ListUser, User } from './models/user.model';
+import { User } from './models/user.model';
 
 @Injectable()
 export class UserClient {
