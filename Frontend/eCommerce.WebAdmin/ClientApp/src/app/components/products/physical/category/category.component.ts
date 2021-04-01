@@ -1,30 +1,25 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { categoryDB } from '../../../../shared/tables/category';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-
-import { HttpClient } from '@angular/common/http';
-import { CategoryService } from 'src/app/shared/service/category.service';
 import { Category } from 'src/app/api-clients/models/category.model';
-import { id } from '@swimlane/ngx-charts';
+import { CategoryClient } from 'src/app/api-clients/category.client';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss'],
-  providers: [CategoryService]
+  providers: [CategoryClient]
 })
 export class CategoryComponent implements OnInit {
 
 
   category: Category;
 
-  constructor(protected categoryService: CategoryService) {
+  constructor(protected categoryClient: CategoryClient) {
 
 
   }
 
   private getListCategory() {
-    this.categoryService.getListCategory().subscribe(category => {
+    this.categoryClient.getListCategory().subscribe(category => {
 
       this.category = category.items;
     });
@@ -32,7 +27,7 @@ export class CategoryComponent implements OnInit {
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
-      this.categoryService.deleteCategory(event.data.id).subscribe(
+      this.categoryClient.deleteCategory(event.data.id).subscribe(
         res => {
           event.confirm.resolve(event.newData);
           this.getListCategory();
@@ -48,7 +43,7 @@ export class CategoryComponent implements OnInit {
       "name": event.newData.name,
     };
 
-    this.categoryService.updateCategory(event.data.id, data).subscribe(
+    this.categoryClient.updateCategory(event.data.id, data).subscribe(
       res => {
         event.confirm.resolve(event.newData);
         this.getListCategory();
@@ -62,7 +57,7 @@ export class CategoryComponent implements OnInit {
     };
 
     if (window.confirm('Are you sure you want to create?')) {
-      this.categoryService.addCategory(data).subscribe(
+      this.categoryClient.addCategory(data).subscribe(
         res => {
           event.confirm.resolve(event.newData);
           this.getListCategory();
@@ -77,9 +72,6 @@ export class CategoryComponent implements OnInit {
       confirmDelete: true,
     },
     add: {
-      addButtonContent: '<i class="ion-ios-plus-outline"></i>',
-      createButtonContent: '<i class="ion-checkmark"></i>',
-      cancelButtonContent: '<i class="ion-close"></i>',
       confirmCreate: true,
     },
     edit: {
