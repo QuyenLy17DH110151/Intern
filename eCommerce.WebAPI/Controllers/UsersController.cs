@@ -22,11 +22,12 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedResult<UserReturnModels.User>>> Search([FromQuery]UserRequestModels.Search rq)
+        public async Task<ActionResult<PaginatedResult<UserReturnModels.User>>> Search([FromQuery] UserRequestModels.Search rq)
         {
             var users = await _userService.SearchUsersAsync(rq);
             return users;
         }
+<<<<<<< HEAD
         [HttpPost]
         [Authorize(Policy = "PermissionAdmin")]
         public async Task<ActionResult<string>> CreateUser([FromBody] UserRequestModels.Create rq)
@@ -43,5 +44,29 @@ namespace eCommerce.WebAPI.Controllers
             return rp;
         }
 
+=======
+
+        [HttpPut("{Id}/Lockout")]
+        public async Task<ActionResult> LockoutUser(Guid Id)
+        {
+            bool result = await _userService.LockoutUserAsync(Id);
+            if (result == false)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPut("{Id}/Unlockout")]
+        public async Task<ActionResult> UnLockoutUser(Guid Id)
+        {
+            bool result = await _userService.UnlockUserAsync(Id);
+            if (result == false)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+>>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
     }
 }

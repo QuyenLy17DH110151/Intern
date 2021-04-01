@@ -2,6 +2,7 @@
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using System;
 using System.Threading.Tasks;
@@ -30,10 +31,11 @@ namespace eCommerce.Application.Services.Users
 
         public async Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq)
         {
-            var users = await _userRepo.SearchAsync(new SearchUserModel 
-            { 
-                Keyword = rq.SearchTerm, 
-                Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize }, 
+            var users = await _userRepo.SearchAsync(new SearchUserModel
+            {
+                Keyword = rq.SearchTerm,
+                Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
+                IsLockout = rq.IsLockout,
             });
 
             return _mapper.Map<PaginatedResult<UserReturnModels.User>>(users);
@@ -71,6 +73,7 @@ namespace eCommerce.Application.Services.Users
             return user.Id;
         }
 
+<<<<<<< HEAD
         public async Task<string> CreateUser(UserRequestModels.Create rq)
         {
             var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
@@ -107,10 +110,35 @@ namespace eCommerce.Application.Services.Users
             {
                 User user = await _userRepo.GetUserByUsernameAsync(rq.Username);
                 user.PasswordHash = SHA.ComputeSHA256Hash(rq.Password);
+=======
+        public async Task<bool> LockoutUserAsync(Guid Id)
+        {
+            var user = await _userRepo.GetByIdAsync(Id);
+            if (user != null)
+            {
+                user.LockoutEnd = DateTime.Now.AddDays(5);
                 _userRepo.Update(user);
                 await _userRepo.UnitOfWork.SaveChangesAsync();
                 return true;
             }
+            else
+            {
+                throw new EntityNotFound("user");
+            }
+        }
+
+        public async Task<bool> UnlockUserAsync(Guid Id)
+        {
+            var user = await _userRepo.GetByIdAsync(Id);
+            if (user != null)
+            {
+                user.LockoutEnd = null;
+>>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
+                _userRepo.Update(user);
+                await _userRepo.UnitOfWork.SaveChangesAsync();
+                return true;
+            }
+<<<<<<< HEAD
             return false;
         }
         private bool SendEmailChangPassword(string from, string to, string keyParam, string host)
@@ -132,6 +160,12 @@ namespace eCommerce.Application.Services.Users
             html += "</body>";
             html += "</html>";
             return _emailSender.SendEmail(from, to, "Reset password", html);
+=======
+            else
+            {
+                throw new EntityNotFound("user");
+            }
+>>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
         }
     }
 }

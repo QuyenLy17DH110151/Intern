@@ -25,12 +25,30 @@ namespace eCommerce.Application.Services.Users
         Task<Guid> RegisterUserAsync(UserRequestModels.Register rq);
 
         /// <summary>
-        /// Searchs users
+        /// Searchs users by keyword and lockoutUser
         /// </summary>
         /// <param name="rq"></param>
         /// <returns></returns>
         Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq);
+<<<<<<< HEAD
         Task<string> CreateUser(UserRequestModels.Create rq);
         Task<bool> UpdatePassword(UserRequestModels.UpdatePassword rq);
+=======
+
+
+        /// <summary>
+        /// Lockout User
+        /// </summary>
+        /// <param name="Id User"></param>
+        /// <returns></returns>
+        Task<bool> LockoutUserAsync(Guid Id);
+
+        /// <summary>
+        /// Unlockout User
+        /// </summary>
+        /// <param name="Id User"></param>
+        /// <returns></returns>
+        Task<bool> UnlockUserAsync(Guid Id);
+>>>>>>> 56e86231d1205416ef82132fc24e5647ae04e41d
     }
 }

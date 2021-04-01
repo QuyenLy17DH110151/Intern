@@ -109,7 +109,7 @@
                         <li><a href="javascript:void(0)">
                                 <app-feather-icons [icon]="'settings'"></app-feather-icons>Settings
                             </a></li>
-                        <li><a [routerLink]="'/auth/login'">
+                        <li><a [routerLink]="'/auth/login'" (click) = 'Logout();'>
                                 <app-feather-icons [icon]="'log-out'"></app-feather-icons>Logout
                             </a></li>
                     </ul>
