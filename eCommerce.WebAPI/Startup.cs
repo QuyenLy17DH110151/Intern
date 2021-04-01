@@ -101,7 +101,12 @@ namespace eCommerce.WebAPI
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             })
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequestModels.CreateValidator>());
+            
+            //DI Valid
             services.AddTransient<IValidator<UserRequestModels.Create>, UserRequestModels.CreateValidator>();
+            services.AddTransient<IValidator<UserRequestModels.UpdatePassword>, UserRequestModels.UpdatePasswordValidator>();
+
+
 
             // Swagger
             services.AddSwaggerGen(c =>

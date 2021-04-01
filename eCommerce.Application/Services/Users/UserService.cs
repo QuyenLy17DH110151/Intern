@@ -7,6 +7,8 @@ using System;
 using System.Threading.Tasks;
 using EasyEncryption;
 using eCommerce.Domain.Shared;
+using eCommerce.Application.Services.KeyResetPasswords;
+using eCommerce.Application.Notification;
 
 namespace eCommerce.Application.Services.Users
 {
@@ -14,11 +16,16 @@ namespace eCommerce.Application.Services.Users
     {
         private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
+        private readonly IKeyResetPasswordService _keyResetPasswordService;
+        readonly private IEmailSender _emailSender;
 
-        public UserService(IUserRepository userRepo, IMapper mapper)
+
+        public UserService(IUserRepository userRepo, IMapper mapper, IKeyResetPasswordService keyResetPasswordService, IEmailSender emailSender)
         {
             _userRepo = userRepo;
             _mapper = mapper;
+            _keyResetPasswordService = keyResetPasswordService;
+            _emailSender = emailSender;
         }
 
         public async Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq)
@@ -67,20 +74,64 @@ namespace eCommerce.Application.Services.Users
         public async Task<string> CreateUser(UserRequestModels.Create rq)
         {
             var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
-            if (user != null)
+            if (user!=null)
             {
                 return null;
             }
+
+            // add new user
             User u = new User();
-            u.Role = UserRoles.Seller;
-            u.FirstName = rq.FirstName;
-            u.LastName = rq.LastName;
             u.Username = rq.Username;
-            
+            u.LastName = rq.LastName;
+            u.FirstName = rq.LastName;
+            u.Role = UserRoles.Seller;
             _userRepo.Add(u);
 
+            // send password reset email
+            var keyParam = await _keyResetPasswordService.Add(u);
             await _userRepo.UnitOfWork.SaveChangesAsync();
+            if (keyParam != null)
+            {
+                if (!SendEmailChangPassword("eCommerce", rq.Username, keyParam, "http://localhost:4200/"))
+                {
+                    return null;
+                }
+            }
+
             return u.Id + "";
+        }
+
+        public async Task<bool> UpdatePassword(UserRequestModels.UpdatePassword rq)
+        {
+            if (await _keyResetPasswordService.CheckKeyParam(rq.Username, rq.KeyParam))
+            {
+                User user = await _userRepo.GetUserByUsernameAsync(rq.Username);
+                user.PasswordHash = SHA.ComputeSHA256Hash(rq.Password);
+                _userRepo.Update(user);
+                await _userRepo.UnitOfWork.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+        private bool SendEmailChangPassword(string from, string to, string keyParam, string host)
+        {
+            string html = "<!DOCTYPE html>";
+            html += "<html>";
+            html += "<head>";
+            html += "<meta chahtmlet='utf-8'>";
+            html += "</head>";
+            html += "<body>";
+            html += "<h1>Please click into link </h1>";
+            html += "<form method='get' action='";
+            html += host;
+            html += "/auth/reset-password'>";
+            html += "<input type='hidden' name='key' value='" + keyParam + "'/>";
+            html += "<input type='hidden' name='email' value='" + to + "'/>";
+            html += "<button style='background-color: green; color: aliceblue; border: none; font-size: 50px; padding: 10px; border-radius: 5px;' type='submit'>Open link</button>";
+            html += "</form>";
+            html += "</body>";
+            html += "</html>";
+            return _emailSender.SendEmail(from, to, "Reset password", html);
         }
     }
 }

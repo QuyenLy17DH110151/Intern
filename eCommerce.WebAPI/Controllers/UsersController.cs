@@ -32,7 +32,15 @@ namespace eCommerce.WebAPI.Controllers
         public async Task<ActionResult<string>> CreateUser([FromBody] UserRequestModels.Create rq)
         {
             var id = await _userService.CreateUser(rq);
-            return id;
+            return "Id User: " +id;
+        }
+
+        [HttpPut]
+        public async Task<bool> UpdatePassword([FromBody] UserRequestModels.UpdatePassword rq)
+        {
+            var rp = await _userService.UpdatePassword(rq);
+
+            return rp;
         }
 
     }

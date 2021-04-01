@@ -1,4 +1,4 @@
-﻿using eCommerce.Application.Services.Email;
+﻿using eCommerce.Application.Notification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,19 +13,19 @@ namespace eCommerce.WebAPI.Controllers
     [ApiController]
     public class TestEmailController : ControllerBase
     {
-        private readonly IEmailService _emailService;
-        
-        public TestEmailController(IEmailService emailService)
+        /*private readonly IPattenSendEmail _pattenSendEmail;
+
+        public TestEmailController(EmailResetPassword emailResetPassword)
         {
-            _emailService = emailService;
+            _pattenSendEmail = emailResetPassword;
         }
 
         [HttpGet]
         public bool testEmail()
         {
-            return _emailService.SendEmail("edommerce.intern2021@gmail.com", "nam03031999@gmail.com", "test", "hello");
+            return _pattenSendEmail.SendEmail("eCommerce", "nam03031999@gmail.com", "test", "http://localhost:4200/");
         }
-
+*/
         [HttpGet("admin")]
         [Authorize(Policy = "PermissionAdmin")]
         public string testAdmin()

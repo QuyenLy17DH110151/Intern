@@ -20,6 +20,11 @@ namespace eCommerce.Persistence.Repositories
             _dbSet = dbSet;
         }
 
+        public void Remove(T entity)
+        {
+            _dbSet.Remove(entity);
+        }
+
         public T Add(T entity)
         {
             return _dbSet.Add(entity).Entity;

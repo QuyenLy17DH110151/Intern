@@ -76,12 +76,19 @@ export class CreateUserComponent implements OnInit {
     this.user = new User(this.formUser.value.firstName, this.formUser.value.lastName,this.formUser.value.username);
     if(this.isDisableButtonSubmit==false){
       this.userClient.createUser(this.user).subscribe((res) =>{
-        console.log(res);
+        alert('Create User Success')
       }, 
       (erro) =>{
-        console.log(erro);
+       
+        if(erro.status<400){
+          alert('Create User Success')
+        }
+        if(erro.status>=400){
+          alert('Create User Fails')
+        }
       });
     }
+    this.createAccountForm();
   }
 
   ngOnInit() {
