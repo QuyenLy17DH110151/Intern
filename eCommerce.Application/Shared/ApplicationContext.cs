@@ -15,10 +15,13 @@ namespace eCommerce.Application.Shared
 
         public string Username { get; }
 
-        public UserPrincipal(string userId, string userName)
+        public string Role { get; set; }
+
+        public UserPrincipal(string userId, string userName, string role)
         {
             UserId = userId;
             Username = userName;
+            Role = role;
         }
     }
 }

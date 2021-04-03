@@ -35,6 +35,11 @@ namespace eCommerce.Persistence.Repositories
             _dbSet.Update(entity);
         }
 
+        public void Delete(T entity)
+        {
+            _dbSet.Remove(entity);
+        }
+
         public async Task<PaginatedResult<T>> SearchAsync(QueryObject<T> queryObject, Pagination pagingRq, Func<IQueryable<T>, IIncludableQueryable<T, object>> includeProperties = null)
         {
             var query = _dbSet.AsNoTracking().Where(queryObject.Expression);
