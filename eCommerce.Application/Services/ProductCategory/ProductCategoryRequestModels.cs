@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace eCommerce.Application.Services.ProductCategory
@@ -14,5 +16,17 @@ namespace eCommerce.Application.Services.ProductCategory
 
             public int PageSize { get; set; }
         }
+
+        public class Create
+        {
+            public string Name { get; set; }            
+
+        }
+
+        public class Update
+        {
+            public string Name { get; set; }
+        }
+        
     }
 }

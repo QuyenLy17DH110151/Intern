@@ -9,10 +9,40 @@ namespace eCommerce.Application.Services.ProductCategory
     public interface IProductCategoryService
     {
         /// <summary>
-        /// Searchs users
+        /// Searchs product category
         /// </summary>
         /// <param name="rq"></param>
         /// <returns></returns>
         Task<PaginatedResult<ProductCategoryReturnModels.ProductCategory>> SearchProductCategoriesAsync(ProductCategoryRequestModels.Search rq);
+
+        /// <summary>
+        /// Create product category
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<Guid> CreateProductCategoryAsync(ProductCategoryRequestModels.Create rq);
+
+        /// <summary>
+        /// Update product category
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<Guid> UpdateProductCategoryAsync(ProductCategoryRequestModels.Update rq, Guid id);
+
+        /// <summary>
+        /// Delete product category
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<Guid> DeleteProductCategoryAsync(Guid id);
+
+        /// <summary>
+        /// Get product category Id
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<ProductCategoryReturnModels.ProductCategory> GetProductCategoryByIdAsync(Guid id);
+
+        
     }
 }
