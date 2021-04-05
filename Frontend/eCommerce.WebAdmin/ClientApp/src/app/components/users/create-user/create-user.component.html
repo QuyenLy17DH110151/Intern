@@ -17,26 +17,25 @@
                                             <label for="firstName"  class="col-xl-3 col-md-4"><span>*</span>
                                                 First Name</label>
                                             <input class="form-control col-xl-8 col-md-7" formControlName="firstName" id="firstName"
-                                                type="text" required="" (ngModelChange)="changeFirstName()">
+                                                type="text" required="">
                                         </div>
-                                        <label class="message-erro" *ngIf="erroFirstName">{{erroFirstName}}</label>
-                                        
+                                        <label class="message-erro" *ngIf="formValidators.firstName.errors">FirstName not null</label>
                                         <div class="form-group row line-input">
                                             <label for="lastName" class="col-xl-3 000000000000000000col-md-4"><span>*</span>
                                                 Last Name</label>
                                             <input class="form-control col-xl-8 col-md-7" formControlName="lastName" id="lastName"
-                                                type="text" required="" (ngModelChange)="changeLaststName()">
+                                                type="text" required="" >
                                         </div>
-                                        <label class="message-erro" *ngIf="erroLastName">{{erroLastName}}</label>
+                                        <label class="message-erro" *ngIf="formValidators.lastName.errors">LastName not null</label>
                                         <div class="form-group row line-input">
                                             <label for="username" class="col-xl-3 col-md-4"><span>*</span>
                                                 User Name (Email)</label>
                                             <input class="form-control col-xl-8 col-md-7" id="username" formControlName="username"
-                                                type="email" required="" (ngModelChange)="changeUsername()">
+                                                type="email" required="">
                                         </div>
-                                        <label class="message-erro" *ngIf="erroUsername">{{erroUsername}}</label>
+                                        <label class="message-erro" *ngIf="formValidators.username.errors">Username is not email</label>
                                         <div class="pull-right line-input">
-                                            <button type="submit" class="btn btn-primary" [disabled]="isDisableButtonSubmit">Save</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
                                     </form>
                                 </div>
