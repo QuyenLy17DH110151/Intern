@@ -8,6 +8,10 @@ export class UserService {
         return !!localStorage.getItem('token');
     }
 
+    getToken() : string{
+        return localStorage.getItem('token');
+    }
+
     getDecodedAccessToken(token: string): any {
         try {
             return jwt_decode(token);

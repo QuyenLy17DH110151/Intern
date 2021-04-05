@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
+import { UserService } from "../shared/service/user.service";
 import { PagedList, SearchRequest } from "./models/common.model";
 import { User } from "./models/user.model";
 import { UpdatePasswordRequest, LoginRequest, JwtAuthResult, CreateUserRequest } from "./models/_index";
@@ -14,7 +15,7 @@ export class UserClient {
     apiToken = `${environment.apiUrl}/Token`;
     apiTokenLogout = `${environment.apiUrl}/Token/logout`;
     apiGetAll = `${environment.apiUrl}/Users/GetAll`;
-    constructor(protected httpClient: HttpClient) {}
+    constructor(protected httpClient: HttpClient, private userService: UserService) {}
 
     searchUsers(
         rq: SearchRequest = new SearchRequest()
@@ -27,7 +28,8 @@ export class UserClient {
     }
 
     createUser(user: CreateUserRequest) : Observable<string>{
-        var token = localStorage.getItem('token');
+        var token =this.userService.getToken();
+        console.log("token: "+ token)
         var httpOptions = {
             headers: new HttpHeaders(
                 { 

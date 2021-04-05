@@ -29,7 +29,7 @@ namespace eCommerce.Application.Services.KeyResetPasswords
             return SHA.ComputeSHA256Hash(key);
         }
 
-        public async Task<string> Add(User u)
+        public async Task<string> AddAsync(User u)
         {
             KeyResetPassword keyResetPassword = new KeyResetPassword();
             keyResetPassword.Id = Guid.NewGuid();

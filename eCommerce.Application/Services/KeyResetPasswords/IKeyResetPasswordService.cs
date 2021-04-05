@@ -8,7 +8,7 @@ namespace eCommerce.Application.Services.KeyResetPasswords
 {
     public interface IKeyResetPasswordService
     {
-        Task<string> Add(User u);
+        Task<string> AddAsync(User u);
         Task<bool> VerifyKeyAsync(string username, string keyParam);
     }
 }

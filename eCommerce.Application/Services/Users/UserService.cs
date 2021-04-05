@@ -91,7 +91,7 @@ namespace eCommerce.Application.Services.Users
            
 
             // send password reset email
-            var keyParam = await _keyResetPasswordService.Add(u);
+            var keyParam = await _keyResetPasswordService.AddAsync(u);
             await _userRepo.UnitOfWork.SaveChangesAsync();
             if (keyParam == null)
             {
