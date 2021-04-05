@@ -37,7 +37,7 @@ namespace eCommerce.WebAPI.Infrastructure.Middlewares
                             userId = claim.Value;
                             break;
                         case ClaimTypes.Role:
-                            userId = claim.Value;
+                            role = claim.Value;
                             break;
                     }
                 }
