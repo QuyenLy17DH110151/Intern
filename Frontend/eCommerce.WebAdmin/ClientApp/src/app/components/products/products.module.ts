@@ -25,7 +25,7 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
-import {ProductService} from '../../shared/service/product.service'
+import {ProductClient} from '../../api-clients/product.client'
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -62,7 +62,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
       useValue: DEFAULT_DROPZONE_CONFIG
     },
     NgbActiveModal,
-    ProductService
+    ProductClient
   ]
 })
 export class ProductsModule { }

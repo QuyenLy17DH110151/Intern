@@ -48,6 +48,7 @@ namespace eCommerce.Application.Services.Products
                 Price = request.Price,
                 CategoryId = request.CategoryId,
                 OwnerId = request.OwnerId,
+                Description = request.Description,
 
                 Photos = request.Photos.Select(x => new ProductPhoto { Url = x }).ToList()
             };

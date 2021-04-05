@@ -7,7 +7,7 @@ import { Product } from 'src/app/api-clients/models/product.model';
 @Injectable({
     providedIn: 'root', //???
 })
-export class ProductService {
+export class ProductClient {
     private baseUrl = `${environment.apiUrl}/Products`;
 
     constructor(protected httpClient: HttpClient) {}
@@ -16,20 +16,20 @@ export class ProductService {
         return new HttpHeaders()
             .set('content-type', 'application/json')
             .set('Access-Control-Allow-Origin', '*')
-            .set(
-                'Authorization',
-                `Bearer + ${access_token}`
-            );
+            // .set(
+            //     'Authorization',
+            //     `Bearer ${access_token}`
+            // );
     }
 
     addProduct(newProduct: Product) {
-        const headers = this.setupHeader();
-        return this.httpClient.post<Product>(this.baseUrl, newProduct, { headers });
+        //const headers = this.setupHeader();
+        return this.httpClient.post<Product>(this.baseUrl, newProduct);
     }
 
     getProductDetail(productId:string) {
         const url = `${this.baseUrl}/${productId}`;
-        const headers = this.setupHeader();
-        return this.httpClient.get(url,{ headers });
+        //const headers = this.setupHeader();
+        return this.httpClient.get(url);
     }
 }

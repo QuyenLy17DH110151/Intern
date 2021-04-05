@@ -15,4 +15,8 @@ export class UserService {
             return null;
         }
     }
+
+    getToken():string {
+        return localStorage.getItem('access_token');
+    }
 }

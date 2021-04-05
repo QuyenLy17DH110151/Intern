@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ProductService } from 'src/app/shared/service/product.service';
+import { ProductClient } from 'src/app/api-clients/product.client';
 import { FileUploadService } from 'src/app/shared/service/upload-image/uploadImage.service';
 import { FileUpload } from 'src/app/shared/service/upload-image/uploadImage.model';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
@@ -24,7 +24,7 @@ export class AddProductComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private productService: ProductService,
+        private productClient: ProductClient,
         private uploadService: FileUploadService,
         private db: AngularFireDatabase,
         private storage: AngularFireStorage
@@ -100,7 +100,7 @@ export class AddProductComponent implements OnInit {
         };
 
         console.log("data submit: ", formData);
-        await this.productService
+        await this.productClient
             .addProduct(formData)
             .toPromise()
             .then((response) => {

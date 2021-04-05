@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Image } from '@ks89/angular-modal-gallery';
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ProductService } from 'src/app/shared/service/product.service';
+import { ProductClient } from 'src/app/api-clients/product.client';
 
 @Component({
     selector: 'app-product-detail',
@@ -13,18 +13,9 @@ import { ProductService } from 'src/app/shared/service/product.service';
 export class ProductDetailComponent implements OnInit {
     public closeResult: string;
     public counter: number = 1;
-
-    // product = {
-    //     name: 'Sản phẩm 1',
-    //     description:
-    //         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-    //     price: 200000,
-    //     quantity: 10,
-    //     photos: '',
-    // };
     product: any;
 
-    @Input() productId = '99ebeb9e-26c1-413f-0238-08d8f4f3cb37';
+    @Input() productId = 'a9187572-b179-4e35-333c-08d8f810c796';
 
     public imagesRect: Image[] = [
         new Image(
@@ -52,7 +43,7 @@ export class ProductDetailComponent implements OnInit {
     constructor(
         private modalService: NgbModal,
         config: NgbRatingConfig,
-        private productService: ProductService
+        private productClient: ProductClient
     ) {
         config.max = 5;
         config.readonly = false;
@@ -83,7 +74,7 @@ export class ProductDetailComponent implements OnInit {
     }
 
     async getProductDetail() {
-        const response = await this.productService
+        const response = await this.productClient
             .getProductDetail(this.productId)
             .toPromise();
         this.product = response;

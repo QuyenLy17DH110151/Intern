@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserDetails } from 'src/app/api-clients/models/user.model';
 import { UserService } from 'src/app/shared/service/user.service';
 
 @Component({
@@ -10,19 +9,9 @@ import { UserService } from 'src/app/shared/service/user.service';
 })
 export class ProfileComponent implements OnInit {
 
-  user: UserDetails;
-  @Input() id = 'c593d805-ddd8-4e0d-b22a-5feb129a8478';
-
-  constructor(protected UserService: UserService) { 
-    this.GetUserDetail();
+  constructor() {
   }
 
   ngOnInit() { }
 
-  async GetUserDetail() {
-    const response = await this.UserService
-      .getUserDetail(this.id)
-      .toPromise();
-    this.user = response;
-  }
 }

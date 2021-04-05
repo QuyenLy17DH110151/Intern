@@ -2,12 +2,13 @@
     <div class="card">
         <div class="row product-page-main card-body">
             <div class="col-xl-4">
-                <section>
+                <!-- <section>
                     <ks-carousel [id]="100" [images]="imagesRect" [dotsConfig]="{visible: false}"
                         [carouselConfig]="{maxHeight: '600px', keyboardEnable: true}"
                         [previewConfig]="{maxHeight: '125px'}">
                     </ks-carousel>
-                </section>
+                </section> -->
+                <img [src]="product.photos[0].url" alt="" s style="width: 100%">
             </div>
             <div class="col-xl-8">
                 <div class="product-page-details product-right mb-0">
@@ -17,7 +18,7 @@
                     <h6 class="product-title">product details</h6>
                     <p class="mb-0">{{product.description}}</p>
                     <div class="product-price digits mt-2">
-                        <h3>${{product.price}}<del>$350.00</del></h3>
+                        <h3>${{product.price}}</h3>
                     </div>
                     <ul class="color-variant">
                         <li class="bg-light0"></li>
