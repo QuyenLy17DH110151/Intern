@@ -2,7 +2,7 @@ import { UserService } from 'src/app/shared/service/user.service';
 import { Router } from '@angular/router';
 import { LoginRequest } from './../../../api-clients/models/common.model';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserClient } from 'src/app/api-clients/_index';
 
 @Component({
@@ -13,6 +13,7 @@ import { UserClient } from 'src/app/api-clients/_index';
 export class LoginComponent implements OnInit {
     public loginForm: FormGroup;
     public registerForm: FormGroup;
+    submitted = false;
     constructor(
         private formBuilder: FormBuilder,
         private userClient: UserClient,
@@ -48,8 +49,8 @@ export class LoginComponent implements OnInit {
 
     createLoginForm() {
         this.loginForm = this.formBuilder.group({
-            username: [''],
-            password: [''],
+            username: ['', [Validators.required, Validators.email]],
+            password: ['', [Validators.required, Validators.minLength(6)]],
         });
     }
 
@@ -61,9 +62,18 @@ export class LoginComponent implements OnInit {
         });
     }
 
-    ngOnInit() {}
-
+    ngOnInit() {
+        this.createLoginForm();
+    }
+    get f() {
+        return this.loginForm.controls;
+    }
     onSubmit() {
+        this.submitted = true;
+        if (this.loginForm.invalid) {
+            console.log(this.loginForm.invalid);
+            return;
+        }
         let getToken = this.userClient
             .login(this.loginForm.value)
             .toPromise()
