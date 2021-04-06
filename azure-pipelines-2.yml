@@ -10,7 +10,7 @@ trigger:
       - develop
   paths:
     exclude:
-      - FrontEnd/*
+      - Frontend/*
 
 pool:
   vmImage: 'windows-latest'
