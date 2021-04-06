@@ -164,11 +164,16 @@ namespace eCommerce.Persistence
 
             if (entry.State == EntityState.Added)
             {
+                //auditable.CreatedBy = _applicationContext.Principal.UserId;
                 auditable.CreatedBy = _applicationContext.Principal.Username;
                 auditable.CreatedDate = DateTime.UtcNow;
+                //auditable.LastUpdatedBy = _applicationContext.Principal.UserId;
+                auditable.LastUpdatedBy = _applicationContext.Principal.Username;
+                auditable.LastUpdated = DateTime.UtcNow;
             }
             else
             {
+                //auditable.LastUpdatedBy = _applicationContext.Principal.UserId;
                 auditable.LastUpdatedBy = _applicationContext.Principal.Username;
                 auditable.LastUpdated = DateTime.UtcNow;
             }

@@ -13,10 +13,12 @@ namespace eCommerce.Domain.Repositories
     {
         Product Add(Product product);
         void Update(Product product);
+        ProductPhoto UploadPhoto(ProductPhoto photo);
 
-        Task<Product> GetByIdAsync(Guid id);
+        Task<Product> GetProductByIdAsync(Guid id);
         Task<Product> GetByCategoryIdAsync(Guid catId);
         Task<IEnumerable<Product>> GetAllAsync();
         Task<PaginatedResult<Product>> SearchAsync(SearchProductModel req);
+        Task<int> GetQuantityByProductIdAsync(Guid id);
     }
 }

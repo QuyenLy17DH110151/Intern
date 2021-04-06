@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as chartData from '../../shared/data/chart';
+import * as chartData from '../../shared/data/chart'; // khac gi import chartData thoi
 import { doughnutData, pieData } from '../../shared/data/chart';
 
 import { UserClient } from 'src/app/api-clients/_index';

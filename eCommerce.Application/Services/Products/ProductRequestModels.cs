@@ -19,5 +19,21 @@ namespace eCommerce.Application.Services.Products
             public string Sort { get; set; }
             public Guid? Owner { get; set; }
         }
+
+        public class Create
+        {
+            public string Name { get; set; }
+            public decimal Price { get; set; }
+            public Guid CategoryId { get; set; }
+            public Guid OwnerId { get; set; }
+            public string Description { get; set; }
+            public List<string> Photos { get; set; }
+        }
+
+        public class UploadPhoto
+        {
+            public Guid ProductId { get; set; }
+            public string Url { get; set; }
+        }
     }
 }

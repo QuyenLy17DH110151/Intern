@@ -44,7 +44,8 @@ namespace eCommerce.Persistence.Migrations
                     b.HasAlternateKey("IdentityKey")
                         .HasAnnotation("SqlServer:Clustered", true);
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("Inventory");
                 });
@@ -126,6 +127,9 @@ namespace eCommerce.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("IdentityKey")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -186,7 +190,7 @@ namespace eCommerce.Persistence.Migrations
                     b.ToTable("ProductCategory");
                 });
 
-            modelBuilder.Entity("eCommerce.Domain.Entities.ProductPhotos", b =>
+            modelBuilder.Entity("eCommerce.Domain.Entities.ProductPhoto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -226,7 +230,7 @@ namespace eCommerce.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductPhotos");
+                    b.ToTable("ProductPhoto");
                 });
 
             modelBuilder.Entity("eCommerce.Domain.Entities.User", b =>
@@ -285,8 +289,8 @@ namespace eCommerce.Persistence.Migrations
             modelBuilder.Entity("eCommerce.Domain.Entities.Inventory", b =>
                 {
                     b.HasOne("eCommerce.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                        .WithOne("Inventory")
+                        .HasForeignKey("eCommerce.Domain.Entities.Inventory", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -315,10 +319,10 @@ namespace eCommerce.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("eCommerce.Domain.Entities.ProductPhotos", b =>
+            modelBuilder.Entity("eCommerce.Domain.Entities.ProductPhoto", b =>
                 {
                     b.HasOne("eCommerce.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Photos")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
