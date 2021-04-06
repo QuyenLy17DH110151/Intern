@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI.Infrastructure.Config
 {
-    public class ClientUrl
+    public class AppConfig
     {
-        public string URL { get; set; }
+        public string FrontEndUrl { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using EasyEncryption;
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Repositories;
+using eCommerce.Domain.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,38 +22,37 @@ namespace eCommerce.Application.Services.KeyResetPasswords
 
         }
 
-        private string genarateKeyParama(string email)
+        private string generateKeyParama(string email)
         {
 
             DateTime now = DateTime.UtcNow;
             string key = email + now.ToShortDateString() + SECRET;
             return SHA.ComputeSHA256Hash(key);
         }
-
+       
         public async Task<string> AddAsync(User u)
         {
             KeyResetPassword keyResetPassword = new KeyResetPassword();
             keyResetPassword.Id = Guid.NewGuid();
             keyResetPassword.User = u;
-            keyResetPassword.KeyParam = genarateKeyParama(u.Username);
+            keyResetPassword.KeyParam = generateKeyParama(u.Username);
             _repo.Add(keyResetPassword);
             return keyResetPassword.KeyParam;
         }
 
-        public async Task<bool> VerifyKeyAsync(string username, string keyParam)
+        public async Task VerifyKeyAsync(string username, string keyParam)
         {
-            KeyResetPassword keyResetPassword = await _repo.FindByUsername(username);
+            var keyResetPassword = await _repo.FindByUsername(username);
             if (keyResetPassword == null)
             {
-                return false;
+                throw new BusinessException("username is not request change password");
             }
-            string keyParamHash = genarateKeyParama(username);
-            if (keyResetPassword.KeyParam == keyParamHash)
+            string keyParamHash = generateKeyParama(username);
+            if (keyResetPassword.KeyParam != keyParamHash)
             {
-                _repo.Remove(keyResetPassword);
-                return true;
+                throw new BusinessException("token invalid");
             }
-            return false;
+            
         }
     }
 }

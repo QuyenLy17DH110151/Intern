@@ -16,9 +16,9 @@ namespace eCommerce.WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ClientUrl _clienUrl;
+        private readonly AppConfig _clienUrl;
 
-        public UsersController(IUserService userService, ClientUrl clienUrl)
+        public UsersController(IUserService userService, AppConfig clienUrl)
         {
             _userService = userService;
             _clienUrl = clienUrl;
@@ -34,16 +34,26 @@ namespace eCommerce.WebAPI.Controllers
         [Authorize(Policy = "PermissionAdmin")]
         public async Task<ActionResult<Guid>> CreateUser([FromBody] UserRequestModels.Create rq)
         {
-            var id = await _userService.CreateUserAsync(rq, _clienUrl.URL);
+            var id = await _userService.CreateUserAsync(rq, _clienUrl.FrontEndUrl);
             return id;
         }
 
-        [HttpPut]
-        public async Task<bool> UpdatePassword([FromBody] UserRequestModels.UpdatePassword rq)
-        {
-            var rp = await _userService.UpdatePassword(rq);
 
-            return rp;
+       /* [HttpPost("reset-password")]
+        [Authorize(Policy = "PermissionSeller")]
+        public async Task<ActionResult> ResetPassword()
+        {
+            var username = User.Identity.Name;
+            await _userService.ResetPasswordAsync(username, _clienUrl.FrontEndUrl);
+            return Ok(username);
+        }
+*/
+        [HttpPut]
+        public async Task<ActionResult> UpdatePassword([FromBody] UserRequestModels.UpdatePassword rq)
+        {
+             await _userService.UpdatePasswordAsync(rq);
+
+            return Ok();
         }
 
 

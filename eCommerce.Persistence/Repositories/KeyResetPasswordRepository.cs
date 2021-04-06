@@ -11,9 +11,9 @@ namespace eCommerce.Persistence.Repositories
 {
     public class KeyResetPasswordRepository : IKeyResetPasswordRepository
     {
-        public IUnitOfWork UnitOfWork => throw new NotImplementedException();
         private readonly ApplicationDbContext _dbContext;
         private readonly GenericRepository<KeyResetPassword> _genericRepo;
+        public IUnitOfWork UnitOfWork => _dbContext;
 
         public KeyResetPasswordRepository(ApplicationDbContext context)
         {

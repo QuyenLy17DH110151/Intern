@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UpdatePasswordRequest } from 'src/app/api-clients/models/_index';
@@ -13,11 +13,6 @@ export class ResetPasswordComponent implements OnInit{
     public key: string;
     public email: string;
     public formResetPassword: FormGroup;
-    public password: string; 
-    public erroPassword: string = 'Password not empty';
-    public erroRePassword: string = null;
-    public isDisableButtonSubmit: boolean = true;
-    public isDisableRePassword: boolean = true;
     public updatePasswordRequest: UpdatePasswordRequest = null;
 
     constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private userClient : UserClient) {
@@ -26,58 +21,27 @@ export class ResetPasswordComponent implements OnInit{
 
      createFromResetPassword(){
         this.formResetPassword = this.formBuilder.group({
-            password: [''],
-            rePassword: ['']
+            password: ['',[Validators.required, Validators.minLength(6)]],
+            rePassword: ['',[Validators.required, Validators.minLength(6)]]
           })
      }
 
-     updateDisableButtonSubmit(){
-        if(this.erroPassword==null && this.erroRePassword==null ){
-          this.isDisableButtonSubmit=false;
-          return;
-        }
-        this.isDisableButtonSubmit=true;
+     get formValidators() {
+        return this.formResetPassword.controls;
       }
-
-    changePassword(){
-        let password = this.formResetPassword.value.password;
-        if(password == ''){
-            this.erroPassword = 'Password not empty';
-        }
-        if(password!= ''){
-            if(password.length<6){
-                this.erroPassword = 'Password min length 6 characters';
-            }
-            if(password.length>=6){
-                this.erroPassword = null;
-                this.isDisableRePassword =true;
-                this.changeRePassword();
-            }
-        }
-        
-    }
-
-    changeRePassword(){
-        if(this.formResetPassword.value.password != this.formResetPassword.value.rePassword){
-            this.erroRePassword = 'Not equals password'; 
-        } 
-        if(this.formResetPassword.value.password == this.formResetPassword.value.rePassword){
-            this.erroRePassword = null; 
-        }
-        this.updateDisableButtonSubmit();
-    }
-
+    
+     
     savePassword(){
-        this.updatePasswordRequest = new UpdatePasswordRequest(this.email, this.key, this.formResetPassword.value.password);
-        if(this.isDisableButtonSubmit==false){
-          this.userClient.updatePassword(this.updatePasswordRequest).subscribe((res) =>{
-            alert('Update Password Success');
-          }, 
-          (erro) =>{
-            alert('Update Password Fail')
-          });
+        if(this.formResetPassword.value.password === this.formResetPassword.value.rePassword){
+            this.updatePasswordRequest = new UpdatePasswordRequest(this.email, this.key, this.formResetPassword.value.password);            
+            this.userClient.updatePassword(this.updatePasswordRequest).subscribe((res) =>{
+                alert('Update Password Success');
+            }); 
+            this.createFromResetPassword;
         }
-        this.createFromResetPassword;
+        if(this.formResetPassword.value.password != this.formResetPassword.value.rePassword){
+            alert('password not equals password again');
+        }
     }
 
     ngOnInit(): void {

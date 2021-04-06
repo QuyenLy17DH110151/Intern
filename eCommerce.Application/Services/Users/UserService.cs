@@ -49,7 +49,7 @@ namespace eCommerce.Application.Services.Users
                 return null;
             }
             // TODO: need to encrypt password and compare with PasswordHash
-            
+
             if (user.PasswordHash == SHA.ComputeSHA256Hash(password))
             {
                 return _mapper.Map<UserReturnModels.User>(user);
@@ -76,7 +76,7 @@ namespace eCommerce.Application.Services.Users
         public async Task<Guid> CreateUserAsync(UserRequestModels.Create rq, string host)
         {
             var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
-            if (user!=null)
+            if (user != null)
             {
                 throw new BusinessException("username exsist");
             }
@@ -88,33 +88,29 @@ namespace eCommerce.Application.Services.Users
             u.FirstName = rq.LastName;
             u.Role = UserRoles.Seller;
             _userRepo.Add(u);
-           
+
 
             // send password reset email
             var keyParam = await _keyResetPasswordService.AddAsync(u);
             await _userRepo.UnitOfWork.SaveChangesAsync();
             if (keyParam == null)
             {
-                throw new BusinessException("");
+                throw new BusinessException("generate token fails");
 
             }
             SendEmailChangPassword("eCommerce", rq.Username, keyParam, host);
             return u.Id;
         }
 
-        public async Task<bool> UpdatePassword(UserRequestModels.UpdatePassword rq)
+        public async Task UpdatePasswordAsync(UserRequestModels.UpdatePassword rq)
         {
             //check token
-            if (await _keyResetPasswordService.VerifyKeyAsync(rq.Username, rq.KeyParam))
-            {
-                //get update password user
-                User user = await _userRepo.GetUserByUsernameAsync(rq.Username);
-                user.PasswordHash = SHA.ComputeSHA256Hash(rq.Password);
-                _userRepo.Update(user);
-                await _userRepo.UnitOfWork.SaveChangesAsync();
-                return true;
-            }
-            return false;
+            await _keyResetPasswordService.VerifyKeyAsync(rq.Username, rq.KeyParam);
+            //get update password user
+            User user = await _userRepo.GetUserByUsernameAsync(rq.Username);
+            user.PasswordHash = SHA.ComputeSHA256Hash(rq.Password);
+            _userRepo.Update(user);
+            await _userRepo.UnitOfWork.SaveChangesAsync();
         }
         public async Task<bool> LockoutUserAsync(Guid Id)
         {
@@ -162,7 +158,29 @@ namespace eCommerce.Application.Services.Users
             html += "</form>";
             html += "</body>";
             html += "</html>";
-             _emailSender.SendEmail(from, to, "Reset password", html);
+            _emailSender.SendEmail(from, to, "Reset password", html);
         }
+
+
+        public async Task ResetPasswordAsync(string username, string host)
+        {
+            //find username
+            var user = await _userRepo.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                throw new BusinessException("username not exsist");
+            }
+
+            var keyParam = await _keyResetPasswordService.AddAsync(user);
+            await _userRepo.UnitOfWork.SaveChangesAsync();
+            if (keyParam == null)
+            {
+                throw new BusinessException("generate token fails");
+
+            }
+            SendEmailChangPassword("eCommerce", username, keyParam, host);
+
+        }
+
     }
 }

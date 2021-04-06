@@ -50,8 +50,8 @@ namespace eCommerce.WebAPI
 
             // JWT Auth
             var jwtTokenConfig = Configuration.GetSection("JwtTokenConfig").Get<JwtTokenConfig>();
-            var ClientUrl = Configuration.GetSection("ClientUrl").Get<ClientUrl>();
-            services.AddSingleton(ClientUrl);
+            var appConfig = Configuration.GetSection("AppConfig").Get<AppConfig>();
+            services.AddSingleton(appConfig);
             services.AddSingleton(jwtTokenConfig);
             services.AddAuthentication(x =>
             {
