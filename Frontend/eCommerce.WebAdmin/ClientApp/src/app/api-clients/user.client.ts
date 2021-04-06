@@ -15,7 +15,7 @@ export class UserClient {
     apiToken = `${environment.apiUrl}/Token`;
     apiTokenLogout = `${environment.apiUrl}/Token/logout`;
     apiGetAll = `${environment.apiUrl}/Users/GetAll`;
-    constructor(protected httpClient: HttpClient, private userService: UserService) {}
+    constructor(protected httpClient: HttpClient, private userService: UserService) { }
 
     searchUsers(
         rq: SearchRequest = new SearchRequest()
@@ -27,22 +27,12 @@ export class UserClient {
         return this.httpClient.get<PagedList<User>>(this.apiEndpoint, options);
     }
 
-    createUser(user: CreateUserRequest) : Observable<string>{
-        var token =this.userService.getToken();
-        console.log("token: "+ token)
-        var httpOptions = {
-            headers: new HttpHeaders(
-                { 
-                    'Content-Type': 'application/json',
-                    'Response-Type': 'text',
-                    'Authorization': 'Bearer ' + token
-                })
-          };
-        return this.httpClient.post<string>(this.apiEndpoint, user,httpOptions);
+    createUser(user: CreateUserRequest): Observable<string> {
+        return this.httpClient.post<string>(this.apiEndpoint, user);
     }
 
-    
-    updatePassword(rq: UpdatePasswordRequest):  Observable<boolean>{
+
+    updatePassword(rq: UpdatePasswordRequest): Observable<boolean> {
         return this.httpClient.put<boolean>(this.apiEndpoint, rq);
     }
 

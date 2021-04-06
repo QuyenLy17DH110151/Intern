@@ -52,6 +52,7 @@ namespace eCommerce.Application.Services.KeyResetPasswords
             {
                 throw new BusinessException("token invalid");
             }
+            _repo.Remove(keyResetPassword);
             
         }
     }
