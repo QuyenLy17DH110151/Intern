@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace eCommerce.Persistence.EntityConfigurations
 {
     class KeyResetPasswordConfiguration : IEntityTypeConfiguration<KeyResetPassword>
@@ -17,3 +18,4 @@ namespace eCommerce.Persistence.EntityConfigurations
         }
     }
 }
+
