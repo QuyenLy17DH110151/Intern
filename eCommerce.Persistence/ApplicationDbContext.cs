@@ -123,11 +123,6 @@ namespace eCommerce.Persistence
             }
         }
 
-        internal object DbSet<T>()
-        {
-            throw new NotImplementedException();
-        }
-
         private void PreSaveChanges()
         {
             foreach (var entry in ChangeTracker.Entries())
