@@ -4,6 +4,7 @@ using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace eCommerce.Persistence.Repositories
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly GenericRepository<Product> _genericRepo;
+        private readonly GenericRepository<ProductPhoto> _photoGenericRepo;
 
         public IUnitOfWork UnitOfWork => _dbContext;
 
@@ -23,11 +25,12 @@ namespace eCommerce.Persistence.Repositories
         {
             _dbContext = context;
             _genericRepo = new GenericRepository<Product>(_dbContext.Set<Product>());
+            _photoGenericRepo = new GenericRepository<ProductPhoto>(_dbContext.Set<ProductPhoto>());
         }
 
         public Product Add(Product product)
         {
-            return _genericRepo.Add(product);     
+            return _genericRepo.Add(product);    
         }
 
         public Task<IEnumerable<Product>> GetAllAsync()
@@ -38,11 +41,6 @@ namespace eCommerce.Persistence.Repositories
         public Task<Product> GetByCatIdAsync(Guid catId)
         {
             return _genericRepo.GetByIdAsync(catId);
-        }
-
-        public Task<Product> GetByProIdAsync(Guid id)
-        {
-            return _genericRepo.GetByIdAsync(id);
         }
 
         public void Update(Product product)
@@ -102,6 +100,22 @@ namespace eCommerce.Persistence.Repositories
         public Task<Product> GetByCategoryIdAsync(Guid catId)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<Product> GetProductByIdAsync(Guid id)
+        {
+            return _genericRepo.GetByIdAsync(id, x => x.Include(m => m.Photos).Include(m=>m.Inventory).Include(m=>m.Category));
+        }
+
+        public ProductPhoto UploadPhoto(ProductPhoto photo)
+        {
+            return _photoGenericRepo.Add(photo);
+        }
+
+        public async Task<int> GetQuantityByProductIdAsync(Guid id)
+        {
+            var inventory = await _dbContext.Set<Inventory>().SingleOrDefaultAsync(x => x.ProductId == id);
+            return inventory.Quantity;
         }
     }
 }

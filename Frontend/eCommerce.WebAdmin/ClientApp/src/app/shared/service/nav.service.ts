@@ -49,9 +49,9 @@ export class NavService {
 		{
 			title: 'Products', icon: 'box', type: 'sub', active: false, children: [
 				{ path: '/products/list-product', title: 'Product List', type: 'link' },
-				{ path: '/products/list-product-category', title: 'Product Categori List', type: 'link' },
-				{ path: '/products/create-product', title: 'Create Product', type: 'link' },
-				{ path: '/products/details-product', title: 'Details Product', type: 'link' },
+				{ path: '/products/category', title: 'Category', type: 'link' },
+				{ path: '/products/add-product', title: 'Add Product', type: 'link' },
+				{ path: '/products/product-detail', title: 'Details Product', type: 'link' },
 			]
 		},
 		{

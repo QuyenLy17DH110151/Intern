@@ -14,8 +14,16 @@ const routes: Routes = [
   {
     path: '',
     children: [
+        {
+            path: 'list-product',
+            component: ProductListComponent,
+            data: {
+              title: "Product List",
+              breadcrumb: "Product List"
+            }
+          },
       {
-        path: 'physical/category',
+        path: 'category',
         component: CategoryComponent,
         data: {
           title: "Category",
@@ -23,23 +31,16 @@ const routes: Routes = [
         }
       },
       {
-        path: 'physical/sub-category',
+        path: 'sub-category',
         component: SubCategoryComponent,
         data: {
           title: "Sub Category",
           breadcrumb: "Sub Category"
         }
       },
+
       {
-        path: 'physical/product-list',
-        component: ProductListComponent,
-        data: {
-          title: "Product List",
-          breadcrumb: "Product List"
-        }
-      },
-      {
-        path: 'physical/product-detail',
+        path: 'product-detail',
         component: ProductDetailComponent,
         data: {
           title: "Product Detail",
@@ -47,7 +48,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'physical/add-product',
+        path: 'add-product',
         component: AddProductComponent,
         data: {
           title: "Add Products",
