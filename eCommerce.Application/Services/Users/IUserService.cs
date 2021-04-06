@@ -40,6 +40,7 @@ namespace eCommerce.Application.Services.Users
         /// <param name="Id User"></param>
         /// <returns></returns>
         Task<bool> LockoutUserAsync(Guid Id);
+        Task ResetPasswordAsync(string username, string frontEndUrl);
 
         /// <summary>
         /// Unlockout User
