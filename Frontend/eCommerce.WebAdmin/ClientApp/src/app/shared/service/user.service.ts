@@ -5,7 +5,7 @@ import jwt_decode from 'jwt-decode';
 export class UserService {
     constructor() {}
     loggedIn() {
-        return !!localStorage.getItem('token');
+        return !!localStorage.getItem('access_token');
     }
 
     getDecodedAccessToken(token: string): any {
