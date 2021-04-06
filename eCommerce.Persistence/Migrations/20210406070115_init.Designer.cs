@@ -10,8 +10,8 @@ using eCommerce.Persistence;
 namespace eCommerce.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210316102615_AddDatabase_ver1")]
-    partial class AddDatabase_ver1
+    [Migration("20210406070115_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,7 +46,8 @@ namespace eCommerce.Persistence.Migrations
                     b.HasAlternateKey("IdentityKey")
                         .HasAnnotation("SqlServer:Clustered", true);
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("Inventory");
                 });
@@ -63,8 +64,15 @@ namespace eCommerce.Persistence.Migrations
                     b.Property<string>("BuyerName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BuyerPhone")
-                        .HasColumnType("int");
+                    b.Property<string>("BuyerPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdentityKey")
                         .ValueGeneratedOnAdd()
@@ -73,10 +81,16 @@ namespace eCommerce.Persistence.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Prices")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("ProductId")
@@ -85,8 +99,8 @@ namespace eCommerce.Persistence.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id")
                         .HasAnnotation("SqlServer:Clustered", false);
@@ -114,6 +128,9 @@ namespace eCommerce.Persistence.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdentityKey")
                         .ValueGeneratedOnAdd()
@@ -175,7 +192,7 @@ namespace eCommerce.Persistence.Migrations
                     b.ToTable("ProductCategory");
                 });
 
-            modelBuilder.Entity("eCommerce.Domain.Entities.ProductPhotos", b =>
+            modelBuilder.Entity("eCommerce.Domain.Entities.ProductPhoto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -215,7 +232,7 @@ namespace eCommerce.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductPhotos");
+                    b.ToTable("ProductPhoto");
                 });
 
             modelBuilder.Entity("eCommerce.Domain.Entities.User", b =>
@@ -274,8 +291,8 @@ namespace eCommerce.Persistence.Migrations
             modelBuilder.Entity("eCommerce.Domain.Entities.Inventory", b =>
                 {
                     b.HasOne("eCommerce.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                        .WithOne("Inventory")
+                        .HasForeignKey("eCommerce.Domain.Entities.Inventory", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -304,10 +321,10 @@ namespace eCommerce.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("eCommerce.Domain.Entities.ProductPhotos", b =>
+            modelBuilder.Entity("eCommerce.Domain.Entities.ProductPhoto", b =>
                 {
                     b.HasOne("eCommerce.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Photos")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
