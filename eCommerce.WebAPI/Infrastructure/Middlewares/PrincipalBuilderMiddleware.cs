@@ -30,14 +30,14 @@ namespace eCommerce.WebAPI.Infrastructure.Middlewares
                 {
                     switch (claim.Type)
                     {
-                        case ClaimTypes.Name:
+                        case "username":
                             username = claim.Value;
                             break;
-                        case ClaimTypes.NameIdentifier:
+                        case "id":
                             userId = claim.Value;
                             break;
                         case ClaimTypes.Role:
-                            userId = claim.Value;
+                            role = claim.Value;
                             break;
                     }
                 }

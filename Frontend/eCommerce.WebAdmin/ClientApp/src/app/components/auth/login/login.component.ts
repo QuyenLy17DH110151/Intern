@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
             .then(
                 (res) => {
                     console.log('res', res);
-                    localStorage.setItem('token', res.accessToken);
+                    localStorage.setItem('access_token', res.accessToken);
                     let tokenInfo = this.userService.getDecodedAccessToken(
                         res.accessToken
                     );
