@@ -55,7 +55,7 @@ namespace eCommerce.WebAPI.Controllers
             return jwtResult;
         }
 
-        [HttpPost("logout")]
+        [HttpPost("logout")]    
         public ActionResult Logout()
         {
             var userName = User.Identity.Name;
