@@ -1,10 +1,13 @@
 using Autofac;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
+using eCommerce.Application.Services.Users;
 using eCommerce.ModuleRegister;
 using eCommerce.WebAPI.Infrastructure.Config;
 using eCommerce.WebAPI.Infrastructure.Filters;
 using eCommerce.WebAPI.Infrastructure.Middlewares;
 using eCommerce.WebAPI.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -23,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI
 {
@@ -48,6 +50,8 @@ namespace eCommerce.WebAPI
 
             // JWT Auth
             var jwtTokenConfig = Configuration.GetSection("JwtTokenConfig").Get<JwtTokenConfig>();
+            var appConfig = Configuration.GetSection("AppConfig").Get<AppConfig>();
+            services.AddSingleton(appConfig);
             services.AddSingleton(jwtTokenConfig);
             services.AddAuthentication(x =>
             {
@@ -75,7 +79,7 @@ namespace eCommerce.WebAPI
             // Cors
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
+                options.AddPolicy("CorsPolicy", 
                     builder => builder
                         .SetIsOriginAllowed((host) => true)
                         .AllowAnyMethod()
@@ -97,7 +101,10 @@ namespace eCommerce.WebAPI
                 x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 x.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
+            })
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserRequestModels.CreateValidator>());
+
+            
 
             // Swagger
             services.AddSwaggerGen(c =>
@@ -130,6 +137,15 @@ namespace eCommerce.WebAPI
                     {securityScheme, new string[] { }}
                 });
             });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("PermissionAdmin",
+                     policy => policy.RequireRole("Admin"));
+                options.AddPolicy("PermissionSeller",
+                     policy => policy.RequireRole("Admin", "Seller"));
+            });
+
+
         }
 
         public void ConfigureContainer(ContainerBuilder container)

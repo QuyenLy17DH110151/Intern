@@ -3,7 +3,7 @@ import jwt_decode from 'jwt-decode';
 
 @Injectable()
 export class UserService {
-    constructor() {}
+    constructor() { }
     loggedIn() {
         return !!localStorage.getItem('access_token');
     }
@@ -16,7 +16,7 @@ export class UserService {
         }
     }
 
-    getToken():string {
+    getToken(): string {
         return localStorage.getItem('access_token');
     }
 }
