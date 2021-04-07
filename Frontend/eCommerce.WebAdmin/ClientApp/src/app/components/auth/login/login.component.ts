@@ -79,16 +79,16 @@ export class LoginComponent implements OnInit {
             .toPromise()
             .then(
                 (res) => {
-                    console.log('res', res);
                     localStorage.setItem('access_token', res.accessToken);
                     let tokenInfo = this.userService.getDecodedAccessToken(
                         res.accessToken
                     );
-                    console.log('token info user Name', tokenInfo.username);
                     localStorage.setItem('userName', tokenInfo.username);
                     this.route.navigate(['dashboard/default']);
                 },
-                (err) => console.log(err)
+                (err) => {
+                    alert(err.error.message);
+                }
             );
     }
 }
