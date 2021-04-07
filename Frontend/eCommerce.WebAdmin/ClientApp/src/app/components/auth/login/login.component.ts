@@ -85,6 +85,7 @@ export class LoginComponent implements OnInit {
                         res.accessToken
                     );
                     localStorage.setItem('userName', tokenInfo.username);
+                    localStorage.setItem('role', tokenInfo.role);
                     this.route.navigate(['dashboard/default']);
                 },
                 (err) => {
