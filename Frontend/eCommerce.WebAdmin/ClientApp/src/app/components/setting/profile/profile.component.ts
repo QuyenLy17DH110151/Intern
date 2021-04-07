@@ -13,7 +13,7 @@ export class ProfileComponent implements OnInit {
   constructor(private userClient: UserClient) {
   }
 
-  async resetPassword() {
+  resetPassword() {
     this.userClient.resetPassword().subscribe((res) => {
       alert('Reset Password Success');
     });
