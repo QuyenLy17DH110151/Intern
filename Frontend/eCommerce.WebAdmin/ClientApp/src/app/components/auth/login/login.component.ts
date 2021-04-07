@@ -4,6 +4,7 @@ import { LoginRequest } from './../../../api-clients/models/common.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserClient } from 'src/app/api-clients/_index';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-login',
@@ -87,7 +88,8 @@ export class LoginComponent implements OnInit {
                     this.route.navigate(['dashboard/default']);
                 },
                 (err) => {
-                    alert(err.error.message);
+                    Swal.fire('Error', err.error.message, 'error');
+                    // alert(err.error.message);
                 }
             );
     }
