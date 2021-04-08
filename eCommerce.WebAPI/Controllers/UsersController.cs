@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI.Controllers
@@ -39,20 +40,19 @@ namespace eCommerce.WebAPI.Controllers
         }
 
 
-       /* [HttpPost("reset-password")]
+        [HttpPost("reset-password")]
         [Authorize(Policy = "PermissionSeller")]
         public async Task<ActionResult> ResetPassword()
         {
             var username = User.Identity.Name;
             await _userService.ResetPasswordAsync(username, _clienUrl.FrontEndUrl);
-            return Ok(username);
+            return Ok();
         }
-*/
+
         [HttpPut]
         public async Task<ActionResult> UpdatePassword([FromBody] UserRequestModels.UpdatePassword rq)
         {
              await _userService.UpdatePasswordAsync(rq);
-
             return Ok();
         }
 
