@@ -17,48 +17,20 @@ import { CategoryReturnModel } from 'src/app/api-clients/models/_index';
 export class AddProductComponent implements OnInit {
     public productForm: FormGroup;
     private basePath = '/uploads';
-    private defaultCategoryId = '11e06484-b99d-48f1-80a5-90dd2082ca6d';
     private defaultPrice = 1000;
     defaultUrl = 'https://via.placeholder.com/150';
     selectedFiles?: FileList = null;
     fileUpload?: FileUpload;
     categories = [];
 
-    @ViewChild('inputImage', { static: true, read: ElementRef }) inputImage: ElementRef<HTMLInputElement>;
-    @ViewChild('inputName') inputName: ElementRef;
+    @ViewChild('inputImage', { static: true, read: ElementRef })
+    inputImage: ElementRef<HTMLInputElement>;
     constructor(
         private fb: FormBuilder,
         private productClient: ProductClient,
         private db: AngularFireDatabase,
         private storage: AngularFireStorage
-    ) {
-        this.productForm = this.fb.group({
-            name: [
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(10),
-                    Validators.pattern('^[A-Za-z0-9 .,_-]*$'), //^[A-Za-z0-9_-]*$
-                ],
-            ],
-            price: [
-                this.defaultPrice,
-                [Validators.required, Validators.pattern('^[0-9]*$')],
-            ],
-            categoryId: [
-                this.defaultCategoryId,
-                [Validators.required],
-            ],
-            description: [
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(10),
-                    Validators.pattern('^[A-Za-z0-9 .,_-]*$'),
-                ],
-            ],
-        });
-    }
+    ) {}
 
     get name() {
         return this.productForm.get('name');
@@ -76,15 +48,38 @@ export class AddProductComponent implements OnInit {
         return this.productForm.get('description');
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.productClient.getAllCategory().subscribe(
-            (response: CategoryReturnModel) => this.categories = response.items,
-            error => console.log(error)
-        );
-    }
+            (response: CategoryReturnModel) => {
+                this.categories = response.items;
 
-    ngAfterViewInit(): void {
-        this.inputName.nativeElement.placeholder = "Sản phẩm 1";
+                // Initial create product form
+                this.productForm = this.fb.group({
+                    name: [
+                        '',
+                        [
+                            Validators.required,
+                            Validators.minLength(10),
+                            Validators.pattern('^[A-Za-z0-9 .,_-]*$'), //^[A-Za-z0-9_-]*$
+                        ],
+                    ],
+                    price: [
+                        this.defaultPrice,
+                        [Validators.required, Validators.pattern('^[0-9]*$')],
+                    ],
+                    categoryId: [this.categories[0].id, [Validators.required]],
+                    description: [
+                        '',
+                        [
+                            Validators.required,
+                            Validators.minLength(10),
+                            Validators.pattern('^[A-Za-z0-9 .,_-]*$'),
+                        ],
+                    ],
+                });
+            },
+            (error) => console.log(error)
+        );
     }
 
     async onSubmit() {
@@ -106,7 +101,7 @@ export class AddProductComponent implements OnInit {
         const response = await this.productClient
             .addProduct(formData)
             .toPromise();
-        console.log("response: ", response);
+        console.log('response: ', response);
         if (response !== null) {
             Swal.fire({
                 icon: 'success',
@@ -161,7 +156,7 @@ export class AddProductComponent implements OnInit {
 
         this.productForm.patchValue({
             price: this.defaultPrice,
-            categoryId: this.defaultCategoryId,
+            categoryId: this.categories[0].id,
         });
         this.fileUpload = null;
         this.inputImage.nativeElement.value = '';

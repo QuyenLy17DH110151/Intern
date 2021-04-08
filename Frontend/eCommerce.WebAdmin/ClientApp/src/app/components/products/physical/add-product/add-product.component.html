@@ -33,7 +33,8 @@
                                     <div class="form-group row">
                                         <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Name: </label>
                                         <input class="form-control col-xl-8 col-sm-7" id="validationCustom01"
-                                            type="text" [formControl]="productForm.controls['name']" required #inputName/>
+                                            type="text" formControlName="name" required  placeholder="Sản phẩm 1"/>
+
                                         <div *ngIf="name.invalid && (name.dirty || name.touched)" class="message-error">
                                             <div *ngIf="name.errors?.required" class="text text-danger">
                                                 Title Name is required.
@@ -51,7 +52,8 @@
                                     <div class="form-group row">
                                         <label for="validationCustom02" class="col-xl-3 col-sm-4 mb-0">Price :</label>
                                         <input class="form-control col-xl-8 col-sm-7" id="validationCustom02"
-                                            type="number" [formControl]="productForm.controls['price']">
+                                            type="number" formControlName="price">
+
                                         <div *ngIf="price.invalid && (price.dirty || price.touched)" class="message-error">
                                             <div *ngIf="price.errors?.required" class="text text-danger">
                                                 Title Price is required.
@@ -64,9 +66,10 @@
                                             :</label>
                                         <select class="form-control digits col-xl-8 col-sm-7"
                                             id="exampleFormControlSelect1"
-                                            [formControl]="productForm.controls['categoryId']">
+                                            formControlName="categoryId">
                                             <option *ngFor="let category of categories" value='{{category.id}}'>{{category.name}}</option>
                                         </select>
+
                                         <div *ngIf="categoryId.invalid && (categoryId.dirty || categoryId.touched)" class="message-error">
                                             <div *ngIf="categoryId.errors?.required" class="text text-danger">
                                                 Title Category is required.
@@ -84,6 +87,7 @@
                                                 formControlName="description" rows="4" cols="50"
                                                 placeholder="Mô tả về sản phẩm 1">
                                             </textarea>
+                                            
                                             <div style="margin-top: 6px;"
                                                 *ngIf="description.invalid && (description.dirty || description.touched)">
                                                 <div *ngIf="description.errors?.required" class="text text-danger">
