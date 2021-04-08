@@ -15,6 +15,7 @@ export class UserClient {
     apiToken = `${environment.apiUrl}/Token`;
     apiTokenLogout = `${environment.apiUrl}/Token/logout`;
     apiGetAll = `${environment.apiUrl}/Users/GetAll`;
+    apiResetPasswod = `${environment.apiUrl}/Users/reset-password`;
     constructor(protected httpClient: HttpClient, private userService: UserService) { }
 
     searchUsers(
@@ -34,6 +35,10 @@ export class UserClient {
 
     updatePassword(rq: UpdatePasswordRequest): Observable<boolean> {
         return this.httpClient.put<boolean>(this.apiEndpoint, rq);
+    }
+
+    resetPassword(): Observable<any> {
+        return this.httpClient.post<boolean>(this.apiResetPasswod, '');
     }
 
     login(rq: LoginRequest = new LoginRequest()): Observable<JwtAuthResult> {

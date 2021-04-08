@@ -45,6 +45,18 @@ namespace eCommerce.WebAPI.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
             }
 
+            if (user.LockoutEnd != null)
+            {
+                if (user.LockoutEnd < DateTime.UtcNow)
+                {
+                   await _userService.UnlockUserAsync(user.Id);
+                }
+                else
+                {
+                    return BadRequest(new { message = "User locked to " + user.LockoutEnd });
+                }
+            }
+
             var claims = new[]
             {
                 new Claim("id", user.Id.ToString()),
@@ -55,7 +67,7 @@ namespace eCommerce.WebAPI.Controllers
             return jwtResult;
         }
 
-        [HttpPost("logout")]    
+        [HttpPost("logout")]
         public ActionResult Logout()
         {
             var userName = User.Identity.Name;
