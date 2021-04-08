@@ -4,6 +4,7 @@ import { LoginRequest } from './../../../api-clients/models/common.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserClient } from 'src/app/api-clients/_index';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-login',
@@ -79,16 +80,18 @@ export class LoginComponent implements OnInit {
             .toPromise()
             .then(
                 (res) => {
-                    console.log('res', res);
                     localStorage.setItem('access_token', res.accessToken);
                     let tokenInfo = this.userService.getDecodedAccessToken(
                         res.accessToken
                     );
-                    console.log('token info user Name', tokenInfo.username);
                     localStorage.setItem('userName', tokenInfo.username);
+                    localStorage.setItem('role', tokenInfo.role);
                     this.route.navigate(['dashboard/default']);
                 },
-                (err) => console.log(err)
+                (err) => {
+                    Swal.fire('Error', err.error.message, 'error');
+                    // alert(err.error.message);
+                }
             );
     }
 }
