@@ -1,4 +1,5 @@
 ﻿using eCommerce.Application.Services.Users;
+using eCommerce.Application.Shared;
 using eCommerce.Domain.Entities;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.WebAPI.Infrastructure.Config;
@@ -18,11 +19,13 @@ namespace eCommerce.WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly AppConfig _clienUrl;
+        ApplicationContext _applicationContext;
 
-        public UsersController(IUserService userService, AppConfig clienUrl)
+        public UsersController(IUserService userService, AppConfig clienUrl, ApplicationContext applicationContext)
         {
             _userService = userService;
             _clienUrl = clienUrl;
+            _applicationContext = applicationContext;
         }
 
         [HttpGet]
@@ -40,11 +43,12 @@ namespace eCommerce.WebAPI.Controllers
         }
 
 
+        
         [HttpPost("reset-password")]
         [Authorize(Policy = "PermissionSeller")]
         public async Task<ActionResult> ResetPassword()
         {
-            var username = User.Identity.Name;
+            var username = _applicationContext.Principal.Username;
             await _userService.ResetPasswordAsync(username, _clienUrl.FrontEndUrl);
             return Ok();
         }
