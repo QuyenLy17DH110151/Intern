@@ -84,8 +84,9 @@ export class LoginComponent implements OnInit {
                     let tokenInfo = this.userService.getDecodedAccessToken(
                         res.accessToken
                     );
-                    console.log('token info user Name', tokenInfo.username);
+                    console.log('token info user Name', tokenInfo);
                     localStorage.setItem('userName', tokenInfo.username);
+                    localStorage.setItem('userId', tokenInfo.id);
                     this.route.navigate(['dashboard/default']);
                 },
                 (err) => console.log(err)

@@ -52,6 +52,7 @@
         "ngx-slimscroll": "^8.1.0",
         "rxjs": "~6.6.0",
         "screenfull": "^5.0.1",
+        "sweetalert2": "^10.15.7",
         "tslib": "^2.0.0",
         "web-animations-js": "^2.3.2",
         "zone.js": "~0.10.2"
