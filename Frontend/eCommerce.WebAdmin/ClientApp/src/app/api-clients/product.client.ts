@@ -20,4 +20,9 @@ export class ProductClient {
         const url = `${this.baseUrl}/${productId}`;
         return this.httpClient.get(url);
     }
+
+    getAllCategory() {
+        const url = `${environment.apiUrl}/ProductCategories`;
+        return this.httpClient.get(url);
+    }
 }

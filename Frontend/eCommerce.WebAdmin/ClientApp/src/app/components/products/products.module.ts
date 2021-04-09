@@ -25,44 +25,51 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
-import {ProductClient} from '../../api-clients/product.client'
+import { ProductClient } from '../../api-clients/product.client';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from 'src/environments/environment';
 
-
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
-  maxFilesize: 50,
-  url: 'https://httpbin.org/post',
+    maxFilesize: 50,
+    url: 'https://httpbin.org/post',
 };
 
-
-
 @NgModule({
-  declarations: [CategoryComponent, SubCategoryComponent, ProductListComponent, DigitalCategoryComponent, DigitalSubCategoryComponent, DigitalListComponent, DigitalAddComponent, ProductDetailComponent, AddProductComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CKEditorModule,
-    CKEditorModule1,
-    ProductsRoutingModule,
-    Ng2SmartTableModule,
-    NgbModule,
-    DropzoneModule,
-    GalleryModule.forRoot(),
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
-    AngularFireStorageModule
-  ],
-  providers: [
-    {
-      provide: DROPZONE_CONFIG,
-      useValue: DEFAULT_DROPZONE_CONFIG
-    },
-    NgbActiveModal,
-    ProductClient
-  ]
+    declarations: [
+        CategoryComponent,
+        SubCategoryComponent,
+        ProductListComponent,
+        DigitalCategoryComponent,
+        DigitalSubCategoryComponent,
+        DigitalListComponent,
+        DigitalAddComponent,
+        ProductDetailComponent,
+        AddProductComponent,
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CKEditorModule,
+        CKEditorModule1,
+        ProductsRoutingModule,
+        Ng2SmartTableModule,
+        NgbModule,
+        DropzoneModule,
+        GalleryModule.forRoot(),
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireDatabaseModule,
+        AngularFireStorageModule,
+    ],
+    providers: [
+        {
+            provide: DROPZONE_CONFIG,
+            useValue: DEFAULT_DROPZONE_CONFIG,
+        },
+        NgbActiveModal,
+        ProductClient,
+    ],
 })
-export class ProductsModule { }
+export class ProductsModule {}

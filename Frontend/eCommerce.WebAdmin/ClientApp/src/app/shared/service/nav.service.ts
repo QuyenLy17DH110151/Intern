@@ -51,7 +51,7 @@ export class NavService {
 				{ path: '/products/list-product', title: 'Product List', type: 'link' },
 				{ path: '/products/category', title: 'Category', type: 'link' },
 				{ path: '/products/add-product', title: 'Add Product', type: 'link' },
-				{ path: '/products/product-detail', title: 'Details Product', type: 'link' },
+				//{ path: '/products/product-detail/123', title: 'Details Product', type: 'link' },
 			]
 		},
 		{

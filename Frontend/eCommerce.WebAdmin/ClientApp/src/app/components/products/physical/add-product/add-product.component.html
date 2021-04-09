@@ -12,14 +12,14 @@
                             <div class="add-product">
                                 <div class="row">
                                     <div>
-                                        <img [src]="fileUpload?.url || 'https://via.placeholder.com/150'" alt=""
+                                        <img [src]="fileUpload?.url || defaultUrl" alt=""
                                             class="img-fluid image_zoom_1">
                                     </div>
                                     <div class="mt-3">
                                         <input type="file" class="text-nowrap text-truncate"
-                                            (change)="selectFile($event)" />
+                                            (change)="selectFile($event)" #inputImage/>
                                         <button class="btn btn-success btn-sm" [disabled]="!selectedFiles"
-                                            (click)="uploadImage()">
+                                            (click)="uploadImage()" [class.disabled]="!selectedFiles">
                                             Upload
                                         </button>
                                     </div>
@@ -31,22 +31,33 @@
                                 (ngSubmit)="onSubmit()">
                                 <div class="add-product-form">
                                     <div class="form-group row">
-                                        <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Name
-                                            :</label>
+                                        <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Name: </label>
                                         <input class="form-control col-xl-8 col-sm-7" id="validationCustom01"
-                                            type="text" [formControl]="productForm.controls['name']" required>
-                                        <div *ngIf="productForm.controls.name.touched && productForm.controls.name.errors?.required"
-                                            class="text text-danger">
-                                            Title Name is required.
+                                            type="text" formControlName="name" required  placeholder="Sản phẩm 1"/>
+
+                                        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="message-error">
+                                            <div *ngIf="name.errors?.required" class="text text-danger">
+                                                Title Name is required.
+                                            </div>
+                                            <div *ngIf="name.errors?.minlength" class="text text-danger">
+                                                Title Name must be at least 10 characters long.
+                                            </div>
+                                            <div *ngIf="!name.errors?.minlength && name.errors?.pattern"
+                                                class="text text-danger">
+                                                Title Name contains only letters and numbers.
+                                            </div>
                                         </div>
+                                        <!-- <span>{{name?.errors | json}}</span> -->
                                     </div>
                                     <div class="form-group row">
                                         <label for="validationCustom02" class="col-xl-3 col-sm-4 mb-0">Price :</label>
                                         <input class="form-control col-xl-8 col-sm-7" id="validationCustom02"
-                                            type="number" [formControl]="productForm.controls['price']" required="">
-                                        <div *ngIf="productForm.controls.price.touched && productForm.controls.price.errors?.required"
-                                            class="text text-danger">
-                                            Product Price is required.
+                                            type="number" formControlName="price">
+
+                                        <div *ngIf="price.invalid && (price.dirty || price.touched)" class="message-error">
+                                            <div *ngIf="price.errors?.required" class="text text-danger">
+                                                Title Price is required.
+                                            </div>
                                         </div>
                                     </div>
 
@@ -55,18 +66,41 @@
                                             :</label>
                                         <select class="form-control digits col-xl-8 col-sm-7"
                                             id="exampleFormControlSelect1"
-                                            [formControl]="productForm.controls['categoryId']">
-                                            <option value="11e06484-b99d-48f1-80a5-90dd2082ca6d">Quần áo</option>
-                                            <option value="789e170e-ac90-41ee-830d-3e9e6f59d3e0">Giày dép</option>
-                                            <option value="889296ef-fca9-4f12-a2d8-a2a8bba0e5f1">Điện thoại</option>
+                                            formControlName="categoryId">
+                                            <option *ngFor="let category of categories" value='{{category.id}}'>{{category.name}}</option>
                                         </select>
+
+                                        <div *ngIf="categoryId.invalid && (categoryId.dirty || categoryId.touched)" class="message-error">
+                                            <div *ngIf="categoryId.errors?.required" class="text text-danger">
+                                                Title Category is required.
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-sm-4">Description :</label>
-                                        <div class="col-xl-8 col-sm-7 pl-0 description-sm">
-                                            <textarea name="editor1" [(ngModel)]="descriptionValue"
+                                        <label class="col-xl-3 col-sm-4 mb-0">Description :</label>
+                                        <div class="col-xl-8 col-sm-7 pl-0 description-sm" style="padding-right: 0;">
+                                            <!-- <textarea name="editor1" [(ngModel)]="descriptionValue"
                                                 [ngModelOptions]="{standalone: true}" rows="4" cols="50">
+                                            </textarea> -->
+                                            <textarea class="form-control digits col-xl-8 col-sm-7"
+                                                style="max-width: 100%;" name="description"
+                                                formControlName="description" rows="4" cols="50"
+                                                placeholder="Mô tả về sản phẩm 1">
                                             </textarea>
+                                            
+                                            <div style="margin-top: 6px;"
+                                                *ngIf="description.invalid && (description.dirty || description.touched)">
+                                                <div *ngIf="description.errors?.required" class="text text-danger">
+                                                    Title description is required.
+                                                </div>
+                                                <div *ngIf="description.errors?.minlength" class="text text-danger">
+                                                    Title description must be at least 10 characters long.
+                                                </div>
+                                                <div *ngIf="!description.errors?.minlength && description.errors?.pattern"
+                                                    class="text text-danger">
+                                                    Title description contains no special characters.
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -74,11 +108,10 @@
                             </form>
                             <div class="form-group row mb-0">
                                 <div class="product-buttons col-sm-8 offset-xl-3 offset-sm-4">
-                                    <button type="button" class="btn btn-primary mr-1" (click)="onSubmit()">Add</button>
-                                    <button type="button" class="btn btn-light">Discard</button>
+                                    <button type="button" class="btn btn-primary mr-1" (click)="onSubmit()" [disabled]="productForm.invalid">Add</button>
+                                    <button type="button" class="btn btn-light" (click)="discard()">Discard</button>
                                 </div>
                             </div>
-                            <!-- <pre>{{ productForm.value | json }}</pre> -->
                         </div>
                     </div>
                 </div>
