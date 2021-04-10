@@ -13,8 +13,8 @@ export class CreateUserComponent implements OnInit {
   public formUser: FormGroup;
   public permissionForm: FormGroup;
   public user: CreateUserRequest;
-
-  constructor(private formBuilder: FormBuilder, private userClient : UserClient) {
+  public isStart: boolean = false;
+  constructor(private formBuilder: FormBuilder, private userClient: UserClient) {
     this.createAccountForm();
   }
 
@@ -32,17 +32,19 @@ export class CreateUserComponent implements OnInit {
 
 
   async saveUser() {
-    this.user = new CreateUserRequest(this.formUser.value.firstName, this.formUser.value.lastName,this.formUser.value.username);
+    this.isStart = true;
+    this.user = new CreateUserRequest(this.formUser.value.firstName, this.formUser.value.lastName, this.formUser.value.username);
     if (!this.formUser.invalid) {
-      this.userClient.createUser(this.user).subscribe((res) =>{
-          alert('Create User Success')
+      this.userClient.createUser(this.user).subscribe((res) => {
+        alert('Create User Success')
       });
       this.createAccountForm();
     }
-   
+
   }
 
   ngOnInit() {
+    this.isStart = false;
   }
 
 }

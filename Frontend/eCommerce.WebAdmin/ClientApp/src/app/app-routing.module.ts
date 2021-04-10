@@ -4,6 +4,7 @@ import { content } from './shared/routes/content-routes';
 import { ContentLayoutComponent } from './shared/layout/content-layout/content-layout.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { ResetPasswordErrorComponent } from './components/auth/reset-password-errror/reset-password-error.component';
 
 const routes: Routes = [
     {
@@ -25,6 +26,10 @@ const routes: Routes = [
         path: 'auth/reset-password',
         component: ResetPasswordComponent,
     },
+    {
+        path: 'reset-password-error',
+        component: ResetPasswordErrorComponent,
+    },
 ];
 
 @NgModule({
@@ -36,4 +41,4 @@ const routes: Routes = [
     ],
     exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

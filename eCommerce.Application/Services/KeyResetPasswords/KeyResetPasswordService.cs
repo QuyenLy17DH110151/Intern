@@ -32,6 +32,13 @@ namespace eCommerce.Application.Services.KeyResetPasswords
        
         public async Task<string> AddAsync(User u)
         {
+            //check user reseted pass, if yes will remove token exsist
+            var keyResetPasswordRemove = await _repo.FindByUsername(u.Username);
+            if (keyResetPasswordRemove != null)
+            {
+                _repo.Remove(keyResetPasswordRemove);
+            }
+            //create key and add into DB
             KeyResetPassword keyResetPassword = new KeyResetPassword();
             keyResetPassword.Id = Guid.NewGuid();
             keyResetPassword.User = u;
@@ -45,12 +52,12 @@ namespace eCommerce.Application.Services.KeyResetPasswords
             var keyResetPassword = await _repo.FindByUsername(username);
             if (keyResetPassword == null)
             {
-                throw new BusinessException("username is not request change password");
+                throw new BusinessException("token or username invalid");
             }
             string keyParamHash = generateKeyParama(username);
             if (keyResetPassword.KeyParam != keyParamHash)
             {
-                throw new BusinessException("token invalid");
+                throw new BusinessException("token or username invalid");
             }
             _repo.Remove(keyResetPassword);
             
