@@ -21,7 +21,7 @@ import { FooterFourComponent } from './footer/footer-four/footer-four.component'
 
 // Components
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
-import { MenuComponent } from './components/menu/menu.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -54,6 +54,10 @@ import { TapToTopComponent } from './components/tap-to-top/tap-to-top.component'
 // Pipes
 import { DiscountPipe } from './pipes/discount.pipe';
 
+// Angular Material
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 @NgModule({
   declarations: [
     HeaderOneComponent,
@@ -65,7 +69,7 @@ import { DiscountPipe } from './pipes/discount.pipe';
     HeaderFourComponent,
     FooterFourComponent,
     LeftMenuComponent,
-    MenuComponent,
+    SearchBarComponent,
     SettingsComponent,
     BreadcrumbComponent,
     CategoriesComponent,
@@ -100,7 +104,9 @@ import { DiscountPipe } from './pipes/discount.pipe';
       // preset: scrollPreset // <-- tell LazyLoadImage that you want to use scrollPreset
     }),
     NgxSkeletonLoaderModule,
-    TranslateModule
+    TranslateModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   exports: [
     CommonModule,
