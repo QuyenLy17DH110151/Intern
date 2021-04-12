@@ -37,5 +37,4 @@ export class ProductClient {
 
         return this.httpClient.get<PagedList<ProductList>>(this.baseUrl, options);
     }
-
 }

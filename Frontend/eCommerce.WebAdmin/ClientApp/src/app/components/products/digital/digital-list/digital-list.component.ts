@@ -13,7 +13,7 @@ export class DigitalListComponent implements OnInit {
   rq: SearchRequestProduct = {};
 
   constructor(protected productClient: ProductClient) {
-    // this.digital_list = digitalListDB.digital_list;
+
   }
 
   async loadData() {
