@@ -33,8 +33,8 @@ namespace eCommerce.Application.Services.Products
                 Keyword = req.SearchTerm,
                 Pagination = new Pagination { PageIndex = req.PageIndex, ItemsPerPage = req.PageSize },
                 ProductCategoryName = req.CategoryName,
-                Owner = req.Owner,
-                Role = _appContext.Principal.Role
+                OwnerName = req.OwnerName,
+                Role = _appContext.Principal.Role,
             }) ;
 
             return _mapper.Map<PaginatedResult<ProductReturnModels.Product>>(products);  //mapper khi get data from DB
