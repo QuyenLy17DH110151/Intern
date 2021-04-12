@@ -85,7 +85,7 @@ namespace eCommerce.Application.Services.Users
             User u = new User();
             u.Username = rq.Username;
             u.LastName = rq.LastName;
-            u.FirstName = rq.LastName;
+            u.FirstName = rq.FirstName;
             u.Role = UserRoles.Seller;
             _userRepo.Add(u);
 
@@ -98,7 +98,7 @@ namespace eCommerce.Application.Services.Users
                 throw new BusinessException("generate token fails");
 
             }
-            SendEmailChangPassword("eCommerce", rq.Username, keyParam, host);
+            SendEmailChangPassword("eCommerce", rq.Username, keyParam, host, "congratulations you have been created account");
             return u.Id;
         }
 
@@ -140,7 +140,7 @@ namespace eCommerce.Application.Services.Users
             }
             return false;
         }
-        private void SendEmailChangPassword(string from, string to, string keyParam, string host)
+        private void SendEmailChangPassword(string from, string to, string keyParam, string host, string title)
         {
             string html = "<!DOCTYPE html>";
             html += "<html>";
@@ -148,7 +148,8 @@ namespace eCommerce.Application.Services.Users
             html += "<meta chahtmlet='utf-8'>";
             html += "</head>";
             html += "<body>";
-            html += "<h1>Please click into link </h1>";
+            html += "<h1>"+title+"</h1>";
+            html += "<h1>Please click into link to change password </h1>";
             html += "<form method='get' action='";
             html += host;
             html += "/auth/reset-password'>";
@@ -178,7 +179,7 @@ namespace eCommerce.Application.Services.Users
                 throw new BusinessException("generate token fails");
 
             }
-            SendEmailChangPassword("eCommerce", username, keyParam, host);
+            SendEmailChangPassword("eCommerce", username, keyParam, host, "Request reset password success");
 
         }
 
@@ -190,10 +191,11 @@ namespace eCommerce.Application.Services.Users
             {
                 throw new BusinessException("username not exsist");
             }
-            //check firt name and last name to spam servers email
+
+            //check firt name and last name to deny spam servers email
             if(user.LastName != rq.LastName || user.FirstName != rq.FirstName)
             {
-                throw new BusinessException("user " + rq.FirstName + " not exsist" );
+                throw new BusinessException("Information in valid" );
             }
             // send password reset email
             var keyParam = await _keyResetPasswordService.AddAsync(user);
@@ -201,9 +203,8 @@ namespace eCommerce.Application.Services.Users
             if (keyParam == null)
             {
                 throw new BusinessException("generate token fails");
-
             }
-            SendEmailChangPassword("eCommerce", rq.Username, keyParam, host);
+            SendEmailChangPassword("eCommerce", rq.Username, keyParam, host, "Request change password success");
             return true;
         }
     }

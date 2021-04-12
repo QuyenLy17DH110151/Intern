@@ -69,5 +69,15 @@ namespace eCommerce.Application.Services.Users
             public string FirstName { get; set; }
             public string LastName { get; set; }
         }
+
+        public class ForgetPasswordValidator : AbstractValidator<ForgetPassword>
+        {
+            public ForgetPasswordValidator()
+            {
+                RuleFor(c => c.Username).EmailAddress();
+                RuleFor(c => c.FirstName).NotEmpty();
+                RuleFor(c => c.LastName).NotEmpty();
+            }
+        }
     }
 }

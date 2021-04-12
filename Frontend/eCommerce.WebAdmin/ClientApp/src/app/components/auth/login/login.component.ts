@@ -5,6 +5,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserClient } from 'src/app/api-clients/_index';
 import Swal from 'sweetalert2';
+import { ForgotPasswordRequest } from 'src/app/api-clients/models/user.model';
 
 @Component({
     selector: 'app-login',
@@ -13,8 +14,9 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent implements OnInit {
     public loginForm: FormGroup;
-    public registerForm: FormGroup;
+    public forgotPasswordForm: FormGroup;
     submitted = false;
+    public isStartForgotPassword = false;
     constructor(
         private formBuilder: FormBuilder,
         private userClient: UserClient,
@@ -22,7 +24,7 @@ export class LoginComponent implements OnInit {
         private userService: UserService
     ) {
         this.createLoginForm();
-        this.createRegisterForm();
+        this.createForgotPasswordForm();
     }
 
     owlcarousel = [
@@ -55,11 +57,11 @@ export class LoginComponent implements OnInit {
         });
     }
 
-    createRegisterForm() {
-        this.registerForm = this.formBuilder.group({
-            username: [''],
-            password: [''],
-            confirmPassword: [''],
+    createForgotPasswordForm() {
+        this.forgotPasswordForm = this.formBuilder.group({
+            username: ['', [Validators.required, Validators.email]],
+            firstName: ['', [Validators.required]],
+            lastName: ['', [Validators.required]],
         });
     }
 
@@ -69,13 +71,16 @@ export class LoginComponent implements OnInit {
     get f() {
         return this.loginForm.controls;
     }
+    get forgotPasswordValidators() {
+        return this.forgotPasswordForm.controls;
+    }
     onSubmit() {
         this.submitted = true;
         if (this.loginForm.invalid) {
             console.log(this.loginForm.invalid);
             return;
         }
-        let getToken = this.userClient
+        this.userClient
             .login(this.loginForm.value)
             .toPromise()
             .then(
@@ -95,4 +100,21 @@ export class LoginComponent implements OnInit {
                 }
             );
     }
+
+    submitForgotPassword() {
+        this.isStartForgotPassword = true;
+        if (!this.forgotPasswordForm.invalid) {
+            let rq: ForgotPasswordRequest = new ForgotPasswordRequest(this.forgotPasswordForm.value.firstName, this.forgotPasswordForm.value.lastName, this.forgotPasswordForm.value.username);
+
+            this.userClient.forgotPassword(rq).subscribe((res) => {
+                alert('Request change password Success');
+                this.createForgotPasswordForm();
+            },
+                (err) => {
+                    alert(err.error.errorMessage)
+                }
+            );
+        }
+    }
+
 }
