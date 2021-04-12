@@ -10,11 +10,12 @@ export class Product {
 export class ProductList {
     id: string;
     name: string;
-    price: any;
+    price: number;
     category: ProductCategory;
     owner: User;
     photos: string[];
     items: any;
+    description: string;
 }
 
 class ProductCategory {
@@ -28,11 +29,4 @@ class User {
 }
 
 
-export class SearchRequestProduct {
-    searchTerm?: string;
-    sort?: string;
-    pageNumber?: string;
-    pageSize?: string;
-    OnweName?: string;
-    CategoryName?: string;
-}
+

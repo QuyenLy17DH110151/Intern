@@ -2,9 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 //import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Product, ProductList, SearchRequestProduct } from 'src/app/api-clients/models/product.model';
+import { Product, ProductList, } from 'src/app/api-clients/models/product.model';
 import { Observable } from 'rxjs';
-import { PagedList } from './models/common.model';
+import { PagedList, SearchRequestProduct } from './models/common.model';
 
 @Injectable({
     providedIn: 'root', //???

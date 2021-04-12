@@ -14,6 +14,15 @@ export class SearchRequest {
     isLockout?: string;
 }
 
+export class SearchRequestProduct {
+    searchTerm?: string;
+    sort?: string;
+    pageNumber?: string;
+    pageSize?: string;
+    OnwerName?: string;
+    CategoryName?: string;
+}
+
 export class NameValue {
     value = 0;
     name: string;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SearchRequestProduct } from 'src/app/api-clients/models/product.model';
+import { SearchRequestProduct } from 'src/app/api-clients/models/common.model';
 import { ProductClient } from 'src/app/api-clients/product.client';
 
 @Component({
@@ -10,7 +10,6 @@ import { ProductClient } from 'src/app/api-clients/product.client';
 })
 export class DigitalListComponent implements OnInit {
   public product_list: any;
-  keyWordSearch: string = '';
   rq: SearchRequestProduct = {};
 
   constructor(protected productClient: ProductClient) {
@@ -64,8 +63,12 @@ export class DigitalListComponent implements OnInit {
           if (owner.username.toLowerCase().indexOf(search) > -1)
             return true;
           return false;
-        },
-      }
+        }
+      },
+      description: {
+        title: 'Description',
+        filter: false,
+      },
     },
   };
 
