@@ -48,5 +48,6 @@ namespace eCommerce.Application.Services.Users
         /// <param name="Id User"></param>
         /// <returns></returns>
         Task<bool> UnlockUserAsync(Guid Id);
+        Task<bool> ForgotPassword(UserRequestModels.ForgotPassword rq, string host);
     }
 }

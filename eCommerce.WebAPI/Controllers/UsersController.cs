@@ -82,5 +82,13 @@ namespace eCommerce.WebAPI.Controllers
             }
             return Ok();
         }
+
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult> ForgotPassword([FromBody] UserRequestModels.ForgotPassword rq)
+        {
+            await _userService.ForgotPassword(rq, _clienUrl.FrontEndUrl);
+            
+            return Ok();
+        }
     }
 }
