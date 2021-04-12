@@ -183,7 +183,7 @@ namespace eCommerce.Application.Services.Users
 
         }
 
-        public async Task<bool> ForgetPassword(UserRequestModels.ForgotPassword rq, string host)
+        public async Task<bool> ForgotPassword(UserRequestModels.ForgotPassword rq, string host)
         {
             //find by username
             var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
