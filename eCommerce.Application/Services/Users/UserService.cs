@@ -182,5 +182,29 @@ namespace eCommerce.Application.Services.Users
 
         }
 
+        public async Task<bool> ForgetPassword(UserRequestModels.ForgetPassword rq, string host)
+        {
+            //find by username
+            var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
+            if (user == null)
+            {
+                throw new BusinessException("username not exsist");
+            }
+            //check firt name and last name to spam servers email
+            if(user.LastName != rq.LastName || user.FirstName != rq.FirstName)
+            {
+                throw new BusinessException("user " + rq.FirstName + " not exsist" );
+            }
+            // send password reset email
+            var keyParam = await _keyResetPasswordService.AddAsync(user);
+            await _userRepo.UnitOfWork.SaveChangesAsync();
+            if (keyParam == null)
+            {
+                throw new BusinessException("generate token fails");
+
+            }
+            SendEmailChangPassword("eCommerce", rq.Username, keyParam, host);
+            return true;
+        }
     }
 }

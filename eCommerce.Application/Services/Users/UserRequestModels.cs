@@ -62,5 +62,12 @@ namespace eCommerce.Application.Services.Users
                 RuleFor(c => c.Password).MinimumLength(6);
             }
         }
+
+        public class ForgetPassword
+        {
+            public string Username { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
     }
 }
