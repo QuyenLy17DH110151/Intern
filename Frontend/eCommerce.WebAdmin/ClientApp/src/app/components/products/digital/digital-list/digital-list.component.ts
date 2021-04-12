@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
 import { SearchRequestProduct } from 'src/app/api-clients/models/product.model';
 import { ProductClient } from 'src/app/api-clients/product.client';
-import { UserService } from 'src/app/shared/service/user.service';
-import { digitalListDB } from 'src/app/shared/tables/digital-list';
+
 @Component({
   selector: 'app-digital-list',
   templateUrl: './digital-list.component.html',
@@ -18,7 +15,6 @@ export class DigitalListComponent implements OnInit {
 
   constructor(protected productClient: ProductClient) {
     // this.digital_list = digitalListDB.digital_list;
-
   }
 
   async loadData() {
@@ -27,8 +23,6 @@ export class DigitalListComponent implements OnInit {
     console.log('Request', this.rq);
     this.product_list = products.items;
   }
-
-
 
   public settings = {
     actions: {
@@ -74,12 +68,6 @@ export class DigitalListComponent implements OnInit {
       }
     },
   };
-
-  async Search(keyWordSearch) {
-    this.rq.CategoryName = keyWordSearch;
-    this.loadData();
-    this.keyWordSearch = '';
-  }
 
   ngOnInit() {
     this.loadData();

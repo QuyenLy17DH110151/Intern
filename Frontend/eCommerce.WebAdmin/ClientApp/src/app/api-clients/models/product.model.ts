@@ -27,11 +27,12 @@ class User {
     username: string;
 }
 
+
 export class SearchRequestProduct {
     searchTerm?: string;
     sort?: string;
     pageNumber?: string;
     pageSize?: string;
-    Username?: string;
+    OnweName?: string;
     CategoryName?: string;
 }
