@@ -5,11 +5,10 @@ using System.Text;
 
 namespace eCommerce.Domain.Entities
 {
-    public class Inventory : Entity, IConcurrencyCheck
+    public class Inventory : Entity
     {
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
-        public byte[] RowVersion { get; set; }
     }
 }
