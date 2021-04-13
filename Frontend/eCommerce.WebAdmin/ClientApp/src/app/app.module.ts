@@ -31,7 +31,6 @@ import { TokenInterceptor } from './interceptor/token.interceptor';
         BrowserAnimationsModule,
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
         HttpClientModule,
-
         AppRoutingModule,
         DashboardModule,
         InvoiceModule,

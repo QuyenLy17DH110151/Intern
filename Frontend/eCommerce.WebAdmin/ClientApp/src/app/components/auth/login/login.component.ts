@@ -92,6 +92,7 @@ export class LoginComponent implements OnInit {
                     console.log('token info user Name', tokenInfo);
                     localStorage.setItem('userName', tokenInfo.username);
                     localStorage.setItem('userId', tokenInfo.id);
+                    localStorage.setItem('userRole', tokenInfo.role);
                     this.route.navigate(['dashboard/default']);
                 },
                 (err) => {
@@ -104,17 +105,21 @@ export class LoginComponent implements OnInit {
     submitForgotPassword() {
         this.isStartForgotPassword = true;
         if (!this.forgotPasswordForm.invalid) {
-            let rq: ForgotPasswordRequest = new ForgotPasswordRequest(this.forgotPasswordForm.value.firstName, this.forgotPasswordForm.value.lastName, this.forgotPasswordForm.value.username);
+            let rq: ForgotPasswordRequest = new ForgotPasswordRequest(
+                this.forgotPasswordForm.value.firstName,
+                this.forgotPasswordForm.value.lastName,
+                this.forgotPasswordForm.value.username
+            );
 
-            this.userClient.forgotPassword(rq).subscribe((res) => {
-                alert('Request change password Success');
-                this.createForgotPasswordForm();
-            },
+            this.userClient.forgotPassword(rq).subscribe(
+                (res) => {
+                    alert('Request change password Success');
+                    this.createForgotPasswordForm();
+                },
                 (err) => {
-                    alert(err.error.errorMessage)
+                    alert(err.error.errorMessage);
                 }
             );
         }
     }
-
 }
