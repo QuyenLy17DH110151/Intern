@@ -97,9 +97,14 @@ namespace eCommerce.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<List<Product>> GetProductsByCategoryId(Guid catId)
+        public async Task<IEnumerable<Product>> GetProductsByCategoryId(Guid catId)
         {
-            var products = await _dbContext.Set<Product>().Where(x => x.CategoryId == catId).ToListAsync();
+            var queryObject = QueryObject<Product>.Empty;
+
+            // filter by categoryId  
+            queryObject.And(new ProductQueryObjects.FilterByCategoryId(catId));
+
+            var products = await _genericRepo.SearchAsync(queryObject, x => x.Include(m => m.Photos).Include(m => m.Inventory).Include(m => m.Category));
             return products;
         }
 

@@ -92,7 +92,8 @@ namespace eCommerce.Application.Services.Products
         public async Task<List<ProductReturnModels.Product>> GetProductByCategoryIdAsync(Guid categoryId)
         {
             var products = await _productRepo.GetProductsByCategoryId(categoryId);
-            if (products.Count == 0) throw new EntityNotFound("Product");
+            var ret = products.ToList();
+            if (ret.Count == 0) throw new EntityNotFound("Product");
 
             return _mapper.Map<List<ProductReturnModels.Product>>(products);
         }

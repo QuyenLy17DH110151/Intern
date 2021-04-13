@@ -51,5 +51,19 @@ namespace eCommerce.Persistence.QueryObjects
                 return s => s.Owner.Username.Contains(_keyword);
             }
         }
+        public class FilterByCategoryId : QueryObject<Product>
+        {
+            public Guid _keyword;
+
+            public FilterByCategoryId(Guid keyword)
+            {
+                _keyword = keyword;
+            }
+
+            protected override Expression<Func<Product, bool>> AsExpression()
+            {
+                return s => s.CategoryId == _keyword;
+            }
+        }
     }
 }
