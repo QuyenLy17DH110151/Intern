@@ -1,4 +1,5 @@
 ﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Enums;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
@@ -141,6 +142,13 @@ namespace eCommerce.Persistence.Repositories
         {
             var order = await _genericRepo.GetByIdAsync(Id);
             return order;
+        }
+
+        public async Task<bool> UpdateStatus(Guid Id, OrderStatuses orderStatuses)
+        {
+            var order = await _genericRepo.GetByIdAsync(Id);
+            order.Status = orderStatuses;
+            return true;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Enums;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
 using eCommerce.Domain.Shared.Models;
@@ -12,5 +13,6 @@ namespace eCommerce.Domain.Repositories
     {
         Task<PaginatedResult<Order>> SearchAsync(SearchOrderModel searchOrderModel);
         Task<Order> GetOrderById(Guid Id);
+        Task<bool> UpdateStatus(Guid Id, OrderStatuses orderStatuses);
     }
 }

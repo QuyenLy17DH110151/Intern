@@ -23,14 +23,16 @@ namespace eCommerce.Application.Services.Order
             _emailSender = emailSender;
         }
 
-        public async Task<bool> RejectOrder(Guid Id, string userName)
+        public async Task<bool> RejectOrder(Guid Id, string buyerEmail)
         {
             var order = await _orderRepo.GetOrderById(Id);
             if (order == null)
             {
                 throw new EntityNotFound("Order");
             }
-            SendEmailRejectOrder("eCommerce", userName, Id);
+            await _orderRepo.UpdateStatus(Id, Domain.Enums.OrderStatuses.Cancelled);
+            await _orderRepo.UnitOfWork.SaveChangesAsync();
+            SendEmailRejectOrder("eCommerce", buyerEmail, Id);
             return true;
         }
 
