@@ -11,9 +11,10 @@ namespace eCommerce.Domain.Repositories.Models
 
         public Pagination Pagination { get; set; } = new Pagination();
 
-        public List<SortItem> Sort { get; set; } = new List<SortItem>();        
+        public List<SortItem> Sort { get; set; } = new List<SortItem>();
         public string ProductCategoryName { get; set; }
         public string OwnerName { get; set; }
         public string Role { get; set; }
+        public string UserName { get; set; }
     }
 }
