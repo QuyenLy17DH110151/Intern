@@ -26,7 +26,7 @@ namespace eCommerce.Application.Services.Users
             public int PageSize { get; set; }
 
             public string Sort { get; set; }
-            public bool IsLockout { get; set; }
+            public UserLockStatusFilters IsLockout { get; set; }
         }
 
         public class Create
