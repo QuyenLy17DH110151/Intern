@@ -33,8 +33,8 @@ export class CreateUserComponent implements OnInit {
 
   async saveUser() {
     this.isStart = true;
-    this.user = new CreateUserRequest(this.formUser.value.firstName, this.formUser.value.lastName, this.formUser.value.username);
     if (!this.formUser.invalid) {
+      this.user = new CreateUserRequest(this.formUser.value.firstName, this.formUser.value.lastName, this.formUser.value.username);
       this.userClient.createUser(this.user).subscribe((res) => {
         alert('Create User Success')
       });

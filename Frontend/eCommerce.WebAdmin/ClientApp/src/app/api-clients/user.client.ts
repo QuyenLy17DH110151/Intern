@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { UserService } from "../shared/service/user.service";
 import { PagedList, SearchRequest } from "./models/common.model";
-import { User } from "./models/user.model";
+import { ForgotPasswordRequest, User } from "./models/user.model";
 import { UpdatePasswordRequest, LoginRequest, JwtAuthResult, CreateUserRequest } from "./models/_index";
 
 
@@ -16,7 +16,8 @@ export class UserClient {
     apiTokenLogout = `${environment.apiUrl}/Token/logout`;
     apiGetAll = `${environment.apiUrl}/Users/GetAll`;
     apiResetPasswod = `${environment.apiUrl}/Users/reset-password`;
-    constructor(protected httpClient: HttpClient, private userService: UserService) { }
+    apiForgotPassword = `${environment.apiUrl}/Users/forgot-password`;
+    constructor(protected httpClient: HttpClient) { }
 
     searchUsers(
         rq: SearchRequest = new SearchRequest()
@@ -57,5 +58,9 @@ export class UserClient {
             `${environment.apiUrl}/Users/${Id}/Unlockout`,
             Id
         );
+    }
+
+    forgotPassword(rq: ForgotPasswordRequest): Observable<string> {
+        return this.httpClient.post<string>(this.apiForgotPassword, rq);
     }
 }

@@ -14,7 +14,7 @@ namespace eCommerce.Application.Services.Products
             public string Name { get; set; }
             public decimal Price { get; set; }
             public Category Category { get; set; }
-            public Guid OwnerId { get; set; }
+            public User Owner { get; set; }
             public DateTime LastUpdated { get; set; }
             public string LastUpdatedBy { get; set; }
 
@@ -27,6 +27,13 @@ namespace eCommerce.Application.Services.Products
             public Guid Id { get; set; }
 
             public string Name { get; set; }
+        }
+
+        public class User
+        {
+            public Guid Id { get; set; }
+
+            public string Username { get; set; }
         }
 
         public class Photo
@@ -48,6 +55,7 @@ namespace eCommerce.Application.Services.Products
                 CreateMap<Domain.Entities.ProductCategory, Category>();
                 CreateMap<Domain.Entities.ProductPhoto, Photo>();
                 CreateMap<Domain.Entities.Inventory, Inventory>();
+                CreateMap<Domain.Entities.User, User>();
             }
         }
     }

@@ -69,12 +69,12 @@ namespace eCommerce.Persistence.Repositories
 
             // filter by seller
 
-            if (req.Role=="Admin")
+            if (req.Role == "Admin")
             {
-                if (!string.IsNullOrWhiteSpace(req.Owner.ToString()))
+                if (!string.IsNullOrWhiteSpace(req.OwnerName))
                 {
-                    var ownerId = req.Owner;
-                    queryObject.And(new ProductQueryObjects.FilterBySeller(ownerId));
+                    var keyword = req.OwnerName;
+                    queryObject.And(new ProductQueryObjects.FilterBySeller(keyword));
                 }
             }
 
@@ -88,7 +88,7 @@ namespace eCommerce.Persistence.Repositories
 
 
             // execute
-            var result = await _genericRepo.SearchAsync(queryObject, req.Pagination);
+            var result = await _genericRepo.SearchAsync(queryObject, req.Pagination, x => x.Include(m => m.Category).Include(m => m.Owner).Include(m => m.Photos));
             return result;
         }
 
