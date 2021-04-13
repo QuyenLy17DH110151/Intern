@@ -92,11 +92,6 @@ namespace eCommerce.Persistence.Repositories
             return result;
         }
 
-        public Task<Product> GetByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<Product>> GetProductsByCategoryId(Guid catId)
         {
             var queryObject = QueryObject<Product>.Empty;
