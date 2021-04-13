@@ -6,7 +6,7 @@ using System.Text;
 
 namespace eCommerce.Domain.Entities
 {
-    public class Order : Entity, IAuditable
+    public class Order : Entity, IAuditable, IConcurrencyCheck
     {
         public DateTime OrderDate { get; set; }
         public string Address { get; set; }
@@ -18,9 +18,12 @@ namespace eCommerce.Domain.Entities
         public Product Product { get; set; }
         public int Quantity { get; set; }
         public string BuyerEmail { get; set; }
+        public byte[] RowVersion { get; set; }
+
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? LastUpdated { get; set; }
         public string LastUpdatedBy { get; set; }
+        
     }
 }
