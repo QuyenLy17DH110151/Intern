@@ -16,7 +16,7 @@ namespace eCommerce.Domain.Repositories
         ProductPhoto UploadPhoto(ProductPhoto photo);
 
         Task<Product> GetProductByIdAsync(Guid id);
-        Task<Product> GetByCategoryIdAsync(Guid catId);
+        Task<List<Product>> GetProductsByCategoryId(Guid catId);
         Task<IEnumerable<Product>> GetAllAsync();
         Task<PaginatedResult<Product>> SearchAsync(SearchProductModel req);
         Task<int> GetQuantityByProductIdAsync(Guid id);

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, startWith, delay } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../classes/product';
+import { environment } from 'src/environments/environment';
 
 const state = {
   products: JSON.parse(localStorage['products'] || '[]'),
@@ -51,6 +52,11 @@ export class ProductService {
     }));
   }
 
+  //Get Products By CategoryId
+  public  getProductsByCategoryId(catId: string) {
+    const url = `${environment.apiUrl}/Products/${catId}`;
+    return this.http.get(url);
+  }
 
   /*
     ---------------------------------------------

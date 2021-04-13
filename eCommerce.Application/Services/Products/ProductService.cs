@@ -89,17 +89,12 @@ namespace eCommerce.Application.Services.Products
         return photo.ProductId;
     }
 
-    // return all photo of product
-    //public async Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId)
-    //{
-    //    var photo = await _productRepo.GetPhotosByProductIdAsync(productId);
+        public async Task<List<ProductReturnModels.Product>> GetProductByCategoryIdAsync(Guid categoryId)
+        {
+            var products = await _productRepo.GetProductsByCategoryId(categoryId);
+            if (products.Count == 0) throw new EntityNotFound("Product");
 
-    //    if (photo == null)
-    //    {
-    //        throw new EntityNotFound("photo");  // emit error
-    //    }
-
-    //    return _mapper.Map<ProductReturnModels.Photo>(photo);
-    //}
-}
+            return _mapper.Map<List<ProductReturnModels.Product>>(products);
+        }
+    }
 }

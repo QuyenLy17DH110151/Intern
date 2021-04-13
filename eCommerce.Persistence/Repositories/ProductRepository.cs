@@ -97,9 +97,10 @@ namespace eCommerce.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Product> GetByCategoryIdAsync(Guid catId)
+        public async Task<List<Product>> GetProductsByCategoryId(Guid catId)
         {
-            throw new NotImplementedException();
+            var products = await _dbContext.Set<Product>().Where(x => x.CategoryId == catId).ToListAsync();
+            return products;
         }
 
         public Task<Product> GetProductByIdAsync(Guid id)

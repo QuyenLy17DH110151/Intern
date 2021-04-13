@@ -57,7 +57,8 @@ import { DiscountPipe } from './pipes/discount.pipe';
 // Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon'
+import {MatIconModule} from '@angular/material/icon';
+import { ProductByCategoryComponent } from './components/product/product-by-category/product-by-category.component'
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import {MatIconModule} from '@angular/material/icon'
     SkeletonProductBoxComponent,
     LayoutBoxComponent,
     TapToTopComponent,
-    DiscountPipe
+    DiscountPipe,
+    ProductByCategoryComponent
   ],
   imports: [
     CommonModule,
@@ -147,7 +149,8 @@ import {MatIconModule} from '@angular/material/icon'
     SkeletonProductBoxComponent,
     LayoutBoxComponent,
     TapToTopComponent,
-    DiscountPipe
+    DiscountPipe,
+    ProductByCategoryComponent
   ]
 })
 export class SharedModule { }

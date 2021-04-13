@@ -41,8 +41,8 @@ namespace eCommerce.WebAPI.Controllers
 
             return product;
         }
-
-        [HttpGet("{productId}")] //[POST] api/Product/:productId;
+        
+        [HttpGet("{productId}")] //[POST] api/Products/:productId;
         public async Task<ActionResult<ProductReturnModels.Product>> GetProductDetail(Guid productId)
         {
             var product = await _productService.GetProductByIdAsync(productId);
@@ -53,6 +53,19 @@ namespace eCommerce.WebAPI.Controllers
             }
 
             return product;
+        }
+
+        [HttpGet("category/{categoryId}")] //[POST] api/Products/:categoryId;
+        public async Task<ActionResult<List<ProductReturnModels.Product>>> GetProductByCategory(Guid categoryId)
+        {
+            var products = await _productService.GetProductByCategoryIdAsync(categoryId);
+
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            return products;
         }
 
     }
