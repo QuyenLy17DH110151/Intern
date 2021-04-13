@@ -1,6 +1,7 @@
 ﻿using eCommerce.Application.Services.Order;
 using eCommerce.Domain.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI.Controllers
@@ -21,6 +22,20 @@ namespace eCommerce.WebAPI.Controllers
         {
             var orders = await _orderService.SearchOrdersAsync(rq);
             return orders;
+        }
+        [HttpPost("Reject_Order/{Id}/{userName}")]
+        public async Task<ActionResult> RejectOrder(Guid Id, string userName)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            bool check = await _orderService.RejectOrder(Id, userName);
+            if (!check)
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
     }
 }

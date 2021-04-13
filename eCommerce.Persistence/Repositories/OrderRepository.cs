@@ -136,5 +136,11 @@ namespace eCommerce.Persistence.Repositories
 
             return true;
         }
+
+        public async Task<Order> GetOrderById(Guid Id)
+        {
+            var order = await _genericRepo.GetByIdAsync(Id);
+            return order;
+        }
     }
 }
