@@ -10,8 +10,8 @@ using eCommerce.Persistence;
 namespace eCommerce.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210413070940_add-mail-buyer")]
-    partial class addmailbuyer
+    [Migration("20210413094027_order-table")]
+    partial class ordertable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,6 +96,9 @@ namespace eCommerce.Persistence.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BuyerEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BuyerName")
                         .HasColumnType("nvarchar(max)");
 
@@ -133,6 +136,11 @@ namespace eCommerce.Persistence.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
