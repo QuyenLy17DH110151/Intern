@@ -12,12 +12,13 @@ namespace eCommerce.Application.Services.Products
 
             public string CategoryName { get; set; }
 
+            public string OwnerName { get; set; }
+
             public int PageIndex { get; set; }
 
             public int PageSize { get; set; }
 
-            public string Sort { get; set; }
-            public Guid? Owner { get; set; }
+            public string Sort { get; set; }            
         }
 
         public class Create
