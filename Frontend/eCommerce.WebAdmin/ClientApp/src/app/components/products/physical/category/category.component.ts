@@ -43,12 +43,14 @@ export class CategoryComponent implements OnInit {
       "name": event.newData.name,
     };
 
-    this.categoryClient.updateCategory(event.data.id, data).subscribe(
-      res => {
-        event.confirm.resolve(event.newData);
-        this.getListCategory();
-      }
-    );
+    if (window.confirm('Are you sure you want to edit?')) {
+      this.categoryClient.updateCategory(event.data.id, data).subscribe(
+        res => {
+          event.confirm.resolve(event.newData);
+          this.getListCategory();
+        }
+      );
+    }
   }
 
   onCreateConfirm(event): void {

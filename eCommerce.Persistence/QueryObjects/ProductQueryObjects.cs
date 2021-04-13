@@ -39,16 +39,16 @@ namespace eCommerce.Persistence.QueryObjects
         }
         public class FilterBySeller : QueryObject<Product>
         {
-            private Guid? _id;
+            public string _keyword;
 
-            public FilterBySeller(Guid? Id)
+            public FilterBySeller(string keyword)
             {
-                _id = Id;
+                _keyword = keyword;
             }
 
             protected override Expression<Func<Product, bool>> AsExpression()
             {
-                return s => s.OwnerId.Equals(_id);
+                return s => s.Owner.Username.Contains(_keyword);
             }
         }
     }
