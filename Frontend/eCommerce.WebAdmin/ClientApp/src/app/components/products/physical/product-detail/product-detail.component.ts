@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import {Router, ActivatedRoute, Params} from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Image } from '@ks89/angular-modal-gallery';
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -14,8 +15,7 @@ export class ProductDetailComponent implements OnInit {
     public closeResult: string;
     public counter: number = 1;
     product: any;
-
-    @Input() productId = 'a9187572-b179-4e35-333c-08d8f810c796';
+    productId:string;
 
     public imagesRect: Image[] = [
         new Image(
@@ -43,7 +43,8 @@ export class ProductDetailComponent implements OnInit {
     constructor(
         private modalService: NgbModal,
         config: NgbRatingConfig,
-        private productClient: ProductClient
+        private productClient: ProductClient,
+        private _route: ActivatedRoute
     ) {
         config.max = 5;
         config.readonly = false;
@@ -77,8 +78,8 @@ export class ProductDetailComponent implements OnInit {
         const response = await this.productClient
             .getProductDetail(this.productId)
             .toPromise();
+
         this.product = response;
-        console.log(this.product);
     }
 
     increment() {
@@ -91,5 +92,8 @@ export class ProductDetailComponent implements OnInit {
 
     ngOnInit() {
         this.getProductDetail();
+
+        this.productId = this._route.snapshot.paramMap.get('productId');
+        console.log(this.productId)
     }
 }

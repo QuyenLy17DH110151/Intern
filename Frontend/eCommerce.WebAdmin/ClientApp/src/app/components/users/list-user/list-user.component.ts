@@ -2,17 +2,20 @@ import { SearchRequest } from './../../../api-clients/models/common.model';
 import { UserClient } from './../../../api-clients/user.client';
 import { Component, OnInit } from '@angular/core';
 import { userListDB } from 'src/app/shared/tables/list-users';
+import { DatePipe } from '@angular/common';
+import { UserRole } from 'src/app/api-clients/models/user.model';
 
 @Component({
     selector: 'app-list-user',
     templateUrl: './list-user.component.html',
     styleUrls: ['./list-user.component.scss'],
+    providers: [DatePipe],
 })
 export class ListUserComponent implements OnInit {
     public user_list = [];
     rq: SearchRequest = {};
     keyWordSearch: string = '';
-    constructor(private userClient: UserClient) {
+    constructor(private userClient: UserClient, private datePipe: DatePipe) {
         // this.user_list = userListDB.list_user;
     }
 
@@ -33,14 +36,14 @@ export class ListUserComponent implements OnInit {
         },
         columns: {
             username: {
-                title: 'First Name',
+                title: 'User name',
                 type: 'email',
             },
             firstName: {
-                title: 'Last Name',
+                title: 'First Name',
             },
             lastName: {
-                title: 'Email',
+                title: 'Last Name',
             },
             lockoutEnd: {
                 title: 'Lockout End',
@@ -57,6 +60,12 @@ export class ListUserComponent implements OnInit {
             },
             createdDate: {
                 title: 'Created Date',
+                valuePrepareFunction: (createdDate) => {
+                    return this.datePipe.transform(
+                        new Date(createdDate),
+                        'dd MMM yyyy'
+                    );
+                },
             },
             createdBy: {
                 title: 'Created By',
@@ -69,6 +78,9 @@ export class ListUserComponent implements OnInit {
             },
             role: {
                 title: 'Role',
+                valuePrepareFunction: (role) => {
+                    return UserRole[role];
+                },
             },
         },
     };

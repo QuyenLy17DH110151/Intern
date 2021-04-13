@@ -21,7 +21,7 @@ namespace eCommerce.WebAPI.Controllers
             _productService = productService;
         }
 
-        [HttpGet("search")] //[GET] api/Product/search
+        [HttpGet] //[GET] api/Product
         public async Task<ActionResult<PaginatedResult<ProductReturnModels.Product>>> Search([FromQuery] ProductRequestModels.Search req)
         {
             var product = await _productService.SearchProductsAsync(req);

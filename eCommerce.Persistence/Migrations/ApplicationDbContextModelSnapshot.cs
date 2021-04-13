@@ -50,6 +50,36 @@ namespace eCommerce.Persistence.Migrations
                     b.ToTable("Inventory");
                 });
 
+            modelBuilder.Entity("eCommerce.Domain.Entities.KeyResetPassword", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("IdentityKey")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("KeyParam")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id")
+                        .HasAnnotation("SqlServer:Clustered", false);
+
+                    b.HasAlternateKey("IdentityKey")
+                        .HasAnnotation("SqlServer:Clustered", true);
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("KeyResetPassword");
+                });
+
             modelBuilder.Entity("eCommerce.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -271,8 +301,14 @@ namespace eCommerce.Persistence.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
+
+                    b.Property<string>("UrlImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
@@ -291,6 +327,15 @@ namespace eCommerce.Persistence.Migrations
                     b.HasOne("eCommerce.Domain.Entities.Product", "Product")
                         .WithOne("Inventory")
                         .HasForeignKey("eCommerce.Domain.Entities.Inventory", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eCommerce.Domain.Entities.KeyResetPassword", b =>
+                {
+                    b.HasOne("eCommerce.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -45,10 +45,23 @@ namespace eCommerce.WebAPI.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
             }
 
+            if (user.LockoutEnd != null)
+            {
+                if (user.LockoutEnd < DateTime.UtcNow)
+                {
+                   await _userService.UnlockUserAsync(user.Id);
+                }
+                else
+                {
+                    return BadRequest(new { message = "User locked to " + user.LockoutEnd });
+                }
+            }
+
             var claims = new[]
             {
                 new Claim("id", user.Id.ToString()),
-                new Claim("username", user.Username.ToString())
+                new Claim("username", user.Username.ToString()),
+                new Claim("role",user.Role.ToString())
             };
             var jwtResult = _jwtAuthManager.GenerateTokens(rq.Username, claims);
             return jwtResult;

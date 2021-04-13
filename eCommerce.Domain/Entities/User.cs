@@ -7,7 +7,8 @@ namespace eCommerce.Domain.Entities
     public class User : Entity, IAuditable
     {
         public string Username { get; set; }
-
+        public string PhoneNumber { get; set; }
+        public string UrlImage { get; set; }
         public string PasswordHash { get; set; }
 
         public UserRoles Role { get; set; }

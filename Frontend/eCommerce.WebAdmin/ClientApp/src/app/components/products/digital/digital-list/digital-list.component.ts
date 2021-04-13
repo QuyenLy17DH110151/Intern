@@ -1,41 +1,79 @@
 import { Component, OnInit } from '@angular/core';
-import { digitalListDB } from 'src/app/shared/tables/digital-list';
+import { SearchRequestProduct } from 'src/app/api-clients/models/common.model';
+import { ProductClient } from 'src/app/api-clients/product.client';
+
 @Component({
   selector: 'app-digital-list',
   templateUrl: './digital-list.component.html',
-  styleUrls: ['./digital-list.component.scss']
+  styleUrls: ['./digital-list.component.scss'],
+  providers: [ProductClient]
 })
 export class DigitalListComponent implements OnInit {
-  public digital_list = []
+  public product_list: any;
+  rq: SearchRequestProduct = {};
 
-  constructor() {
-    this.digital_list = digitalListDB.digital_list;
+  constructor(protected productClient: ProductClient) {
+
+  }
+
+  async loadData() {
+    let products = await this.productClient.searchProducts(this.rq).toPromise();
+    console.log('Products', products);
+    console.log('Request', this.rq);
+    this.product_list = products.items;
   }
 
   public settings = {
     actions: {
-      position: 'right'
+      position: 'right',
+
     },
     columns: {
-      id: {
-        title: 'Id',
-      },
-      img: {
-        title: 'Product',
+      photos: {
+        title: 'Image',
         type: 'html',
+        valuePrepareFunction: (photos) => {
+          return '<img src="' + photos[0].url + '" height="150" width="150"/>';
+        },
+        filter: false,
       },
-      title: {
-        title: 'Product Title'
+      name: {
+        title: 'Product Name',
       },
-      entry_type: {
-        title: 'Entry Type',
+      price: {
+        title: 'Price',
       },
-      quantity: {
-        title: 'Quantity',
-      }
+      category: {
+        title: 'Category',
+        valuePrepareFunction: (category) => {
+          return category.name;
+        },
+        filterFunction(category?: any, search?: string): boolean {
+          if (category.name.toLowerCase().indexOf(search) > -1)
+            return true;
+          return false;
+        },
+      },
+      owner: {
+        title: 'Owner',
+        valuePrepareFunction: (owner) => {
+          return owner.username;
+        },
+        filterFunction(owner?: any, search?: string): boolean {
+          if (owner.username.toLowerCase().indexOf(search) > -1)
+            return true;
+          return false;
+        }
+      },
+      description: {
+        title: 'Description',
+        filter: false,
+      },
     },
   };
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.loadData();
+  }
 
 }

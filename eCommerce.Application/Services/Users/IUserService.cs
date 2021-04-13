@@ -1,4 +1,5 @@
-﻿using eCommerce.Domain.Shared.Models;
+﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,6 +30,8 @@ namespace eCommerce.Application.Services.Users
         /// <param name="rq"></param>
         /// <returns></returns>
         Task<PaginatedResult<UserReturnModels.User>> SearchUsersAsync(UserRequestModels.Search rq);
+        Task<Guid> CreateUserAsync(UserRequestModels.Create rq, string url);
+        Task UpdatePasswordAsync(UserRequestModels.UpdatePassword rq);
 
 
         /// <summary>
@@ -37,6 +40,7 @@ namespace eCommerce.Application.Services.Users
         /// <param name="Id User"></param>
         /// <returns></returns>
         Task<bool> LockoutUserAsync(Guid Id);
+        Task ResetPasswordAsync(string username, string frontEndUrl);
 
         /// <summary>
         /// Unlockout User
@@ -44,5 +48,6 @@ namespace eCommerce.Application.Services.Users
         /// <param name="Id User"></param>
         /// <returns></returns>
         Task<bool> UnlockUserAsync(Guid Id);
+        Task<bool> ForgotPassword(UserRequestModels.ForgotPassword rq, string host);
     }
 }

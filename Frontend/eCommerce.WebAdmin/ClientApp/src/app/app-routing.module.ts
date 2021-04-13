@@ -4,33 +4,41 @@ import { content } from './shared/routes/content-routes';
 import { ContentLayoutComponent } from './shared/layout/content-layout/content-layout.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { ResetPasswordErrorComponent } from './components/auth/reset-password-errror/reset-password-error.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'dashboard/default',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
-    component: ContentLayoutComponent,
-    children: content
-  },
-  {
-    path: 'auth/login',
-    component: LoginComponent,
-  },
-  {
-    path: 'auth/reset-password',
-    component: ResetPasswordComponent,
-  }
+    {
+        path: '',
+        // redirectTo: 'dashboard/default',
+        redirectTo: 'auth/login',
+        pathMatch: 'full',
+    },
+    {
+        path: '',
+        component: ContentLayoutComponent,
+        children: content,
+    },
+    {
+        path: 'auth/login',
+        component: LoginComponent,
+    },
+    {
+        path: 'auth/reset-password',
+        component: ResetPasswordComponent,
+    },
+    {
+        path: 'reset-password-error',
+        component: ResetPasswordErrorComponent,
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    scrollPositionRestoration: 'enabled',
-    relativeLinkResolution: 'legacy'
-})],
-  exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(routes, {
+            scrollPositionRestoration: 'enabled',
+            relativeLinkResolution: 'legacy',
+        }),
+    ],
+    exports: [RouterModule],
 })
 export class AppRoutingModule { }

@@ -14,85 +14,85 @@ const routes: Routes = [
   {
     path: '',
     children: [
-        {
-            path: 'list-product',
-            component: ProductListComponent,
-            data: {
-              title: "Product List",
-              breadcrumb: "Product List"
-            }
-          },
+      {
+        path: 'digital/digital-product-list',
+        component: ProductListComponent,
+        data: {
+          title: 'Product List',
+          breadcrumb: 'Product List',
+        },
+      },
       {
         path: 'category',
         component: CategoryComponent,
         data: {
-          title: "Category",
-          breadcrumb: "Category"
-        }
+          title: 'Category',
+          breadcrumb: 'Category',
+        },
       },
       {
         path: 'sub-category',
         component: SubCategoryComponent,
         data: {
-          title: "Sub Category",
-          breadcrumb: "Sub Category"
-        }
+          title: 'Sub Category',
+          breadcrumb: 'Sub Category',
+        },
       },
 
       {
-        path: 'product-detail',
+        path: 'product-detail/:productId',
         component: ProductDetailComponent,
         data: {
-          title: "Product Detail",
-          breadcrumb: "Product Detail"
-        }
+          title: 'Product Detail',
+          breadcrumb: 'Product Detail',
+        },
       },
       {
         path: 'add-product',
         component: AddProductComponent,
         data: {
-          title: "Add Products",
-          breadcrumb: "Add Product"
-        }
+          title: 'Add Products',
+          breadcrumb: 'Add Product',
+        },
       },
       {
         path: 'digital/digital-category',
         component: DigitalCategoryComponent,
         data: {
-          title: "Category",
-          breadcrumb: "Category"
-        }
+          title: 'Category',
+          breadcrumb: 'Category',
+        },
       },
       {
         path: 'digital/digital-sub-category',
         component: DigitalSubCategoryComponent,
         data: {
-          title: "Sub Category",
-          breadcrumb: "Sub Category"
-        }
+          title: 'Sub Category',
+          breadcrumb: 'Sub Category',
+        },
       },
       {
-        path: 'digital/digital-product-list',
+        path: 'list-product',
         component: DigitalListComponent,
         data: {
-          title: "Product List",
-          breadcrumb: "Product List"
-        }
+          title: 'Product List',
+          breadcrumb: 'Product List',
+        },
       },
       {
         path: 'digital/digital-add-product',
         component: DigitalAddComponent,
         data: {
-          title: "Add Products",
-          breadcrumb: "Add Product"
-        }
-      }
-    ]
-  }
+          title: 'Add Products',
+          breadcrumb: 'Add Product',
+        },
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class ProductsRoutingModule { }

@@ -12,7 +12,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 
 
 @NgModule({
-  declarations: [LoginComponent,ResetPasswordComponent],
+  declarations: [LoginComponent, ResetPasswordComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
