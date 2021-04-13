@@ -71,13 +71,13 @@ namespace eCommerce.Persistence.Repositories
 
             // filter by seller
 
-            if (req.Role == "Seller")
+            if (req.Role == UserRoles.Seller.ToString())
             {
                 var keyword = req.UserName;
                 queryObject.And(new ProductQueryObjects.FilterBySeller(keyword));
             }
 
-            if (req.Role == "Admin")
+            if (req.Role == UserRoles.Admin.ToString())
             {
                 if (!string.IsNullOrWhiteSpace(req.OwnerName))
                 {
