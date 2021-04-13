@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductSlider } from '../../../shared/data/slider';
 import { Product } from '../../../shared/classes/product';
 import { ProductService } from '../../../shared/services/product.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-fashion-one',
@@ -36,19 +37,20 @@ export class FashionOneComponent implements OnInit {
     title: 'welcome to fashion',
     subTitle: 'Women fashion',
     image: 'assets/images/slider/2.jpg'
-  }]
-
-  // Collection banner
-  public collections = [{
-    image: 'assets/images/collection/fashion/1.jpg',
-    save: 'save 50%',
-    title: 'men'
-  }, {
-    image: 'assets/images/collection/fashion/2.jpg',
-    save: 'save 50%',
-    title: 'women'
-  }];
-
+  },
+  {
+    image: 'assets/images/slider/3.jpg'
+  },
+  {
+    image: 'assets/images/slider/4.jpg'
+  },
+  {
+    image: 'assets/images/slider/5.jpg'
+  },
+  {
+    image: 'assets/images/slider/6.jpg'
+  }
+]
   // Blog
   public blog = [{
     image: 'assets/images/blog/1.jpg',

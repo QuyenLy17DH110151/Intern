@@ -57,6 +57,7 @@ import { DiscountPipe } from './pipes/discount.pipe';
 // Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon'
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { MatInputModule } from '@angular/material/input';
     NgxSkeletonLoaderModule,
     TranslateModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule
   ],
   exports: [
     CommonModule,
