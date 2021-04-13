@@ -19,8 +19,8 @@ export class SearchRequestProduct {
     sort?: string;
     pageNumber?: string;
     pageSize?: string;
-    OnwerName?: string;
-    CategoryName?: string;
+    ownerName?: string;
+    categoryName?: string;
 }
 
 export class NameValue {
