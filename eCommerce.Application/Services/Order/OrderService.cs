@@ -23,7 +23,7 @@ namespace eCommerce.Application.Services.Order
             _emailSender = emailSender;
         }
 
-        public async Task<bool> RejectOrder(Guid Id, string buyerEmail)
+        public async Task<bool> RejectOrder(Guid Id)
         {
             var order = await _orderRepo.GetOrderById(Id);
             if (order == null)
@@ -32,7 +32,7 @@ namespace eCommerce.Application.Services.Order
             }
             await _orderRepo.UpdateStatus(Id, Domain.Enums.OrderStatuses.Cancelled);
             await _orderRepo.UnitOfWork.SaveChangesAsync();
-            SendEmailRejectOrder("eCommerce", buyerEmail, Id);
+            SendEmailRejectOrder("eCommerce", order.BuyerEmail, Id);
             return true;
         }
 

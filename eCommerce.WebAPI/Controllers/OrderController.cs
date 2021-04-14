@@ -23,14 +23,14 @@ namespace eCommerce.WebAPI.Controllers
             var orders = await _orderService.SearchOrdersAsync(rq);
             return orders;
         }
-        [HttpPost("Reject_Order/{Id}/{buyerEmail}")]
-        public async Task<ActionResult> RejectOrder(Guid Id, string buyerEmail)
+        [HttpPost("Reject_Order/{Id}")]
+        public async Task<ActionResult> RejectOrder(Guid Id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            bool check = await _orderService.RejectOrder(Id, buyerEmail);
+            bool check = await _orderService.RejectOrder(Id);
             if (!check)
             {
                 return BadRequest();
