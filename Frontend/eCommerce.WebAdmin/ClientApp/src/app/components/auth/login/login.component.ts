@@ -5,7 +5,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserClient } from 'src/app/api-clients/_index';
 import Swal from 'sweetalert2';
-import { ForgotPasswordRequest } from 'src/app/api-clients/models/user.model';
+import {
+    ForgotPasswordRequest,
+    UserRole,
+} from 'src/app/api-clients/models/user.model';
 
 @Component({
     selector: 'app-login',
