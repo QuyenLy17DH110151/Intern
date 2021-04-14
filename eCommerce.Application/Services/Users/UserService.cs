@@ -207,5 +207,41 @@ namespace eCommerce.Application.Services.Users
             SendEmailChangPassword("eCommerce", rq.Username, keyParam, host, "Request change password success");
             return true;
         }
+
+        public async Task<UserReturnModels.UserInformation> GetUserbyUsername(string username)
+        {
+            var user = await _userRepo.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                throw new BusinessException("username not exsist");
+            }
+            return _mapper.Map<UserReturnModels.UserInformation>(user);
+        }
+
+        public async Task UpdateAvata(string username, string urlImage)
+        {
+            var user = await _userRepo.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                throw new BusinessException("username not exsist");
+            }
+            user.UrlImage = urlImage;
+            _userRepo.Update(user);
+            await _userRepo.UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task UpdateInformation(string username, UserRequestModels.UserUpdateInformation user)
+        {
+            var u = await _userRepo.GetUserByUsernameAsync(username);
+            if (u== null)
+            {
+                throw new BusinessException("username not exsist");
+            }
+            u.PhoneNumber = user.PhoneNumber;
+            u.FirstName = user.FirstName;
+            u.LastName = user.LastName;
+            _userRepo.Update(u);
+            await _userRepo.UnitOfWork.SaveChangesAsync();
+        }
     }
 }

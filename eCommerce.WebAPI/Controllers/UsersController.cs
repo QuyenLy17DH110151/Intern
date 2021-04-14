@@ -90,5 +90,32 @@ namespace eCommerce.WebAPI.Controllers
             
             return Ok();
         }
+
+        [HttpGet("get-my-information")]
+        [Authorize(Policy = "PermissionSeller")]
+        public async Task<ActionResult<UserReturnModels.UserInformation>> GetMyInformation()
+        {
+            var username = _applicationContext.Principal.Username;
+            var rp = await _userService.GetUserbyUsername(username);
+            return rp;
+        }
+
+        [HttpPut("update-avata")]
+        [Authorize(Policy = "PermissionSeller")]
+        public async Task<ActionResult> UpdateAvata([FromBody] UserRequestModels.UrlImage urlImage)
+        {
+            var username = _applicationContext.Principal.Username;
+            await _userService.UpdateAvata(username, urlImage.url);
+            return Ok();
+        }
+
+        [HttpPut("update-information")]
+        [Authorize(Policy = "PermissionSeller")]
+        public async Task<ActionResult> UpdateInformation([FromBody] UserRequestModels.UserUpdateInformation user)
+        {
+            var username = _applicationContext.Principal.Username;
+            await _userService.UpdateInformation(username,user);
+            return Ok();
+        }
     }
 }

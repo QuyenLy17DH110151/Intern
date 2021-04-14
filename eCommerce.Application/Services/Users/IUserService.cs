@@ -49,5 +49,8 @@ namespace eCommerce.Application.Services.Users
         /// <returns></returns>
         Task<bool> UnlockUserAsync(Guid Id);
         Task<bool> ForgotPassword(UserRequestModels.ForgotPassword rq, string host);
+        Task<UserReturnModels.UserInformation> GetUserbyUsername(string username);
+        Task UpdateAvata(string username, string urlImage);
+        Task UpdateInformation(string username, UserRequestModels.UserUpdateInformation user);
     }
 }

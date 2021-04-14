@@ -4,19 +4,20 @@ import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { UserService } from "../shared/service/user.service";
 import { PagedList, SearchRequest } from "./models/common.model";
-import { ForgotPasswordRequest, User } from "./models/user.model";
+import { ForgotPasswordRequest, UrlImage, User, UserInformationResponse, UserUpdateInformation } from "./models/user.model";
 import { UpdatePasswordRequest, LoginRequest, JwtAuthResult, CreateUserRequest } from "./models/_index";
 
 
 
 @Injectable()
 export class UserClient {
-    apiEndpoint = `${environment.apiUrl}/Users`;
-    apiToken = `${environment.apiUrl}/Token`;
-    apiTokenLogout = `${environment.apiUrl}/Token/logout`;
-    apiGetAll = `${environment.apiUrl}/Users/GetAll`;
-    apiResetPasswod = `${environment.apiUrl}/Users/reset-password`;
-    apiForgotPassword = `${environment.apiUrl}/Users/forgot-password`;
+    private apiEndpoint = `${environment.apiUrl}/Users`;
+    private apiToken = `${environment.apiUrl}/Token`;
+    private apiResetPasswod = `${environment.apiUrl}/Users/reset-password`;
+    private apiForgotPassword = `${environment.apiUrl}/Users/forgot-password`;
+    private apiGetMyInformation = `${environment.apiUrl}/Users/get-my-information`;
+    private apiUpdateAvata = `${environment.apiUrl}/Users/update-avata`;
+    private apiUpdateMyinformation = `${environment.apiUrl}/Users/update-information`;
     constructor(protected httpClient: HttpClient) { }
 
     searchUsers(
@@ -63,4 +64,23 @@ export class UserClient {
     forgotPassword(rq: ForgotPasswordRequest): Observable<string> {
         return this.httpClient.post<string>(this.apiForgotPassword, rq);
     }
+
+    getMyInformation(): Observable<UserInformationResponse> {
+        return this.httpClient.get<UserInformationResponse>(this.apiGetMyInformation);
+    }
+
+    updateAvata(urlImage: UrlImage): Observable<any> {
+        return this.httpClient.put(
+            `${this.apiUpdateAvata}`,
+            urlImage
+        );
+    }
+
+    updateMyInformation(userUpdateInformation: UserUpdateInformation): Observable<any> {
+        return this.httpClient.put(
+            `${this.apiUpdateMyinformation}`,
+            userUpdateInformation
+        );
+    }
+
 }
