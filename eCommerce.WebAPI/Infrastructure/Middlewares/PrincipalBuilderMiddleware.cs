@@ -1,4 +1,6 @@
 ﻿using eCommerce.Application.Shared;
+using eCommerce.Domain.Entities;
+using eCommerce.Domain.Shared;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -23,7 +25,7 @@ namespace eCommerce.WebAPI.Infrastructure.Middlewares
 
             var username = "anonymous";
             string userId = null;
-            string role = null;
+            UserRoles role = 0;
             if (context.User.Identity.IsAuthenticated)
             {
                 foreach (var claim in context.User.Claims)
@@ -37,7 +39,8 @@ namespace eCommerce.WebAPI.Infrastructure.Middlewares
                             userId = claim.Value;
                             break;
                         case ClaimTypes.Role:
-                            role = claim.Value;
+                            //role = claim.Value;
+                            role = (UserRoles)Enum.Parse(typeof(UserRoles), claim.Value); ;
                             break;
                     }
                 }

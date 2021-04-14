@@ -2,6 +2,7 @@
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
 using Microsoft.EntityFrameworkCore;
@@ -67,9 +68,16 @@ namespace eCommerce.Persistence.Repositories
                 queryObject.And(new ProductQueryObjects.FilterByCategory(keyword));
             }
 
+
             // filter by seller
 
-            if (req.Role == "Admin")
+            if (req.Role == UserRoles.Seller)
+            {
+                var keyword = req.UserName;
+                queryObject.And(new ProductQueryObjects.FilterBySeller(keyword));
+            }
+
+            if (req.Role == UserRoles.Admin)
             {
                 if (!string.IsNullOrWhiteSpace(req.OwnerName))
                 {

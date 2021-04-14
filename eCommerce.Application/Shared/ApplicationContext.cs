@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eCommerce.Domain.Shared;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,9 +16,9 @@ namespace eCommerce.Application.Shared
 
         public string Username { get; }
 
-        public string Role { get; set; }
+        public UserRoles Role { get; set; }
 
-        public UserPrincipal(string userId, string userName, string role)
+        public UserPrincipal(string userId, string userName, UserRoles role)
         {
             UserId = userId;
             Username = userName;
