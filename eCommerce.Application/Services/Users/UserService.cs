@@ -183,7 +183,7 @@ namespace eCommerce.Application.Services.Users
 
         }
 
-        public async Task<bool> ForgotPassword(UserRequestModels.ForgotPassword rq, string host)
+        public async Task<bool> ForgotPasswordAsync(UserRequestModels.ForgotPassword rq, string host)
         {
             //find by username
             var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
@@ -208,7 +208,7 @@ namespace eCommerce.Application.Services.Users
             return true;
         }
 
-        public async Task<UserReturnModels.UserInformation> GetUserbyUsername(string username)
+        public async Task<UserReturnModels.UserInformation> GetUserbyUsernameAsync(string username)
         {
             var user = await _userRepo.GetUserByUsernameAsync(username);
             if (user == null)
@@ -218,7 +218,7 @@ namespace eCommerce.Application.Services.Users
             return _mapper.Map<UserReturnModels.UserInformation>(user);
         }
 
-        public async Task UpdateAvata(string username, string urlImage)
+        public async Task UpdateAvataAsync(string username, string urlImage)
         {
             var user = await _userRepo.GetUserByUsernameAsync(username);
             if (user == null)
@@ -230,7 +230,7 @@ namespace eCommerce.Application.Services.Users
             await _userRepo.UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateInformation(string username, UserRequestModels.UserUpdateInformation user)
+        public async Task UpdateInformationAsync(string username, UserRequestModels.UserUpdateInformation user)
         {
             var u = await _userRepo.GetUserByUsernameAsync(username);
             if (u== null)

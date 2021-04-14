@@ -86,7 +86,7 @@ namespace eCommerce.WebAPI.Controllers
         [HttpPost("forgot-password")]
         public async Task<ActionResult> ForgotPassword([FromBody] UserRequestModels.ForgotPassword rq)
         {
-            await _userService.ForgotPassword(rq, _clienUrl.FrontEndUrl);
+            await _userService.ForgotPasswordAsync(rq, _clienUrl.FrontEndUrl);
             
             return Ok();
         }
@@ -96,7 +96,7 @@ namespace eCommerce.WebAPI.Controllers
         public async Task<ActionResult<UserReturnModels.UserInformation>> GetMyInformation()
         {
             var username = _applicationContext.Principal.Username;
-            var rp = await _userService.GetUserbyUsername(username);
+            var rp = await _userService.GetUserbyUsernameAsync(username);
             return rp;
         }
 
@@ -105,7 +105,7 @@ namespace eCommerce.WebAPI.Controllers
         public async Task<ActionResult> UpdateAvata([FromBody] UserRequestModels.UrlImage urlImage)
         {
             var username = _applicationContext.Principal.Username;
-            await _userService.UpdateAvata(username, urlImage.url);
+            await _userService.UpdateAvataAsync(username, urlImage.url);
             return Ok();
         }
 
@@ -114,7 +114,7 @@ namespace eCommerce.WebAPI.Controllers
         public async Task<ActionResult> UpdateInformation([FromBody] UserRequestModels.UserUpdateInformation user)
         {
             var username = _applicationContext.Principal.Username;
-            await _userService.UpdateInformation(username,user);
+            await _userService.UpdateInformationAsync(username,user);
             return Ok();
         }
     }
