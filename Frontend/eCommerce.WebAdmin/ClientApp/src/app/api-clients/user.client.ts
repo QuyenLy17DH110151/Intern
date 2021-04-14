@@ -15,9 +15,9 @@ export class UserClient {
     private apiToken = `${environment.apiUrl}/Token`;
     private apiResetPasswod = `${environment.apiUrl}/Users/reset-password`;
     private apiForgotPassword = `${environment.apiUrl}/Users/forgot-password`;
-    private apiGetMyInformation = `${environment.apiUrl}/Users/get-my-information`;
-    private apiUpdateAvata = `${environment.apiUrl}/Users/update-avata`;
-    private apiUpdateMyinformation = `${environment.apiUrl}/Users/update-information`;
+    private apiGetMyInformation = `${environment.apiUrl}/Users/me`;
+    private apiUpdateAvata = `${environment.apiUrl}/Users/me/avatar`;
+    private apiUpdateMyinformation = `${environment.apiUrl}/Users/me`;
     constructor(protected httpClient: HttpClient) { }
 
     searchUsers(

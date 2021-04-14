@@ -213,7 +213,7 @@ namespace eCommerce.Application.Services.Users
             var user = await _userRepo.GetUserByUsernameAsync(username);
             if (user == null)
             {
-                throw new BusinessException("username not exsist");
+                throw new EntityNotFound("user");
             }
             return _mapper.Map<UserReturnModels.UserInformation>(user);
         }

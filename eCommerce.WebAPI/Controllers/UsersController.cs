@@ -91,7 +91,7 @@ namespace eCommerce.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("get-my-information")]
+        [HttpGet("me")]
         [Authorize(Policy = "PermissionSeller")]
         public async Task<ActionResult<UserReturnModels.UserInformation>> GetMyInformation()
         {
@@ -100,7 +100,7 @@ namespace eCommerce.WebAPI.Controllers
             return rp;
         }
 
-        [HttpPut("update-avata")]
+        [HttpPut("me/avatar")]
         [Authorize(Policy = "PermissionSeller")]
         public async Task<ActionResult> UpdateAvata([FromBody] UserRequestModels.UrlImage urlImage)
         {
@@ -109,7 +109,7 @@ namespace eCommerce.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("update-information")]
+        [HttpPut("me")]
         [Authorize(Policy = "PermissionSeller")]
         public async Task<ActionResult> UpdateInformation([FromBody] UserRequestModels.UserUpdateInformation user)
         {

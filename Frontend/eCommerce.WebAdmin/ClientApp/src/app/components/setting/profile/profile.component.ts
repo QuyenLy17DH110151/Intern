@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
 import { UrlImage, UserInformationResponse, UserUpdateInformation } from 'src/app/api-clients/models/_index';
 import { UserClient } from 'src/app/api-clients/_index';
 import { FileUpload } from 'src/app/shared/service/upload-image/uploadImage.model';
 import { UserService } from 'src/app/shared/service/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-profile',
@@ -26,13 +28,14 @@ export class ProfileComponent implements OnInit {
   public defaultUrl = 'https://via.placeholder.com/150';
   public defaultUrlAvata = 'assets/images/dashboard/designer.jpg';
 
-  constructor(private userClient: UserClient, private storage: AngularFireStorage, private formBuilder: FormBuilder) {
+  constructor(private userClient: UserClient, private storage: AngularFireStorage, private formBuilder: FormBuilder, private toastr: ToastrService) {
     this.createUserForm();
     this.getInformation();
   }
   resetPassword() {
     this.userClient.resetPassword().subscribe((res) => {
-      alert('Reset Password Success');
+      this.toastr.success('Reset Password Success!', 'Notification');
+
     });
   }
 
@@ -61,7 +64,7 @@ export class ProfileComponent implements OnInit {
   async saveUser() {
     this.userUpdateInformation = new UserUpdateInformation(this.formUser.value.firstName, this.formUser.value.lastName, this.formUser.value.phoneNumber,)
     this.userClient.updateMyInformation(this.userUpdateInformation).subscribe((res) => {
-      alert('Update My Information Success');
+      this.toastr.success('Update My Information Success!', 'Notification');
       this.createUserForm();
       this.getInformation();
       //return page profile
@@ -72,8 +75,8 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  async getInformation() {
-    await this.userClient.getMyInformation().subscribe((res) => {
+  getInformation() {
+    this.userClient.getMyInformation().subscribe((res) => {
       this.user = res;
       this.setValueDefaultInUserForm();
     });
@@ -127,7 +130,11 @@ export class ProfileComponent implements OnInit {
 
   saveChangeImage() {
     if (this.fileUpload == null || this.fileUpload.url == null) {
-      alert('upload image please!');
+      Swal.fire(
+        'Cancelled',
+        'upload image please!',
+        'error'
+      )
       return;
     }
     var urlImage: UrlImage = new UrlImage(this.fileUpload.url);
@@ -135,12 +142,12 @@ export class ProfileComponent implements OnInit {
       this.fileUpload = null;
       this.displayEditImg = !this.displayEditImg;
       this.displayBtnActionImg = true;
-
       this.getInformation();
-      alert('upload image success');
+      this.toastr.success('upload image success!', 'Notification');
 
     })
   }
+
   clickEditProfile() {
     this.displayEditProfile = !this.displayEditProfile;
   }
