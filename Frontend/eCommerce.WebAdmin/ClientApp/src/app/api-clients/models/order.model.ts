@@ -1,23 +1,23 @@
-import { Product } from "./product.model";
-
 export class Order {
     stt: number;
     id: string;
-    orderDate: Date;
-    address: string;
     buyerName: string;
-    status: OrderStatus;
-    price: number;
     buyerPhone: string;
-    productId: string;
-    productName: string;
-    quantity: number;
     buyerEmail: string;
-    createDate: Date;
-    createBy: string;
-    lastUpdate?: Date;
-    lastUpdateBy?: string;
+    address: string;
+    price: number;
+    quantity: number;
     product: Product;
+    status: OrderStatus;
+    createdDate: Date;
+    // createBy: string;
+    // lastUpdate?: Date;
+    // lastUpdateBy?: string;
+}
+
+class Product {
+    id: string;
+    name: string;
 }
 
 enum OrderStatus {

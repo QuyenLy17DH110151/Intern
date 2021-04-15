@@ -18,7 +18,7 @@ namespace eCommerce.Domain.Repositories.Models
 
         public OrderStatuses? Status { get; set; }
 
-        public string  IdProduct { get; set; }
+        public string  ProductId { get; set; }
 
         public string SellerUsername { get; set; }
 

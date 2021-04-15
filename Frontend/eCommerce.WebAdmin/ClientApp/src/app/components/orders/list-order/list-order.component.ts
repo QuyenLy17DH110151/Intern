@@ -12,12 +12,16 @@ import { OrderClient } from 'src/app/api-clients/order.client';
     providers: [DatePipe, CurrencyPipe],
 })
 export class ListOrderComponent implements OnInit {
-    orderList:Order[] = [];
+    orderList: any = [];
     totalPages: number;
     totalRows: number;
 
     keyWordSearch: string = '';
-    constructor(private readonly orderClient: OrderClient, private datePipe: DatePipe, private currencyPipe: CurrencyPipe) {}
+    constructor(
+        private readonly orderClient: OrderClient,
+        private datePipe: DatePipe,
+        private currencyPipe: CurrencyPipe
+    ) {}
 
     public settings = {
         delete: {
@@ -60,14 +64,30 @@ export class ListOrderComponent implements OnInit {
             price: {
                 title: 'Price',
                 valuePrepareFunction: (price) => {
-                    return this.currencyPipe.transform(price, 'USD','symbol','1.2-2');
+                    return this.currencyPipe.transform(
+                        price,
+                        'USD',
+                        'symbol',
+                        '1.2-2'
+                    );
                 },
             },
-            orderDate: {
+            totalValue: {
+                title: 'Total Value',
+                valuePrepareFunction: (totalValue) => {
+                    return this.currencyPipe.transform(
+                        totalValue,
+                        'USD',
+                        'symbol',
+                        '1.2-2'
+                    );
+                },
+            },
+            createdDate: {
                 title: 'Created Date',
-                valuePrepareFunction: (orderDate) => {
+                valuePrepareFunction: (createdDate) => {
                     return this.datePipe.transform(
-                        new Date(orderDate),
+                        new Date(createdDate),
                         'dd MMM yyyy'
                     );
                 },
@@ -75,14 +95,12 @@ export class ListOrderComponent implements OnInit {
             status: {
                 title: 'Status',
                 valuePrepareFunction: (status) => {
-                    if(status === 1) return 'New';
-                    if(status === 2) return 'Approved';
-                    if(status === 3) return 'Cancelled';
+                    if (status === 1) return 'New';
+                    if (status === 2) return 'Approved';
+                    if (status === 3) return 'Cancelled';
                 },
             },
         },
-
-        ngOnInit(): void {},
     };
 
     ngOnInit() {
@@ -100,19 +118,13 @@ export class ListOrderComponent implements OnInit {
                 this.orderList.map((order, index) => {
                     order.stt = index + 1;
                     order.productName = order.product.name;
+                    order.productId = order.product.id;
+                    order.totalValue = order.quantity * order.price;
                 });
 
                 console.log(this.orderList);
             },
             (error) => console.log(error)
         );
-    }
-
-    onDeleteConfirm(e) {
-        return;
-    }
-
-    onSaveConfirm(e) {
-        return;
     }
 }

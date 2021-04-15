@@ -70,9 +70,9 @@ namespace eCommerce.Persistence.Repositories
 
             //fliter id product
 
-            if(rq.IdProduct != null)
+            if(rq.ProductId != null)
             {
-                var idProduct = rq.IdProduct;
+                var idProduct = rq.ProductId;
                 queryObject.And(new OrderQueryObject.HasProduct(idProduct));
             }
 

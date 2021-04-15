@@ -30,7 +30,7 @@ namespace eCommerce.Application.Services.Order
                     SumPriceBigger = rq.SumPriceBigger,
                     SumPriceSmaller = rq.SumPriceSmaller,
                     Status = rq.Status,
-                    IdProduct = rq.IdProduct,
+                    ProductId = rq.ProductId,
                     SellerUsername = rq.SellerUsername,
                     Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
                 });
