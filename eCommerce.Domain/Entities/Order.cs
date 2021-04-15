@@ -8,16 +8,16 @@ namespace eCommerce.Domain.Entities
 {
     public class Order : Entity, IAuditable, IConcurrencyCheck
     {
-        public DateTime OrderDate { get; set; }
-        public string Address { get; set; }
-        public string BuyerName { get; set; }
-        public OrderStatuses Status { get; set; }
-        public decimal Price { get; set; }
-        public string BuyerPhone { get; set; }
-        public Guid ProductId { get; set; } // Declare FK from Order refer to Product
-        public Product Product { get; set; }
-        public int Quantity { get; set; }
         public string BuyerEmail { get; set; }
+        public string BuyerName { get; set; }
+        public string BuyerPhone { get; set; }
+        public string Address { get; set; }
+
+        public Guid ProductId { get; set; }
+        public Product Product { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public OrderStatuses Status { get; set; }
         public byte[] RowVersion { get; set; }
 
         public DateTime CreatedDate { get; set; }
