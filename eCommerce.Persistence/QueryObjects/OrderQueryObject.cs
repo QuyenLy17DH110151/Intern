@@ -73,9 +73,9 @@ namespace eCommerce.Persistence.QueryObjects
 
         public class HasStatus : QueryObject<Order>
         {
-            private OrderStatuses _status;
+            private OrderStatuses? _status;
 
-            public HasStatus(OrderStatuses status)
+            public HasStatus(OrderStatuses? status)
             {
                 _status = status;
             }

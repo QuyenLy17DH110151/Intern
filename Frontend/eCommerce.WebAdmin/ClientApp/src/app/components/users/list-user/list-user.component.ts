@@ -60,7 +60,7 @@ export class ListUserComponent implements OnInit {
             },
             createdDate: {
                 title: 'Created Date',
-                valuePrepareFunction: (createdDate) => {
+                c: (createdDate) => {
                     return this.datePipe.transform(
                         new Date(createdDate),
                         'dd MMM yyyy'

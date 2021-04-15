@@ -4,6 +4,7 @@ using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,7 +91,7 @@ namespace eCommerce.Persistence.Repositories
             }
             rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
 
-            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination);
+            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination, x=>x.Include(m=>m.Product));
             return result;
         }
 
@@ -100,7 +101,7 @@ namespace eCommerce.Persistence.Repositories
             {
                 return false;
             }
-            if (price < 0)
+            if (price <= 0)
             {
                 return false;
             }
@@ -109,7 +110,8 @@ namespace eCommerce.Persistence.Repositories
 
         private bool CheckEndDate(DateTime endDate)
         {
-            if (endDate == null)
+            DateTime defaultDate = new DateTime(0001, 1, 1);
+            if (endDate == null || endDate == defaultDate)
             {
                 return false;
             }
@@ -122,9 +124,10 @@ namespace eCommerce.Persistence.Repositories
             return true;
         }
 
-        private bool CheckStartDate(DateTime startDate)
+        private bool CheckStartDate(DateTime startDate)  //sớm < 0
         {
-            if(startDate == null)
+            DateTime defaultDate = new DateTime(0001, 1, 1);
+            if (startDate == null || startDate == defaultDate)
             {
                 return false;
             }

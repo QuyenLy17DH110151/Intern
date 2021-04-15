@@ -16,7 +16,7 @@ namespace eCommerce.Domain.Repositories.Models
 
         public decimal SumPriceSmaller { get; set; }
 
-        public OrderStatuses Status { get; set; }
+        public OrderStatuses? Status { get; set; }
 
         public string  IdProduct { get; set; }
 

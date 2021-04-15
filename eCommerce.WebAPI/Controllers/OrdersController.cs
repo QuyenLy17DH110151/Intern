@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class OrderController : ControllerBase
+    //[ApiController]
+    public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
 
-        public OrderController(IOrderService orderService)
+        public OrdersController(IOrderService orderService)
         {
             _orderService = orderService;
         }
