@@ -21,7 +21,7 @@ namespace eCommerce.Persistence.QueryObjects
 
             protected override Expression<Func<Order, bool>> AsExpression()
             {
-                return o => DateTime.Compare(o.OrderDate, _dateTime) < 0 || DateTime.Compare(o.OrderDate, _dateTime) == 0;
+                return o => DateTime.Compare(o.CreatedDate, _dateTime) < 0 || DateTime.Compare(o.CreatedDate, _dateTime) == 0;
             }
         }
 
@@ -36,7 +36,7 @@ namespace eCommerce.Persistence.QueryObjects
 
             protected override Expression<Func<Order, bool>> AsExpression()
             {
-                return o => DateTime.Compare(o.OrderDate, _dateTime) > 0 || DateTime.Compare(o.OrderDate, _dateTime) == 0;
+                return o => DateTime.Compare(o.CreatedDate, _dateTime) > 0 || DateTime.Compare(o.CreatedDate, _dateTime) == 0;
             }
         }
 
