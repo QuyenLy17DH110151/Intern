@@ -30,5 +30,22 @@ namespace eCommerce.Application.Services.Users
                 CreateMap<Domain.Entities.User, User>();
             }
         }
+
+        public class UserInformation
+        {
+            public string Username { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string PhoneNumber { get; set; }
+            public string UrlImage { get; set; }
+
+        }
+        public class MappingUserInformation : Profile
+        {
+            public MappingUserInformation()
+            {
+                CreateMap<Domain.Entities.User, UserInformation>();
+            }
+        }
     }
 }
