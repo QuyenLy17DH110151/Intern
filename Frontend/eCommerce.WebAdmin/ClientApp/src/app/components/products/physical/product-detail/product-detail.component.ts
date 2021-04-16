@@ -79,6 +79,7 @@ export class ProductDetailComponent implements OnInit {
             .getProductDetail(this.productId)
             .toPromise();
 
+        console.log("san pham: ", response);
         this.product = response;
     }
 
@@ -91,9 +92,7 @@ export class ProductDetailComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getProductDetail();
-
         this.productId = this._route.snapshot.paramMap.get('productId');
-        console.log(this.productId)
+        this.getProductDetail();
     }
 }

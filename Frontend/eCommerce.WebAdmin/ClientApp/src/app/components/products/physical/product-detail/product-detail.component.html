@@ -8,7 +8,7 @@
                         [previewConfig]="{maxHeight: '125px'}">
                     </ks-carousel>
                 </section> -->
-                <img [src]="product.photos[0].url" alt="" s style="width: 100%">
+                <img [src]="product?.photos[0] ? product.photos[0].url : ''" alt="" s style="width: 100%">
             </div>
             <div class="col-xl-8">
                 <div class="product-page-details product-right mb-0">
@@ -40,7 +40,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <img [src]="product.photos[0].url" alt="" class="img-fluid blur-up lazyloaded">
+                            <img [src]="product?.photos[0].url" alt="" class="img-fluid blur-up lazyloaded">
                         </div>
                     </ng-template>
                     <div class="size-box">
