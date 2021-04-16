@@ -1,4 +1,5 @@
 ﻿using eCommerce.Domain.Enums;
+using eCommerce.Domain.Shared;
 using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -8,22 +9,14 @@ namespace eCommerce.Domain.Repositories.Models
 {
     public class SearchOrderModel
     {
-        public DateTime StartDate { get; set; }
-
-        public DateTime EndDate { get; set; }
-
-        public decimal SumPriceBigger { get; set; }
-
-        public decimal SumPriceSmaller { get; set; }
-
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public OrderStatuses? Status { get; set; }
-
-        public string  ProductId { get; set; }
-
-        public string SellerUsername { get; set; }
+        public string CurrentUserId { get; set; }
+        public string CurrentUserName { get; set; }
+        public UserRoles Role { get; set; }
 
         public Pagination Pagination { get; set; } = new Pagination();
-
         public List<SortItem> Sort { get; set; } = new List<SortItem>();
     }
 }

@@ -1,12 +1,14 @@
 ﻿using eCommerce.Application.Services.Order;
 using eCommerce.Domain.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[ApiController]
+    [ApiController]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;

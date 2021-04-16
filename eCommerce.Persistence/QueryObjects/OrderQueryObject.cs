@@ -1,6 +1,7 @@
 ﻿using eCommerce.Domain.Entities;
 using eCommerce.Domain.Enums;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -10,72 +11,41 @@ namespace eCommerce.Persistence.QueryObjects
 {
     public static class OrderQueryObject
     {
-        public class OrderDateAfter : QueryObject<Order>
+        public class FilterByStartDate : QueryObject<Order>
         {
-            private DateTime _dateTime;
+            private DateTime _startDate;
 
-            public OrderDateAfter(DateTime dateTime)
+            public FilterByStartDate(DateTime dateTime)
             {
-                _dateTime = dateTime;
+                _startDate = dateTime;
             }
 
             protected override Expression<Func<Order, bool>> AsExpression()
             {
-                return o => DateTime.Compare(o.CreatedDate, _dateTime) < 0 || DateTime.Compare(o.CreatedDate, _dateTime) == 0;
+                return o => DateTime.Compare(_startDate, o.CreatedDate) <= 0; 
             }
-        }
+        }   
 
-        public class OrderDateBefore : QueryObject<Order>
+        public class FilterByEndDate : QueryObject<Order>
         {
-            private DateTime _dateTime;
+            private DateTime _endDate;
 
-            public OrderDateBefore(DateTime dateTime)
+            public FilterByEndDate(DateTime dateTime)
             {
-                _dateTime = dateTime;
+                _endDate = dateTime;
             }
 
             protected override Expression<Func<Order, bool>> AsExpression()
             {
-                return o => DateTime.Compare(o.CreatedDate, _dateTime) > 0 || DateTime.Compare(o.CreatedDate, _dateTime) == 0;
-            }
-        }
-
-        public class TotalPriceBigger : QueryObject<Order>
-        {
-            private Decimal _price;
-
-            public TotalPriceBigger(decimal price)
-            {
-                _price = price;
-            }
-
-            protected override Expression<Func<Order, bool>> AsExpression()
-            {
-                return o => o.Price * o.Quantity >= _price;
-            }
-        }
-
-        public class TotalPriceSmaller : QueryObject<Order>
-        {
-            private Decimal _price;
-
-            public TotalPriceSmaller(decimal price)
-            {
-                _price = price;
-            }
-
-            protected override Expression<Func<Order, bool>> AsExpression()
-            {
-                return o => o.Price * o.Quantity <= _price;
-
+                return o => DateTime.Compare(o.CreatedDate, _endDate) <= 0;
             }
         }
 
         public class HasStatus : QueryObject<Order>
         {
-            private OrderStatuses? _status;
+            private OrderStatuses _status;
 
-            public HasStatus(OrderStatuses? status)
+            public HasStatus(OrderStatuses status)
             {
                 _status = status;
             }
@@ -86,24 +56,25 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
-        public class HasProduct : QueryObject<Order>
+        public class HasRole : QueryObject<Order>
         {
-            private string _idProduct;
-            public HasProduct(string idProduct)
+            private UserRoles _role;
+
+            public HasRole(UserRoles role)
             {
-                _idProduct = idProduct;
+                _role = role;
             }
 
             protected override Expression<Func<Order, bool>> AsExpression()
             {
-                return o => o.ProductId.Equals(_idProduct);
+                return o => o.Product.Owner.Role == _role;
             }
         }
 
-        public class SellByUser : QueryObject<Order>
+        public class FilterByCurrentUserName : QueryObject<Order>
         {
             private string _username;
-            public SellByUser(string username)
+            public FilterByCurrentUserName(string username)
             {
                 _username = username;
             }

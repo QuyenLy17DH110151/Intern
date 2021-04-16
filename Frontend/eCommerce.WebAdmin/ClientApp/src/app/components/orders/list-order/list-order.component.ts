@@ -1,6 +1,5 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { stat } from 'node:fs';
 import { PagedList } from 'src/app/api-clients/models/common.model';
 import { Order } from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
@@ -92,13 +91,8 @@ export class ListOrderComponent implements OnInit {
                     );
                 },
             },
-            status: {
-                title: 'Status',
-                valuePrepareFunction: (status) => {
-                    if (status === 1) return 'New';
-                    if (status === 2) return 'Approved';
-                    if (status === 3) return 'Cancelled';
-                },
+            statusString: {
+                title: 'Status'
             },
         },
     };
@@ -120,11 +114,20 @@ export class ListOrderComponent implements OnInit {
                     order.productName = order.product.name;
                     order.productId = order.product.id;
                     order.totalValue = order.quantity * order.price;
+                    order.statusString = this.convertStatusCodeToStatusString(order.status);
                 });
 
                 console.log(this.orderList);
             },
             (error) => console.log(error)
         );
+    }
+
+    convertStatusCodeToStatusString(statusCode) {
+        if(statusCode === 0) return 'New';
+
+        if(statusCode === 1) return 'Approved';
+
+        if(statusCode === 2) return 'Cancelled';
     }
 }

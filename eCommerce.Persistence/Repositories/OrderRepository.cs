@@ -1,7 +1,9 @@
 ﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Enums;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
 using Microsoft.EntityFrameworkCore;
@@ -31,113 +33,50 @@ namespace eCommerce.Persistence.Repositories
         {
             var queryObject = QueryObject<Order>.Empty;
 
-            //filter after date
-
-            if (CheckStartDate(rq.StartDate))
+            //Filter by start date
+            if (rq.StartDate != null)
             {
-                var startDate = rq.StartDate;
-                queryObject.And(new OrderQueryObject.OrderDateAfter(startDate));
+                var startDate = (DateTime)rq.StartDate;
+                queryObject.And(new OrderQueryObject.FilterByStartDate(startDate));
             }
 
-            //fliter begin date
-
-            if (CheckEndDate(rq.EndDate))
+            //Filter by end date
+            if (rq.EndDate != null)
             {
-                var endDate = rq.EndDate;
-                queryObject.And(new OrderQueryObject.OrderDateBefore(endDate));
+                var endDate = (DateTime)rq.EndDate;
+                queryObject.And(new OrderQueryObject.FilterByEndDate(endDate));
             }
 
-            //fliter sum price bigger
-
-            if (CheckPrice(rq.SumPriceBigger))
-            {
-                var priceBigger = rq.SumPriceBigger;
-                queryObject.And(new OrderQueryObject.TotalPriceBigger(priceBigger));
-            }
-
-            //fliter sum price smaller
-            if (CheckPrice(rq.SumPriceSmaller))
-            {
-                var priceSmaller = rq.SumPriceSmaller;
-                queryObject.And(new OrderQueryObject.TotalPriceSmaller(priceSmaller));
-            }
-            //fliter status
+            //Filter by status
             if (rq.Status != null)
             {
-                var status = rq.Status;
+                var status = (OrderStatuses)rq.Status;
                 queryObject.And(new OrderQueryObject.HasStatus(status));
             }
 
-            //fliter id product
-
-            if(rq.ProductId != null)
+            //Filter by role
+            if(rq.Role != UserRoles.Admin)
             {
-                var idProduct = rq.ProductId;
-                queryObject.And(new OrderQueryObject.HasProduct(idProduct));
+                var role = rq.Role;
+                queryObject.And(new OrderQueryObject.HasRole(role));
             }
 
-            //fliter username seller
-            if (!string.IsNullOrWhiteSpace(rq.SellerUsername))
+            //Filter by current user name
+            if (!string.IsNullOrWhiteSpace(rq.CurrentUserName) && rq.Role != UserRoles.Admin)
             {
-                var usernameSeller = rq.SellerUsername;
-                queryObject.And(new OrderQueryObject.SellByUser(usernameSeller));
+                var currentUserName = rq.CurrentUserName;
+                queryObject.And(new OrderQueryObject.FilterByCurrentUserName(currentUserName));
             }
-            //order by
 
+            //Order by
             if (!rq.Sort.Any())
             {
                 rq.Sort.Add(new SortItem { FieldName = nameof(Order.IdentityKey) });
-
             }
             rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
 
             var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination, x=>x.Include(m=>m.Product));
             return result;
-        }
-
-        private bool CheckPrice(Decimal price)
-        {
-            if (price == null)
-            {
-                return false;
-            }
-            if (price <= 0)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private bool CheckEndDate(DateTime endDate)
-        {
-            DateTime defaultDate = new DateTime(0001, 1, 1);
-            if (endDate == null || endDate == defaultDate)
-            {
-                return false;
-            }
-            DateTime now = DateTime.Now;
-            if (DateTime.Compare(now, endDate) > 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckStartDate(DateTime startDate)  //sớm < 0
-        {
-            DateTime defaultDate = new DateTime(0001, 1, 1);
-            if (startDate == null || startDate == defaultDate)
-            {
-                return false;
-            }
-            DateTime now = DateTime.Now;
-            if (DateTime.Compare(now, startDate)<0)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

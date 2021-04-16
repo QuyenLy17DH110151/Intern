@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eCommerce.Application.Shared;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Shared.Models;
@@ -13,11 +14,13 @@ namespace eCommerce.Application.Services.Order
     {
         private readonly IOrderRepository _orderRepo;
         private readonly IMapper _mapper;
-        
-        public OrderService(IOrderRepository orderRepo, IMapper mapper)
+        private readonly ApplicationContext _appContext;
+
+        public OrderService(IOrderRepository orderRepo, IMapper mapper, ApplicationContext appContext)
         {
             _orderRepo = orderRepo;
             _mapper = mapper;
+            _appContext = appContext;
         }
 
         public async Task<PaginatedResult<OrderReturnModel.Order>> SearchOrdersAsync(OrderRequestModels.Search rq)
@@ -26,12 +29,13 @@ namespace eCommerce.Application.Services.Order
                 new SearchOrderModel
                 {
                     StartDate = rq.StartDate,
-                    EndDate = rq.EndtDate,
-                    SumPriceBigger = rq.SumPriceBigger,
-                    SumPriceSmaller = rq.SumPriceSmaller,
+                    EndDate = rq.EndDate,
                     Status = rq.Status,
-                    ProductId = rq.ProductId,
-                    SellerUsername = rq.SellerUsername,
+
+                    CurrentUserId = _appContext.Principal.UserId,
+                    CurrentUserName = _appContext.Principal.Username,
+                    Role = _appContext.Principal.Role,
+
                     Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
                 });
             return _mapper.Map<PaginatedResult<OrderReturnModel.Order>>(order);

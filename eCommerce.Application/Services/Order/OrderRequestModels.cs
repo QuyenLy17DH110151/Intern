@@ -9,25 +9,12 @@ namespace eCommerce.Application.Services.Order
     {
         public class Search
         {
-            public DateTime StartDate { get; set; }
-
-            public DateTime EndtDate { get; set; }
-
-            public decimal SumPriceBigger { get; set; }
-
-            public decimal SumPriceSmaller { get; set; }
-
+            public DateTime? StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
             public OrderStatuses? Status { get; set; }
-
-            public string ProductId { get; set; }
-
-            public string SellerUsername { get; set; }
-
             public int PageIndex { get; set; }
-
             public int PageSize { get; set; }
-
-            public string Sort { get; set; }
+            public string OrderBy { get; set; }
         }
     }
 }
