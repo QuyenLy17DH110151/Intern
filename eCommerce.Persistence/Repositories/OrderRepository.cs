@@ -138,13 +138,13 @@ namespace eCommerce.Persistence.Repositories
             return true;
         }
 
-        public async Task<Order> GetOrderById(Guid Id)
+        public async Task<Order> GetOrderByIdAsync(Guid Id)
         {
             var order = await _genericRepo.GetByIdAsync(Id);
             return order;
         }
 
-        public async Task<bool> UpdateStatus(Guid Id, OrderStatuses orderStatuses)
+        public async Task<bool> UpdateStatusAsync(Guid Id, OrderStatuses orderStatuses)
         {
             var order = await _genericRepo.GetByIdAsync(Id);
             order.Status = orderStatuses;

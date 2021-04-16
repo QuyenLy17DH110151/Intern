@@ -12,7 +12,7 @@ namespace eCommerce.Domain.Repositories
     public interface IOrderRepository : IRepository<Order>
     {
         Task<PaginatedResult<Order>> SearchAsync(SearchOrderModel searchOrderModel);
-        Task<Order> GetOrderById(Guid Id);
-        Task<bool> UpdateStatus(Guid Id, OrderStatuses orderStatuses);
+        Task<Order> GetOrderByIdAsync(Guid Id);
+        Task<bool> UpdateStatusAsync(Guid Id, OrderStatuses orderStatuses);
     }
 }
