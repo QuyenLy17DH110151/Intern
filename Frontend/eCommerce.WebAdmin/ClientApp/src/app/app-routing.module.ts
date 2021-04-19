@@ -5,13 +5,14 @@ import { ContentLayoutComponent } from './shared/layout/content-layout/content-l
 import { LoginComponent } from './components/auth/login/login.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { ResetPasswordErrorComponent } from './components/auth/reset-password-errror/reset-password-error.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
     {
         path: '',
-        // redirectTo: 'dashboard/default',
-        redirectTo: 'auth/login',
+        redirectTo: 'dashboard/default',
         pathMatch: 'full',
+        canActivate: [AuthGuard],
     },
     {
         path: '',
@@ -41,4 +42,4 @@ const routes: Routes = [
     ],
     exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

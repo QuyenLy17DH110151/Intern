@@ -118,17 +118,22 @@ export class ListUserComponent implements OnInit {
         }
     }
     isLockout() {
-        this.rq.isLockout = 'true';
+        this.rq.isLockout = '1';
         this.loadData();
         console.log('lock');
     }
     isUnLockout() {
-        delete this.rq.isLockout;
+        this.rq.isLockout = '2';
         this.loadData();
         console.log('Unlock');
     }
+
+    ShowAll() {
+        this.rq.isLockout = '0';
+        this.loadData();
+        console.log('ShowAll');
+    }
     async Search(keyWordSearch) {
-        this.rq.searchTerm = keyWordSearch;
         this.loadData();
         this.keyWordSearch = '';
     }
