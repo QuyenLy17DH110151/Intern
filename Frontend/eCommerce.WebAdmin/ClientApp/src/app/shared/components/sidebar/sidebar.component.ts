@@ -89,5 +89,5 @@ export class SidebarComponent {
         };
     }
     userName: string = localStorage.getItem('userName');
-    role: string = localStorage.getItem('role');
+    role: string = localStorage.getItem('userRole');
 }
