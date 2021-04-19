@@ -75,12 +75,9 @@ export class ProductDetailComponent implements OnInit {
     }
 
     async getProductDetail() {
-        const response = await this.productClient
+        return await this.productClient
             .getProductDetail(this.productId)
             .toPromise();
-
-        console.log("san pham: ", response);
-        this.product = response;
     }
 
     increment() {
@@ -91,8 +88,12 @@ export class ProductDetailComponent implements OnInit {
         this.counter -= 1;
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.productId = this._route.snapshot.paramMap.get('productId');
-        this.getProductDetail();
+        this.product = await this.getProductDetail();
+
+        if(!this.product.quantity) {
+            this.product.quantity = 0;
+        }
     }
 }
