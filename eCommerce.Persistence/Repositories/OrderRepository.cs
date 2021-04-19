@@ -34,16 +34,16 @@ namespace eCommerce.Persistence.Repositories
             var queryObject = QueryObject<Order>.Empty;
 
             //Filter by start date
-            if (rq.StartDate != null)
+            if (rq.StartDate.HasValue)
             {
-                var startDate = (DateTime)rq.StartDate;
+                var startDate = rq.StartDate.Value;
                 queryObject.And(new OrderQueryObject.FilterByStartDate(startDate));
             }
 
             //Filter by end date
-            if (rq.EndDate != null)
+            if (rq.EndDate.HasValue)
             {
-                var endDate = (DateTime)rq.EndDate;
+                var endDate = rq.EndDate.Value;
                 queryObject.And(new OrderQueryObject.FilterByEndDate(endDate));
             }
 
@@ -62,10 +62,10 @@ namespace eCommerce.Persistence.Repositories
             }
 
             //Filter by current user name
-            if (!string.IsNullOrWhiteSpace(rq.CurrentUserName) && rq.Role != UserRoles.Admin)
+            if (!string.IsNullOrWhiteSpace(rq.UserName) && rq.Role != UserRoles.Admin)
             {
-                var currentUserName = rq.CurrentUserName;
-                queryObject.And(new OrderQueryObject.FilterByCurrentUserName(currentUserName));
+                var userName = rq.UserName;
+                queryObject.And(new OrderQueryObject.FilterByCurrentUserName(userName));
             }
 
             //Order by

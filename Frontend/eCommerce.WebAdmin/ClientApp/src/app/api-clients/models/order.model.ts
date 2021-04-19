@@ -6,9 +6,10 @@ export class Order {
     buyerEmail: string;
     address: string;
     price: number;
+    totalAmount: number;
     quantity: number;
     product: Product;
-    status: OrderStatus;
+    status: number;
     createdDate: Date;
     // createBy: string;
     // lastUpdate?: Date;
@@ -24,8 +25,4 @@ enum OrderStatus {
     New = 1,
     Approved = 2,
     Cancelled = 3
-}
-
-export class SearchOrderPaging {
-
 }

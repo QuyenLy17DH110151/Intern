@@ -18,6 +18,7 @@ namespace eCommerce.Application.Services.Order
             public string Address { get; set; }
             public decimal Price { get; set; }
             public int Quantity { get; set; }
+            public decimal TotalAmount { get; set; }
             public Product Product { get; set; }
             public DateTime CreatedDate { get; set; }
             public OrderStatuses Status { get; set; }

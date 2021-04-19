@@ -32,8 +32,8 @@ namespace eCommerce.Application.Services.Order
                     EndDate = rq.EndDate,
                     Status = rq.Status,
 
-                    CurrentUserId = _appContext.Principal.UserId,
-                    CurrentUserName = _appContext.Principal.Username,
+                    OwnerId = _appContext.Principal.UserId,
+                    UserName = _appContext.Principal.Username,
                     Role = _appContext.Principal.Role,
 
                     Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },

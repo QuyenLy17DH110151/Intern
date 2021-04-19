@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { PagedList } from 'src/app/api-clients/models/common.model';
 import { Order } from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
+import { OrderViewModel } from '../order.viewModel';
 
 @Component({
     selector: 'app-list-order',
@@ -11,7 +12,8 @@ import { OrderClient } from 'src/app/api-clients/order.client';
     providers: [DatePipe, CurrencyPipe],
 })
 export class ListOrderComponent implements OnInit {
-    orderList: any = [];
+    orderList: Order[] = [];
+    orderListVM: OrderViewModel[] = [];
     totalPages: number;
     totalRows: number;
 
@@ -38,24 +40,27 @@ export class ListOrderComponent implements OnInit {
             ],
         },
         columns: {
-            stt: {
+            index: {
                 title: 'STT',
-                type: 'number',
             },
-            buyerName: {
+            customer: {
                 title: 'Customer',
             },
-            buyerEmail: {
+            email: {
                 title: 'Email',
             },
-            buyerPhone: {
+            phoneNumber: {
                 title: 'Number Phone',
             },
             address: {
                 title: 'Address',
             },
-            productName: {
+            product: {
                 title: 'Product Name',
+                type: 'html',
+                valuePrepareFunction: (product) => {
+                    return `<a href= "/products/product-detail/${product.id}">${product.name}</a>`;
+                }
             },
             quantity: {
                 title: 'Quantity',
@@ -71,7 +76,7 @@ export class ListOrderComponent implements OnInit {
                     );
                 },
             },
-            totalValue: {
+            totalAmount: {
                 title: 'Total Value',
                 valuePrepareFunction: (totalValue) => {
                     return this.currencyPipe.transform(
@@ -92,7 +97,7 @@ export class ListOrderComponent implements OnInit {
                 },
             },
             statusString: {
-                title: 'Status'
+                title: 'Status',
             },
         },
     };
@@ -101,33 +106,18 @@ export class ListOrderComponent implements OnInit {
         this.loadData();
     }
 
-    loadData() {
-        this.orderClient.getAllOrder().subscribe(
-            (response: PagedList<Order>) => {
-                this.orderList = response.items;
-                this.totalPages = response.totalPages;
-                this.totalRows = response.totalRows;
+    async loadData() {
+        const response: PagedList<Order> = await this.orderClient
+            .getAllOrder()
+            .toPromise();
 
-                // Custom data before render
-                this.orderList.map((order, index) => {
-                    order.stt = index + 1;
-                    order.productName = order.product.name;
-                    order.productId = order.product.id;
-                    order.totalValue = order.quantity * order.price;
-                    order.statusString = this.convertStatusCodeToStatusString(order.status);
-                });
-
-                console.log(this.orderList);
-            },
-            (error) => console.log(error)
+        this.orderList = response.items;
+        this.totalPages = response.totalPages;
+        this.totalRows = response.totalRows;
+        // Custom data before render
+        this.orderListVM = this.orderList.map(
+            (order, index) => new OrderViewModel(order, index)
         );
-    }
 
-    convertStatusCodeToStatusString(statusCode) {
-        if(statusCode === 0) return 'New';
-
-        if(statusCode === 1) return 'Approved';
-
-        if(statusCode === 2) return 'Cancelled';
     }
 }

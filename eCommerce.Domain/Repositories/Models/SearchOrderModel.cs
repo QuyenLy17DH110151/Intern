@@ -12,8 +12,8 @@ namespace eCommerce.Domain.Repositories.Models
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public OrderStatuses? Status { get; set; }
-        public string CurrentUserId { get; set; }
-        public string CurrentUserName { get; set; }
+        public string OwnerId { get; set; }
+        public string UserName { get; set; }
         public UserRoles Role { get; set; }
 
         public Pagination Pagination { get; set; } = new Pagination();

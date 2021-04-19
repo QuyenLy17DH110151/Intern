@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PagedList, SearchRequest } from './models/common.model';
 import { Order } from './models/order.model';
@@ -12,8 +13,8 @@ export class OrderClient {
 
     constructor(protected httpClient: HttpClient) {}
 
-    getAllOrder() {
+    getAllOrder(): Observable<PagedList<Order>> {
         const url = `${this.baseUrl}`;
-        return this.httpClient.get(url);
+        return this.httpClient.get<PagedList<Order>>(url);
     }
 }
