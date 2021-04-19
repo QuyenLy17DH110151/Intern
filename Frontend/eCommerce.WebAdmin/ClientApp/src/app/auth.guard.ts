@@ -16,10 +16,10 @@ export class AuthGuard implements CanActivate {
     constructor(private userService: UserService, private router: Router) {}
     canActivate(route: ActivatedRouteSnapshot): boolean {
         let expectedRole = route.data.expectedRole;
-        if (!expectedRole) {
-            expectedRole = this.userService.getRole();
-        }
         if (this.userService.loggedIn()) {
+              if (!expectedRole) {
+                  expectedRole = this.userService.getRole();
+              }
             if (this.userService.getRole() !== expectedRole) {
                 Swal.fire(
                     'Error',
