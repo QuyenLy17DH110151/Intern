@@ -9,6 +9,7 @@ import {
     UrlTree,
 } from '@angular/router';
 import Swal from 'sweetalert2';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -17,9 +18,9 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot): boolean {
         let expectedRole = route.data.expectedRole;
         if (this.userService.loggedIn()) {
-              if (!expectedRole) {
-                  expectedRole = this.userService.getRole();
-              }
+            if (!expectedRole) {
+                expectedRole = this.userService.getRole();
+            }
             if (this.userService.getRole() !== expectedRole) {
                 Swal.fire(
                     'Error',
