@@ -1,5 +1,6 @@
 ﻿using eCommerce.Domain.Entities;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -26,17 +27,30 @@ namespace eCommerce.Persistence.QueryObjects
 
         public class IsLockout : QueryObject<User>
         {
-            private bool? _lockoutEnd;
+            private UserLockStatusFilters _lockoutEnd;
 
-            public IsLockout(bool? lockoutEnd)
+            public IsLockout(UserLockStatusFilters lockoutEnd)
             {
                 _lockoutEnd = lockoutEnd;
             }
 
             protected override Expression<Func<User, bool>> AsExpression()
             {
-                //return o => o.LockoutEnd != null && o.LockoutEnd <= DateTime.UtcNow;
                 return o => o.LockoutEnd != null && o.LockoutEnd >= DateTime.UtcNow; ;
+            }
+        }
+        public class IsUnLockout : QueryObject<User>
+        {
+            private UserLockStatusFilters _lockoutEnd;
+
+            public IsUnLockout(UserLockStatusFilters lockoutEnd)
+            {
+                _lockoutEnd = lockoutEnd;
+            }
+
+            protected override Expression<Func<User, bool>> AsExpression()
+            {
+                return o => o.LockoutEnd == null;
             }
         }
     }
