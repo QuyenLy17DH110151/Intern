@@ -18,12 +18,14 @@ namespace eCommerce.Application.Services.Products
         private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
         private readonly ApplicationContext _appContext;
+        private readonly IInventoryRepository _inventoryRepository;
 
-        public ProductService(IProductRepository productRepo, IMapper mapper, ApplicationContext appContext)
+        public ProductService(IProductRepository productRepo, IMapper mapper, ApplicationContext appContext, IInventoryRepository inventoryRepository)
         {
             _productRepo = productRepo;
             _mapper = mapper;
             _appContext = appContext;
+            _inventoryRepository = inventoryRepository;
         }
 
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsAsync(ProductRequestModels.Search req)
@@ -53,24 +55,30 @@ namespace eCommerce.Application.Services.Products
 
                 Photos = request.Photos.Select(x => new ProductPhoto { Url = x }).ToList()
             };
-
-            //foreach(var photo in request.Photo)
-            //{
-            //    var p = new ProductPhoto()
-            //    {
-            //        Url = photo
-            //    };
-
-            //    product.Photos.Add(p);
-            //}
-           
-
-            _productRepo.Add(product); 
+            _productRepo.Add(product);
+            SaveInventory(product.Id);
             await _productRepo.UnitOfWork.SaveChangesAsync();
             return product.Id;
         }
 
-    public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)
+        private async void SaveInventory(Guid id)
+        {
+            if (id == null)
+            {
+                throw new Exception("Create Product fails");
+            }
+            Inventory inventory = new Inventory();
+            inventory.ProductId = id;
+            inventory.Id = Guid.NewGuid();
+            inventory.Quantity = 0;
+            _inventoryRepository.AddAsync(inventory);
+            if (inventory.Id == null)
+            {
+                throw new Exception("Create Inventory fails");
+            }
+        }
+
+        public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)
     {
         var product = await _productRepo.GetProductByIdAsync(Id);
         if (product == null) throw new EntityNotFound("Product");

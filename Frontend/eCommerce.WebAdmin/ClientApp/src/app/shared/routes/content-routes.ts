@@ -126,13 +126,13 @@ export const content: Routes = [
         canActivate: [AuthGuard],
     },
     {
-        path: 'invoice',
+        path: 'inventory',
         loadChildren: () =>
-            import('../../components/invoice/invoice.module').then(
-                (m) => m.InvoiceModule
+            import('../../components/inventory/inventory.module').then(
+                (m) => m.InventoryModule
             ),
         data: {
-            breadcrumb: 'Invoice',
+            breadcrumb: 'Inventory',
         },
         canActivate: [AuthGuard],
     },

@@ -6,6 +6,14 @@ export class PagedList<T> {
     items: T[];
 }
 
+export class SearchRequestInventory {
+    id: string;
+    productName: string;
+    ownerUsername: string;
+    quantity: number;
+    rowVersion: string;
+}
+
 export class SearchRequest {
     searchTerm?: string;
     sort?: string;

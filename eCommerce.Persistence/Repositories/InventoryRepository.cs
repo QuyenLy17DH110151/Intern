@@ -25,7 +25,7 @@ namespace eCommerce.Persistence.Repositories
             _genericRepo = new GenericRepository<Inventory>(_dbContext.Set<Inventory>());
         }
 
-        public async Task<PaginatedResult<Inventory>> SearchAsync(SearchInventoryModel rq)
+        public async Task<PaginatedResult<Inventory>> SearchAsync(string username, SearchInventoryModel rq)
         {
             // filter
             var queryObject = QueryObject<Inventory>.Empty;
@@ -35,7 +35,10 @@ namespace eCommerce.Persistence.Repositories
                 var keyword = rq.Keyword;
                 queryObject.And(new InventoryQueryObjects.ContainsKeyword(keyword));
             }
-
+            if (username != "")
+            {
+                queryObject.And(new InventoryQueryObjects.ContainsUsername(username));
+            }
             // orderby
             if (!rq.Sort.Any())
             {
@@ -48,6 +51,21 @@ namespace eCommerce.Persistence.Repositories
             // execute
             var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination);
             return result;
+        }
+
+        public void AddAsync(Inventory inventory)
+        {
+            _genericRepo.Add(inventory);
+        }
+
+        public Task<Inventory> FindByIdAsync(Guid id)
+        {
+            return _genericRepo.GetByIdAsync(id);
+        }
+
+        public void UpdateAsync(Inventory inventory)
+        {
+            _genericRepo.Update(inventory);
         }
     }
 }

@@ -24,5 +24,20 @@ namespace eCommerce.Persistence.QueryObjects
                 return s => s.Product.Name.Contains(_keyword);
             }
         }
+
+        internal class ContainsUsername : QueryObject<Inventory>
+        {
+            private string _username;
+
+            public ContainsUsername(string username)
+            {
+                _username = username;
+            }
+
+            protected override Expression<Func<Inventory, bool>> AsExpression()
+            {
+                return s => s.Product.Owner.Username.Contains(_username);
+            }
+        }
     }
 }
