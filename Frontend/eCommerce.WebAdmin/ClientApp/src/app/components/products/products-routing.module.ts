@@ -21,7 +21,7 @@ const routes: Routes = [
           title: 'Product List',
           breadcrumb: 'Product List',
         },
-      },
+      },    
       {
         path: 'category',
         component: CategoryComponent,

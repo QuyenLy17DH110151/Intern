@@ -19,7 +19,7 @@ namespace eCommerce.Domain.Entities
         public int Quantity { get; set; }
         public OrderStatuses Status { get; set; }
         public byte[] RowVersion { get; set; }
-
+        public decimal TotalAmount => Quantity * Price;
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? LastUpdated { get; set; }

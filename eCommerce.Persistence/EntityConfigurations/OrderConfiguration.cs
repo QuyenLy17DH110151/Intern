@@ -14,6 +14,7 @@ namespace eCommerce.Persistence.EntityConfigurations
             // table
             builder.ToTable(nameof(Order));
             builder.ConfigureByConvention();
+            builder.Ignore(order => order.TotalAmount);
         }
     }
 }
