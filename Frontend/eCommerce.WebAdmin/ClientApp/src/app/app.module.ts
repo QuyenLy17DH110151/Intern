@@ -32,7 +32,6 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
         BrowserAnimationsModule,
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
         HttpClientModule,
-
         AppRoutingModule,
         DashboardModule,
         InvoiceModule,
