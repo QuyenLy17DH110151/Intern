@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eCommerce.Application.Shared;
 using eCommerce.Application.Notification;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
@@ -16,11 +17,14 @@ namespace eCommerce.Application.Services.Order
         private readonly IOrderRepository _orderRepo;
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
-        public OrderService(IOrderRepository orderRepo, IMapper mapper, IEmailSender emailSender)
+        private readonly ApplicationContext _appContext;
+        
+        public OrderService(IOrderRepository orderRepo, IMapper mapper, IEmailSender emailSender, ApplicationContext appContext)
         {
             _orderRepo = orderRepo;
             _mapper = mapper;
             _emailSender = emailSender;
+            _appContext = appContext;
         }
 
         public async Task<bool> RejectOrderAsync(Guid Id)
@@ -42,12 +46,13 @@ namespace eCommerce.Application.Services.Order
                 new SearchOrderModel
                 {
                     StartDate = rq.StartDate,
-                    EndDate = rq.EndtDate,
-                    SumPriceBigger = rq.SumPriceBigger,
-                    SumPriceSmaller = rq.SumPriceSmaller,
+                    EndDate = rq.EndDate,
                     Status = rq.Status,
-                    IdProduct = rq.IdProduct,
-                    SellerUsername = rq.SellerUsername,
+
+                    OwnerId = _appContext.Principal.UserId,
+                    OwnerUserName = _appContext.Principal.Username,
+                    Role = _appContext.Principal.Role,
+
                     Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
                 });
             return _mapper.Map<PaginatedResult<OrderReturnModel.Order>>(order);
