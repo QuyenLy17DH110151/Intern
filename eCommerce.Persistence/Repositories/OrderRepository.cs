@@ -62,9 +62,9 @@ namespace eCommerce.Persistence.Repositories
             }
 
             //Filter by current user name
-            if (!string.IsNullOrWhiteSpace(rq.UserName) && rq.Role != UserRoles.Admin)
+            if (!string.IsNullOrWhiteSpace(rq.OwnerUserName) && rq.Role != UserRoles.Admin)
             {
-                var userName = rq.UserName;
+                var userName = rq.OwnerUserName;
                 queryObject.And(new OrderQueryObject.FilterByCurrentUserName(userName));
             }
 

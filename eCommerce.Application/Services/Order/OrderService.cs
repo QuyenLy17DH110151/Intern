@@ -50,7 +50,7 @@ namespace eCommerce.Application.Services.Order
                     Status = rq.Status,
 
                     OwnerId = _appContext.Principal.UserId,
-                    UserName = _appContext.Principal.Username,
+                    OwnerUserName = _appContext.Principal.Username,
                     Role = _appContext.Principal.Role,
 
                     Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
