@@ -9,4 +9,10 @@ namespace eCommerce.Domain.Shared
         Admin = 1,
         Seller
     }
+    public enum UserLockStatusFilters
+    {
+        All,
+        Lock,
+        Unlock
+    }
 }

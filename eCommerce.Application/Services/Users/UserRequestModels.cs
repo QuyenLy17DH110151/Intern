@@ -1,7 +1,6 @@
 ﻿using eCommerce.Domain.Shared.Models;
 using FluentValidation;
 ﻿using eCommerce.Domain.Shared;
-using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +25,7 @@ namespace eCommerce.Application.Services.Users
             public int PageSize { get; set; }
 
             public string Sort { get; set; }
-            public bool IsLockout { get; set; }
+            public UserLockStatusFilters IsLockout { get; set; }
         }
 
         public class Create
@@ -77,6 +76,27 @@ namespace eCommerce.Application.Services.Users
                 RuleFor(c => c.Username).EmailAddress();
                 RuleFor(c => c.FirstName).NotEmpty();
                 RuleFor(c => c.LastName).NotEmpty();
+            }
+        }
+
+        public class UrlImage
+        {
+            public string url { get; set; }
+        }
+
+        public class UserUpdateInformation
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string PhoneNumber { get; set; }
+        }
+        public class UserUpdateInformationValidator : AbstractValidator<UserUpdateInformation>
+        {
+            public UserUpdateInformationValidator()
+            {
+                RuleFor(c => c.FirstName).NotEmpty();
+                RuleFor(c => c.LastName).NotEmpty();
+                RuleFor(c => c.PhoneNumber).MinimumLength(8).MaximumLength(15);
             }
         }
     }

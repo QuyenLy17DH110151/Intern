@@ -1,0 +1,47 @@
+img:hover{
+    cursor: pointer;    
+}
+
+#btn-left{
+    background-color: rgb(253, 253, 117) !important;
+    color: black;
+    border: none;
+    text-align: center;
+    font-size: 10px;
+    margin-right: 10px;
+    width: 35%;
+    padding: 5px;
+}
+#btn-right{
+    background-color: rgb(245, 80, 80) !important;
+    color: black;
+    border: none;
+    text-align: center;
+    width: 35%;
+    font-size: 10px;
+    padding: 5px;
+}
+#div-action-btn-img{
+    margin-top: 20px;
+    width:100%;
+    text-align: center !important;
+    display: block;
+    margin-bottom: 10px;
+    height: 50px;
+    justify-content: center;
+}
+#div-btn-edit-profile{
+    width:100%;
+    text-align: center !important;
+}
+.message-erro{
+    text-align: center;
+    color: red;
+    width: 100%;
+    float: right;
+    padding-left: 20%;
+}
+.line-input{
+    margin-bottom: 2px;
+    margin-top: 20px;
+}

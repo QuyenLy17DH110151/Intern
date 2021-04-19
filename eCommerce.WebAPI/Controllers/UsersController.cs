@@ -86,8 +86,35 @@ namespace eCommerce.WebAPI.Controllers
         [HttpPost("forgot-password")]
         public async Task<ActionResult> ForgotPassword([FromBody] UserRequestModels.ForgotPassword rq)
         {
-            await _userService.ForgotPassword(rq, _clienUrl.FrontEndUrl);
+            await _userService.ForgotPasswordAsync(rq, _clienUrl.FrontEndUrl);
             
+            return Ok();
+        }
+
+        [HttpGet("me")]
+        [Authorize(Policy = "PermissionSeller")]
+        public async Task<ActionResult<UserReturnModels.UserInformation>> GetMyInformation()
+        {
+            var username = _applicationContext.Principal.Username;
+            var rp = await _userService.GetUserbyUsernameAsync(username);
+            return rp;
+        }
+
+        [HttpPut("me/avatar")]
+        [Authorize(Policy = "PermissionSeller")]
+        public async Task<ActionResult> UpdateAvata([FromBody] UserRequestModels.UrlImage urlImage)
+        {
+            var username = _applicationContext.Principal.Username;
+            await _userService.UpdateAvataAsync(username, urlImage.url);
+            return Ok();
+        }
+
+        [HttpPut("me")]
+        [Authorize(Policy = "PermissionSeller")]
+        public async Task<ActionResult> UpdateInformation([FromBody] UserRequestModels.UserUpdateInformation user)
+        {
+            var username = _applicationContext.Principal.Username;
+            await _userService.UpdateInformationAsync(username,user);
             return Ok();
         }
     }

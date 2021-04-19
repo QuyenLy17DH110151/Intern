@@ -2,6 +2,7 @@
 using eCommerce.Domain.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI.Controllers
@@ -9,7 +10,7 @@ namespace eCommerce.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class OrdersController : ControllerBase
+    public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
 
@@ -23,6 +24,20 @@ namespace eCommerce.WebAPI.Controllers
         {
             var orders = await _orderService.SearchOrdersAsync(rq);
             return orders;
+        }
+        [HttpPost("Reject_Order/{Id}")]
+        public async Task<ActionResult> RejectOrder(Guid Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            bool check = await _orderService.RejectOrderAsync(Id);
+            if (!check)
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
     }
 }

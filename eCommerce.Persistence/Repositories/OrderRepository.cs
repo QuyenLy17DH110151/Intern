@@ -78,5 +78,61 @@ namespace eCommerce.Persistence.Repositories
             var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination, x=>x.Include(m=>m.Product));
             return result;
         }
+
+        private bool CheckPrice(Decimal price)
+        {
+            if (price == null)
+            {
+                return false;
+            }
+            if (price <= 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool CheckEndDate(DateTime endDate)
+        {
+            if (endDate == null)
+            {
+                return false;
+            }
+            DateTime now = DateTime.Now;
+            if (DateTime.Compare(now, endDate) > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckStartDate(DateTime startDate)
+        {
+            if(startDate == null)
+            {
+                return false;
+            }
+            DateTime now = DateTime.Now;
+            if (DateTime.Compare(now, startDate)<0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<Order> GetOrderByIdAsync(Guid Id)
+        {
+            var order = await _genericRepo.GetByIdAsync(Id);
+            return order;
+        }
+
+        public async Task<bool> UpdateStatusAsync(Guid Id, OrderStatuses orderStatuses)
+        {
+            var order = await _genericRepo.GetByIdAsync(Id);
+            order.Status = orderStatuses;
+            return true;
+        }
     }
 }
