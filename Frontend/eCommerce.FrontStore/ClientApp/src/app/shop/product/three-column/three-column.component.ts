@@ -32,7 +32,11 @@ export class ThreeColumnComponent implements OnInit {
     public productService: ProductService,
     private _router: ActivatedRoute
   ) {
-    console.log(this._router.snapshot.params.slug);
+    this._router.params.subscribe((response) => {
+      console.log("response", response);
+      this.getProduct(response.slug);
+    });
+    // console.log(this._router.snapshot.params.slug);
   }
 
   ngOnInit(): void {}
@@ -95,7 +99,7 @@ export class ThreeColumnComponent implements OnInit {
   getProduct(productId: string) {
     this.productService.getProductDetail(productId).subscribe((response) => {
       this.productAPI = response;
-      console.log(this.productAPI);
+      console.log(this.productAPI); 
     });
   }
 }

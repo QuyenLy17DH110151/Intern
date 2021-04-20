@@ -25,6 +25,7 @@ export class RelatedProductComponent implements OnInit {
     // );
     this.productService.searchProducts(this.rq).subscribe((response) => {
       this.products = response.items;
+      console.log(this.type);
       console.log(response);
     });
   }
