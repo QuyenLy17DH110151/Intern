@@ -62,7 +62,8 @@ namespace eCommerce.WebAPI.Controllers
             var product = await _productService.SearchProductsPublicAsync(req);
             return product;
         }
-        [HttpGet("/frontstore/api/GetProductDetail/{productId}")]
+
+        [HttpGet("/frontstore/api/products/{productId}")]
         [AllowAnonymous]
         public async Task<ActionResult<ProductReturnModels.Product>> FrontStoreGetProductDetail(Guid productId)
         {

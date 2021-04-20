@@ -26,7 +26,7 @@ export class ProductClient {
 
   //Get by Id
   getProductDetail(productId: string): Observable<Product> {
-    const url = `${environment.apiUrl}frontstore/api/GetProductDetail/${productId}`;
+    const url = `${environment.apiUrl}frontstore/api/products/${productId}`;
     return this.http.get<Product>(url);
   }
 }

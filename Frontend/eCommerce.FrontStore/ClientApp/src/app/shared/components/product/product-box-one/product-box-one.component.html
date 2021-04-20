@@ -5,7 +5,7 @@
       <span class="lable4" *ngIf="product.sale">on sale</span> -->
     </div>
     <div class="front">
-      <a [routerLink]="['/shop/product/left/sidebar/', product?.id]">
+      <a  [routerLink]="['/shop/product/three/column', product.id]"> 
         <img
           [defaultImage]="
             ImageSrc ? ImageSrc : 'assets/images/product/placeholder.jpg'

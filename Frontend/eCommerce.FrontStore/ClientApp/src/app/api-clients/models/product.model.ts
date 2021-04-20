@@ -8,10 +8,12 @@ export class Product {
   items: any;
   description: string;
 }
+
 class Photos {
   url: string;
   id: string;
 }
+
 export class ProductCategory {
   id: string;
   name: string;

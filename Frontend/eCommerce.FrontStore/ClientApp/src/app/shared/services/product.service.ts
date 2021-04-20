@@ -25,6 +25,7 @@ export class ProductService {
   public Currency = { name: "Dollar", currency: "USD", price: 1 }; // Default Currency
   public OpenCart: boolean = false;
   public Products;
+  public productAPI;
 
   constructor(
     private http: HttpClient,
@@ -57,11 +58,11 @@ export class ProductService {
   }
 
   // Get Products By Slug
-  public getProductBySlug(slug: string): Observable<Product> {
-    return this.products.pipe(
+  public getProductBySlug(slug: string): Observable<ProductAPI> {
+    return this.searchProducts().pipe(
       map((items) => {
-        return items.find((item: any) => {
-          return item.title.replace(" ", "-") === slug;
+        return items.items.find((item: any) => {
+          return item.id === slug;
         });
       })
     );
@@ -80,9 +81,9 @@ export class ProductService {
   }
   //TODO Get by Id
   public getProductDetail(productId: string): Observable<ProductAPI> {
-    return this.productClient.getProductDetail(productId);
+    this.productAPI = this.productClient.getProductDetail(productId);
+    return this.productAPI;
   }
-
   /*
     ---------------------------------------------
     ---------------  Wish List  -----------------

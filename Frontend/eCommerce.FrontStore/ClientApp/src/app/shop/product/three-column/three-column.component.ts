@@ -20,7 +20,7 @@ export class ThreeColumnComponent implements OnInit {
   public activeSlide: any = 0;
   public selectedSize: any;
   public productAPI: ProductAPI;
-  productId: string = "c31a203b-badf-4b71-9176-08d90088fb86";
+  productId: string;
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
   public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
@@ -29,12 +29,10 @@ export class ThreeColumnComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public productService: ProductService
+    public productService: ProductService,
+    private _router: ActivatedRoute
   ) {
-    this.route.data.subscribe((response) => {
-      this.product = response.data;
-      this.getProduct();
-    });
+    console.log(this._router.snapshot.params.slug);
   }
 
   ngOnInit(): void {}
@@ -94,12 +92,10 @@ export class ThreeColumnComponent implements OnInit {
     this.productService.addToWishlist(product);
   }
 
-  getProduct() {
-    this.productService
-      .getProductDetail(this.productId)
-      .subscribe((response) => {
-        this.productAPI = response;
-        console.log(this.productAPI);
-      });
+  getProduct(productId: string) {
+    this.productService.getProductDetail(productId).subscribe((response) => {
+      this.productAPI = response;
+      console.log(this.productAPI);
+    });
   }
 }
