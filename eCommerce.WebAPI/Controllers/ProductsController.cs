@@ -55,5 +55,25 @@ namespace eCommerce.WebAPI.Controllers
             return product;
         }
 
+        [HttpGet("/frontstore/api/products")]
+        [AllowAnonymous]
+        public async Task<ActionResult<PaginatedResult<ProductReturnModels.Product>>> FrontStoreProductsController([FromQuery] ProductRequestModels.Search req)
+        {
+            var product = await _productService.SearchProductsPublicAsync(req);
+            return product;
+        }
+        [HttpGet("/frontstore/api/GetProductDetail/{productId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ProductReturnModels.Product>> FrontStoreGetProductDetail(Guid productId)
+        {
+            var product = await _productService.GetProductByIdAsync(productId);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return product;
+        }
     }
 }
