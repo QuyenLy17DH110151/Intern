@@ -4,6 +4,7 @@ using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace eCommerce.Persistence.Repositories
             _genericRepo = new GenericRepository<Inventory>(_dbContext.Set<Inventory>());
         }
 
-        public async Task<PaginatedResult<Inventory>> SearchAsync(string username, SearchInventoryModel rq)
+        public async Task<PaginatedResult<Inventory>> SearchAsync( SearchInventoryModel rq)
         {
             // filter
             var queryObject = QueryObject<Inventory>.Empty;
@@ -35,10 +36,12 @@ namespace eCommerce.Persistence.Repositories
                 var keyword = rq.Keyword;
                 queryObject.And(new InventoryQueryObjects.ContainsKeyword(keyword));
             }
-            if (username != "")
+
+            if (rq.Username != "")
             {
-                queryObject.And(new InventoryQueryObjects.ContainsUsername(username));
+                queryObject.And(new InventoryQueryObjects.HasOwnerName(rq.Username));
             }
+
             // orderby
             if (!rq.Sort.Any())
             {
@@ -48,14 +51,15 @@ namespace eCommerce.Persistence.Repositories
             rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
 
 
+
             // execute
-            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination);
+            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination,x=>x.Include(p=>p.Product).Include(u=>u.Product.Owner));
             return result;
         }
 
-        public void AddAsync(Inventory inventory)
+        public Inventory Add(Inventory inventory)
         {
-            _genericRepo.Add(inventory);
+          return  _genericRepo.Add(inventory);
         }
 
         public Task<Inventory> FindByIdAsync(Guid id)
@@ -63,7 +67,7 @@ namespace eCommerce.Persistence.Repositories
             return _genericRepo.GetByIdAsync(id);
         }
 
-        public void UpdateAsync(Inventory inventory)
+        public void Update(Inventory inventory)
         {
             _genericRepo.Update(inventory);
         }

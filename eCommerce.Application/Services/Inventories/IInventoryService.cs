@@ -1,4 +1,5 @@
-﻿using eCommerce.Domain.Shared.Models;
+﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

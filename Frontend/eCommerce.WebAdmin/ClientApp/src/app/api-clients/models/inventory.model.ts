@@ -1,4 +1,5 @@
-export class UpdateInventoryRequest {
+
+class InventoryBase {
     id: string;
     quantity: number;
     rowVersion: string;
@@ -7,4 +8,22 @@ export class UpdateInventoryRequest {
         this.quantity = quantity;
         this.rowVersion = rowVersion;
     }
+}
+
+export class UpdateInventoryRequest extends InventoryBase {
+
+    constructor(id: string, quantity: number, rowVersion: string) {
+        super(id, quantity, rowVersion);
+    }
+}
+
+export class Inventory extends InventoryBase {
+    product: ProductInventory;
+}
+
+export class ProductInventory {
+    id: string;
+    name: string;
+    price: number;
+    ownerUsername: string;
 }

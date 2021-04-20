@@ -1,4 +1,5 @@
 import { stringify } from '@angular/compiler/src/util';
+import { Inventory } from './inventory.model';
 
 export class PagedList<T> {
     totalRows: number;
@@ -6,12 +7,8 @@ export class PagedList<T> {
     items: T[];
 }
 
-export class SearchRequestInventory {
-    id: string;
-    productName: string;
-    ownerUsername: string;
-    quantity: number;
-    rowVersion: string;
+export class SearchRequestInventory extends Inventory {
+
 }
 
 export class SearchRequest {

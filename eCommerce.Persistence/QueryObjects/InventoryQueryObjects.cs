@@ -25,11 +25,11 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
-        internal class ContainsUsername : QueryObject<Inventory>
+        internal class HasOwnerName : QueryObject<Inventory>
         {
             private string _username;
 
-            public ContainsUsername(string username)
+            public HasOwnerName(string username)
             {
                 _username = username;
             }

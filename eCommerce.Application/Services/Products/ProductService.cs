@@ -56,26 +56,18 @@ namespace eCommerce.Application.Services.Products
                 Photos = request.Photos.Select(x => new ProductPhoto { Url = x }).ToList()
             };
             _productRepo.Add(product);
-            SaveInventory(product.Id);
+            SaveInventory(product);
             await _productRepo.UnitOfWork.SaveChangesAsync();
             return product.Id;
         }
 
-        private async void SaveInventory(Guid id)
+        private void SaveInventory(Product product)
         {
-            if (id == null)
-            {
-                throw new Exception("Create Product fails");
-            }
             Inventory inventory = new Inventory();
-            inventory.ProductId = id;
+            inventory.Product = product;
             inventory.Id = Guid.NewGuid();
             inventory.Quantity = 0;
-            _inventoryRepository.AddAsync(inventory);
-            if (inventory.Id == null)
-            {
-                throw new Exception("Create Inventory fails");
-            }
+            _inventoryRepository.Add(inventory);
         }
 
         public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)

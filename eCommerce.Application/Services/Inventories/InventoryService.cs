@@ -29,47 +29,24 @@ namespace eCommerce.Application.Services.Inventories
             _userRepository = userRepository;
         }
 
-        public async Task<PaginatedResult<InventoryReturnModels.Inventory>> SearchInventoriesAsync(InventoryRequestModels.Search rq)
+       public async Task<PaginatedResult<InventoryReturnModels.Inventory>> SearchInventoriesAsync(InventoryRequestModels.Search rq)
         {
-            //get username to filter Inventory of seller if role user not Admin
             string username = _applicationContext.Principal.Username;
             if (_applicationContext.Principal.Role == UserRoles.Admin)
             {
                 username = "";
             }
-            //find Inventory 
-            var inventories = await _inventoryRepo.SearchAsync(
-                username,
-                new SearchInventoryModel
-                {
-                    Keyword = rq.SearchTerm,
-                    Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
-                });
-            User userDefault = new User();
-            userDefault.Username = "Me";
-            foreach (var i in inventories.Items)
+            var inventories = await _inventoryRepo.SearchAsync(new SearchInventoryModel
             {
-                // set Product into inventoryResponse 
-                i.Product = await FindProductById(i.ProductId);
-                //set user into inventoryResponse if user is seller then username is Me 
-                i.Product.Owner = userDefault;
-                if (username == "")
-                {
-                    i.Product.Owner = await FindUserById(i.Product.OwnerId);
-                }
-            }
+                Keyword = rq.SearchTerm,
+                Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
+                Username = username,
+            }); ;
+
+
             return _mapper.Map<PaginatedResult<InventoryReturnModels.Inventory>>(inventories);
         }
 
-        private Task<Domain.Entities.User> FindUserById(Guid ownerId)
-        {
-            return _userRepository.GetByIdAsync(ownerId);
-        }
-
-        private async Task<Domain.Entities.Product> FindProductById(Guid productId)
-        {
-            return await _productRepository.GetProductByIdAsync(productId);
-        }
 
         public async Task UpdateAsync(InventoryRequestModels.Update rq)
         {
@@ -84,10 +61,10 @@ namespace eCommerce.Application.Services.Inventories
             var owner = await _userRepository.GetByIdAsync(product.OwnerId);
             if (owner.Username != username)
             {
-                throw new BusinessException("User not permission change Inventory with id: " + inventory.Id);
+                throw new BusinessException("User not permission");
             }
             inventory.Quantity = rq.Quantity;
-            _inventoryRepo.UpdateAsync(inventory);
+            _inventoryRepo.Update(inventory);
             await _inventoryRepo.UnitOfWork.SaveChangesAsync();
         }
     }
