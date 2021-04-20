@@ -18,10 +18,10 @@ export class UpdateInventoryRequest extends InventoryBase {
 }
 
 export class Inventory extends InventoryBase {
-    product: ProductInventory;
+    product: InventoryProduct;
 }
 
-export class ProductInventory {
+export class InventoryProduct {
     id: string;
     name: string;
     price: number;
