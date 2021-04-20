@@ -11,9 +11,11 @@ export class InventoryClient {
 
     constructor(protected httpClient: HttpClient) {
     }
+
     getListInventory(): Observable<PagedList<SearchRequestInventory>> {
         return this.httpClient.get<PagedList<SearchRequestInventory>>(this.apiEndpoint);
     }
+
     updateInventory(updateInventory: UpdateInventoryRequest): Observable<any> {
         return this.httpClient.put(this.apiEndpoint,
             updateInventory
