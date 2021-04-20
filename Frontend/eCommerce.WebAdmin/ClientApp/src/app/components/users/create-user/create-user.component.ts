@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { CreateUserRequest } from 'src/app/api-clients/models/user.model';
 import { UserClient } from 'src/app/api-clients/user.client';
 
@@ -14,7 +15,7 @@ export class CreateUserComponent implements OnInit {
   public permissionForm: FormGroup;
   public user: CreateUserRequest;
   public isStart: boolean = false;
-  constructor(private formBuilder: FormBuilder, private userClient: UserClient) {
+  constructor(private formBuilder: FormBuilder, private userClient: UserClient, private toastr: ToastrService) {
     this.createAccountForm();
   }
 
@@ -36,7 +37,7 @@ export class CreateUserComponent implements OnInit {
     if (!this.formUser.invalid) {
       this.user = new CreateUserRequest(this.formUser.value.firstName, this.formUser.value.lastName, this.formUser.value.username);
       this.userClient.createUser(this.user).subscribe((res) => {
-        alert('Create User Success')
+        this.toastr.success('Create User Success!', 'Notification');
       });
       this.createAccountForm();
     }

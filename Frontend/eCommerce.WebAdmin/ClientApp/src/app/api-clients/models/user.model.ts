@@ -48,3 +48,25 @@ export class CreateUserRequest extends UserBasic {
 export class ForgotPasswordRequest extends UserBasic {
 
 }
+
+export class UserInformationResponse extends UserBasic {
+    phoneNumber: string;
+    urlImage: string;
+}
+export class UrlImage {
+    url: string;
+    constructor(url: string) {
+        this.url = url;
+    }
+}
+
+export class UserUpdateInformation {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    constructor(firstName: string, lastName: string, phoneNumber: string) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+    }
+}

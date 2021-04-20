@@ -48,6 +48,9 @@ namespace eCommerce.Application.Services.Users
         /// <param name="Id User"></param>
         /// <returns></returns>
         Task<bool> UnlockUserAsync(Guid Id);
-        Task<bool> ForgotPassword(UserRequestModels.ForgotPassword rq, string host);
+        Task<bool> ForgotPasswordAsync(UserRequestModels.ForgotPassword rq, string host);
+        Task<UserReturnModels.UserInformation> GetUserbyUsernameAsync(string username);
+        Task UpdateAvataAsync(string username, string urlImage);
+        Task UpdateInformationAsync(string username, UserRequestModels.UserUpdateInformation user);
     }
 }

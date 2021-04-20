@@ -1,9 +1,10 @@
+import { UserRole } from './../../api-clients/models/user.model';
 import { Injectable } from '@angular/core';
 import jwt_decode from 'jwt-decode';
 
 @Injectable()
 export class UserService {
-    constructor() { }
+    constructor() {}
     loggedIn() {
         return !!localStorage.getItem('access_token');
     }
@@ -18,5 +19,8 @@ export class UserService {
 
     getToken(): string {
         return localStorage.getItem('access_token');
+    }
+    getRole(): string {
+        return UserRole[localStorage.getItem('userRole')];
     }
 }

@@ -35,7 +35,8 @@ namespace eCommerce.Application.Services.Products
                 ProductCategoryName = req.CategoryName,
                 OwnerName = req.OwnerName,
                 Role = _appContext.Principal.Role,
-            }) ;
+                UserName = _appContext.Principal.Username
+            });
 
             return _mapper.Map<PaginatedResult<ProductReturnModels.Product>>(products);  //mapper khi get data from DB
         }

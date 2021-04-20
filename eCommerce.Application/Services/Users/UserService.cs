@@ -183,7 +183,7 @@ namespace eCommerce.Application.Services.Users
 
         }
 
-        public async Task<bool> ForgotPassword(UserRequestModels.ForgotPassword rq, string host)
+        public async Task<bool> ForgotPasswordAsync(UserRequestModels.ForgotPassword rq, string host)
         {
             //find by username
             var user = await _userRepo.GetUserByUsernameAsync(rq.Username);
@@ -206,6 +206,42 @@ namespace eCommerce.Application.Services.Users
             }
             SendEmailChangPassword("eCommerce", rq.Username, keyParam, host, "Request change password success");
             return true;
+        }
+
+        public async Task<UserReturnModels.UserInformation> GetUserbyUsernameAsync(string username)
+        {
+            var user = await _userRepo.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                throw new EntityNotFound("user");
+            }
+            return _mapper.Map<UserReturnModels.UserInformation>(user);
+        }
+
+        public async Task UpdateAvataAsync(string username, string urlImage)
+        {
+            var user = await _userRepo.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                throw new BusinessException("username not exsist");
+            }
+            user.UrlImage = urlImage;
+            _userRepo.Update(user);
+            await _userRepo.UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task UpdateInformationAsync(string username, UserRequestModels.UserUpdateInformation user)
+        {
+            var u = await _userRepo.GetUserByUsernameAsync(username);
+            if (u== null)
+            {
+                throw new BusinessException("username not exsist");
+            }
+            u.PhoneNumber = user.PhoneNumber;
+            u.FirstName = user.FirstName;
+            u.LastName = user.LastName;
+            _userRepo.Update(u);
+            await _userRepo.UnitOfWork.SaveChangesAsync();
         }
     }
 }

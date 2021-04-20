@@ -136,4 +136,15 @@ export const content: Routes = [
         },
         canActivate: [AuthGuard],
     },
+    {
+        path: 'orders',
+        loadChildren: () =>
+            import('../../components/orders/orders.module').then(
+                (m) => m.OrdersModule
+            ),
+        data: {
+            breadcrumb: 'Orders',
+        },
+        canActivate: [AuthGuard],
+    },
 ];

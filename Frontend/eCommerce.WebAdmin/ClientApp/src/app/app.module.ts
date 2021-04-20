@@ -24,6 +24,7 @@ import { AuthModule } from './components/auth/auth.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { TokenInterceptor } from './interceptor/token.interceptor';
+import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 
 @NgModule({
     declarations: [AppComponent],
@@ -31,7 +32,6 @@ import { TokenInterceptor } from './interceptor/token.interceptor';
         BrowserAnimationsModule,
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
         HttpClientModule,
-
         AppRoutingModule,
         DashboardModule,
         InvoiceModule,
@@ -49,6 +49,10 @@ import { TokenInterceptor } from './interceptor/token.interceptor';
         MenusModule,
         UsersModule,
         FormsModule,
+        ToastContainerModule,
+        ToastrModule.forRoot(),
+
+
     ],
     providers: [
         AuthGuard,
@@ -60,4 +64,4 @@ import { TokenInterceptor } from './interceptor/token.interceptor';
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

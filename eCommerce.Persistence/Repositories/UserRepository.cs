@@ -2,6 +2,7 @@
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
 using Microsoft.EntityFrameworkCore;
@@ -60,9 +61,16 @@ namespace eCommerce.Persistence.Repositories
             }
 
             // filter lockout status
-            if (rq.IsLockout)
+            switch (rq.IsLockout)
             {
-                queryObject.And(new UserQueryObjects.IsLockout(rq.IsLockout));
+                case UserLockStatusFilters.Lock:
+                    queryObject.And(new UserQueryObjects.IsLockout(rq.IsLockout));
+                    break;
+                case UserLockStatusFilters.Unlock:
+                    queryObject.And(new UserQueryObjects.IsUnLockout(rq.IsLockout));
+                    break;
+                default:
+                    break;
             }
 
             // orderby

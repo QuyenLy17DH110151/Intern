@@ -1,9 +1,12 @@
 ﻿using eCommerce.Domain.Entities;
+using eCommerce.Domain.Enums;
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,67 +33,49 @@ namespace eCommerce.Persistence.Repositories
         {
             var queryObject = QueryObject<Order>.Empty;
 
-            //filter after date
-
-            if (CheckStartDate(rq.StartDate))
+            //Filter by start date
+            if (rq.StartDate.HasValue)
             {
-                var startDate = rq.StartDate;
-                queryObject.And(new OrderQueryObject.OrderDateAfter(startDate));
+                var startDate = rq.StartDate.Value;
+                queryObject.And(new OrderQueryObject.FilterByStartDate(startDate));
             }
 
-            //fliter begin date
-
-            if (CheckEndDate(rq.EndDate))
+            //Filter by end date
+            if (rq.EndDate.HasValue)
             {
-                var endDate = rq.EndDate;
-                queryObject.And(new OrderQueryObject.OrderDateBefore(endDate));
+                var endDate = rq.EndDate.Value;
+                queryObject.And(new OrderQueryObject.FilterByEndDate(endDate));
             }
 
-            //fliter sum price bigger
-
-            if (CheckPrice(rq.SumPriceBigger))
-            {
-                var priceBigger = rq.SumPriceBigger;
-                queryObject.And(new OrderQueryObject.TotalPriceBigger(priceBigger));
-            }
-
-            //fliter sum price smaller
-            if (CheckPrice(rq.SumPriceSmaller))
-            {
-                var priceSmaller = rq.SumPriceSmaller;
-                queryObject.And(new OrderQueryObject.TotalPriceSmaller(priceSmaller));
-            }
-            //fliter status
+            //Filter by status
             if (rq.Status != null)
             {
-                var status = rq.Status;
+                var status = (OrderStatuses)rq.Status;
                 queryObject.And(new OrderQueryObject.HasStatus(status));
             }
 
-            //fliter id product
-
-            if(rq.IdProduct != null)
+            //Filter by role
+            if(rq.Role != UserRoles.Admin)
             {
-                var idProduct = rq.IdProduct;
-                queryObject.And(new OrderQueryObject.HasProduct(idProduct));
+                var role = rq.Role;
+                queryObject.And(new OrderQueryObject.HasRole(role));
             }
 
-            //fliter username seller
-            if (!string.IsNullOrWhiteSpace(rq.SellerUsername))
+            //Filter by current user name
+            if (!string.IsNullOrWhiteSpace(rq.OwnerUserName) && rq.Role != UserRoles.Admin)
             {
-                var usernameSeller = rq.SellerUsername;
-                queryObject.And(new OrderQueryObject.SellByUser(usernameSeller));
+                var userName = rq.OwnerUserName;
+                queryObject.And(new OrderQueryObject.FilterByCurrentUserName(userName));
             }
-            //order by
 
+            //Order by
             if (!rq.Sort.Any())
             {
                 rq.Sort.Add(new SortItem { FieldName = nameof(Order.IdentityKey) });
-
             }
             rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
 
-            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination);
+            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination, x=>x.Include(m=>m.Product));
             return result;
         }
 
@@ -100,7 +85,7 @@ namespace eCommerce.Persistence.Repositories
             {
                 return false;
             }
-            if (price < 0)
+            if (price <= 0)
             {
                 return false;
             }
@@ -134,6 +119,19 @@ namespace eCommerce.Persistence.Repositories
                 return false;
             }
 
+            return true;
+        }
+
+        public async Task<Order> GetOrderByIdAsync(Guid Id)
+        {
+            var order = await _genericRepo.GetByIdAsync(Id);
+            return order;
+        }
+
+        public async Task<bool> UpdateStatusAsync(Guid Id, OrderStatuses orderStatuses)
+        {
+            var order = await _genericRepo.GetByIdAsync(Id);
+            order.Status = orderStatuses;
             return true;
         }
     }
