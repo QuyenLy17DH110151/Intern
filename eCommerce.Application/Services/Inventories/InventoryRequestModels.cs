@@ -9,11 +9,13 @@ namespace eCommerce.Application.Services.Inventories
     {
         public class Search
         {
-            public string SearchTerm { get; set; }
+            public string ProductName { get; set; }
 
             public int PageIndex { get; set; }
 
             public int PageSize { get; set; }
+
+            public string OwnerUsername { get; set; }
         }
 
         public class Update

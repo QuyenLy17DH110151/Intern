@@ -56,12 +56,12 @@ namespace eCommerce.Application.Services.Products
                 Photos = request.Photos.Select(x => new ProductPhoto { Url = x }).ToList()
             };
             _productRepo.Add(product);
-            SaveInventory(product);
+            InitializeInventory(product);
             await _productRepo.UnitOfWork.SaveChangesAsync();
             return product.Id;
         }
 
-        private void SaveInventory(Product product)
+        private void InitializeInventory(Product product)
         {
             Inventory inventory = new Inventory();
             inventory.Product = product;

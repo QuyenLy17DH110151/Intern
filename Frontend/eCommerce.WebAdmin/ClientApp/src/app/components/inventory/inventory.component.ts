@@ -63,13 +63,7 @@ export class InventoryComponent implements OnInit {
     this.inventoryClient.updateInventory(new UpdateInventoryRequest(event.data.id, quantity, event.data.rowVersion)).subscribe(() => {
       this.toastr.success('Change Inventory Success!', 'Notification');
       this.getData();
-    },
-      (error) => {
-        if (error.error.errorMessage == 'User not permission') {
-          this.toastr.error('User not permission', 'Error')
-        }
-        this.getData();
-      }
+    }
     )
   }
   ngOnInit() {

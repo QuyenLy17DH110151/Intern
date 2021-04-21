@@ -31,17 +31,15 @@ namespace eCommerce.Application.Services.Inventories
 
        public async Task<PaginatedResult<InventoryReturnModels.Inventory>> SearchInventoriesAsync(InventoryRequestModels.Search rq)
         {
-            string username = _applicationContext.Principal.Username;
-            if (_applicationContext.Principal.Role == UserRoles.Admin)
-            {
-                username = "";
-            }
+            
             var inventories = await _inventoryRepo.SearchAsync(new SearchInventoryModel
             {
-                Keyword = rq.SearchTerm,
+                ProductName = rq.ProductName,
+                OwnerUserame = rq.OwnerUsername,
                 Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
-                Username = username,
-            }); ;
+                Username = _applicationContext.Principal.Username,
+                Role = _applicationContext.Principal.Role
+            }); 
 
 
             return _mapper.Map<PaginatedResult<InventoryReturnModels.Inventory>>(inventories);
@@ -55,6 +53,7 @@ namespace eCommerce.Application.Services.Inventories
             {
                 throw new EntityNotFound("inventory");
             }
+
             //check permission of user with inventory 
             string username = _applicationContext.Principal.Username;
             var product = await _productRepository.GetProductByIdAsync(inventory.ProductId);

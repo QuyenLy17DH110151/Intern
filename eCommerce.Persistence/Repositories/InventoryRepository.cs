@@ -2,6 +2,7 @@
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
 using Microsoft.EntityFrameworkCore;
@@ -31,17 +32,28 @@ namespace eCommerce.Persistence.Repositories
             // filter
             var queryObject = QueryObject<Inventory>.Empty;
 
-            if (!string.IsNullOrWhiteSpace(rq.Keyword))
+            if (!string.IsNullOrWhiteSpace(rq.ProductName))
             {
-                var keyword = rq.Keyword;
+                var keyword = rq.ProductName;
                 queryObject.And(new InventoryQueryObjects.ContainsKeyword(keyword));
             }
 
-            if (rq.Username != "")
+            // if seller then seller must is Owner of product
+            if (rq.Role == UserRoles.Seller)
             {
                 queryObject.And(new InventoryQueryObjects.HasOwnerName(rq.Username));
             }
 
+            //only admin can search username
+            if (rq.Role == UserRoles.Admin)
+            {
+
+                if (!string.IsNullOrWhiteSpace(rq.OwnerUserame))
+                {
+                    queryObject.And(new InventoryQueryObjects.HasOwnerName(rq.OwnerUserame));
+                }
+
+            }
             // orderby
             if (!rq.Sort.Any())
             {
