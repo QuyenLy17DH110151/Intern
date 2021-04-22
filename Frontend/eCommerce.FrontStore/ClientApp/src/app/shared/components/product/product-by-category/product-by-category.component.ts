@@ -2,21 +2,26 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Product } from 'src/app/shared/classes/product';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { ProductSlider } from '../../../../shared/data/slider';
+import { Product as CustomProduct } from '../../../../api-clients/models/product.model'
 
 @Component({
-  selector: 'product-by-category',
-  templateUrl: './product-by-category.component.html',
-  styleUrls: ['./product-by-category.component.scss']
+    selector: 'product-by-category',
+    templateUrl: './product-by-category.component.html',
+    styleUrls: ['./product-by-category.component.scss'],
 })
 export class ProductByCategoryComponent implements OnInit {
-  public ProductSliderConfig: any = ProductSlider;
-  public products: Product[] = [];
-  @Input() categoryId;
-  
-  constructor(public productService: ProductService) { }
+    public ProductSliderConfig: any = ProductSlider;
+    public products: CustomProduct[] = [];
+    categoryId = 'f40a1eee-ac0f-4628-8847-8f7042fe80b6';
 
-  ngOnInit(): void {
-    this.productService.getProductsByCategoryId(this.categoryId).subscribe((response:any) => this.products = response.products);
-  }
+    constructor(public productService: ProductService) {}
 
+    ngOnInit(): void {
+        this.productService
+            .getProductsByCategoryId(this.categoryId)
+            .subscribe((response: any) => {
+                console.log('product-by-category: ', response);
+                this.products = response
+            });
+    }
 }

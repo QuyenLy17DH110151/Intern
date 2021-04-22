@@ -1,5 +1,5 @@
 <owl-carousel-o class="product-m no-arrow" [options]="ProductSliderConfig">
-    <ng-container *ngFor="let product of products | slice:0:16">
+    <ng-container *ngFor="let product of products | slice:0:8">
         <ng-template carouselSlide>
             <div class="product-box">
                 <app-product-box-one [product]="product" [currency]="productService?.Currency" [thumbnail]="true"

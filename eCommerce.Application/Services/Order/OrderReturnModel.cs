@@ -13,7 +13,7 @@ namespace eCommerce.Application.Services.Order
         {
             public Guid Id { get; set; }
             public string BuyerName { get; set; }
-            public int BuyerPhone { get; set; }
+            public string BuyerPhone { get; set; }
             public string BuyerEmail { get; set; }
             public string Address { get; set; }
             public decimal Price { get; set; }

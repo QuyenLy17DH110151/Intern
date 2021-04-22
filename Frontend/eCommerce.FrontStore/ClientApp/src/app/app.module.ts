@@ -52,11 +52,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         AppRoutingModule,
     ],
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
-            multi: true,
-        },
     ],
     bootstrap: [AppComponent],
 })

@@ -76,7 +76,7 @@ export class ProductService {
 
   //Get Products By CategoryId
   public  getProductsByCategoryId(catId: string) {
-    const url = `${environment.apiUrl}/Products/${catId}`;
+    const url = `${environment.apiUrl}/Products/category/${catId}`;
     return this.http.get(url);
   }
 
