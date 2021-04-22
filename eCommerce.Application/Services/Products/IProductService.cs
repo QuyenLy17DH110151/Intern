@@ -37,5 +37,13 @@ namespace eCommerce.Application.Services.Products
         Task<Guid> UploadPhotoAsync(ProductRequestModels.UploadPhoto request);
 
         Task<List<ProductReturnModels.Product>> GetProductByCategoryIdAsync(Guid categoryId);
+        //Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId);
+
+        /// <summary>
+        /// FrontStore GetProduct
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req);
     }
 }

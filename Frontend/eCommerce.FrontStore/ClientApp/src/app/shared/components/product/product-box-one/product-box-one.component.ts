@@ -1,33 +1,34 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { QuickViewComponent } from "../../modal/quick-view/quick-view.component";
 import { CartModalComponent } from "../../modal/cart-modal/cart-modal.component";
-import { Product } from "../../../classes/product";
+import { Product as ProductAPI } from "src/app/api-clients/models/product.model";
 import { ProductService } from "../../../services/product.service";
 
 @Component({
-  selector: 'app-product-box-one',
-  templateUrl: './product-box-one.component.html',
-  styleUrls: ['./product-box-one.component.scss']
+  selector: "app-product-box-one",
+  templateUrl: "./product-box-one.component.html",
+  styleUrls: ["./product-box-one.component.scss"],
 })
 export class ProductBoxOneComponent implements OnInit {
-
-  @Input() product: Product;
-  @Input() currency: any = this.productService.Currency; // Default Currency 
-  @Input() thumbnail: boolean = false; // Default False 
+  @Input() product: ProductAPI;
+  @Input() currency: any = this.productService.Currency; // Default Currency
+  @Input() thumbnail: boolean = false; // Default False
   @Input() onHowerChangeImage: boolean = false; // Default False
   @Input() cartModal: boolean = false; // Default False
   @Input() loader: boolean = false;
-  
+
   @ViewChild("quickView") QuickView: QuickViewComponent;
   @ViewChild("cartModal") CartModal: CartModalComponent;
 
-  public ImageSrc : string
+  public ImageSrc: string;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    if(this.loader) {
-      setTimeout(() => { this.loader = false; }, 2000); // Skeleton Loader
+    if (this.loader) {
+      setTimeout(() => {
+        this.loader = false;
+      }, 2000); // Skeleton Loader
     }
   }
 
@@ -36,10 +37,10 @@ export class ProductBoxOneComponent implements OnInit {
     const uniqColor = [];
     for (let i = 0; i < Object.keys(variants).length; i++) {
       if (uniqColor.indexOf(variants[i].color) === -1 && variants[i].color) {
-        uniqColor.push(variants[i].color)
+        uniqColor.push(variants[i].color);
       }
     }
-    return uniqColor
+    return uniqColor;
   }
 
   // Change Variants
@@ -50,9 +51,9 @@ export class ProductBoxOneComponent implements OnInit {
           if (img.image_id === item.image_id) {
             this.ImageSrc = img.src;
           }
-        })
+        });
       }
-    })
+    });
   }
 
   // Change Variants Image
@@ -71,5 +72,4 @@ export class ProductBoxOneComponent implements OnInit {
   addToCompare(product: any) {
     this.productService.addToCompare(product);
   }
-
 }
