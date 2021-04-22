@@ -19,6 +19,7 @@ namespace eCommerce.Domain.Repositories
         Task<Product> GetByCategoryIdAsync(Guid catId);
         Task<IEnumerable<Product>> GetAllAsync();
         Task<PaginatedResult<Product>> SearchAsync(SearchProductModel req);
+        Task<PaginatedResult<Product>> SearchPublicAsync(SearchProductModel req);
         Task<int> GetQuantityByProductIdAsync(Guid id);
     }
 }
