@@ -13,6 +13,7 @@ namespace eCommerce.WebAPI.Controllers
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductCategoriesController : ControllerBase
     {
         private readonly IProductCategoryService _productCategoryService;
@@ -56,6 +57,20 @@ namespace eCommerce.WebAPI.Controllers
         {
             var productCategory = await _productCategoryService.DeleteProductCategoryAsync(id);
             return Ok();
+        }
+
+        [HttpGet("/frontstore/api/Categories")]
+        [AllowAnonymous]
+        public async Task<ActionResult<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>> FrontStoreSearch([FromQuery] ProductCategoryRequestModels.Search rq)
+        {
+            var productCategories = await _productCategoryService.SearchProductCategoriesAsync(rq);
+
+            if(productCategories == null)
+            {
+                return NotFound();
+            }
+
+            return productCategories;
         }
 
     }

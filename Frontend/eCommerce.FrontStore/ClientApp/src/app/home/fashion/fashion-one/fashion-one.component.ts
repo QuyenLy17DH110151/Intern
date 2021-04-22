@@ -3,6 +3,8 @@ import { ProductSlider } from '../../../shared/data/slider';
 import { Product } from '../../../shared/classes/product';
 import { ProductService } from '../../../shared/services/product.service';
 import { of } from 'rxjs';
+import { Category } from 'src/app/api-clients/models/category.model';
+import { CategoryClient } from 'src/app/api-clients/category.client';
 
 @Component({
     selector: 'app-fashion-one',
@@ -11,23 +13,31 @@ import { of } from 'rxjs';
 })
 export class FashionOneComponent implements OnInit {
     //public products: Product[] = [];
-    products:any;
+    products: any;
+    categories: Category[];
     public productCollections: any[] = [];
 
-    constructor(public productService: ProductService) {
-        this.productService.getProducts.subscribe((response) => {
-          console.log('products: ', response);
-            this.products = response.filter((item) => item.type == 'fashion');
-            // Get Product Collection
-            this.products.filter((item) => {
-                item.collection.filter((collection) => {
-                    const index = this.productCollections.indexOf(collection);
-                    if (index === -1) this.productCollections.push(collection);
-                });
-            });
-        });
+    constructor(
+        public productService: ProductService,
+        private categoryClient: CategoryClient
+    ) {
+        // this.productService.getProducts.subscribe((response) => {
+        //     console.log('products: ', response);
+        //     this.products = response.filter((item) => item.type == 'fashion');
+        //     // Get Product Collection
+        //     this.products.filter((item) => {
+        //         item.collection.filter((collection) => {
+        //             const index = this.productCollections.indexOf(collection);
+        //             if (index === -1) this.productCollections.push(collection);
+        //         });
+        //     });
+        // });
+
+        this.categoryClient
+            .getCategories()
+            .subscribe((response: any) => (this.categories = response.items));
     }
-    
+
     public ProductSliderConfig: any = ProductSlider;
 
     public sliders = [
@@ -110,8 +120,7 @@ export class FashionOneComponent implements OnInit {
         },
     ];
 
-    async ngOnInit() {
-    }
+    async ngOnInit() {}
 
     // Product Tab collection
     getCollectionProducts(collection) {

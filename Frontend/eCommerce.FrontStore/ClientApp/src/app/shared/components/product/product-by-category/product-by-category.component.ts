@@ -12,7 +12,7 @@ import { Product as CustomProduct } from '../../../../api-clients/models/product
 export class ProductByCategoryComponent implements OnInit {
     public ProductSliderConfig: any = ProductSlider;
     public products: CustomProduct[] = [];
-    categoryId = 'f40a1eee-ac0f-4628-8847-8f7042fe80b6';
+    @Input() categoryId;
 
     constructor(public productService: ProductService) {}
 
