@@ -15,7 +15,7 @@ import { ProductService } from "../../../../shared/services/product.service";
 })
 export class RelatedProductComponent implements OnInit {
   @Input() type: ProductCategory;
-  rq: SearchRequestProduct;
+  rq: SearchRequestProduct = {};
   public products: ProductAPI[];
 
   constructor(public productService: ProductService) {
@@ -23,12 +23,22 @@ export class RelatedProductComponent implements OnInit {
     //   (response) =>
     //     (this.products = response.filter((item) => item.type == this.type))
     // );
-    this.productService.searchProducts(this.rq).subscribe((response) => {
-      this.products = response.items;
-      console.log(this.type);
-      console.log(response);
-    });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getType();
+    this.loadListProduct();
+  }
+
+  getType() {
+    console.log(this.type);
+    this.rq.categoryName = "Áo";
+  }
+
+  loadListProduct() {
+    this.productService.searchProducts(this.rq).subscribe((response) => {
+      this.products = response.items;
+      console.log("related-product", response);
+    });
+  }
 }
