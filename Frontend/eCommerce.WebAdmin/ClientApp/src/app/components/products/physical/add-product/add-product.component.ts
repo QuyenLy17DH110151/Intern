@@ -59,8 +59,8 @@ export class AddProductComponent implements OnInit {
                         '',
                         [
                             Validators.required,
-                            Validators.minLength(10),
-                            Validators.pattern('^[A-Za-z0-9 .,_-]*$'), //^[A-Za-z0-9_-]*$
+                            // Validators.minLength(10),
+                            // Validators.pattern('^[A-Za-z0-9 .,_-]*$'), //^[A-Za-z0-9_-]*$
                         ],
                     ],
                     price: [
@@ -72,8 +72,8 @@ export class AddProductComponent implements OnInit {
                         '',
                         [
                             Validators.required,
-                            Validators.minLength(10),
-                            Validators.pattern('^[A-Za-z0-9 .,_-]*$'),
+                            // Validators.minLength(10),
+                            // Validators.pattern('^[A-Za-z0-9 .,_-]*$'),
                         ],
                     ],
                 });

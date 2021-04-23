@@ -10,6 +10,7 @@ import {
   SearchRequestProduct,
 } from "src/app/api-clients/models/product.model";
 import { PagedList } from "src/app/api-clients/models/common.model";
+import { environment } from "src/environments/environment";
 
 const state = {
   products: JSON.parse(localStorage["products"] || "[]"),
@@ -72,6 +73,12 @@ export class ProductService {
     ---------------  Product API  -------------------
     ---------------------------------------------
   */
+
+  //Get Products By CategoryId
+  public  getProductsByCategoryId(catId: string) {
+    const url = `${environment.apiUrl}/frontstore/api/category/${catId}/products`
+    return this.http.get(url);
+  }
 
   //TODO Get  Product
   public searchProducts(

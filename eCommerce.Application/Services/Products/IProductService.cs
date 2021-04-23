@@ -36,6 +36,7 @@ namespace eCommerce.Application.Services.Products
         /// <returns></returns>
         Task<Guid> UploadPhotoAsync(ProductRequestModels.UploadPhoto request);
 
+        Task<List<ProductReturnModels.Product>> GetProductByCategoryIdAsync(Guid categoryId);
         //Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId);
 
         /// <summary>

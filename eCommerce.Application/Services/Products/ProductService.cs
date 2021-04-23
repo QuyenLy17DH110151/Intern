@@ -90,6 +90,14 @@ namespace eCommerce.Application.Services.Products
             return photo.ProductId;
         }
 
+        public async Task<List<ProductReturnModels.Product>> GetProductByCategoryIdAsync(Guid categoryId)
+        {
+            var products = await _productRepo.GetProductsByCategoryId(categoryId);
+            var ret = products.ToList();
+
+            return _mapper.Map<List<ProductReturnModels.Product>>(products);
+        }
+
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req)
         {
             var products = await _productRepo.SearchPublicAsync(new SearchProductModel

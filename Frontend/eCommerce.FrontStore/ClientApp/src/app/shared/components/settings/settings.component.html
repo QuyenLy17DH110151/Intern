@@ -1,8 +1,7 @@
 <div class="icon-nav">
-  <ul>
+  <ul class="setting-container">
     <li class="onhover-div mobile-search search-widgets" id="search-widgets">
       <div (click)="searchToggle()">
-        <img src="assets/images/icon/search.png" class="img-fluid" alt="">
         <i class="ti-search"></i>
       </div>
       <div id="search-overlay" class="search-overlay" [ngStyle]="{'display': search ? 'block' : 'none' }">
@@ -46,7 +45,7 @@
     <li class="onhover-div mobile-cart">
       <div>
         <a [routerLink]="['/shop/cart']">
-          <img src="assets/images/icon/cart.png" class="img-fluid" alt="">
+          <mat-icon style="font-size: 30px;">shopping_cart</mat-icon>
           <i class="ti-shopping-cart"></i>
         </a>
       </div>

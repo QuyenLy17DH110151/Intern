@@ -96,14 +96,15 @@ namespace eCommerce.Persistence.Repositories
             return result;
         }
 
-        public Task<Product> GetByIdAsync(Guid id)
+        public async Task<IEnumerable<Product>> GetProductsByCategoryId(Guid catId)
         {
-            throw new NotImplementedException();
-        }
+            var queryObject = QueryObject<Product>.Empty;
 
-        public Task<Product> GetByCategoryIdAsync(Guid catId)
-        {
-            throw new NotImplementedException();
+            // filter by categoryId  
+            queryObject.And(new ProductQueryObjects.FilterByCategoryId(catId));
+
+            var products = await _genericRepo.SearchAsync(queryObject, x => x.Include(m => m.Photos).Include(m => m.Inventory).Include(m => m.Category).Include(m=>m.Owner));
+            return products;
         }
 
         public Task<Product> GetProductByIdAsync(Guid id)

@@ -7,7 +7,7 @@ export const environment = {
   instagram_token: "INSTA_TOKEN",
   stripe_token: "STRIPE_TOKEN",
   paypal_token: "PAYPAL_TOKEN",
-  apiUrl: "https://localhost:44368/",
+  apiUrl: "https://localhost:44368",
   firebase: {
     apiKey: "AIzaSyCArCLWTka1OW3DZqPZcqqBjCMLc0f2FT4",
     authDomain: "myserver-1f078.firebaseapp.com",

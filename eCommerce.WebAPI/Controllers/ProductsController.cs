@@ -37,22 +37,31 @@ namespace eCommerce.WebAPI.Controllers
             }
 
             var productId = await _productService.CreateAsync(req);
-            var product =  await _productService.GetProductByIdAsync(productId);
+            var product = await _productService.GetProductByIdAsync(productId);
 
             return product;
         }
 
-        [HttpGet("{productId}")] //[POST] api/Product/:productId;
+        [HttpGet("{productId}")] //[POST] api/Products/:productId;
         public async Task<ActionResult<ProductReturnModels.Product>> GetProductDetail(Guid productId)
         {
             var product = await _productService.GetProductByIdAsync(productId);
-            
-            if(product == null)
+
+            if (product == null)
             {
                 return NotFound();
             }
 
             return product;
+        }
+
+        [HttpGet("/frontstore/api/category/{categoryId}/products")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<ProductReturnModels.Product>>> GetProductByCategory(Guid categoryId)
+        {
+            var products = await _productService.GetProductByCategoryIdAsync(categoryId);
+
+            return products;
         }
 
         [HttpGet("/frontstore/api/products")]

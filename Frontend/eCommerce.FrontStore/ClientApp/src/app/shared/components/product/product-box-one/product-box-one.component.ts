@@ -25,6 +25,7 @@ export class ProductBoxOneComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
+    console.log('box one: ', this.product);
     if (this.loader) {
       setTimeout(() => {
         this.loader = false;
