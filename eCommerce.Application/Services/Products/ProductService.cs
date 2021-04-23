@@ -94,10 +94,10 @@ namespace eCommerce.Application.Services.Products
         {
             var products = await _productRepo.GetProductsByCategoryId(categoryId);
             var ret = products.ToList();
-            if (ret.Count == 0) throw new EntityNotFound("Product");
 
             return _mapper.Map<List<ProductReturnModels.Product>>(products);
         }
+
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req)
         {
             var products = await _productRepo.SearchPublicAsync(new SearchProductModel

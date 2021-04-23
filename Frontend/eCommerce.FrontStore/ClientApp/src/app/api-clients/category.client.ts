@@ -11,7 +11,6 @@ import { PagedList } from "./models/common.model";
 })
 
 export class CategoryClient {
-  public Products;
   constructor(private http: HttpClient) {}
 
   //Get all category

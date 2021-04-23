@@ -11,7 +11,7 @@ namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -55,15 +55,11 @@ namespace eCommerce.WebAPI.Controllers
             return product;
         }
 
-        [HttpGet("category/{categoryId}")] //[POST] api/Products/:categoryId;
+        [HttpGet("/frontstore/api/category/{categoryId}/products")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<ProductReturnModels.Product>>> GetProductByCategory(Guid categoryId)
         {
             var products = await _productService.GetProductByCategoryIdAsync(categoryId);
-
-            if (products == null)
-            {
-                return NotFound();
-            }
 
             return products;
         }

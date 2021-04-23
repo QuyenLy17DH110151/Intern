@@ -53,16 +53,16 @@ namespace eCommerce.Persistence.QueryObjects
         }
         public class FilterByCategoryId : QueryObject<Product>
         {
-            public Guid _keyword;
+            public Guid _categoryId;
 
             public FilterByCategoryId(Guid keyword)
             {
-                _keyword = keyword;
+                _categoryId = keyword;
             }
 
             protected override Expression<Func<Product, bool>> AsExpression()
             {
-                return s => s.CategoryId == _keyword;
+                return s => s.CategoryId == _categoryId;
             }
         }
     }

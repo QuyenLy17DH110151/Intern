@@ -65,11 +65,6 @@ namespace eCommerce.WebAPI.Controllers
         {
             var productCategories = await _productCategoryService.SearchProductCategoriesAsync(rq);
 
-            if(productCategories == null)
-            {
-                return NotFound();
-            }
-
             return productCategories;
         }
 
