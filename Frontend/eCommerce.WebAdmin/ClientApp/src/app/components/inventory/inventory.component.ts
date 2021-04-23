@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SearchRequestInventory, UpdateInventoryRequest } from 'src/app/api-clients/models/_index';
 import { InventoryClient } from 'src/app/api-clients/_index';
@@ -12,7 +13,7 @@ export class InventoryComponent implements OnInit {
 
   public inventories = [];
 
-  constructor(private inventoryClient: InventoryClient, private toastr: ToastrService) {
+  constructor(private inventoryClient: InventoryClient, private toastr: ToastrService, private router: Router) {
     this.getData();
   }
 
@@ -35,13 +36,13 @@ export class InventoryComponent implements OnInit {
     },
     columns: {
       product: {
-        title: 'Product Name',
+        title: 'Name',
         valuePrepareFunction: (product) => {
           return product.name;
         },
       },
       ownerUsername: {
-        title: 'Owner Username'
+        title: 'Username'
       },
       quantity: {
         title: 'Quantity'
@@ -66,7 +67,13 @@ export class InventoryComponent implements OnInit {
     }
     )
   }
+
   ngOnInit() {
+  }
+
+  onInventoryRowSelected(event) {
+    const productId = event.data.product.id;
+    this.router.navigate(['/products/product-detail', productId]);
   }
 
 }

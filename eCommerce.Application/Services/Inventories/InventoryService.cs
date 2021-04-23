@@ -52,16 +52,7 @@ namespace eCommerce.Application.Services.Inventories
             if (inventory == null)
             {
                 throw new EntityNotFound("inventory");
-            }
-
-            //check permission of user with inventory 
-            string username = _applicationContext.Principal.Username;
-            var product = await _productRepository.GetProductByIdAsync(inventory.ProductId);
-            var owner = await _userRepository.GetByIdAsync(product.OwnerId);
-            if (owner.Username != username)
-            {
-                throw new BusinessException("User not permission");
-            }
+            }         
 
             //set rowVersion and quantity to request
             inventory.Quantity = rq.Quantity;
