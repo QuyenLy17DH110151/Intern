@@ -362,7 +362,9 @@
       </section>
     </div>
   </div>
-  <app-related-product [type]="productAPI?.category"></app-related-product>
+  <div *ngIf="productAPI">
+    <app-related-product [type]="productAPI?.category"></app-related-product>
+  </div>
 </section>
 <app-size-modal #sizeChart [product]="product"></app-size-modal>
 <!-- Section ends -->
