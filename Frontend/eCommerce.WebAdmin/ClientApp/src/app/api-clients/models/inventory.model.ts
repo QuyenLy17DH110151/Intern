@@ -2,8 +2,8 @@
 class InventoryBase {
     id: string;
     quantity: number;
-    rowVersion: string;
-    constructor(id: string, quantity: number, rowVersion: string) {
+    rowVersion: string[];
+    constructor(id: string, quantity: number, rowVersion: string[]) {
         this.id = id;
         this.quantity = quantity;
         this.rowVersion = rowVersion;
@@ -12,7 +12,7 @@ class InventoryBase {
 
 export class UpdateInventoryRequest extends InventoryBase {
 
-    constructor(id: string, quantity: number, rowVersion: string) {
+    constructor(id: string, quantity: number, rowVersion: string[]) {
         super(id, quantity, rowVersion);
     }
 }

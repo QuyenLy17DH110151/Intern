@@ -6,5 +6,10 @@ namespace eCommerce.Domain.Shared.Exceptions
 {
     public class DbConcurrencyException : Exception
     {
+        public DbConcurrencyException()
+            : base("RowVersion not equals")
+        {
+        }
+
     }
 }

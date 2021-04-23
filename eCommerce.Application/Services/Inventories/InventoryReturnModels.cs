@@ -12,7 +12,7 @@ namespace eCommerce.Application.Services.Inventories
             public Guid Id { get; set; }
             public Product Product { get; set; }
             public int Quantity { get; set; }
-            public string RowVersion { get; set; }
+            public string[] RowVersion { get; set; }
             public string OwnerUsername { get; set; }
         }
 
@@ -29,7 +29,7 @@ namespace eCommerce.Application.Services.Inventories
             public MappingProfile()
             {
                 CreateMap<Domain.Entities.Inventory, Inventory>()
-                    .ForMember(a => a.RowVersion, b => b.MapFrom(c => string.Join("", c.RowVersion)))
+                    .ForMember(a => a.RowVersion, b => b.MapFrom(c =>  c.RowVersion))
                     .ForMember(a => a.OwnerUsername, b => b.MapFrom(c => c.Product.Owner.Username));
 
                 CreateMap<Domain.Entities.Product, Product>();
