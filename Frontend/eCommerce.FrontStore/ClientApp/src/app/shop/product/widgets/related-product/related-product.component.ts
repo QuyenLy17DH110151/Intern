@@ -32,7 +32,7 @@ export class RelatedProductComponent implements OnInit {
 
   getType() {
     console.log(this.type);
-    this.rq.categoryName = "Áo";
+    this.rq.categoryName = this.type.name;
   }
 
   loadListProduct() {
