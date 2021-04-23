@@ -84,12 +84,6 @@ namespace eCommerce.Application.Services.Products
         }
 
         public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)
-    {
-        var product = await _productRepo.GetProductByIdAsync(Id);
-        if (product == null) throw new EntityNotFound("Product");
-        return _mapper.Map<ProductReturnModels.Product>(product);
-    }
-        public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)
         {
             var product = await _productRepo.GetProductByIdAsync(Id);
             if (product == null) throw new EntityNotFound("Product");

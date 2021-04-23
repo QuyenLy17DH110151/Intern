@@ -62,18 +62,24 @@ namespace eCommerce.Application.Services.Inventories
             {
                 throw new BusinessException("User not permission");
             }
+
             //set rowVersion and quantity to request
-            byte[] rowVersion = new byte[rq.RowVersion.Length];
+            inventory.Quantity = rq.Quantity;
+            inventory.RowVersion = ConvertStringToByte(rq.RowVersion);
+            _inventoryRepo.Update(inventory);
+            await _inventoryRepo.UnitOfWork.SaveChangesAsync();
+        }
+
+        private byte[] ConvertStringToByte(string[] str)
+        {
+            byte[] rowVersion = new byte[str.Length];
             int i = 0;
-            foreach(string s in rq.RowVersion)
+            foreach (string s in str)
             {
                 rowVersion[i] = byte.Parse(s);
                 i++;
             }
-            inventory.Quantity = rq.Quantity;
-            inventory.RowVersion = rowVersion;
-            _inventoryRepo.Update(inventory);
-            await _inventoryRepo.UnitOfWork.SaveChangesAsync();
+            return rowVersion;
         }
     }
 }
