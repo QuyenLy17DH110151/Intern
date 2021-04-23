@@ -57,6 +57,19 @@ namespace eCommerce.Application.Services.Products
             };
             _productRepo.Add(product);
             InitializeInventory(product);
+
+            //foreach(var photo in request.Photo)
+            //{
+            //    var p = new ProductPhoto()
+            //    {
+            //        Url = photo
+            //    };
+
+            //    product.Photos.Add(p);
+            //}
+
+
+            _productRepo.Add(product);
             await _productRepo.UnitOfWork.SaveChangesAsync();
             return product.Id;
         }
@@ -76,31 +89,50 @@ namespace eCommerce.Application.Services.Products
         if (product == null) throw new EntityNotFound("Product");
         return _mapper.Map<ProductReturnModels.Product>(product);
     }
-
-    public async Task<Guid> UploadPhotoAsync(ProductRequestModels.UploadPhoto request)
-    {
-        var photo = new ProductPhoto()
+        public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)
         {
-            ProductId = request.ProductId,
-            Url = request.Url
-        };
+            var product = await _productRepo.GetProductByIdAsync(Id);
+            if (product == null) throw new EntityNotFound("Product");
+            return _mapper.Map<ProductReturnModels.Product>(product);
+        }
 
-        _productRepo.UploadPhoto(photo);
-        await _productRepo.UnitOfWork.SaveChangesAsync();
-        return photo.ProductId;
+        public async Task<Guid> UploadPhotoAsync(ProductRequestModels.UploadPhoto request)
+        {
+            var photo = new ProductPhoto()
+            {
+                ProductId = request.ProductId,
+                Url = request.Url
+            };
+
+            _productRepo.UploadPhoto(photo);
+            await _productRepo.UnitOfWork.SaveChangesAsync();
+            return photo.ProductId;
+        }
+
+        public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req)
+        {
+            var products = await _productRepo.SearchPublicAsync(new SearchProductModel
+            {
+                Keyword = req.SearchTerm,
+                Pagination = new Pagination { PageIndex = req.PageIndex, ItemsPerPage = req.PageSize },
+                ProductCategoryName = req.CategoryName,
+                OwnerName = req.OwnerName,
+            });
+
+            return _mapper.Map<PaginatedResult<ProductReturnModels.Product>>(products);
+        }
+
+        // return all photo of product
+        //public async Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId)
+        //{
+        //    var photo = await _productRepo.GetPhotosByProductIdAsync(productId);
+
+        //    if (photo == null)
+        //    {
+        //        throw new EntityNotFound("photo");  // emit error
+        //    }
+
+        //    return _mapper.Map<ProductReturnModels.Photo>(photo);
+        //}
     }
-
-    // return all photo of product
-    //public async Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId)
-    //{
-    //    var photo = await _productRepo.GetPhotosByProductIdAsync(productId);
-
-    //    if (photo == null)
-    //    {
-    //        throw new EntityNotFound("photo");  // emit error
-    //    }
-
-    //    return _mapper.Map<ProductReturnModels.Photo>(photo);
-    //}
-}
 }

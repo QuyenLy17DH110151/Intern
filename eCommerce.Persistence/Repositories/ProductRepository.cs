@@ -31,7 +31,7 @@ namespace eCommerce.Persistence.Repositories
 
         public Product Add(Product product)
         {
-            return _genericRepo.Add(product);    
+            return _genericRepo.Add(product);
         }
 
         public Task<IEnumerable<Product>> GetAllAsync()
@@ -61,16 +61,13 @@ namespace eCommerce.Persistence.Repositories
             }
 
             // filter by category
-
             if (!string.IsNullOrWhiteSpace(req.ProductCategoryName))
             {
                 var keyword = req.ProductCategoryName;
                 queryObject.And(new ProductQueryObjects.FilterByCategory(keyword));
             }
 
-
             // filter by seller
-
             if (req.Role == UserRoles.Seller)
             {
                 var keyword = req.UserName;
@@ -94,7 +91,6 @@ namespace eCommerce.Persistence.Repositories
 
             req.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
 
-
             // execute
             var result = await _genericRepo.SearchAsync(queryObject, req.Pagination, x => x.Include(m => m.Category).Include(m => m.Owner).Include(m => m.Photos));
             return result;
@@ -112,7 +108,7 @@ namespace eCommerce.Persistence.Repositories
 
         public Task<Product> GetProductByIdAsync(Guid id)
         {
-            return _genericRepo.GetByIdAsync(id, x => x.Include(m => m.Photos).Include(m=>m.Inventory).Include(m=>m.Category));
+            return _genericRepo.GetByIdAsync(id, x => x.Include(m => m.Photos).Include(m => m.Inventory).Include(m => m.Category));
         }
 
         public ProductPhoto UploadPhoto(ProductPhoto photo)
@@ -124,6 +120,43 @@ namespace eCommerce.Persistence.Repositories
         {
             var inventory = await _dbContext.Set<Inventory>().SingleOrDefaultAsync(x => x.ProductId == id);
             return inventory.Quantity;
+        }
+
+        public async Task<PaginatedResult<Product>> SearchPublicAsync(SearchProductModel req)
+        {
+            // filter
+            var queryObject = QueryObject<Product>.Empty;
+
+            if (!string.IsNullOrWhiteSpace(req.Keyword))
+            {
+                var keyword = req.Keyword;
+                queryObject.And(new ProductQueryObjects.ContainsKeyword(keyword));
+            }
+
+            // filter by category
+            if (!string.IsNullOrWhiteSpace(req.ProductCategoryName))
+            {
+                var keyword = req.ProductCategoryName;
+                queryObject.And(new ProductQueryObjects.FilterByCategory(keyword));
+            }
+
+            if (!string.IsNullOrWhiteSpace(req.OwnerName))
+            {
+                var keyword = req.OwnerName;
+                queryObject.And(new ProductQueryObjects.FilterBySeller(keyword));
+            }
+
+            // orderby
+            if (!req.Sort.Any())
+            {
+                req.Sort.Add(new SortItem { FieldName = nameof(Product.IdentityKey) });
+            }
+
+            req.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
+
+            // execute
+            var result = await _genericRepo.SearchAsync(queryObject, req.Pagination, x => x.Include(m => m.Category).Include(m => m.Owner).Include(m => m.Photos));
+            return result;
         }
     }
 }
