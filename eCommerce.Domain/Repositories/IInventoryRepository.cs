@@ -12,5 +12,8 @@ namespace eCommerce.Domain.Repositories
     public interface IInventoryRepository : IRepository<Inventory>
     {
         Task<PaginatedResult<Inventory>> SearchAsync(SearchInventoryModel rq);
+        Inventory Add(Inventory inventory);
+        Task<Inventory> FindByIdAsync(Guid id);
+        void Update(Inventory inventory);
     }
 }

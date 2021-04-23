@@ -17,7 +17,6 @@ import { MenusModule } from './components/menus/menus.module';
 import { VendorsModule } from './components/vendors/vendors.module';
 import { UsersModule } from './components/users/users.module';
 import { LocalizationModule } from './components/localization/localization.module';
-import { InvoiceModule } from './components/invoice/invoice.module';
 import { SettingModule } from './components/setting/setting.module';
 import { ReportsModule } from './components/reports/reports.module';
 import { AuthModule } from './components/auth/auth.module';
@@ -35,7 +34,6 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
         HttpClientModule,
         AppRoutingModule,
         DashboardModule,
-        InvoiceModule,
         SettingModule,
         ReportsModule,
         AuthModule,

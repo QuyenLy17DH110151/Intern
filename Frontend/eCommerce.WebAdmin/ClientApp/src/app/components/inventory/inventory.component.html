@@ -4,12 +4,14 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Invoice List</h5>
+                    <h5>Inventory List</h5>
                 </div>
                 <div class="card-body">
                     <div id="batchDelete" class="custom-datatable">
                         <div class="table-responsive">
-                            <ng2-smart-table [settings]="settings" [source]="invoice"></ng2-smart-table>
+                            <ng2-smart-table [settings]="settings" [source]="inventories"
+                                (editConfirm)="onSaveConfirm($event)">
+                            </ng2-smart-table>
                         </div>
                     </div>
                 </div>

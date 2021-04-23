@@ -18,12 +18,14 @@ namespace eCommerce.Application.Services.Products
         private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
         private readonly ApplicationContext _appContext;
+        private readonly IInventoryRepository _inventoryRepository;
 
-        public ProductService(IProductRepository productRepo, IMapper mapper, ApplicationContext appContext)
+        public ProductService(IProductRepository productRepo, IMapper mapper, ApplicationContext appContext, IInventoryRepository inventoryRepository)
         {
             _productRepo = productRepo;
             _mapper = mapper;
             _appContext = appContext;
+            _inventoryRepository = inventoryRepository;
         }
 
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsAsync(ProductRequestModels.Search req)
@@ -53,6 +55,8 @@ namespace eCommerce.Application.Services.Products
 
                 Photos = request.Photos.Select(x => new ProductPhoto { Url = x }).ToList()
             };
+            _productRepo.Add(product);
+            InitializeInventory(product);
 
             //foreach(var photo in request.Photo)
             //{
@@ -68,6 +72,15 @@ namespace eCommerce.Application.Services.Products
             _productRepo.Add(product);
             await _productRepo.UnitOfWork.SaveChangesAsync();
             return product.Id;
+        }
+
+        private void InitializeInventory(Product product)
+        {
+            Inventory inventory = new Inventory();
+            inventory.Product = product;
+            inventory.Id = Guid.NewGuid();
+            inventory.Quantity = 0;
+            _inventoryRepository.Add(inventory);
         }
 
         public async Task<ProductReturnModels.Product> GetProductByIdAsync(Guid Id)

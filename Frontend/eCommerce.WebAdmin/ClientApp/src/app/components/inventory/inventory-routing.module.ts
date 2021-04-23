@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InvoiceComponent } from './invoice.component';
+import { InventoryComponent } from './inventory.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: InvoiceComponent,
+    component: InventoryComponent,
     data: {
-      title: "Invoice",
-      breadcrumb: "Invoice"
+      title: "Inventory",
+      breadcrumb: "Inventory"
     }
   },
 ];

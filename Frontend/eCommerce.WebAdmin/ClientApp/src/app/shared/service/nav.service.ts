@@ -55,7 +55,7 @@ export class NavService {
 			]
 		},
 		{
-			title: 'Inventory',path: '/inventory', icon: 'box', type: 'link', active: false
+			title: 'Inventory', path: '/inventory', icon: 'box', type: 'link', active: false
 		},
 		{
 			title: 'Order', icon: 'box', type: 'sub', active: false, children: [
