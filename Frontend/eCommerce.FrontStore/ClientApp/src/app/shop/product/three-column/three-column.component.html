@@ -44,7 +44,7 @@
                           "
                           [lazyLoad]="image?.url"
                           [alt]="image?.id"
-                          class="img-fluid"
+                          class="img-fluid img-item"
                           (click)="owlCar.to((activeSlide = i.toString()))"
                         />
                       </div>
@@ -173,7 +173,7 @@
                   | currency: productService.Currency?.currency:"symbol"
               }}
             </h3> -->
-            <h3>{{ productAPI?.price }}</h3>
+            <h3>{{ productAPI?.price | currency }}</h3>
             <ul class="color-variant" *ngIf="Color(product?.variants).length">
               <li
                 [class]="color"
