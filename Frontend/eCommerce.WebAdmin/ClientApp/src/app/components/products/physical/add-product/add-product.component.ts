@@ -22,7 +22,7 @@ export class AddProductComponent implements OnInit {
     selectedFiles?: FileList = null;
     fileUpload?: FileUpload;
     categories = [];
-
+    listUrlImage = [];
     @ViewChild('inputImage', { static: true, read: ElementRef })
     inputImage: ElementRef<HTMLInputElement>;
     constructor(
@@ -95,7 +95,7 @@ export class AddProductComponent implements OnInit {
         const formData = {
             ...this.productForm.value,
             ownerId: this.getOwnerId(),
-            photos: [this.fileUpload.url],
+            photos: this.listUrlImage,
         };
 
         const response = await this.productClient
@@ -117,33 +117,42 @@ export class AddProductComponent implements OnInit {
 
     async uploadImage() {
         if (this.selectedFiles) {
-            const file: File | null = this.selectedFiles.item(0);
-            this.selectedFiles = undefined;
-
-            if (file) {
-                this.fileUpload = new FileUpload(file);
-
-                const filePath = `${this.basePath}/${this.fileUpload.file.name}`;
-                const storageRef = this.storage.ref(filePath);
-                const uploadTask = this.storage.upload(
-                    filePath,
-                    this.fileUpload.file
-                );
-
-                uploadTask
-                    .snapshotChanges()
-                    .pipe(
-                        finalize(() => {
-                            storageRef
-                                .getDownloadURL()
-                                .subscribe((downloadURL) => {
-                                    this.fileUpload.url = downloadURL;
-                                    this.fileUpload.name = this.fileUpload.file.name;
-                                });
-                        })
-                    )
-                    .subscribe();
+            const numFile = this.selectedFiles.length;
+            for (let index = 0; index < numFile; index++) {
+                console.log(this.selectedFiles[index]);
+                this.uploadSingleImage(this.selectedFiles[index]);
             }
+            // this.listUrlImage = [];
+        }
+    }
+    uploadSingleImage(selectedFiles) {
+        const file: File | null = selectedFiles;
+        selectedFiles = undefined;
+
+        if (file) {
+            this.fileUpload = new FileUpload(file);
+            console.log('123456', file, this.fileUpload);
+
+            const filePath = `${this.basePath}/${this.fileUpload.file.name}`;
+            const storageRef = this.storage.ref(filePath);
+            const uploadTask = this.storage.upload(
+                filePath,
+                this.fileUpload.file
+            );
+
+            uploadTask
+                .snapshotChanges()
+                .pipe(
+                    finalize(() => {
+                        storageRef.getDownloadURL().subscribe((downloadURL) => {
+                            this.fileUpload.url = downloadURL;
+                            this.fileUpload.name = this.fileUpload.file.name;
+                            this.listUrlImage.push(this.fileUpload.url);
+                            console.log('list url', this.listUrlImage);
+                        });
+                    })
+                )
+                .subscribe();
         }
     }
 
@@ -161,5 +170,6 @@ export class AddProductComponent implements OnInit {
         this.fileUpload = null;
         this.inputImage.nativeElement.value = '';
         this.selectedFiles = null;
+        this.listUrlImage = null;
     }
 }
