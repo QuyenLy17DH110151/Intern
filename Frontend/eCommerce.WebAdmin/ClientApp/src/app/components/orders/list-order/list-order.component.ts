@@ -132,7 +132,7 @@ export class ListOrderComponent implements OnInit {
 
     }
 
-    onEditConfirm(event) {
+    async onEditConfirm(event) {
         if (window.confirm('Are you sure you want to save?')) {
             event.confirm.resolve(event.newData);
             console.log('event', event.newData);
@@ -140,10 +140,10 @@ export class ListOrderComponent implements OnInit {
                 case '0':
                     break;
                 case '1':
-                    this.AcceptOrder(event.newData.id);
+                    await this.AcceptOrder(event.newData.id);
                     break;
                 case '2':
-                    this.RejectOrder(event.newData.id);
+                    await this.RejectOrder(event.newData.id);
                     break;
             }
             this.loadData();
@@ -156,16 +156,13 @@ export class ListOrderComponent implements OnInit {
         await this.orderClient
             .acceptOrder(id)
             .toPromise()
-            .then(() => {
-                this.loadData()
-                console.log(this.orderList)
-            });
+        this.loadData()
 
     }
     async RejectOrder(id: string) {
         await this.orderClient
             .rejectOrder(id)
             .toPromise()
-            .then(() => this.loadData());
+        this.loadData()
     }
 }

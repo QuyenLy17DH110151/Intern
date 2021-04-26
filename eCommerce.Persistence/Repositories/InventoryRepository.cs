@@ -97,15 +97,13 @@ namespace eCommerce.Persistence.Repositories
 
         public async Task<bool> CheckQuantityAsync(int inventoryQuantity, int orderquantity)
         {
-            bool flag = true;
+            
             if (inventoryQuantity <= 0 || inventoryQuantity < orderquantity)
             {
                 throw new BusinessException("Not enough quantity");
-            }
-            else
-            {
-                return flag;
-            }
+            }           
+            
+            return true;            
         }
     }
 }

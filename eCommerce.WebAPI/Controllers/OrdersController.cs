@@ -47,11 +47,8 @@ namespace eCommerce.WebAPI.Controllers
             {
                 return BadRequest();
             }
-            bool check = await _orderService.AcceptOrderAsync(Id);
-            if (!check)
-            {
-                return BadRequest();
-            }
+            await _orderService.AcceptOrderAsync(Id);
+            
             return Ok();
         }
     }

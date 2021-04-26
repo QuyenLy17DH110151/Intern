@@ -78,22 +78,19 @@ namespace eCommerce.Application.Services.Order
             _emailSender.SendEmail(from, to, "Reject Order", html);
         }
 
-        public async Task<bool> CheckQuantityAsync(Guid productId, Guid orderId)
+        private async Task<bool> CheckQuantityAsync(Guid productId, Guid orderId)
         {
             var order = await _orderRepo.GetOrderByIdAsync(orderId);
             var product = await _productRepository.GetProductByIdAsync(productId);
-            bool flag = await _inventoryRepo.CheckQuantityAsync(product.Inventory.Quantity, order.Quantity);
-            if (flag == false)
-                return false;
+            await _inventoryRepo.CheckQuantityAsync(product.Inventory.Quantity, order.Quantity);            
 
             return true;
         }
 
-        public async Task<int> ReduceQuantityAsync(Guid Id)
+        private async Task<int> ReduceQuantityAsync(Guid Id)
         {
             var order = await _orderRepo.GetOrderByIdAsync(Id);
-            var inventory = await _inventoryRepo.ReduceQuantityAsync(order.Product.Inventory.Id, order.Quantity);
-            await _inventoryRepo.UnitOfWork.SaveChangesAsync();
+            var inventory = await _inventoryRepo.ReduceQuantityAsync(order.Product.Inventory.Id, order.Quantity);            
 
             return inventory;
         }
@@ -125,17 +122,12 @@ namespace eCommerce.Application.Services.Order
                 throw new EntityNotFound("Order");
             }
 
-            bool check = await CheckQuantityAsync(order.ProductId, Id);
-            if (check)
-            {
-                await ReduceQuantityAsync(Id);
-                await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Approved);
-                await _orderRepo.UnitOfWork.SaveChangesAsync();
-                SendEmailAccept("eCommerce", order.BuyerEmail, Id);
-                return true;
-            }
-
-            return false;
+            await CheckQuantityAsync(order.ProductId, Id);  
+            await ReduceQuantityAsync(Id);
+            await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Approved);
+            await _orderRepo.UnitOfWork.SaveChangesAsync();
+            SendEmailAccept("eCommerce", order.BuyerEmail, Id);
+            return true;
         }
     }
 }
