@@ -65,7 +65,8 @@ namespace eCommerce.Persistence.Repositories
 
 
             // execute
-            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination,x=>x.Include(p=>p.Product).Include(u=>u.Product.Owner));
+            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination,x=>x.Include(p=>p.Product).
+                Include(u=>u.Product.Owner).Include(c => c.Product.Category));
             return result;
         }
 

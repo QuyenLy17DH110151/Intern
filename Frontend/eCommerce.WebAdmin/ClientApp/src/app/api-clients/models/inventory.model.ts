@@ -19,11 +19,15 @@ export class UpdateInventoryRequest extends InventoryBase {
 
 export class Inventory extends InventoryBase {
     product: InventoryProduct;
+    lastUpdated: Date;
+    lastUpdatedBy: string;
+    ownerUsername: string;
+    productCategoryName: string;
 }
 
 export class InventoryProduct {
     id: string;
     name: string;
     price: number;
-    ownerUsername: string;
+
 }
