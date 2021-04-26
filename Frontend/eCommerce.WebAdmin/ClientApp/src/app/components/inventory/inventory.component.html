@@ -10,7 +10,7 @@
                     <div id="batchDelete" class="custom-datatable">
                         <div class="table-responsive">
                             <ng2-smart-table [settings]="settings" [source]="inventories"
-                                (editConfirm)="onSaveConfirm($event)">
+                                (editConfirm)="onSaveConfirm($event)" (userRowSelect)="onInventoryRowSelected($event)">
                             </ng2-smart-table>
                         </div>
                     </div>
