@@ -21,6 +21,7 @@ export class ExceptionInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
                 let message = '';
+
                 if (error.error instanceof ErrorEvent) {
                     // handle client-side error
                     message = `Error: ${error.error.message}`;
@@ -28,12 +29,13 @@ export class ExceptionInterceptor implements HttpInterceptor {
                     // handle server-side error
                     message = `Error Status: ${error.status}.\nMessage: ${error.message}`;
                 }
-                //console.log(message);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error...',
-                    text: message,
-                });
+                console.log(error.error);
+                Swal.fire('Error', error.error.message || error.error.errorMessage, 'error');
+                // Swal.fire({
+                //     icon: 'error',
+                //     title: 'Error...',
+                //     text: message,
+                // });
                 return throwError(message);
             })
         );

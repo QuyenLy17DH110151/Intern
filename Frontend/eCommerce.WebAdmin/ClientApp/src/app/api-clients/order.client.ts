@@ -11,10 +11,18 @@ import { Order } from './models/order.model';
 export class OrderClient {
     private baseUrl = `${environment.apiUrl}/Orders`;
 
-    constructor(protected httpClient: HttpClient) {}
+    constructor(protected httpClient: HttpClient) { }
 
     getAllOrder(): Observable<PagedList<Order>> {
         const url = `${this.baseUrl}`;
         return this.httpClient.get<PagedList<Order>>(url);
+    }
+
+    acceptOrder(id: string) {
+        return this.httpClient.post(`${environment.apiUrl}/Orders/Accept_Order/${id}`, id);
+    }
+
+    rejectOrder(id: string) {
+        return this.httpClient.post(`${environment.apiUrl}/Orders/Reject_Order/${id}`, id);
     }
 }

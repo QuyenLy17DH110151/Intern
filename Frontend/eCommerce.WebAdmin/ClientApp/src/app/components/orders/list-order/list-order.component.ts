@@ -22,7 +22,7 @@ export class ListOrderComponent implements OnInit {
         private readonly orderClient: OrderClient,
         private datePipe: DatePipe,
         private currencyPipe: CurrencyPipe
-    ) {}
+    ) { }
 
     public settings = {
         delete: {
@@ -97,7 +97,18 @@ export class ListOrderComponent implements OnInit {
                 },
             },
             statusString: {
-                title: 'Status',
+                title: 'statusString',
+                editor: {
+                    type: 'list',
+                    config: {
+                        selectText: 'Select',
+                        list: [
+                            { value: 0, title: 'New' },
+                            { value: 1, title: 'Approved' },
+                            { value: 2, title: 'Cancelled' },
+                        ],
+                    },
+                },
             },
         },
     };
@@ -119,5 +130,42 @@ export class ListOrderComponent implements OnInit {
             (order, index) => new OrderViewModel(order, index)
         );
 
+    }
+
+    onEditConfirm(event) {
+        if (window.confirm('Are you sure you want to save?')) {
+            event.confirm.resolve(event.newData);
+            console.log('event', event.newData);
+            switch (event.newData.statusString) {
+                case '0':
+                    break;
+                case '1':
+                    this.AcceptOrder(event.newData.id);
+                    break;
+                case '2':
+                    this.RejectOrder(event.newData.id);
+                    break;
+            }
+            this.loadData();
+        } else {
+            event.confirm.reject();
+        }
+    }
+
+    async AcceptOrder(id: string) {
+        await this.orderClient
+            .acceptOrder(id)
+            .toPromise()
+            .then(() => {
+                this.loadData()
+                console.log(this.orderList)
+            });
+
+    }
+    async RejectOrder(id: string) {
+        await this.orderClient
+            .rejectOrder(id)
+            .toPromise()
+            .then(() => this.loadData());
     }
 }

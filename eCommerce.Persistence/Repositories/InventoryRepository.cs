@@ -3,6 +3,7 @@ using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
 using eCommerce.Domain.Shared;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +83,29 @@ namespace eCommerce.Persistence.Repositories
         public void Update(Inventory inventory)
         {
             _genericRepo.Update(inventory);
+        }
+
+        public async Task<int> ReduceQuantityAsync(Guid Id, int quantity)
+        {
+
+            var inventory = await _genericRepo.GetByIdAsync(Id);
+            var result = inventory.Quantity - quantity;
+            inventory.Quantity = result;
+            return inventory.Quantity;
+        }
+
+
+        public async Task<bool> CheckQuantityAsync(int inventoryQuantity, int orderquantity)
+        {
+            bool flag = true;
+            if (inventoryQuantity <= 0 || inventoryQuantity < orderquantity)
+            {
+                throw new BusinessException("Not enough quantity");
+            }
+            else
+            {
+                return flag;
+            }
         }
     }
 }

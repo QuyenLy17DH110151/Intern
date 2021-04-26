@@ -18,13 +18,16 @@ namespace eCommerce.Application.Services.Order
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
         private readonly ApplicationContext _appContext;
-        
-        public OrderService(IOrderRepository orderRepo, IMapper mapper, IEmailSender emailSender, ApplicationContext appContext)
+        private readonly IInventoryRepository _inventoryRepo;
+        private readonly IProductRepository _productRepository;
+        public OrderService(IOrderRepository orderRepo, IMapper mapper, IEmailSender emailSender, ApplicationContext appContext, IInventoryRepository inventoryRepository, IProductRepository productRepository)
         {
             _orderRepo = orderRepo;
             _mapper = mapper;
             _emailSender = emailSender;
             _appContext = appContext;
+            _inventoryRepo = inventoryRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<bool> RejectOrderAsync(Guid Id)
@@ -73,6 +76,66 @@ namespace eCommerce.Application.Services.Order
             html += "</body>";
             html += "</html>";
             _emailSender.SendEmail(from, to, "Reject Order", html);
+        }
+
+        public async Task<bool> CheckQuantityAsync(Guid productId, Guid orderId)
+        {
+            var order = await _orderRepo.GetOrderByIdAsync(orderId);
+            var product = await _productRepository.GetProductByIdAsync(productId);
+            bool flag = await _inventoryRepo.CheckQuantityAsync(product.Inventory.Quantity, order.Quantity);
+            if (flag == false)
+                return false;
+
+            return true;
+        }
+
+        public async Task<int> ReduceQuantityAsync(Guid Id)
+        {
+            var order = await _orderRepo.GetOrderByIdAsync(Id);
+            var inventory = await _inventoryRepo.ReduceQuantityAsync(order.Product.Inventory.Id, order.Quantity);
+            await _inventoryRepo.UnitOfWork.SaveChangesAsync();
+
+            return inventory;
+        }
+
+        private void SendEmailAccept(string from, string to, Guid id)
+        {
+            string html = "<!DOCTYPE html>";
+            html += "<html>";
+            html += "<head>";
+            html += "<meta chahtmlet='utf-8'>";
+            html += "</head>";
+            html += "<body>";
+            html += "<h1>Your order is Accepted </h1>";
+            html += "<input type='hidden' name='key' value='" + "'/>";
+            html += "<input type='hidden' name='email' value='" + to + "'/>";
+            html += $"Order id : {id} is Accepted ";
+            html += "</form>";
+            html += "</body>";
+            html += "</html>";
+
+            _emailSender.SendEmail(from, to, "Accept Order", html);
+        }
+
+        public async Task<bool> AcceptOrderAsync(Guid Id)
+        {
+            var order = await _orderRepo.GetOrderByIdAsync(Id);
+            if (order == null)
+            {
+                throw new EntityNotFound("Order");
+            }
+
+            bool check = await CheckQuantityAsync(order.ProductId, Id);
+            if (check)
+            {
+                await ReduceQuantityAsync(Id);
+                await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Approved);
+                await _orderRepo.UnitOfWork.SaveChangesAsync();
+                SendEmailAccept("eCommerce", order.BuyerEmail, Id);
+                return true;
+            }
+
+            return false;
         }
     }
 }
