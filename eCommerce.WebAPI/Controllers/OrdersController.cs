@@ -39,5 +39,17 @@ namespace eCommerce.WebAPI.Controllers
             }
             return Ok();
         }
+
+        [HttpPost("Accept_Order/{Id}")]
+        public async Task<ActionResult> AcceptOrder(Guid Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await _orderService.AcceptOrderAsync(Id);
+            
+            return Ok();
+        }
     }
 }

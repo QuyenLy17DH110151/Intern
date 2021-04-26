@@ -15,5 +15,7 @@ namespace eCommerce.Domain.Repositories
         Inventory Add(Inventory inventory);
         Task<Inventory> FindByIdAsync(Guid id);
         void Update(Inventory inventory);
+        Task<int> ReduceQuantityAsync(Guid Id, int quantity);
+        Task<bool> CheckQuantityAsync(int quantityInventory, int quantityOrder);        
     }
 }

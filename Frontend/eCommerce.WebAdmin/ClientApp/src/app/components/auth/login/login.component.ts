@@ -113,13 +113,14 @@ export class LoginComponent implements OnInit {
                 this.forgotPasswordForm.value.lastName,
                 this.forgotPasswordForm.value.username
             );
-            this.createForgotPasswordForm();
-            this.isStartForgotPassword = false;
+
             this.userClient.forgotPassword(rq).subscribe(
                 (res) => {
                     alert('Request change password Success');
                     this.createForgotPasswordForm();
-
+                },
+                (err) => {
+                    alert(err.error.errorMessage);
                 }
             );
         }

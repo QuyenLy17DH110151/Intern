@@ -58,11 +58,10 @@ namespace eCommerce.Application.Services.Inventories
             string username = _applicationContext.Principal.Username;
             var product = await _productRepository.GetProductByIdAsync(inventory.ProductId);
             var owner = await _userRepository.GetByIdAsync(product.OwnerId);
-            if (owner.Username != username && _applicationContext.Principal.Role == UserRoles.Seller)
+            if (owner.Username != username)
             {
                 throw new BusinessException("User not permission");
             }
-
 
             //set rowVersion and quantity to request
             inventory.Quantity = rq.Quantity;

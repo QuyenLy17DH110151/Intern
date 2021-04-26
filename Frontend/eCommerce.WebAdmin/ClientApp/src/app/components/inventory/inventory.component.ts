@@ -1,23 +1,18 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { UpdateInventoryRequest } from 'src/app/api-clients/models/_index';
+import { SearchRequestInventory, UpdateInventoryRequest } from 'src/app/api-clients/models/_index';
 import { InventoryClient } from 'src/app/api-clients/_index';
-import { CustomEditorComponent } from './CustomEditorComponent.component';
 
 @Component({
   selector: 'app-invoice',
   templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss'],
-  providers: [DatePipe],
-
+  styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
 
   public inventories = [];
 
-  constructor(private inventoryClient: InventoryClient, private toastr: ToastrService, private router: Router, private datePipe: DatePipe) {
+  constructor(private inventoryClient: InventoryClient, private toastr: ToastrService) {
     this.getData();
   }
 
@@ -25,9 +20,11 @@ export class InventoryComponent implements OnInit {
     this.inventoryClient.getListInventory().subscribe((res) => {
       this.inventories = res.items;
     });
+
   }
 
   public settings = {
+    hideSubHeader: true,
     edit: {
       confirmSave: true,
     },
@@ -38,40 +35,16 @@ export class InventoryComponent implements OnInit {
     },
     columns: {
       product: {
-        title: 'Product',
-        editable: false,
+        title: 'Product Name',
         valuePrepareFunction: (product) => {
           return product.name;
         },
-        editor: {
-          type: 'custom',
-          component: CustomEditorComponent,
-        },
-      },
-      productCategoryName: {
-        title: 'Category',
-        editable: false,
       },
       ownerUsername: {
-        title: 'Owner',
-        editable: false,
+        title: 'Owner Username'
       },
       quantity: {
         title: 'Quantity'
-      },
-      lastUpdated: {
-        title: 'Last Updated',
-        editable: false,
-        valuePrepareFunction: (lastUpdated) => {
-          return lastUpdated != null ? this.datePipe.transform(
-            new Date(lastUpdated),
-            'dd MMM yyyy'
-          ) : "";
-        },
-      },
-      lastUpdatedBy: {
-        title: 'Last Updated By',
-        editable: false,
       },
     },
   };
@@ -93,13 +66,7 @@ export class InventoryComponent implements OnInit {
     }
     )
   }
-
   ngOnInit() {
-  }
-
-  onInventoryRowSelected(event) {
-    const productId = event.data.product.id;
-    this.router.navigate(['/products/product-detail', productId]);
   }
 
 }
