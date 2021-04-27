@@ -40,12 +40,13 @@ export class ExceptionInterceptor implements HttpInterceptor {
                     message = `Error Status: ${error.status}.\nMessage: ${error.message}`;
                 }
 
-                //console.log(message);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error...',
-                    text: message,
-                });
+                console.log(error.error);
+                Swal.fire('Error', error.error.message || error.error.errorMessage, 'error');
+                // Swal.fire({
+                //     icon: 'error',
+                //     title: 'Error...',
+                //     text: message,
+                // });
                 return throwError(message);
             })
         );

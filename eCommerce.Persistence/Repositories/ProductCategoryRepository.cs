@@ -2,8 +2,10 @@
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +69,17 @@ namespace eCommerce.Persistence.Repositories
         public void Delete(ProductCategory productCategory)
         {
             _genericRepo.Delete(productCategory);
+        }
+
+        public async Task<bool> CheckDeletedAsync(Guid categoryId)
+        {            
+            var check = await _dbContext.Set<Product>().Where(p=>p.CategoryId==categoryId).ToListAsync();
+            if (check.Count != 0)
+            {
+                throw new BusinessException("Can't delete category");
+            }
+
+            return true;            
         }
         
     }

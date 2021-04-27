@@ -19,6 +19,8 @@ namespace eCommerce.Domain.Repositories
 
         Task<ProductCategory> GetByIdAsync(Guid Id);        
         Task<PaginatedResult<ProductCategory>> SearchAsync(SearchProductCategoryModel rq);
-        
+        Task<bool> CheckDeletedAsync(Guid categoryId);
+
+
     }
 }

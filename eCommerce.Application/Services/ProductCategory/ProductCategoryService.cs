@@ -11,13 +11,15 @@ namespace eCommerce.Application.Services.ProductCategory
 {
     public class ProductCategoryService : IProductCategoryService
     {
+        private readonly IProductRepository _productRepo;
         private readonly IProductcategoryRepository _productCategoryRepo;
         private readonly IMapper _mapper;
 
-        public ProductCategoryService(IProductcategoryRepository productCategoryRepo, IMapper mapper)
+        public ProductCategoryService(IProductcategoryRepository productCategoryRepo, IMapper mapper, IProductRepository productRepo)
         {
             _productCategoryRepo = productCategoryRepo;
             _mapper = mapper;
+            _productRepo = productRepo;
         }
 
         public async Task<PaginatedResult<ProductCategoryReturnModels.ProductCategory>> SearchProductCategoriesAsync(ProductCategoryRequestModels.Search rq)
@@ -48,7 +50,7 @@ namespace eCommerce.Application.Services.ProductCategory
         {
             var productCategory = await _productCategoryRepo.GetByIdAsync(id);
             if (productCategory == null)
-                throw new EntityNotFound("Cannot find category");
+                throw new EntityNotFound("Category");
 
             productCategory.Name = rq.Name;
             _productCategoryRepo.Update(productCategory);
@@ -57,12 +59,21 @@ namespace eCommerce.Application.Services.ProductCategory
             return productCategory.Id;
         }
 
+        private async Task<bool> CheckDeletedAsync(Guid Id)
+        {
+            var category = await _productCategoryRepo.GetByIdAsync(Id);            
+            await _productCategoryRepo.CheckDeletedAsync(category.Id);
+            
+            return false;
+        }
+
         public async Task<Guid> DeleteProductCategoryAsync(Guid id)
         {
             var productCategory = await _productCategoryRepo.GetByIdAsync(id);
             if (productCategory == null)
-                throw new EntityNotFound("Cannot find category");
+                throw new EntityNotFound("Category");
 
+            await CheckDeletedAsync(id);
             _productCategoryRepo.Delete(productCategory);
             await _productCategoryRepo.UnitOfWork.SaveChangesAsync();
 
@@ -73,7 +84,7 @@ namespace eCommerce.Application.Services.ProductCategory
         {
             var productCategory = await _productCategoryRepo.GetByIdAsync(id);
             if (productCategory == null)
-                throw new EntityNotFound("Cannot find category");
+                throw new EntityNotFound("Category");
 
             return _mapper.Map<ProductCategoryReturnModels.ProductCategory>(productCategory);
         } 
