@@ -40,6 +40,7 @@ export class CreateUserComponent implements OnInit {
         this.toastr.success('Create User Success!', 'Notification');
       });
       this.createAccountForm();
+      this.isStart = false;
     }
 
   }

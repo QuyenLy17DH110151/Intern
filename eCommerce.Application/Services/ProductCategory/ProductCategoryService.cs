@@ -33,10 +33,7 @@ namespace eCommerce.Application.Services.ProductCategory
         
         async Task<Guid> IProductCategoryService.CreateProductCategoryAsync(ProductCategoryRequestModels.Create rq)
         {
-            var productCategory = new Domain.Entities.ProductCategory
-            {
-                Name = rq.Name
-            };
+            var productCategory = _mapper.Map<Domain.Entities.ProductCategory>(rq);
 
             _productCategoryRepo.Create(productCategory);
             await _productCategoryRepo.UnitOfWork.SaveChangesAsync();

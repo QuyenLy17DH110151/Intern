@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { TokenInterceptor } from './interceptor/token.interceptor';
 import { ExceptionInterceptor } from './interceptor/exception.interceptor'
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
+import { CategoryModule } from './components/categories/category.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -48,6 +49,7 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
         MenusModule,
         UsersModule,
         FormsModule,
+        CategoryModule,
         ToastContainerModule,
         ToastrModule.forRoot(),
 

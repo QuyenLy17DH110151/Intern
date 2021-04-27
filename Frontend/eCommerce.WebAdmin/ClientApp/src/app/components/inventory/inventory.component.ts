@@ -50,7 +50,6 @@ export class InventoryComponent implements OnInit {
   };
 
   onSaveConfirm(event) {
-    console.log(event)
     let quantity = event.newData.quantity;
     if (!/\d/.exec(quantity)) {
       this.toastr.error("quantity not number", "Erro");

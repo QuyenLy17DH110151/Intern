@@ -147,4 +147,15 @@ export const content: Routes = [
         },
         canActivate: [AuthGuard],
     },
+    {
+        path: 'categories',
+        loadChildren: () =>
+            import('../../components/categories/category.module').then(
+                (m) => m.CategoryModule
+            ),
+        data: {
+            breadcrumb: 'Categories',
+        },
+        canActivate: [AuthGuard],
+    },
 ];
