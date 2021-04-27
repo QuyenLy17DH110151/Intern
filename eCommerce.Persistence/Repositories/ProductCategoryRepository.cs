@@ -71,15 +71,11 @@ namespace eCommerce.Persistence.Repositories
             _genericRepo.Delete(productCategory);
         }
 
-        public async Task<bool> CheckDeletedAsync(Guid categoryId)
+        public async Task CheckCanDeleteAsync(Guid categoryId)
         {            
-            var check = await _dbContext.Set<Product>().Where(p=>p.CategoryId==categoryId).ToListAsync();
-            if (check.Count != 0)
-            {
-                throw new BusinessException("Can't delete category");
-            }
-
-            return true;            
+            var check = await _dbContext.Set<Product>().Where(p=>p.CategoryId==categoryId).CountAsync();
+            if (check != 0)            
+                throw new BusinessException("Can't delete category");        
         }
         
     }

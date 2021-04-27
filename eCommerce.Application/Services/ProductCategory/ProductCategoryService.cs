@@ -59,10 +59,10 @@ namespace eCommerce.Application.Services.ProductCategory
             return productCategory.Id;
         }
 
-        private async Task<bool> CheckDeletedAsync(Guid Id)
+        private async Task<bool> CheckCanDeleteAsync(Guid Id)
         {
             var category = await _productCategoryRepo.GetByIdAsync(Id);            
-            await _productCategoryRepo.CheckDeletedAsync(category.Id);
+            await _productCategoryRepo.CheckCanDeleteAsync(category.Id);
             
             return false;
         }
@@ -73,7 +73,7 @@ namespace eCommerce.Application.Services.ProductCategory
             if (productCategory == null)
                 throw new EntityNotFound("Category");
 
-            await CheckDeletedAsync(id);
+            await CheckCanDeleteAsync(id);
             _productCategoryRepo.Delete(productCategory);
             await _productCategoryRepo.UnitOfWork.SaveChangesAsync();
 
