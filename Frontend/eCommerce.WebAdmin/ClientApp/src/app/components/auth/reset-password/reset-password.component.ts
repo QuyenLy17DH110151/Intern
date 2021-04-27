@@ -13,6 +13,7 @@ export class ResetPasswordComponent implements OnInit {
     public key: string;
     public email: string;
     public formResetPassword: FormGroup;
+    public displayErro: boolean = false;
     public updatePasswordRequest: UpdatePasswordRequest = null;
 
     constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private userClient: UserClient, private router: Router) {
@@ -32,21 +33,19 @@ export class ResetPasswordComponent implements OnInit {
 
 
     savePassword() {
-        if (this.formResetPassword.value.password === this.formResetPassword.value.rePassword) {
-            this.updatePasswordRequest = new UpdatePasswordRequest(this.email, this.key, this.formResetPassword.value.password);
-            this.userClient.updatePassword(this.updatePasswordRequest).subscribe((res) => {
-                alert('Update Password Success');
-            },
-                (error) => {
-                    if (error.error.errorMessage == 'token or username invalid') {
-                        this.router.navigate(['/reset-password-error']);
-                    }
-                }
-            );
-            this.createFromResetPassword;
-        }
-        if (this.formResetPassword.value.password != this.formResetPassword.value.rePassword) {
-            alert('password not equals password again');
+        this.displayErro = true;
+        if (!this.formResetPassword.invalid) {
+            if (this.formResetPassword.value.password === this.formResetPassword.value.rePassword) {
+                this.updatePasswordRequest = new UpdatePasswordRequest(this.email, this.key, this.formResetPassword.value.password);
+                this.userClient.updatePassword(this.updatePasswordRequest).subscribe((res) => {
+                    alert('Update Password Success');
+                    this.router.navigate(['/auth/login']);
+                });
+                this.createFromResetPassword;
+            }
+            if (this.formResetPassword.value.password != this.formResetPassword.value.rePassword) {
+                alert('password not equals password again');
+            }
         }
     }
 

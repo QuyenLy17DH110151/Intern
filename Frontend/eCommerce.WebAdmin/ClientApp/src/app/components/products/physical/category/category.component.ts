@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Category } from 'src/app/api-clients/models/category.model';
 import { CategoryClient } from 'src/app/api-clients/category.client';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-category',
@@ -25,31 +26,45 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  onDeleteConfirm(event): void {
+  async onDeleteConfirm(event) {
     if (window.confirm('Are you sure you want to delete?')) {
-      this.categoryClient.deleteCategory(event.data.id).subscribe(
-        res => {
-          event.confirm.resolve(event.newData);
-          this.getListCategory();
-        }
-      )
+      const response = await this.categoryClient
+        .deleteCategory(event.data.id)
+        .toPromise();
+      this.getListCategory();
+      console.log('response: ', response);
+      if (response !== null) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success...',
+          text: 'Delete Product Category successfully!',
+        });
+      }
     } else {
       event.confirm.reject();
     }
   }
 
-  onEditConfirm(event): void {
+  async onEditConfirm(event) {
     var data = {
       "name": event.newData.name,
     };
 
     if (window.confirm('Are you sure you want to edit?')) {
-      this.categoryClient.updateCategory(event.data.id, data).subscribe(
-        res => {
-          event.confirm.resolve(event.newData);
-          this.getListCategory();
-        }
-      );
+      const response = await this.categoryClient
+        .updateCategory(event.newData.id, data)
+        .toPromise();
+      this.getListCategory();
+      console.log('response: ', response);
+      if (response !== null) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success...',
+          text: 'Update Product Category successfully!',
+        });
+      } else {
+        event.confirm.reject();
+      }
     }
   }
 
