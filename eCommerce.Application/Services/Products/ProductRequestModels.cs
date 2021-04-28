@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eCommerce.Domain.Shared.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,7 +19,11 @@ namespace eCommerce.Application.Services.Products
 
             public int PageSize { get; set; }
 
-            public string Sort { get; set; }            
+            //public List<SortItem> Sort { get; set; } = new List<SortItem>();
+            public string Sort { get; set; }
+
+            public decimal MinPrice { get; set; }
+            public decimal MaxPrice { get; set; }
         }
 
         public class Create

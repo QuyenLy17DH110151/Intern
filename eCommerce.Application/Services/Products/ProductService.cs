@@ -113,15 +113,44 @@ namespace eCommerce.Application.Services.Products
 
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req)
         {
+
             var products = await _productRepo.SearchPublicAsync(new SearchProductModel
             {
                 Keyword = req.SearchTerm,
                 Pagination = new Pagination { PageIndex = req.PageIndex, ItemsPerPage = req.PageSize },
                 ProductCategoryName = req.CategoryName,
                 OwnerName = req.OwnerName,
+                Sort = ListSort(req.Sort),
+                MinPrice = req.MinPrice,
+                MaxPrice = req.MaxPrice,
             });
 
             return _mapper.Map<PaginatedResult<ProductReturnModels.Product>>(products);
+        }
+
+        private List<SortItem> ListSort(string sort)
+        {
+            List<SortItem> listSort = new List<SortItem>();
+            string[] Sort = SplitSort(sort);
+            for (int i = 0; i < Sort.Length; i++)
+            {
+                listSort.Add(ConvertRequestSort(Sort[i]));
+            }
+            return listSort;
+        }
+
+        private string[] SplitSort(string requestSort)
+        {
+            return requestSort.Split(';');
+        }
+
+        private SortItem ConvertRequestSort(string sort)
+        {
+            string[] sortItem = sort.Split('|');
+            SortItem item = new SortItem();
+            item.FieldName = sortItem[0];
+            item.IsDescending = bool.Parse(sortItem[1]);
+            return item;
         }
 
         // return all photo of product
