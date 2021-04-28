@@ -23,7 +23,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
   public colors: any[] = [];
   public size: any[] = [];
   public minPrice: number = 0;
-  public maxPrice: number = 1200;
+  public maxPrice: number = 0;
   public tags: any[] = [];
   public category: string;
   public pageNo: number = 1;
@@ -79,8 +79,10 @@ export class CollectionLeftSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      let searchTerm = params["searchTerm"];
-      this.rq.searchTerm = searchTerm ? searchTerm : "";
+      this.rq.searchTerm = params["searchTerm"] ? params["searchTerm"] : "";
+      this.rq.categoryName = params["category"] ? params["category"] : "";
+      this.rq.minPrice = params["minPrice"] ? params["minPrice"] : 0;
+      this.rq.maxPrice = params["maxPrice"] ? params["maxPrice"] : 0;
       this.loadListProduct();
     });
   }
