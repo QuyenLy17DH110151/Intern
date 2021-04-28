@@ -28,7 +28,7 @@ export class CategoryComponent implements OnInit {
 
   onDeleteConfirm(event) {
     this.categoryClient.deleteCategory(event.data.id).subscribe(() => {
-      this.toastr.success('Change Inventory Success!', 'Notification');
+      this.toastr.success('Change Category Success!', 'Notification');
       this.getListCategory();
     })
   }
@@ -38,21 +38,13 @@ export class CategoryComponent implements OnInit {
       "name": event.newData.name,
     };
 
-    // if (window.confirm('Are you sure you want to edit?')) {
-    //   this.categoryClient.updateCategory(event.data.id, data).subscribe(
-    //     res => {
-    //       event.confirm.resolve(event.newData);
-    //       this.getListCategory();
-    //     }
-    //   );
-    // }
     this.categoryClient.updateCategory(event.data.id, data).subscribe(() => {
-      this.toastr.success('Change Inventory Success!', 'Notification');
+      this.toastr.success('Change Category Success!', 'Notification');
       this.getListCategory();
     })
   }
 
-  
+
 
   public settings = {
     delete: {
