@@ -17,5 +17,7 @@ namespace eCommerce.Domain.Repositories.Models
         public string OwnerName { get; set; }
         public UserRoles Role { get; set; }
         public string UserName { get; set; }
+        public decimal MinPrice { get; set; }
+        public decimal MaxPrice { get; set; }
     }
 }

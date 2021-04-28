@@ -103,7 +103,7 @@ namespace eCommerce.Persistence.Repositories
             // filter by categoryId  
             queryObject.And(new ProductQueryObjects.FilterByCategoryId(catId));
 
-            var products = await _genericRepo.SearchAsync(queryObject, x => x.Include(m => m.Photos).Include(m => m.Inventory).Include(m => m.Category).Include(m=>m.Owner));
+            var products = await _genericRepo.SearchAsync(queryObject, x => x.Include(m => m.Photos).Include(m => m.Inventory).Include(m => m.Category).Include(m => m.Owner));
             return products;
         }
 
@@ -141,11 +141,23 @@ namespace eCommerce.Persistence.Repositories
                 queryObject.And(new ProductQueryObjects.FilterByCategory(keyword));
             }
 
+            // filter by Owner
             if (!string.IsNullOrWhiteSpace(req.OwnerName))
             {
                 var keyword = req.OwnerName;
                 queryObject.And(new ProductQueryObjects.FilterBySeller(keyword));
             }
+
+            // filter by MinPrice & MaxPrice
+            if (req.MaxPrice==0)
+            {
+                req.MaxPrice = decimal.MaxValue;
+            }
+            if (req.MinPrice<0)
+            {
+                req.MinPrice = decimal.Zero;
+            }
+            queryObject.And(new ProductQueryObjects.FilterByPrice(req.MinPrice, req.MaxPrice));
 
             // orderby
             if (!req.Sort.Any())

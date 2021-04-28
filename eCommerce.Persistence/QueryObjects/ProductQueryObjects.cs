@@ -65,5 +65,20 @@ namespace eCommerce.Persistence.QueryObjects
                 return s => s.CategoryId == _categoryId;
             }
         }
+        public class FilterByPrice : QueryObject<Product>
+        {
+            public decimal _minPrice;
+            public decimal _maxPrice;
+            public FilterByPrice(decimal minPrice, decimal maxPrice)
+            {
+                _minPrice = minPrice;
+                _maxPrice = maxPrice;
+            }
+
+            protected override Expression<Func<Product, bool>> AsExpression()
+            {
+                return p => p.Price >= _minPrice && p.Price <= _maxPrice;
+            }
+        }
     }
 }
