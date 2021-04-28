@@ -113,23 +113,35 @@ namespace eCommerce.Application.Services.Products
 
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req)
         {
-            List<SortItem> listSort = new List<SortItem>();
-            for (int i = 0; i < req.Sort.Count; i++)
-            {
-                listSort.Add(ConvertRequestSort(req.Sort[i]));
-            }
+            
             var products = await _productRepo.SearchPublicAsync(new SearchProductModel
             {
                 Keyword = req.SearchTerm,
                 Pagination = new Pagination { PageIndex = req.PageIndex, ItemsPerPage = req.PageSize },
                 ProductCategoryName = req.CategoryName,
                 OwnerName = req.OwnerName,
-                Sort = listSort,
+                Sort = ListSort(req.Sort),
                 MinPrice =req.MinPrice,
                 MaxPrice=req.MaxPrice,
             });
 
             return _mapper.Map<PaginatedResult<ProductReturnModels.Product>>(products);
+        }
+
+        private List<SortItem> ListSort(string sort)
+        {
+            List<SortItem> listSort = new List<SortItem>();
+            string[] Sort = SplitSort(sort);
+            for (int i = 0; i < Sort.Length; i++)
+            {
+                listSort.Add(ConvertRequestSort(Sort[i]));
+            }
+            return listSort;
+        }
+
+        private string[] SplitSort(string requestSort)
+        {
+            return requestSort.Split(';');
         }
 
         private SortItem ConvertRequestSort(string sort)

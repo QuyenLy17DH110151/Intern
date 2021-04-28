@@ -149,11 +149,11 @@ namespace eCommerce.Persistence.Repositories
             }
 
             // filter by MinPrice & MaxPrice
-            if (req.MaxPrice==0)
+            if (req.MaxPrice == 0)
             {
                 req.MaxPrice = decimal.MaxValue;
             }
-            if (req.MinPrice<0)
+            if (req.MinPrice < 0)
             {
                 req.MinPrice = decimal.Zero;
             }
