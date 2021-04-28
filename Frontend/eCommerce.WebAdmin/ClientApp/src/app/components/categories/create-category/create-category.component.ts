@@ -14,10 +14,12 @@ export class CreateCategoryComponent implements OnInit {
     public generalForm: FormGroup;
     public properties = [];
     public event: any = null;
+    public settings;
     public isStart: boolean = false;
 
     constructor(private toastr: ToastrService, private formBuilder: FormBuilder, private categoryClient: CategoryClient) {
         this.createForm();
+        this.settings = this.sourceSettings;
     }
 
     get formValidators() {
@@ -33,7 +35,7 @@ export class CreateCategoryComponent implements OnInit {
     ngOnInit() {
     }
 
-    public settings = {
+    sourceSettings = {
         delete: {
             confirmDelete: true,
         },
@@ -84,6 +86,10 @@ export class CreateCategoryComponent implements OnInit {
             this.categoryClient.addCategory(createCategoryRequest).subscribe(() => {
                 this.toastr.success('Create category success', 'Notification');
                 this.isStart = false;
+                this.properties = [];
+                this.settings = this.sourceSettings;
+                this.createForm();
+                this.event = null;
             })
         }
     }

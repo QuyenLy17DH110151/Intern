@@ -13,7 +13,6 @@ namespace eCommerce.WebAPI.Controllers
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ProductCategoriesController : ControllerBase
     {
         private readonly IProductCategoryService _productCategoryService;
@@ -24,7 +23,6 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "PermissionAdmin")]
         public async Task<ActionResult<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>> Search([FromQuery]ProductCategoryRequestModels.Search rq)
         {
             var productCategories = await _productCategoryService.SearchProductCategoriesAsync(rq);
@@ -67,5 +65,11 @@ namespace eCommerce.WebAPI.Controllers
             return productCategories;
         }
 
+        [HttpGet("{id}")]   
+        public async Task<ProductCategoryReturnModels.ProductCategoryDetails> GetProductCategoryDetailsById(Guid id)
+        {
+            var rs = await _productCategoryService.GetProductCategoryDetailsById(id);
+            return rs;
+        } 
     }
 }
