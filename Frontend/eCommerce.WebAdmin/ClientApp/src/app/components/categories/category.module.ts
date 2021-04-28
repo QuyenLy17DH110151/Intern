@@ -8,10 +8,11 @@ import { CategoryComponent } from './list-category/category.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CategoryhRoutingModule } from './category-routing.module';
 import { CreateCategoryComponent } from './create-category/create-category.component';
+import { CategoryDetailsComponent } from './details-category/categoryDetails.component';
 
 
 @NgModule({
-  declarations: [CategoryComponent, CreateCategoryComponent],
+  declarations: [CategoryComponent, CreateCategoryComponent, CategoryDetailsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

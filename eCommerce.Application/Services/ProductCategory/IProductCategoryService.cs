@@ -43,6 +43,6 @@ namespace eCommerce.Application.Services.ProductCategory
         /// <returns></returns>
         Task<ProductCategoryReturnModels.ProductCategory> GetProductCategoryByIdAsync(Guid id);
 
-        
+        Task<ProductCategoryReturnModels.ProductCategoryDetails> GetProductCategoryDetailsById(Guid id);
     }
 }

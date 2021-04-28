@@ -52,3 +52,9 @@ export class CreateCategoryRequest {
         this.c5Options = lableOptions[4].options;
     }
 }
+
+export class CategoryDetails {
+    id: string;
+    name: string;
+    lableOptions: LableOptions[];
+}

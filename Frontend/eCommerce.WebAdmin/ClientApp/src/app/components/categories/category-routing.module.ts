@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CreateCategoryComponent } from './create-category/create-category.component';
+import { CategoryDetailsComponent } from './details-category/categoryDetails.component';
 import { CategoryComponent } from './list-category/category.component';
 
 const routes: Routes = [{
@@ -22,13 +23,17 @@ const routes: Routes = [{
                 breadcrumb: 'Create Category',
             },
         },
+        {
+            path: 'details',
+            component: CategoryDetailsComponent,
+            data: {
+                title: 'Category Details',
+                breadcrumb: 'Category Details',
+            },
+        },
     ]
 
-    // {
-    //     path: 'details',
-    //     component: DashboardComponent,
-    //     canActivate: [AuthGuard],
-    // },
+
 
 }];
 

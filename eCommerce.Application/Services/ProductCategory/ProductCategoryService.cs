@@ -84,7 +84,18 @@ namespace eCommerce.Application.Services.ProductCategory
                 throw new EntityNotFound("Category");
 
             return _mapper.Map<ProductCategoryReturnModels.ProductCategory>(productCategory);
-        } 
-        
+        }
+
+        public async Task<ProductCategoryReturnModels.ProductCategoryDetails> GetProductCategoryDetailsById(Guid id)
+        {
+            var productCategory = await _productCategoryRepo.GetByIdAsync(id);
+            if (productCategory == null)
+            {
+                throw new EntityNotFound("Category");
+            }
+            var productCategoryDetails = _mapper.Map<ProductCategoryReturnModels.ProductCategoryDetails>(productCategory);
+            productCategoryDetails.LableOptions.RemoveAll(p => p == null);
+            return productCategoryDetails;
+        }
     }
 }
