@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { PagedList, SearchRequest } from "./models/common.model";
-import { Category } from "./models/category.model";
+import { Category, CreateCategoryRequest } from "./models/category.model";
 import { map } from "rxjs/operators";
 
 @Injectable()
@@ -28,7 +28,7 @@ export class CategoryClient {
             )
     }
 
-    addCategory(category): Observable<Category> {
+    addCategory(category: CreateCategoryRequest): Observable<Category> {
         return this.httpClient.post<Category>(this.apiEndpoint, category)
     }
 

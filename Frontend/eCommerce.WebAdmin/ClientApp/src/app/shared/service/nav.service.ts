@@ -49,7 +49,7 @@ export class NavService {
 		{
 			title: 'Products', icon: 'box', type: 'sub', active: false, children: [
 				{ path: '/products/list-product', title: 'Product List', type: 'link' },
-				{ path: '/products/category', title: 'Category', type: 'link' },
+				// { path: '/products/category', title: 'Category', type: 'link' },
 				{ path: '/products/add-product', title: 'Add Product', type: 'link' },
 				//{ path: '/products/product-detail/123', title: 'Details Product', type: 'link' },
 			]
@@ -65,10 +65,16 @@ export class NavService {
 			]
 		},
 		{
+			title: 'Category', icon: 'box', type: 'sub', active: false, children: [
+				{ path: '/categories/list-category', title: 'Category List', type: 'link' },
+				{ path: '/categories/create-category', title: 'Create Category', type: 'link' }
+			]
+		},
+		{
 			title: 'Coupon', icon: 'box', type: 'sub', active: false, children: [
 				{ path: '/coupons/list-coupon', title: 'Coupon List', type: 'link' },
 			]
-		},
+		}
 	]
 	// Array
 	items = new BehaviorSubject<Menu[]>(this.MENUITEMS);

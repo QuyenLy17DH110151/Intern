@@ -24,6 +24,7 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "PermissionAdmin")]
         public async Task<ActionResult<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>> Search([FromQuery]ProductCategoryRequestModels.Search rq)
         {
             var productCategories = await _productCategoryService.SearchProductCategoriesAsync(rq);
@@ -31,17 +32,15 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody]ProductCategoryRequestModels.Create rq)
+        [Authorize(Policy = "PermissionAdmin")]
+        public async Task<Guid> Create([FromBody]ProductCategoryRequestModels.Create rq)
         {
-            var productCategory = await _productCategoryService.CreateProductCategoryAsync(rq);
-            if (productCategory == null)
-                return BadRequest();
-
-            var category = await _productCategoryService.GetProductCategoryByIdAsync(productCategory);
-            return Ok(new { category = category });
+            var productCategoryId = await _productCategoryService.CreateProductCategoryAsync(rq);
+            return productCategoryId;
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "PermissionAdmin")]
         public async Task<ActionResult> Update([FromBody]ProductCategoryRequestModels.Update rq, Guid id)
         {
             var productCategory = await _productCategoryService.UpdateProductCategoryAsync(rq, id);

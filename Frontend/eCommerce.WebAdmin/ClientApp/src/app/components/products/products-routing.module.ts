@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CategoryComponent } from './physical/category/category.component';
 import { SubCategoryComponent } from './physical/sub-category/sub-category.component';
 import { ProductListComponent } from './physical/product-list/product-list.component';
 import { AddProductComponent } from './physical/add-product/add-product.component';
@@ -20,14 +19,6 @@ const routes: Routes = [
         data: {
           title: 'Product List',
           breadcrumb: 'Product List',
-        },
-      },    
-      {
-        path: 'category',
-        component: CategoryComponent,
-        data: {
-          title: 'Category',
-          breadcrumb: 'Category',
         },
       },
       {
