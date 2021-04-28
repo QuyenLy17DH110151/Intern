@@ -113,14 +113,18 @@ namespace eCommerce.Application.Services.Products
 
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req)
         {
-
+            List<SortItem> sortRequest = new List<SortItem>();
+            if (!String.IsNullOrEmpty(req.Sort))
+            {
+                sortRequest = ListSort(req.Sort);
+            }
             var products = await _productRepo.SearchPublicAsync(new SearchProductModel
             {
                 Keyword = req.SearchTerm,
                 Pagination = new Pagination { PageIndex = req.PageIndex, ItemsPerPage = req.PageSize },
                 ProductCategoryName = req.CategoryName,
                 OwnerName = req.OwnerName,
-                Sort = ListSort(req.Sort),
+                Sort = sortRequest,
                 MinPrice = req.MinPrice,
                 MaxPrice = req.MaxPrice,
             });
