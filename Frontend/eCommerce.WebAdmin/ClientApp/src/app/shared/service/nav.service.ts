@@ -64,6 +64,11 @@ export class NavService {
 				{ path: '/orders/status-order', title: 'Order Status', type: 'link' },
 			]
 		},
+		{
+			title: 'Coupon', icon: 'box', type: 'sub', active: false, children: [
+				{ path: '/coupons/list-coupon', title: 'Coupon List', type: 'link' },
+			]
+		},
 	]
 	// Array
 	items = new BehaviorSubject<Menu[]>(this.MENUITEMS);
