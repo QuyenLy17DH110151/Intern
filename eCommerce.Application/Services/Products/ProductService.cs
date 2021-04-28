@@ -113,7 +113,7 @@ namespace eCommerce.Application.Services.Products
 
         public async Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req)
         {
-            
+
             var products = await _productRepo.SearchPublicAsync(new SearchProductModel
             {
                 Keyword = req.SearchTerm,
@@ -121,8 +121,8 @@ namespace eCommerce.Application.Services.Products
                 ProductCategoryName = req.CategoryName,
                 OwnerName = req.OwnerName,
                 Sort = ListSort(req.Sort),
-                MinPrice =req.MinPrice,
-                MaxPrice=req.MaxPrice,
+                MinPrice = req.MinPrice,
+                MaxPrice = req.MaxPrice,
             });
 
             return _mapper.Map<PaginatedResult<ProductReturnModels.Product>>(products);
