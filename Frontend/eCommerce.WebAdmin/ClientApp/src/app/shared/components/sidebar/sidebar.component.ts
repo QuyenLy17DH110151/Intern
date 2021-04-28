@@ -1,5 +1,5 @@
 import { UserClient } from 'src/app/api-clients/user.client';
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { NavService, Menu } from '../../service/nav.service';
 
@@ -9,31 +9,46 @@ import { NavService, Menu } from '../../service/nav.service';
     styleUrls: ['./sidebar.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
     public menuItems: Menu[];
     public url: any;
     public fileurl: any;
-
-    constructor(private router: Router, public navServices: NavService) {
+    userName: string = localStorage.getItem('userName');
+    role: string = localStorage.getItem('userRole');
+    constructor(private router: Router, public navServices: NavService) {}
+    ngOnInit(): void {
         this.navServices.items.subscribe((menuItems) => {
-            this.menuItems = menuItems;
-            this.router.events.subscribe((event) => {
-                if (event instanceof NavigationEnd) {
-                    menuItems.filter((items) => {
-                        if (items.path === event.url) this.setNavActive(items);
-                        if (!items.children) return false;
-                        items.children.filter((subItems) => {
-                            if (subItems.path === event.url)
-                                this.setNavActive(subItems);
-                            if (!subItems.children) return false;
-                            subItems.children.filter((subSubItems) => {
-                                if (subSubItems.path === event.url)
-                                    this.setNavActive(subSubItems);
-                            });
+            this.checkRole(menuItems);
+        });
+    }
+
+    checkRole(menuItems) {
+        if (this.role === 'Admin') {
+            this.loadMenu(menuItems);
+        } else {
+            menuItems.splice(1, 1);
+            this.loadMenu(menuItems);
+        }
+    }
+
+    loadMenu(menuItems) {
+        this.menuItems = menuItems;
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                menuItems.filter((items) => {
+                    if (items.path === event.url) this.setNavActive(items);
+                    if (!items.children) return false;
+                    items.children.filter((subItems) => {
+                        if (subItems.path === event.url)
+                            this.setNavActive(subItems);
+                        if (!subItems.children) return false;
+                        subItems.children.filter((subSubItems) => {
+                            if (subSubItems.path === event.url)
+                                this.setNavActive(subSubItems);
                         });
                     });
-                }
-            });
+                });
+            }
         });
     }
 
@@ -88,6 +103,4 @@ export class SidebarComponent {
             this.url = reader.result;
         };
     }
-    userName: string = localStorage.getItem('userName');
-    role: string = localStorage.getItem('userRole');
 }
