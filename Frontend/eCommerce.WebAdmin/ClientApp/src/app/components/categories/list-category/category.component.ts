@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Category } from 'src/app/api-clients/models/category.model';
 import { CategoryClient } from 'src/app/api-clients/category.client';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-category',
@@ -13,7 +14,7 @@ export class CategoryComponent implements OnInit {
 
   category: Category;
 
-  constructor(protected categoryClient: CategoryClient) {
+  constructor(protected categoryClient: CategoryClient, private toastr: ToastrService) {
 
 
   }
@@ -25,17 +26,11 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      this.categoryClient.deleteCategory(event.data.id).subscribe(
-        res => {
-          event.confirm.resolve(event.newData);
-          this.getListCategory();
-        }
-      )
-    } else {
-      event.confirm.reject();
-    }
+  onDeleteConfirm(event) {
+    this.categoryClient.deleteCategory(event.data.id).subscribe(() => {
+      this.toastr.success('Change Category Success!', 'Notification');
+      this.getListCategory();
+    })
   }
 
   onEditConfirm(event): void {
@@ -43,44 +38,25 @@ export class CategoryComponent implements OnInit {
       "name": event.newData.name,
     };
 
-    if (window.confirm('Are you sure you want to edit?')) {
-      this.categoryClient.updateCategory(event.data.id, data).subscribe(
-        res => {
-          event.confirm.resolve(event.newData);
-          this.getListCategory();
-        }
-      );
-    }
+    this.categoryClient.updateCategory(event.data.id, data).subscribe(() => {
+      this.toastr.success('Change Category Success!', 'Notification');
+      this.getListCategory();
+    })
   }
 
-  onCreateConfirm(event): void {
-    // var data = {
-    //   "name": event.newData.name,
-    // };
 
-    // if (window.confirm('Are you sure you want to create?')) {
-    //   this.categoryClient.addCategory(data).subscribe(
-    //     res => {
-    //       event.confirm.resolve(event.newData);
-    //       this.getListCategory();
-    //     }
-    //   )
-    // };
-
-  }
 
   public settings = {
     delete: {
       confirmDelete: true,
     },
-    add: {
-      confirmCreate: true,
-    },
+
     edit: {
       confirmSave: true,
     },
     actions: {
-      position: 'right'
+      add: false,
+      position: 'left'
     },
     columns: {
       name: {

@@ -8,15 +8,21 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CouponsRoutingModule } from './coupons-routing.module';
 import { ListCouponComponent } from './list-coupon/list-coupon.component';
 import { CreateCouponComponent } from './create-coupon/create-coupon.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [ListCouponComponent, CreateCouponComponent],
   imports: [
+    FormsModule,
     CommonModule,
     CouponsRoutingModule,
     NgbModule,
     ReactiveFormsModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    Ng2SmartTableModule,
+
   ]
 })
 export class CouponsModule { }

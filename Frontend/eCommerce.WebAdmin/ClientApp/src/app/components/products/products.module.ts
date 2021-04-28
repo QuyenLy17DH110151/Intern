@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProductsRoutingModule } from './products-routing.module';
-import { CategoryComponent } from './physical/category/category.component';
+
 import { SubCategoryComponent } from './physical/sub-category/sub-category.component';
 import { ProductListComponent } from './physical/product-list/product-list.component';
 import { AddProductComponent } from './physical/add-product/add-product.component';
@@ -38,7 +38,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 
 @NgModule({
     declarations: [
-        CategoryComponent,
+
         SubCategoryComponent,
         ProductListComponent,
         DigitalCategoryComponent,
@@ -72,4 +72,4 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
         ProductClient,
     ],
 })
-export class ProductsModule {}
+export class ProductsModule { }

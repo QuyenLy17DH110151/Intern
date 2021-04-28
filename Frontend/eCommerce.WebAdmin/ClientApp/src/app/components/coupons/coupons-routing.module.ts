@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'list-coupons',
+        path: 'list-coupon',
         component: ListCouponComponent,
         data: {
           title: "List Coupons",
