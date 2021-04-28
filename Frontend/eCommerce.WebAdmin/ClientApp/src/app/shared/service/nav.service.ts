@@ -64,6 +64,12 @@ export class NavService {
 				{ path: '/orders/status-order', title: 'Order Status', type: 'link' },
 			]
 		},
+		{
+			title: 'Category', icon: 'box', type: 'sub', active: false, children: [
+				{ path: '/categories/list-category', title: 'Category List', type: 'link' },
+				{ path: '/categories/create-category', title: 'Create Category', type: 'link' }
+			]
+		},
 	]
 	// Array
 	items = new BehaviorSubject<Menu[]>(this.MENUITEMS);
