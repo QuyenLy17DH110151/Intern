@@ -1,5 +1,6 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { PagedList } from 'src/app/api-clients/models/common.model';
 import { Order } from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
@@ -21,7 +22,8 @@ export class ListOrderComponent implements OnInit {
     constructor(
         private readonly orderClient: OrderClient,
         private datePipe: DatePipe,
-        private currencyPipe: CurrencyPipe
+        private currencyPipe: CurrencyPipe,
+        private toastr: ToastrService
     ) { }
 
     public settings = {
@@ -152,17 +154,21 @@ export class ListOrderComponent implements OnInit {
         }
     }
 
-    async AcceptOrder(id: string) {
-        await this.orderClient
+    AcceptOrder(id: string) {
+        this.orderClient
             .acceptOrder(id)
-            .toPromise()
-        this.loadData()
+            .subscribe(() => {
+                this.toastr.success('Change Order Success!', 'Notification');
+                this.loadData();
+            })
 
     }
-    async RejectOrder(id: string) {
-        await this.orderClient
+    RejectOrder(id: string) {
+        this.orderClient
             .rejectOrder(id)
-            .toPromise()
-        this.loadData()
+            .subscribe(() => {
+                this.toastr.success('Change Order Success!', 'Notification');
+                this.loadData();
+            })
     }
 }

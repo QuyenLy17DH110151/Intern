@@ -1,5 +1,6 @@
 import { CurrencyPipe, DatePipe, PercentPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { CouponClient } from 'src/app/api-clients/coupon.client';
 import { PagedList } from 'src/app/api-clients/models/common.model';
 import { Coupon } from 'src/app/api-clients/models/coupon.model';
@@ -24,6 +25,7 @@ export class ListCouponComponent implements OnInit {
     private datePipe: DatePipe,
     private currencyPipe: CurrencyPipe,
     private percentPipe: PercentPipe,
+    private toastr: ToastrService
   ) { }
 
   public settings = {
@@ -33,15 +35,16 @@ export class ListCouponComponent implements OnInit {
     edit: {
       confirmSave: true,
     },
-    actions: {
-      custom: [
-        {
-          name: 'Button',
-          title: 'Button ',
-        },
-      ],
+    add: {
+      confirmCreate: true,
     },
+
     columns: {
+      id: {
+        title: 'Code',
+        editable: false,
+        addable: false,
+      },
       name: {
         title: 'Name',
       },
@@ -79,12 +82,6 @@ export class ListCouponComponent implements OnInit {
       },
       value: {
         title: 'Value',
-        valuePrepareFunction: (value) => {
-          return this.percentPipe.transform(
-            value,
-            '1.2-2'
-          );
-        },
       },
     },
   };
@@ -102,6 +99,36 @@ export class ListCouponComponent implements OnInit {
       (coupon) => new CouponViewModel(coupon)
     );
 
+  }
+
+  onCreateConfirm(event) {
+    this.couponClient.addCoupon(event.newData).subscribe(() => {
+      this.toastr.success('Change Coupon Success!', 'Notification');
+      this.loadData();
+    })
+  }
+
+  onDeleteConfirm(event) {
+    this.couponClient.deleteCoupon(event.data.id).subscribe(() => {
+      this.toastr.success('Change Coupon Success!', 'Notification');
+      this.loadData();
+    })
+  }
+
+  onEditConfirm(event) {
+    var data = {
+      "name": event.newData.name,
+      "description": event.newData.description,
+      "startDate": event.newData.startDate,
+      "endDate": event.newData.endDate,
+      "minPrice": event.newData.minPrice,
+      "value": event.newData.value,
+    };
+
+    this.couponClient.updateCoupon(event.data.id, data).subscribe(() => {
+      this.toastr.success('Change Coupon Success!', 'Notification');
+      this.loadData();
+    })
   }
 
 
