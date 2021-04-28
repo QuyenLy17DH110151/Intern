@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { userListDB } from 'src/app/shared/tables/list-users';
 import { DatePipe } from '@angular/common';
 import { UserRole } from 'src/app/api-clients/models/user.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-list-user',
@@ -15,7 +16,7 @@ export class ListUserComponent implements OnInit {
     public user_list = [];
     rq: SearchRequest = {};
     keyWordSearch: string = '';
-    constructor(private userClient: UserClient, private datePipe: DatePipe) {
+    constructor(private userClient: UserClient, private datePipe: DatePipe, private toastr: ToastrService) {
         // this.user_list = userListDB.list_user;
     }
 
@@ -134,19 +135,24 @@ export class ListUserComponent implements OnInit {
         console.log('ShowAll');
     }
     async Search(keyWordSearch) {
+        this.rq.searchTerm = keyWordSearch;
         this.loadData();
         this.keyWordSearch = '';
     }
-    async LockoutUser(id: string) {
-        await this.userClient
+    LockoutUser(id: string) {
+        this.userClient
             .lockoutUser(id)
-            .toPromise()
-            .then(() => this.loadData());
+            .subscribe(() => {
+                this.toastr.success('Change User Success!', 'Notification');
+                this.loadData();
+            })
     }
-    async UnlockoutUser(id: string) {
-        await this.userClient
+    UnlockoutUser(id: string) {
+        this.userClient
             .unlockoutUser(id)
-            .toPromise()
-            .then(() => this.loadData());
+            .subscribe(() => {
+                this.toastr.success('Change User Success!', 'Notification');
+                this.loadData();
+            })
     }
 }

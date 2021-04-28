@@ -75,6 +75,7 @@ namespace eCommerce.Application.Services.Coupons
 
             //Update attribute
             coupon.Name = request.Name;
+            coupon.Description = request.Description;
             coupon.StartDate = request.StartDate;
             coupon.EndDate = request.EndDate;
             coupon.Value = request.Value;
