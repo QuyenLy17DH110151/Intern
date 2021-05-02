@@ -75,8 +75,8 @@ export class ProductService {
   */
 
   //Get Products By CategoryId
-  public  getProductsByCategoryId(catId: string) {
-    const url = `${environment.apiUrl}/frontstore/api/category/${catId}/products`
+  public getProductsByCategoryId(catId: string) {
+    const url = `${environment.apiUrl}/frontstore/api/category/${catId}/products`;
     return this.http.get(url);
   }
 
@@ -338,11 +338,7 @@ export class ProductService {
     ------------- Product Pagination  -----------
     ---------------------------------------------
   */
-  public getPager(
-    totalItems: number,
-    currentPage: number = 1,
-    pageSize: number = 16
-  ) {
+  public getPager(totalItems: number, currentPage: number, pageSize: number) {
     // calculate total pages
     let totalPages = Math.ceil(totalItems / pageSize);
 
@@ -350,9 +346,11 @@ export class ProductService {
     let paginateRange = 3;
 
     // ensure current page isn't out of range
-    if (currentPage < 1) {
+    currentPage += currentPage;
+    if (currentPage <= 1) {
       currentPage = 1;
-    } else if (currentPage > totalPages) {
+    }
+    if (currentPage > totalPages) {
       currentPage = totalPages;
     }
 
