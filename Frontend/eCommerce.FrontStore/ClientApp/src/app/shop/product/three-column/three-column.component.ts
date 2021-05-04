@@ -8,6 +8,7 @@ import { Product } from "../../../shared/classes/product";
 import { Product as ProductAPI } from "src/app/api-clients/models/product.model";
 import { ProductService } from "../../../shared/services/product.service";
 import { SizeModalComponent } from "../../../shared/components/modal/size-modal/size-modal.component";
+import { flatten } from "@angular/compiler";
 
 @Component({
   selector: "app-three-column",
@@ -20,6 +21,7 @@ export class ThreeColumnComponent implements OnInit {
   public activeSlide: any = 0;
   public selectedSize: any;
   public productAPI: ProductAPI;
+  public ratingNumber: boolean[] = [true, true, true, true, true];
   productId: string;
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
@@ -39,7 +41,7 @@ export class ThreeColumnComponent implements OnInit {
     // console.log(this._router.snapshot.params.slug);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   // Get Product Color
   Color(variants) {
@@ -99,7 +101,17 @@ export class ThreeColumnComponent implements OnInit {
   getProduct(productId: string) {
     this.productService.getProductDetail(productId).subscribe((response) => {
       this.productAPI = response;
-      console.log(this.productAPI); 
+      console.log(this.productAPI);
     });
+  }
+
+  rating(number: number) {
+    let i = 0;
+    for (; i < number; i++) {
+      this.ratingNumber[i] = true;
+    }
+    for (; i < 5; i++) {
+      this.ratingNumber[i] = false;
+    }
   }
 }
