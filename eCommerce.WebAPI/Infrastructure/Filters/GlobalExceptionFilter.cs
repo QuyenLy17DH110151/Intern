@@ -31,8 +31,7 @@ namespace eCommerce.WebAPI.Infrastructure.Filters
             _logger.LogError(new EventId(context.Exception.HResult),
                 context.Exception,
                 context.Exception.Message);
-
-            if (context.Exception.GetType().IsAssignableTo<BusinessException>() || context.Exception.GetType() == typeof(ValidationException))
+            if (context.Exception.GetType().IsAssignableTo<BusinessException>() || context.Exception.GetType() == typeof(ValidationException) || context.Exception.GetType().IsAssignableTo<DbConcurrencyException>())
             {
                 var json = new JsonErrorResponse
                 {

@@ -80,7 +80,19 @@ export class CreateCategoryComponent implements OnInit {
 
     onSave() {
         this.isStart = true;
+
+        if (this.event == null) {
+            this.toastr.error('List Lable not empty', 'Error')
+            return;
+        }
+
+        if (this.event.source.data.length == 0) {
+            this.toastr.error('List Lable not empty', 'Error')
+            return;
+        }
+
         let properties: LableOptions[] = this.event.source.data;
+
         if (!this.generalForm.invalid) {
             let createCategoryRequest = new CreateCategoryRequest(this.generalForm.value.name, properties);
             this.categoryClient.addCategory(createCategoryRequest).subscribe(() => {
