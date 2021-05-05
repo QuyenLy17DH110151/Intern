@@ -57,11 +57,18 @@ namespace eCommerce.WebAPI.Controllers
                 }
             }
 
+            string urlImage = "";
+            if (user.UrlImage!=null)
+            {
+                urlImage = user.UrlImage;
+            }
+
             var claims = new[]
             {
                 new Claim("id", user.Id.ToString()),
                 new Claim("username", user.Username.ToString()),
-                new Claim("role",user.Role.ToString())
+                new Claim("role",user.Role.ToString()),
+                new Claim("avatar",urlImage)
             };
             var jwtResult = _jwtAuthManager.GenerateTokens(rq.Username, claims);
             return jwtResult;

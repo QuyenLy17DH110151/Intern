@@ -1,6 +1,10 @@
 import { UserService } from 'src/app/shared/service/user.service';
 import { Router } from '@angular/router';
-import { LoginRequest } from './../../../api-clients/models/common.model';
+import {
+    LoginRequest,
+    JwtAuthResult,
+    TokenInfo,
+} from './../../../api-clients/models/common.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserClient } from 'src/app/api-clients/_index';
@@ -20,6 +24,8 @@ export class LoginComponent implements OnInit {
     public forgotPasswordForm: FormGroup;
     submitted = false;
     public isStartForgotPassword = false;
+    tokenInfo: TokenInfo;
+
     constructor(
         private formBuilder: FormBuilder,
         private userClient: UserClient,
@@ -88,14 +94,14 @@ export class LoginComponent implements OnInit {
             .toPromise()
             .then(
                 (res) => {
-                    localStorage.setItem('access_token', res.accessToken);
-                    let tokenInfo = this.userService.getDecodedAccessToken(
+                    this.tokenInfo = this.userService.getDecodedAccessToken(
                         res.accessToken
                     );
-                    console.log('token info user Name', tokenInfo);
-                    localStorage.setItem('userName', tokenInfo.username);
-                    localStorage.setItem('userId', tokenInfo.id);
-                    localStorage.setItem('userRole', tokenInfo.role);
+                    this.localStorageSetToken(res, this.tokenInfo);
+                    // console.log('token info user Name', tokenInfo);
+                    // localStorage.setItem('userName', tokenInfo.username);
+                    // localStorage.setItem('userId', tokenInfo.id);
+                    // localStorage.setItem('userRole', tokenInfo.role);
                     this.route.navigate(['dashboard/default']);
                 },
                 (err) => {
@@ -115,13 +121,22 @@ export class LoginComponent implements OnInit {
             );
             this.createForgotPasswordForm();
             this.isStartForgotPassword = false;
-            this.userClient.forgotPassword(rq).subscribe(
-                (res) => {
-                    alert('Request change password Success');
-                    this.createForgotPasswordForm();
-
-                }
-            );
+            this.userClient.forgotPassword(rq).subscribe((res) => {
+                alert('Request change password Success');
+                this.createForgotPasswordForm();
+            });
         }
+    }
+
+    localStorageSetToken(responseToken: JwtAuthResult, tokenInfo: TokenInfo) {
+        //accessToken
+        localStorage.setItem('access_token', responseToken.accessToken);
+        //refreshToken
+        localStorage.setItem(
+            'refresh_token',
+            JSON.stringify(responseToken.refreshToken)
+        );
+        //tokenInfo
+        localStorage.setItem('token_info', JSON.stringify(tokenInfo));
     }
 }

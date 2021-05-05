@@ -2,6 +2,7 @@ import { UserClient } from 'src/app/api-clients/user.client';
 import { Component, Input, ViewEncapsulation, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { NavService, Menu } from '../../service/nav.service';
+import { TokenInfo } from 'src/app/api-clients/models/common.model';
 
 @Component({
     selector: 'app-sidebar',
@@ -13,17 +14,20 @@ export class SidebarComponent implements OnInit {
     public menuItems: Menu[];
     public url: any;
     public fileurl: any;
-    userName: string = localStorage.getItem('userName');
-    role: string = localStorage.getItem('userRole');
+    user: TokenInfo;
+    public defaultUrlAvata = 'assets/images/dashboard/designer.jpg';
+    // userName: string = localStorage.getItem('userName');
+    // role: string = localStorage.getItem('userRole');
     constructor(private router: Router, public navServices: NavService) {}
     ngOnInit(): void {
+        this.loadUser();
         this.navServices.items.subscribe((menuItems) => {
             this.checkRole(menuItems);
         });
     }
 
     checkRole(menuItems) {
-        if (this.role === 'Admin') {
+        if (this.user.role === 'Admin') {
             this.loadMenu(menuItems);
         } else {
             menuItems.splice(1, 1);
@@ -102,5 +106,11 @@ export class SidebarComponent implements OnInit {
         reader.onload = (_event) => {
             this.url = reader.result;
         };
+    }
+
+    //loadUser
+    loadUser() {
+        console.log('user', JSON.parse(localStorage.getItem('token_info')));
+        this.user = JSON.parse(localStorage.getItem('token_info'));
     }
 }

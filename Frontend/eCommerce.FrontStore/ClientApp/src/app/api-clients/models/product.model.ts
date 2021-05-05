@@ -34,4 +34,5 @@ export class SearchRequestProduct {
   categoryName?: string;
   minPrice?: string;
   maxPrice?: string;
+  pageIndex?: string;
 }

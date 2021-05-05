@@ -26,9 +26,12 @@ import { TokenInterceptor } from './interceptor/token.interceptor';
 import { ExceptionInterceptor } from './interceptor/exception.interceptor'
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { CategoryModule } from './components/categories/category.module';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { SmartTableDatepickerComponent, SmartTableDatepickerRenderComponent } from './components/smart-table-datepicker/smart-table-datepicker.component'
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, SmartTableDatepickerComponent,
+        SmartTableDatepickerRenderComponent],
     imports: [
         BrowserAnimationsModule,
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -52,7 +55,8 @@ import { CategoryModule } from './components/categories/category.module';
         CategoryModule,
         ToastContainerModule,
         ToastrModule.forRoot(),
-
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule,
 
     ],
     providers: [
@@ -67,6 +71,10 @@ import { CategoryModule } from './components/categories/category.module';
             useClass: ExceptionInterceptor,
             multi: true,
         },
+    ],
+    entryComponents: [
+        SmartTableDatepickerComponent,
+        SmartTableDatepickerRenderComponent
     ],
     bootstrap: [AppComponent],
 })

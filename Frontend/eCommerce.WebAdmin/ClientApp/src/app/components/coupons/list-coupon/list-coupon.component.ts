@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CouponClient } from 'src/app/api-clients/coupon.client';
 import { PagedList } from 'src/app/api-clients/models/common.model';
 import { Coupon } from 'src/app/api-clients/models/coupon.model';
+import { SmartTableDatepickerComponent, SmartTableDatepickerRenderComponent } from '../../smart-table-datepicker/smart-table-datepicker.component';
 import { CouponViewModel } from '../coupon.viewModel';
 
 
@@ -53,21 +54,25 @@ export class ListCouponComponent implements OnInit {
       },
       startDate: {
         title: 'Start Date',
-        valuePrepareFunction: (startDate) => {
-          return this.datePipe.transform(
-            new Date(startDate),
-            'dd MMM yyyy'
-          );
-        },
+        type: 'custom',
+        renderComponent: SmartTableDatepickerRenderComponent,
+        width: '300px',
+        sortDirection: 'desc',
+        editor: {
+          type: 'custom',
+          component: SmartTableDatepickerComponent,
+        }
       },
       endDate: {
         title: 'End Date',
-        valuePrepareFunction: (endDate) => {
-          return this.datePipe.transform(
-            new Date(endDate),
-            'dd MMM yyyy'
-          );
-        },
+        type: 'custom',
+        renderComponent: SmartTableDatepickerRenderComponent,
+        width: '300px',
+        sortDirection: 'desc',
+        editor: {
+          type: 'custom',
+          component: SmartTableDatepickerComponent,
+        }
       },
       minPrice: {
         title: 'Min Price',

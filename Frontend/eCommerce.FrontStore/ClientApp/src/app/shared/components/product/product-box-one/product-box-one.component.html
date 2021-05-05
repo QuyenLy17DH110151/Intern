@@ -6,39 +6,75 @@
     </div>
     <div class="front">
       <a [routerLink]="['/shop/product/three/column', product.id]">
-        <img [defaultImage]="
+        <img
+          [defaultImage]="
             ImageSrc ? ImageSrc : 'assets/images/product/placeholder.jpg'
-          " [lazyLoad]="ImageSrc ? ImageSrc : product?.photos[0]?.url" class="img-fluid lazy-loading"
-          alt="{{ product?.photos[0]?.id }}" />
+          "
+          [lazyLoad]="ImageSrc ? ImageSrc : product?.photos[0]?.url"
+          class="img-fluid lazy-loading"
+          alt="{{ product?.photos[0]?.id }}"
+        />
       </a>
     </div>
     <div class="back" *ngIf="onHowerChangeImage">
       <a [routerLink]="['/shop/product/left/sidebar/', product?.id]">
-        <img [src]="ImageSrc ? ImageSrc : product?.photos[1]?.url" class="img-fluid lazy-loading"
-          alt="{{ product?.photos[1]?.id }}" />
+        <img
+          [src]="ImageSrc ? ImageSrc : product?.photos[1]?.url"
+          class="img-fluid lazy-loading"
+          alt="{{ product?.photos[1]?.id }}"
+        />
       </a>
     </div>
     <ul class="product-thumb-list" *ngIf="thumbnail">
-      <li class="grid_thumb_img" [class.active]="ImageSrc == image.url" *ngFor="let image of product?.photos">
-        <a href="javascript:void(0)" (mouseover)="ChangeVariantsImage(image.src)">
+      <li
+        class="grid_thumb_img"
+        [class.active]="ImageSrc == image.url"
+        *ngFor="let image of product?.photos"
+      >
+        <a
+          href="javascript:void(0)"
+          (mouseover)="ChangeVariantsImage(image.src)"
+        >
           <img [lazyLoad]="image?.url" />
         </a>
       </li>
     </ul>
     <div class="cart-info cart-wrap">
-      <a href="javascript:void(0)" title="Add to cart" (click)="CartModal.openModal(product)" *ngIf="cartModal">
+      <a
+        href="javascript:void(0)"
+        title="Add to cart"
+        (click)="CartModal.openModal(product)"
+        *ngIf="cartModal"
+      >
         <i class="ti-shopping-cart"></i>
       </a>
-      <a href="javascript:void(0)" title="Add to cart" (click)="addToCart(product)" *ngIf="!cartModal">
+      <a
+        href="javascript:void(0)"
+        title="Add to cart"
+        (click)="addToCart(product)"
+        *ngIf="!cartModal"
+      >
         <i class="ti-shopping-cart"></i>
       </a>
-      <a href="javascript:void(0)" title="Add to Wishlist" (click)="addToWishlist(product)">
+      <a
+        href="javascript:void(0)"
+        title="Add to Wishlist"
+        (click)="addToWishlist(product)"
+      >
         <i class="ti-heart" aria-hidden="true"></i>
       </a>
-      <a href="javascript:void(0)" title="Quick View" (click)="QuickView.openModal()">
+      <a
+        href="javascript:void(0)"
+        title="Quick View"
+        (click)="QuickView.openModal()"
+      >
         <i class="ti-search" aria-hidden="true"></i>
       </a>
-      <a href="javascript:void(0)" title="Compare" (click)="addToCompare(product)">
+      <a
+        href="javascript:void(0)"
+        title="Compare"
+        (click)="addToCompare(product)"
+      >
         <i class="ti-reload" aria-hidden="true"></i>
       </a>
     </div>
@@ -52,9 +88,9 @@
       <p>{{ product?.description }}</p>
       <h4>
         {{
-        product?.price * currency?.price
-        | discount: product
-        | currency: currency?.currency:"symbol"
+          product?.price * currency?.price
+            | discount: product
+            | currency: currency?.currency:"symbol"
         }}
         <!-- <del *ngIf="product?.discount"
           ><span class="money">
@@ -77,5 +113,14 @@
   </div>
 </div>
 <app-skeleton-product-box *ngIf="loader"></app-skeleton-product-box>
-<app-quick-view #quickView [product]="product" [currency]="currency"></app-quick-view>
-<app-cart-modal #cartModal [product]="product" [currency]="currency" *ngIf="cartModal"></app-cart-modal>
+<app-quick-view
+  #quickView
+  [product]="product"
+  [currency]="currency"
+></app-quick-view>
+<app-cart-modal
+  #cartModal
+  [product]="product"
+  [currency]="currency"
+  *ngIf="cartModal"
+></app-cart-modal>
