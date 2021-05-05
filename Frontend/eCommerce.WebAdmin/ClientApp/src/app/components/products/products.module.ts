@@ -30,6 +30,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from 'src/environments/environment';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     maxFilesize: 50,
@@ -38,7 +39,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 
 @NgModule({
     declarations: [
-
         SubCategoryComponent,
         ProductListComponent,
         DigitalCategoryComponent,
@@ -62,6 +62,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
         AngularFireModule.initializeApp(environment.firebase),
         AngularFireDatabaseModule,
         AngularFireStorageModule,
+        IvyCarouselModule,
     ],
     providers: [
         {
@@ -72,4 +73,4 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
         ProductClient,
     ],
 })
-export class ProductsModule { }
+export class ProductsModule {}
