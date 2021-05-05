@@ -87,7 +87,7 @@ namespace eCommerce.WebAPI.Controllers
         {
             try
             {
-                var username = User.Identity?.Name;
+                //var username = User.Identity?.Name;
 
                 if (string.IsNullOrWhiteSpace(request.RefreshToken))
                 {
@@ -96,11 +96,11 @@ namespace eCommerce.WebAPI.Controllers
 
                 var accessToken = await HttpContext.GetTokenAsync("Bearer", "access_token");
                 var jwtResult = _jwtAuthManager.Refresh(request.RefreshToken, accessToken);
-                return Ok(new LoginResult
+                return Ok(new JwtAuthResult
                 {
-                    Username = username,
+                    //Username = username,
                     AccessToken = jwtResult.AccessToken,
-                    RefreshToken = jwtResult.RefreshToken.Value
+                    RefreshToken = jwtResult.RefreshToken
                 });
             }
             catch (SecurityTokenException e)

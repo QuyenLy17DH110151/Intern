@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/shared/service/user.service';
 import {
     HttpEvent,
     HttpHandler,
@@ -10,20 +11,36 @@ import { Observable, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ExceptionInterceptor implements HttpInterceptor {
-    constructor(private router: Router) {
-
-    }
+    constructor(
+        private router: Router,
+        private toastr: ToastrService,
+        private userService: UserService
+    ) {}
     intercept(
         request: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
+                console.log(error);
+
+                //authen
+                if (
+                    error instanceof HttpErrorResponse &&
+                    error.status === 401
+                ) {
+                    console.log('access_token is expires');
+
+                    this.toastr.error('access_token is expires');
+                    this.Logout();
+                }
+
                 let message = '';
 
                 //err reset password
@@ -41,7 +58,12 @@ export class ExceptionInterceptor implements HttpInterceptor {
                 }
 
                 console.log(error.error);
-                Swal.fire('Error', error.error.message || error.error.errorMessage, 'error');
+                Swal.fire(
+                    'Error',
+                    error.error.message || error.error.errorMessage,
+                    'error'
+                );
+
                 // Swal.fire({
                 //     icon: 'error',
                 //     title: 'Error...',
@@ -50,5 +72,9 @@ export class ExceptionInterceptor implements HttpInterceptor {
                 return throwError(message);
             })
         );
+    }
+    Logout() {
+        this.userService.clearLocalStorage();
+        this.router.navigate(['./auth/login']);
     }
 }

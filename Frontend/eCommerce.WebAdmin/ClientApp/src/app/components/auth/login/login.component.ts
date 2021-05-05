@@ -97,11 +97,12 @@ export class LoginComponent implements OnInit {
                     this.tokenInfo = this.userService.getDecodedAccessToken(
                         res.accessToken
                     );
-                    this.localStorageSetToken(res, this.tokenInfo);
-                    // console.log('token info user Name', tokenInfo);
-                    // localStorage.setItem('userName', tokenInfo.username);
-                    // localStorage.setItem('userId', tokenInfo.id);
-                    // localStorage.setItem('userRole', tokenInfo.role);
+                    this.userService.setLocalStorage(res, this.tokenInfo);
+                    localStorage.setItem(
+                        'login-event',
+                        'login' + Math.random()
+                    );
+                    this.userService.startTokenTimer();
                     this.route.navigate(['dashboard/default']);
                 },
                 (err) => {
@@ -126,17 +127,5 @@ export class LoginComponent implements OnInit {
                 this.createForgotPasswordForm();
             });
         }
-    }
-
-    localStorageSetToken(responseToken: JwtAuthResult, tokenInfo: TokenInfo) {
-        //accessToken
-        localStorage.setItem('access_token', responseToken.accessToken);
-        //refreshToken
-        localStorage.setItem(
-            'refresh_token',
-            JSON.stringify(responseToken.refreshToken)
-        );
-        //tokenInfo
-        localStorage.setItem('token_info', JSON.stringify(tokenInfo));
     }
 }
