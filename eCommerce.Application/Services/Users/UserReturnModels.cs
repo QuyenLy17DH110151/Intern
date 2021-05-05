@@ -22,6 +22,7 @@ namespace eCommerce.Application.Services.Users
             public string CreatedBy { get; set; }
             public DateTime? LastUpdated { get; set; }
             public string LastUpdatedBy { get; set; }
+            public string UrlImage { get; set; }
         }
         public class MappingProfile : Profile
         {
