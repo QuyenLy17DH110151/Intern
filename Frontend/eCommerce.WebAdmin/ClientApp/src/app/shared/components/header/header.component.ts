@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/shared/service/user.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TokenInfo } from 'src/app/api-clients/models/common.model';
 import { NavService } from '../../service/nav.service';
@@ -17,7 +18,10 @@ export class HeaderComponent implements OnInit {
 
     @Output() rightSidebarEvent = new EventEmitter<boolean>();
 
-    constructor(public navServices: NavService) {}
+    constructor(
+        public navServices: NavService,
+        private userService: UserService
+    ) {}
 
     collapseSidebar() {
         this.open = !this.open;
@@ -37,8 +41,8 @@ export class HeaderComponent implements OnInit {
     }
 
     Logout() {
-        localStorage.removeItem('token');
-        localStorage.clear();
+        this.userService.clearLocalStorage();
+        this.userService.stopTokenTimer();
     }
 
     loadUser() {
