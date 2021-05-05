@@ -30,7 +30,7 @@ export class PriceComponent implements OnInit {
 
   options: Options = {
     floor: 0,
-    ceil: 99900000,
+    ceil: 990000,
   };
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
