@@ -3,11 +3,11 @@
     <div class="row">
         <div class="col-xl-4">
             <div class="card" [hidden]="displayEditImg">
-                <div class="card-body">
+                <div class="card-body" *ngIf="user">
                     <div class="profile-details text-center">
                         <img
                             [src]="user.urlImage || defaultUrlAvata"
-                            alt=""
+                            alt="avatar"
                             class="img-fluid img-90 rounded-circle blur-up lazyloaded"
                             (click)="clickImg()"
                         />
@@ -25,7 +25,7 @@
                                 Change Image
                             </button>
                         </div>
-                        <span>{{ user.username }}</span>
+                        <span>{{ user?.username }}</span>
                         <div class="social">
                             <div class="form-group btn-showcase">
                                 <button
@@ -62,7 +62,7 @@
                     <img
                         [src]="fileUpload?.url || defaultUrl"
                         width="100%"
-                        alt=""
+                        alt="avatar"
                         class="img-fluid image_zoom_1"
                     />
                 </div>
@@ -132,26 +132,28 @@
                                                     <tr>
                                                         <td>UserName:</td>
                                                         <td>
-                                                            {{ user.username }}
+                                                            {{ user?.username }}
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>First Name:</td>
                                                         <td>
-                                                            {{ user.firstName }}
+                                                            {{
+                                                                user?.firstName
+                                                            }}
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Last Name:</td>
                                                         <td>
-                                                            {{ user.lastName }}
+                                                            {{ user?.lastName }}
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Phone number:</td>
                                                         <td>
                                                             {{
-                                                                user.phoneNumber
+                                                                user?.phoneNumber
                                                             }}
                                                         </td>
                                                     </tr>

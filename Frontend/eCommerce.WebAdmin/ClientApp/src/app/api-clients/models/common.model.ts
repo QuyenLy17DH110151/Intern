@@ -60,3 +60,8 @@ export class TokenInfo {
     iss: string;
     aud: string;
 }
+
+export class RefreshTokenRequest {
+    // accessToken: string;
+    refreshToken: string;
+}

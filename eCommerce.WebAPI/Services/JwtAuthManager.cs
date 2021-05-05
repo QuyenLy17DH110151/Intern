@@ -83,7 +83,7 @@ namespace eCommerce.WebAPI.Services
                 throw new SecurityTokenException("Invalid token");
             }
 
-            var username = principal.Identity?.Name;
+            var username = jwtToken.Claims.Where(x => x.Type == "username").FirstOrDefault().Value;
             if (!_usersRefreshTokens.TryGetValue(refreshToken, out var existingRefreshToken))
             {
                 throw new SecurityTokenException("Invalid token");
