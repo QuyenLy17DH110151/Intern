@@ -13,6 +13,7 @@ namespace eCommerce.Domain.Entities
         public DateTime EndDate { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal Value { get; set; }
+        public string Code { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
