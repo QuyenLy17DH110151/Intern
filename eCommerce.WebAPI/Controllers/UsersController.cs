@@ -30,11 +30,13 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "PermissionAdmin")]
         public async Task<ActionResult<PaginatedResult<UserReturnModels.User>>> Search([FromQuery] UserRequestModels.Search rq)
         {
             var users = await _userService.SearchUsersAsync(rq);
             return users;
         }
+
         [HttpPost]
         [Authorize(Policy = "PermissionAdmin")]
         public async Task<ActionResult<Guid>> CreateUser([FromBody] UserRequestModels.Create rq)

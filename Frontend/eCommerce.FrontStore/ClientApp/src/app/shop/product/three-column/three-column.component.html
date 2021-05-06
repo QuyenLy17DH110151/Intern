@@ -233,29 +233,40 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter Your name" required />
-                      </div>
-                      <div class="col-md-6">
-                        <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" placeholder="Email" required />
-                      </div>
-                      <div class="col-md-12">
-                        <label for="review">Review Title</label>
-                        <input type="text" class="form-control" id="review" placeholder="Enter your Review Subjects"
-                          required />
-                      </div>
-                      <div class="col-md-12">
-                        <label for="review">Review Title</label>
-                        <textarea class="form-control" placeholder="Wrire Your Testimonial Here"
-                          id="exampleFormControlTextarea1" rows="6"></textarea>
-                      </div>
-                      <div class="col-md-12">
-                        <button class="btn btn-solid" type="submit">
-                          Submit YOur Review
-                        </button>
-                      </div>
+                      <form [formGroup]="formReview" (submit)="submitReview()" class="col-md-12 form-row">
+                        <div class="col-md-6">
+                          <label for="name">Full Name</label>
+                          <input type="text" class="form-control" id="name" placeholder="Enter Your name" required />
+                          <label class="message-erro" *ngIf="displayErro && formReviewValidators.fullName.errors">Full
+                            Name not null</label>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="email">Email</label>
+                          <input type="text" class="form-control" id="email" placeholder="Email" required />
+                          <label class="message-erro" *ngIf="displayErro && formReviewValidators.email.errors">Email not
+                            type email</label>
+                        </div>
+                        <div class="col-md-12">
+                          <label for="review">Review Title</label>
+                          <input type="text" class="form-control" id="review" placeholder="Enter your Review Subjects"
+                            required />
+                          <label class="message-erro"
+                            *ngIf="displayErro && formReviewValidators.reviewTitle.errors">Review Title not null</label>
+                        </div>
+                        <div class="col-md-12">
+                          <label for="review">Review Content</label>
+                          <textarea class="form-control" placeholder="Wrire Your Testimonial Here"
+                            id="exampleFormControlTextarea1" rows="6"></textarea>
+                          <label class="message-erro"
+                            *ngIf="displayErro && formReviewValidators.reviewContent.errors">Review Content not
+                            null</label>
+                        </div>
+                        <div class="col-md-12">
+                          <button class="btn btn-solid" type="submit">
+                            Submit Your Review
+                          </button>
+                        </div>
+                      </form>
                     </div>
                   </form>
                 </ng-template>

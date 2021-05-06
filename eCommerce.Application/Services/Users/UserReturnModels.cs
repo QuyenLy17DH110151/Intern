@@ -24,6 +24,7 @@ namespace eCommerce.Application.Services.Users
             public string LastUpdatedBy { get; set; }
             public string UrlImage { get; set; }
         }
+
         public class MappingProfile : Profile
         {
             public MappingProfile()
@@ -41,6 +42,7 @@ namespace eCommerce.Application.Services.Users
             public string UrlImage { get; set; }
 
         }
+
         public class MappingUserInformation : Profile
         {
             public MappingUserInformation()

@@ -9,6 +9,9 @@ import { Product as ProductAPI } from "src/app/api-clients/models/product.model"
 import { ProductService } from "../../../shared/services/product.service";
 import { SizeModalComponent } from "../../../shared/components/modal/size-modal/size-modal.component";
 import { flatten } from "@angular/compiler";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ProductRatingClient } from "src/app/api-clients/productRating.client";
+import { CreateProductRatingRequest } from "src/app/api-clients/models/productRating";
 
 @Component({
   selector: "app-three-column",
@@ -23,22 +26,57 @@ export class ThreeColumnComponent implements OnInit {
   public productAPI: ProductAPI;
   public ratingNumber: boolean[] = [true, true, true, true, true];
   productId: string;
+
+  public formReview: FormGroup;
+  public displayErro: boolean = false;
+  2
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
   public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
   public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
 
   constructor(
+    private productRatingClient: ProductRatingClient,
+    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     public productService: ProductService,
     private _router: ActivatedRoute
   ) {
     this._router.params.subscribe((response) => {
-      console.log("response", response);
+      // console.log("response", response);
       this.getProduct(response.slug);
     });
     // console.log(this._router.snapshot.params.slug);
+    this.createFromReview();
+  }
+
+  createFromReview() {
+    this.formReview = this.formBuilder.group({
+      fullName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      reviewTitle: ['', [Validators.required]],
+      reviewContent: ['', [Validators.required]]
+    })
+  }
+
+  get formReviewValidators() {
+    return this.formReview.controls;
+  }
+
+  submitReview() {
+    this.displayErro = true;
+
+    if (!this.formReview.invalid) {
+
+      let createProductRatingRequest: CreateProductRatingRequest =
+        new CreateProductRatingRequest(this.formReview.value.fullName, this.formReview.value.email, this.product.id,
+          this.formReview.value.reviewTitle, this.formReview.value.reviewContent);
+
+      this.productRatingClient.addProductRating(createProductRatingRequest);
+
+      this.displayErro = false;
+    }
   }
 
   ngOnInit(): void { }
