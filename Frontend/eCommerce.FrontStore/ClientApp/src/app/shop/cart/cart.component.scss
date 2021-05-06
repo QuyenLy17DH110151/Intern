@@ -1,0 +1,55 @@
+.item-image {
+    max-width: 100px;
+}
+
+.item-name {
+    font-size: 18px;
+}
+
+.cart-order {
+}
+
+.cart-order__block {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-order__title {
+    font-weight: bold;
+    color: #333;
+}
+
+.cart-order__value {
+    font-size: 1rem;
+}
+
+.cart-order__text {
+    font-size: 1rem;
+}
+
+.cart-order__price {
+}
+
+.cart-order__delivery {
+}
+
+.cart-order__coupon {
+}
+
+.cart-order__total-price {
+}
+
+.cart-order__coupon-input {
+    padding: 4px 8px;
+    font-size: 1rem;
+    outline: none;
+    border: 1px solid #ddd;
+    flex: 1;
+    margin-right: 6px;
+}
+
+.cart-order__coupon-input:focus {
+    border: 1px solid #1a9cb7;
+}

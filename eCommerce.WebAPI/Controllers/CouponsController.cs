@@ -72,5 +72,19 @@ namespace eCommerce.WebAPI.Controllers
             return coupon;
         }
 
+        [HttpGet("/frontstore/api/coupons/{couponId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<CouponReturnModels.Coupon>> FrontStoreGetCouponDetail(Guid couponId)
+        {
+            var coupon = await _couponService.GetCouponByIdAsync(couponId);
+
+            if (coupon == null)
+            {
+                return NotFound();
+            }
+
+            return coupon;
+        }
+
     }
 }
