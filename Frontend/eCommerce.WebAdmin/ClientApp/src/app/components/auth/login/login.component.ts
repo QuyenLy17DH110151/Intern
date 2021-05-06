@@ -106,7 +106,9 @@ export class LoginComponent implements OnInit {
                     this.route.navigate(['dashboard/default']);
                 },
                 (err) => {
-                    Swal.fire('Error', err.error.message, 'error');
+                    console.log(err);
+
+                    // Swal.fire('Error', err.error.message, 'error');
                     // alert(err.error.message);
                 }
             );

@@ -5,7 +5,6 @@ export class Product {
   category: ProductCategory;
   owner: User;
   photos: Photos[];
-  items?: any;
   description: string;
   lastUpdated: Date;
 }

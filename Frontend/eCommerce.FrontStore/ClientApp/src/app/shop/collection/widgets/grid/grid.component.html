@@ -2,21 +2,21 @@
   <div class="row">
     <div class="col-12">
       <div class="product-filter-content">
-        <div class="search-count">
+        <div class="search-count" *ngIf="products">
           <h5>
             Showing Products 1-{{ products.items.length }} of
             {{ paginate.totalItems }} Result
           </h5>
         </div>
         <div class="collection-view">
-          <ul>
+          <!-- <ul>
             <li (click)="setLayoutView('grid-view')">
               <i class="fa fa-th grid-layout-view"></i>
             </li>
             <li (click)="setLayoutView('list-view')">
               <i class="fa fa-list-ul list-layout-view"></i>
             </li>
-          </ul>
+          </ul> -->
         </div>
         <div class="collection-grid-view" *ngIf="layoutView == 'grid-view'">
           <ul>
