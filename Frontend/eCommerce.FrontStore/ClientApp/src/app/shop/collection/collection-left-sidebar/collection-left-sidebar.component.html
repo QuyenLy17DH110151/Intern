@@ -135,7 +135,7 @@
                   >
                   </app-grid>
                   <div class="product-wrapper-grid" [ngClass]="layoutView">
-                    <div class="row">
+                    <div class="row" *ngIf="products">
                       <div
                         class="col-grid-box"
                         [ngClass]="grid"
@@ -177,6 +177,7 @@
                     </div>
                   </div>
                   <app-pagination
+                    *ngIf="products"
                     [products]="products.items"
                     [paginate]="paginate"
                     (setPage)="setPage($event)"

@@ -180,6 +180,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
         this.products.items.length
       );
       console.log("rq", this.rq);
+      console.log("check error", this.products.items);
     });
   }
 

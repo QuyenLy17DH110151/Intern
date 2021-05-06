@@ -107,9 +107,9 @@ namespace eCommerce.Persistence.Repositories
             return products;
         }
 
-        public Task<Product> GetProductByIdAsync(Guid id)
+        public async Task<Product> GetProductByIdAsync(Guid id)
         {
-            return _genericRepo.GetByIdAsync(id, x => x.Include(m => m.Photos).Include(m => m.Inventory).Include(m => m.Category));
+            return await _genericRepo.GetByIdAsync(id, x => x.Include(m => m.Photos).Include(m => m.Category)); ;
         }
 
         public ProductPhoto UploadPhoto(ProductPhoto photo)

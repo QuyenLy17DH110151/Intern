@@ -24,7 +24,11 @@ export class ThreeColumnComponent implements OnInit {
   public activeSlide: any = 0;
   public selectedSize: any;
   public productAPI: ProductAPI;
+<<<<<<< HEAD
   public ratingNumber: boolean[] = [true, true, true, true, true];
+=======
+  date: Date;
+>>>>>>> 3ce9d2c606b64d4ad8d17b5e75c446a0b7572b4d
   productId: string;
 
   public formReview: FormGroup;
@@ -36,9 +40,12 @@ export class ThreeColumnComponent implements OnInit {
   public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
 
   constructor(
+<<<<<<< HEAD
     private productRatingClient: ProductRatingClient,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
+=======
+>>>>>>> 3ce9d2c606b64d4ad8d17b5e75c446a0b7572b4d
     private router: Router,
     public productService: ProductService,
     private _router: ActivatedRoute
@@ -101,55 +108,59 @@ export class ThreeColumnComponent implements OnInit {
     //   }
     // }
     return uniqSize;
-  }
-
-  selectSize(size) {
-    this.selectedSize = size;
-  }
-
-  // Increament
-  increment() {
-    this.counter++;
-  }
-
-  // Decrement
-  decrement() {
-    if (this.counter > 1) this.counter--;
-  }
-
-  // Add to cart
-  async addToCart(product: any) {
-    product.quantity = this.counter || 1;
-    const status = await this.productService.addToCart(product);
-    if (status) this.router.navigate(["/shop/cart"]);
-  }
-
-  // Buy Now
-  async buyNow(product: any) {
-    product.quantity = this.counter || 1;
-    const status = await this.productService.addToCart(product);
-    if (status) this.router.navigate(["/shop/checkout"]);
-  }
-
-  // Add to Wishlist
-  addToWishlist(product: any) {
-    this.productService.addToWishlist(product);
-  }
-
-  getProduct(productId: string) {
-    this.productService.getProductDetail(productId).subscribe((response) => {
-      this.productAPI = response;
-      console.log(this.productAPI);
-    });
-  }
-
-  rating(number: number) {
-    let i = 0;
-    for (; i < number; i++) {
-      this.ratingNumber[i] = true;
+    ngOnInit(): void {
+      this.date = this.addDays(1);
     }
-    for (; i < 5; i++) {
-      this.ratingNumber[i] = false;
+
+    addDays(days: number): Date {
+      var futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + days);
+      return futureDate;
+    }
+
+    // Increament
+    increment() {
+      this.counter++;
+    }
+
+    // Decrement
+    decrement() {
+      if (this.counter > 1) this.counter--;
+    }
+
+    // Add to cart
+    async addToCart(product: any) {
+      product.quantity = this.counter || 1;
+      const status = await this.productService.addToCart(product);
+      if (status) this.router.navigate(["/shop/cart"]);
+    }
+
+    // Buy Now
+    async buyNow(product: any) {
+      product.quantity = this.counter || 1;
+      const status = await this.productService.addToCart(product);
+      if (status) this.router.navigate(["/shop/checkout"]);
+    }
+
+    // Add to Wishlist
+    addToWishlist(product: any) {
+      this.productService.addToWishlist(product);
+    }
+
+    getProduct(productId: string) {
+      this.productService.getProductDetail(productId).subscribe((response) => {
+        this.productAPI = response;
+        console.log(this.productAPI);
+      });
+    }
+
+    rating(number: number) {
+      let i = 0;
+      for (; i < number; i++) {
+        this.ratingNumber[i] = true;
+      }
+      for (; i < 5; i++) {
+        this.ratingNumber[i] = false;
+      }
     }
   }
-}
