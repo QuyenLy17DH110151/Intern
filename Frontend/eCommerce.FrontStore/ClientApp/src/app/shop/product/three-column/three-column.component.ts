@@ -20,6 +20,7 @@ export class ThreeColumnComponent implements OnInit {
   public activeSlide: any = 0;
   public selectedSize: any;
   public productAPI: ProductAPI;
+  date: Date;
   productId: string;
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
@@ -27,7 +28,6 @@ export class ThreeColumnComponent implements OnInit {
   public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     public productService: ProductService,
     private _router: ActivatedRoute
@@ -39,32 +39,14 @@ export class ThreeColumnComponent implements OnInit {
     // console.log(this._router.snapshot.params.slug);
   }
 
-  ngOnInit(): void {}
-
-  // Get Product Color
-  Color(variants) {
-    const uniqColor = [];
-    // for (let i = 0; i < Object.keys(variants).length; i++) {
-    //   if (uniqColor.indexOf(variants[i].color) === -1 && variants[i].color) {
-    //     uniqColor.push(variants[i].color);
-    //   }
-    // }
-    return uniqColor;
+  ngOnInit(): void {
+    this.date = this.addDays(1);
   }
 
-  // Get Product Size
-  Size(variants) {
-    const uniqSize = [];
-    // for (let i = 0; i < Object.keys(variants).length; i++) {
-    //   if (uniqSize.indexOf(variants[i].size) === -1 && variants[i].size) {
-    //     uniqSize.push(variants[i].size);
-    //   }
-    // }
-    return uniqSize;
-  }
-
-  selectSize(size) {
-    this.selectedSize = size;
+  addDays(days: number): Date {
+    var futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + days);
+    return futureDate;
   }
 
   // Increament
@@ -99,7 +81,7 @@ export class ThreeColumnComponent implements OnInit {
   getProduct(productId: string) {
     this.productService.getProductDetail(productId).subscribe((response) => {
       this.productAPI = response;
-      console.log(this.productAPI); 
+      console.log(this.productAPI);
     });
   }
 }
