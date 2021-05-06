@@ -23,6 +23,9 @@ export class CartService {
         });
         return <Observable<Product[]>>itemsStream;
     }
+    // public get cartItems() {
+    //     return of(state.cart);
+    // }
 
     // Add to Cart
     public addToCart(product: Product): any {
@@ -54,7 +57,7 @@ export class CartService {
                 const qty = state.cart[index].quantity + quantity;
                 const stock = this.calculateStockCounts(state.cart[index], quantity);
                 if (qty !== 0 && stock) {
-                    state.cart[index].quantity = qty;
+                    state.cart[index].quantity = qty;  //=>******
                 }
                 localStorage.setItem('cartItems', JSON.stringify(state.cart));
                 return true;
@@ -96,18 +99,18 @@ export class CartService {
         );
     }
 
-    public cartTotalAmountFinally(deliveryPrice, discountPercent): Observable<number> {
-        return this.cartItems.pipe(
-            map((product: Product[]) => {
-                return product.reduce((prev, curr: Product) => {
-                    let price = curr.price;
+    // public cartTotalAmountFinally(deliveryPrice, discountPercent): Observable<number> {
+    //     return this.cartItems.pipe(
+    //         map((product: Product[]) => {
+    //             return product.reduce((prev, curr: Product) => {
+    //                 let price = curr.price;
 
-                    if (discountPercent) {
-                        price = curr.price - (curr.price * discountPercent) / 100;
-                    }
-                    return prev + price * curr.quantity + deliveryPrice;
-                }, 0);
-            })
-        );
-    }
+    //                 if (discountPercent) {
+    //                     price = curr.price - (curr.price * discountPercent) / 100;
+    //                 }
+    //                 return prev + price * curr.inventory.quantity + deliveryPrice;
+    //             }, 0);
+    //         })
+    //     );
+    // }
 }

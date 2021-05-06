@@ -14,51 +14,64 @@ import { Product } from '../../api-clients/models/product.model';
 export class CartComponent implements OnInit {
     public products: Product[] = [];
     discountPercent: number = 0;
-    couponId: string = '';
+    code: string = '';
     orderValue: number;
-    Inputedcoupon: Coupon = null;
     errorMessage: string;
-    deliveryPrice = 20000;
+    deliveryPrice = 20;
+    finalAmount: number;
 
     constructor(
         private cartService: CartService,
         public productService: ProductService,
         private couponClient: CouponClient
-    ) {
-        this.cartService.cartItems.subscribe((response) => (this.products = response));
-    }
+    ) {}
 
     ngOnInit() {
+        this.cartService.cartItems.subscribe((response) => {
+            console.log(response);
+            this.products = response;
+        });
         console.log('cart: ', this.products);
+
+        this.calculateTotalAmountAfterApplyCoupon();
     }
 
     public get getTotal(): Observable<number> {
         return this.cartService.cartTotalAmount();
     }
 
-    public get getTotalAfterApplyCoupon(): Observable<number> {
-        const discountPercent = this.Inputedcoupon ? this.Inputedcoupon.value : 0;
-        return this.cartService.cartTotalAmountFinally(this.deliveryPrice, discountPercent);
+    async calculateTotalAmountAfterApplyCoupon() {
+        const rawValue = await this.getTotal.toPromise();
+        this.finalAmount = rawValue - this.deliveryPrice - (rawValue * this.discountPercent) / 100;
     }
 
     // Increament
     increment(product, qty = 1) {
         this.cartService.updateCartQuantity(product, qty);
+        this.calculateTotalAmountAfterApplyCoupon();
     }
 
     // Decrement
     decrement(product, qty = -1) {
         this.cartService.updateCartQuantity(product, qty);
+        this.calculateTotalAmountAfterApplyCoupon();
     }
 
     public removeItem(product: any) {
         this.cartService.removeCartItem(product);
+        this.calculateTotalAmountAfterApplyCoupon();
     }
 
     handleCoupon() {
-        this.couponClient.getCouponById(this.couponId).subscribe(
-            (response) => (this.Inputedcoupon = response),
-            (error) => (this.errorMessage = error)
+        this.couponClient.getCouponValue(this.code).subscribe(
+            (response) => {
+                this.errorMessage = "";
+                this.discountPercent = response;
+                this.calculateTotalAmountAfterApplyCoupon();
+            },
+            (error) => {
+                this.errorMessage = error.error.errorMessage;
+            }
         );
     }
 }

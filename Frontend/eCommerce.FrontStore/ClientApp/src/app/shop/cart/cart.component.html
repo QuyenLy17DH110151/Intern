@@ -137,15 +137,16 @@
                         <span class="cart-order__price">20.000đ</span>
                     </div>
                     <div class="cart-order__coupon cart-order__block">
-                        <input type="text" class="cart-order__coupon-input" id="" [(ngModel)]='couponId'>
-                        <button (click)="handleCoupon()" type="button" class="btn btn-info text-right">Áp Dụng</button>
+                        <input type="text" class="cart-order__coupon-input" id="" [(ngModel)]='code'>
+                        <button (click)="handleCoupon()" type="button" class="btn btn-info text-right btn-coupon">Áp
+                            Dụng</button>
                     </div>
-                    <div class="cart-order__message-error">
+                    <div class="cart-order__message-error" >
                         {{errorMessage}}
                     </div>
                     <div class="cart-order__total-price cart-order__block">
                         <span>Tổng cộng</span>
-                        <span class="cart-order__price">{{ getTotalAfterApplyCoupon | async |
+                        <span class="cart-order__price">{{ finalAmount |
                             currency:productService?.Currency.currency:'symbol'}}</span>
                     </div>
                     <div class="mt-3">

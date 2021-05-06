@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Application.Services.Coupons
 {
-    class CouponService: ICouponService
+    class CouponService : ICouponService
     {
         private readonly ICouponRepository _couponRepo;
         private readonly IMapper _mapper;
@@ -29,12 +29,13 @@ namespace eCommerce.Application.Services.Coupons
         {
             var coupon = new Coupon()
             {
-                Name=request.Name,
+                Name = request.Name,
                 Description = request.Description,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
                 MinPrice = request.MinPrice,
-                Value = request.Value
+                Value = request.Value,
+                Code = request.Code
             };
 
             _couponRepo.Add(coupon);
@@ -53,12 +54,13 @@ namespace eCommerce.Application.Services.Coupons
         {
             var coupon = await _couponRepo.SearchAsync(new SearchCouponModel
             {
-                Keyword=req.SearchTerm,
-                Pagination=new Pagination { PageIndex=req.PageIndex, ItemsPerPage=req.PageSize},
-                StartDate=req.StartDate,
-                EndDate=req.EndDate,
-                Value=req.Value,
-                MinPrice=req.MinPrice,
+                Keyword = req.SearchTerm,
+                Pagination = new Pagination { PageIndex = req.PageIndex, ItemsPerPage = req.PageSize },
+                StartDate = req.StartDate,
+                EndDate = req.EndDate,
+                Value = req.Value,
+                MinPrice = req.MinPrice,
+                Code = req.Code,
             });
 
             return _mapper.Map<PaginatedResult<CouponReturnModels.Coupon>>(coupon);
@@ -68,7 +70,7 @@ namespace eCommerce.Application.Services.Coupons
         {
             var coupon = await _couponRepo.GetCouponById(couponId);
 
-            if(coupon == null)
+            if (coupon == null)
             {
                 throw new EntityNotFound("Coupon");
             }
@@ -98,5 +100,28 @@ namespace eCommerce.Application.Services.Coupons
             _couponRepo.Detete(coupon);
             await _couponRepo.UnitOfWork.SaveChangesAsync();
         }
-    } 
+
+        public async Task<CouponReturnModels.Coupon> GetCouponByCodeAsync(string code)
+        {
+            var coupon = await _couponRepo.GetCouponByCode(code);
+
+            if (coupon == null)
+            {
+                throw new EntityNotFound("Coupon");
+            }
+
+            return _mapper.Map<CouponReturnModels.Coupon>(coupon);
+        }
+
+        public decimal isValidCoupon(CouponReturnModels.Coupon coupon)
+        {
+            DateTime now = DateTime.Now;
+            if (DateTime.Compare(coupon.StartDate, now) < 0 && DateTime.Compare(now, coupon.EndDate) < 0)
+            {
+                return coupon.Value;
+            }
+
+            throw new BusinessException("Coupon is invalid");
+        }
+    }
 }

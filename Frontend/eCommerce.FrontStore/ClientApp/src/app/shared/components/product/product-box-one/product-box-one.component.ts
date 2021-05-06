@@ -71,6 +71,7 @@ export class ProductBoxOneComponent implements OnInit {
     }
 
     addToCompare(product: any) {
+        debugger;
         this.productService.addToCompare(product);
     }
 }

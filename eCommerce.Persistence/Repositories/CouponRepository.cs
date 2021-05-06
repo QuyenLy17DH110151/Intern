@@ -4,6 +4,7 @@ using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,6 +85,12 @@ namespace eCommerce.Persistence.Repositories
                 queryObject.And(new CouponQueryObjects.FilterByMinPrice(minPrice));
             }
 
+            //fillter by code
+            if(req.Code != null)
+            {
+                queryObject.And(new CouponQueryObjects.FilterByCode(req.Code));
+            }
+
             // orderby
             if (!req.Sort.Any())
             {
@@ -95,6 +102,11 @@ namespace eCommerce.Persistence.Repositories
             // execute
             var result = await _genericRepo.SearchAsync(queryObject, req.Pagination);
             return result;
+        }
+
+        public async Task<Coupon> GetCouponByCode(string code)
+        {
+            return await _dbContext.Set<Coupon>().SingleOrDefaultAsync(x => x.Code == code);
         }
     }
 }

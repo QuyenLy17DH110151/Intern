@@ -14,7 +14,11 @@ export class CouponClient {
 
     getCouponById(couponId): Observable<Coupon> {
         const url = `${environment.apiUrl}/frontstore/api/coupons/${couponId}`;
-
         return this.http.get<Coupon>(url);
+    }
+
+    getCouponValue(code: string): Observable<number> {
+        const url = `${environment.apiUrl}/frontstore/api/coupons/verify/${code}`;
+        return this.http.get<number>(url);
     }
 }

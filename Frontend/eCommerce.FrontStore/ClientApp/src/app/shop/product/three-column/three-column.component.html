@@ -179,14 +179,14 @@
             <div class="product-description border-product">
               <h5
                 class="avalibility"
-                *ngIf="counter <= productAPI?.inventory?.quantity"
+                *ngIf="counter <= productAPI?.quantity"
               >
-                <h5>{{ productAPI.inventory.quantity }} piece available</h5>
+                <h5>{{ productAPI.quantity }} piece available</h5>
                 <span>In Stock</span>
               </h5>
               <h5
                 class="avalibility"
-                *ngIf="counter > productAPI?.inventory?.quantity"
+                *ngIf="counter > productAPI?.quantity"
               >
                 <span>Out of Stock</span>
               </h5>
