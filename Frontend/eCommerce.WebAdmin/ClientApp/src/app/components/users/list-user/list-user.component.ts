@@ -16,7 +16,11 @@ export class ListUserComponent implements OnInit {
     public user_list = [];
     rq: SearchRequest = {};
     keyWordSearch: string = '';
-    constructor(private userClient: UserClient, private datePipe: DatePipe, private toastr: ToastrService) {
+    constructor(
+        private userClient: UserClient,
+        private datePipe: DatePipe,
+        private toastr: ToastrService
+    ) {
         // this.user_list = userListDB.list_user;
     }
 
@@ -95,16 +99,20 @@ export class ListUserComponent implements OnInit {
         console.log('Users', users);
         this.user_list = users.items;
     }
+
     onDeleteConfirm(event) {
+        this.disableEditAdmin(event);
         if (window.confirm('Are you sure you want to delete?')) {
             event.confirm.resolve();
         } else {
             event.confirm.reject();
         }
     }
+
     onSaveConfirm(event) {
+        this.disableEditAdmin(event);
         if (window.confirm('Are you sure you want to save?')) {
-            console.log(event);
+            console.log('save', event);
             event.confirm.resolve(event.newData);
             console.log(event.newData.id);
             console.log(event.newData.lockoutEnd);
@@ -118,11 +126,13 @@ export class ListUserComponent implements OnInit {
             event.confirm.reject();
         }
     }
+
     isLockout() {
         this.rq.isLockout = '1';
         this.loadData();
         console.log('lock');
     }
+
     isUnLockout() {
         this.rq.isLockout = '2';
         this.loadData();
@@ -134,25 +144,32 @@ export class ListUserComponent implements OnInit {
         this.loadData();
         console.log('ShowAll');
     }
+
     async Search(keyWordSearch) {
         this.rq.searchTerm = keyWordSearch;
         this.loadData();
         this.keyWordSearch = '';
     }
+
     LockoutUser(id: string) {
-        this.userClient
-            .lockoutUser(id)
-            .subscribe(() => {
-                this.toastr.success('Change User Success!', 'Notification');
-                this.loadData();
-            })
+        this.userClient.lockoutUser(id).subscribe(() => {
+            this.toastr.success('Change User Success!', 'Notification');
+            this.loadData();
+        });
     }
+
     UnlockoutUser(id: string) {
-        this.userClient
-            .unlockoutUser(id)
-            .subscribe(() => {
-                this.toastr.success('Change User Success!', 'Notification');
-                this.loadData();
-            })
+        this.userClient.unlockoutUser(id).subscribe(() => {
+            this.toastr.success('Change User Success!', 'Notification');
+            this.loadData();
+        });
+    }
+
+    disableEditAdmin(event) {
+        if (event.data.role === UserRole.Admin) {
+            this.loadData();
+            this.toastr.warning('Admin is not edited');
+            throw new Error('Admin is not edited');
+        }
     }
 }

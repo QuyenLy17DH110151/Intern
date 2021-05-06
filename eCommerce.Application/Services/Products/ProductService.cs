@@ -52,7 +52,6 @@ namespace eCommerce.Application.Services.Products
                 CategoryId = request.CategoryId,
                 OwnerId = request.OwnerId,
                 Description = request.Description,
-
                 Photos = request.Photos.Select(x => new ProductPhoto { Url = x }).ToList()
             };
             _productRepo.Add(product);
@@ -87,6 +86,8 @@ namespace eCommerce.Application.Services.Products
         {
             var product = await _productRepo.GetProductByIdAsync(Id);
             if (product == null) throw new EntityNotFound("Product");
+            int quantity = await _productRepo.GetQuantityByProductIdAsync(Id);
+            product.Inventory = new Inventory { Quantity = quantity };
             return _mapper.Map<ProductReturnModels.Product>(product);
         }
 
@@ -156,6 +157,7 @@ namespace eCommerce.Application.Services.Products
             item.IsDescending = bool.Parse(sortItem[1]);
             return item;
         }
+
 
         // return all photo of product
         //public async Task<ProductReturnModels.Photo> GetPhotosByProductIdAsync(Guid productId)

@@ -7,9 +7,7 @@ export class PagedList<T> {
     items: T[];
 }
 
-export class SearchRequestInventory extends Inventory {
-
-}
+export class SearchRequestInventory extends Inventory {}
 
 export class SearchRequest {
     searchTerm?: string;
@@ -51,4 +49,19 @@ export class RefreshToken {
     userName: string;
     value: string;
     expireAt: Date;
+}
+
+export class TokenInfo {
+    id: string;
+    username: string;
+    role: string;
+    avatar: string;
+    exp: number;
+    iss: string;
+    aud: string;
+}
+
+export class RefreshTokenRequest {
+    // accessToken: string;
+    refreshToken: string;
 }

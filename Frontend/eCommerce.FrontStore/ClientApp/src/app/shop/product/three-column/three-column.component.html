@@ -124,7 +124,7 @@
               </div>
             </div>
             <div class="border-product rtl-right-text">
-              <app-countdown [date]="'Apr 21 2021'"></app-countdown>
+              <app-countdown [date]="date"></app-countdown>
             </div>
           </div>
         </div>
@@ -145,36 +145,16 @@
               }}
             </h3> -->
             <h3>{{ productAPI?.price | currency }}</h3>
-            <ul class="color-variant" *ngIf="Color(product?.variants).length">
-              <li [class]="color" [class.active]="activeSlide == i.toString()"
-                *ngFor="let color of Color(product?.variants); index as i" [ngStyle]="{ 'background-color': color }"
-                (click)="owlCar.to((activeSlide = i.toString()))"></li>
-            </ul>
+            <!-- <h3>{{ productAPI.inventory.quantity }} piece available</h3> -->
+
             <div class="product-description border-product">
-              <h6 class="product-title size-text" *ngIf="Size(product.variants).length">
-                select size
-                <span>
-                  <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size chart</a>
-                </span>
-              </h6>
-              <!-- <div class="size-box" *ngIf="Size(product.variants).length">
-                <ul>
-                  <li
-                    [class.active]="selectedSize == size"
-                    *ngFor="let size of Size(product.variants)"
-                  >
-                    <a href="javascript:void(0)" (click)="selectSize(size)">{{
-                      size | titlecase
-                    }}</a>
-                  </li>
-                </ul>
-              </div> -->
-              <!-- <h5 class="avalibility" *ngIf="counter <= product.stock">
+              <h5 class="avalibility" *ngIf="counter <= productAPI?.inventory?.quantity">
+                <h5>{{ productAPI.inventory.quantity }} piece available</h5>
                 <span>In Stock</span>
               </h5>
-              <h5 class="avalibility" *ngIf="counter > product.stock">
+              <h5 class="avalibility" *ngIf="counter > productAPI?.inventory?.quantity">
                 <span>Out of Stock</span>
-              </h5> -->
+              </h5>
               <h6 class="product-title">quantity</h6>
               <div class="qty-box">
                 <div class="input-group">

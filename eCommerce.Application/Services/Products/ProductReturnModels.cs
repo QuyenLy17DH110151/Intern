@@ -17,9 +17,9 @@ namespace eCommerce.Application.Services.Products
             public User Owner { get; set; }
             public DateTime LastUpdated { get; set; }
             public string LastUpdatedBy { get; set; }
-
             public List<Photo> Photos { get; set; }
             public string Description { get; set; }
+            public Inventory Inventory { get; set; }
         }
 
         public class Category

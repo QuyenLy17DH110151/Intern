@@ -44,8 +44,8 @@
             </div>
             <!-- silde-bar colleps block end here -->
             <!-- side-bar single product slider start -->
-            <!-- <app-product-box-vertical-slider [title]="'New Products'">
-                        </app-product-box-vertical-slider> -->
+            <app-product-box-vertical-slider [title]="'New Products'">
+            </app-product-box-vertical-slider>
             <!-- side-bar single product slider end -->
             <!-- side-bar banner start here -->
             <div class="collection-sidebar-banner">
@@ -65,7 +65,7 @@
           <div class="page-main-content">
             <div class="row">
               <div class="col-sm-12">
-                <!-- <div class="top-banner-wrapper">
+                <div class="top-banner-wrapper">
                   <a [routerLink]="['/shop/collection/left/sidebar']">
                     <img
                       src="assets/images/collection-banner.jpg"
@@ -74,7 +74,7 @@
                     />
                   </a>
                   <div class="top-banner-content small-section">
-                    <h4>fashion</h4>
+                    <h4>Store</h4>
                     <h5>
                       Lorem Ipsum is simply dummy text of the printing and
                       typesetting industry.
@@ -93,7 +93,7 @@
                       Ipsum.
                     </p>
                   </div>
-                </div> -->
+                </div>
                 <div class="row">
                   <div class="col-xl-12">
                     <div
@@ -124,22 +124,22 @@
                   </li>
                 </ul>
                 <div class="collection-product-wrapper" id="products">
-                  <!-- <app-grid
-                    [products]="products"
+                  <app-grid
                     [paginate]="paginate"
+                    [products]="products"
                     [layoutView]="layoutView"
                     [sortBy]="sortBy"
                     (setGrid)="updateGridLayout($event)"
                     (setLayout)="updateLayoutView($event)"
                     (sortedBy)="sortByFilter($event)"
                   >
-                  </app-grid> -->
+                  </app-grid>
                   <div class="product-wrapper-grid" [ngClass]="layoutView">
-                    <div class="row">
+                    <div class="row" *ngIf="products">
                       <div
                         class="col-grid-box"
                         [ngClass]="grid"
-                        *ngFor="let product of products"
+                        *ngFor="let product of products.items"
                       >
                         <div class="product-box">
                           <app-product-box-one
@@ -154,7 +154,7 @@
                       </div>
                       <div
                         class="col-sm-12 text-center section-b-space mt-5 no-found"
-                        *ngIf="!products?.length"
+                        *ngIf="!products.items?.length"
                       >
                         <img
                           src="assets/images/empty-search.jpg"
@@ -176,12 +176,13 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <app-pagination
-                    [products]="products"
+                  <app-pagination
+                    *ngIf="products"
+                    [products]="products.items"
                     [paginate]="paginate"
                     (setPage)="setPage($event)"
                   >
-                  </app-pagination> -->
+                  </app-pagination>
                 </div>
               </div>
             </div>

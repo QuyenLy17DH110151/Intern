@@ -5,9 +5,9 @@ export class Product {
   category: ProductCategory;
   owner: User;
   photos: Photos[];
-  items?: any;
   description: string;
   lastUpdated: Date;
+  inventory: Inventory;
 }
 
 class Photos {
@@ -44,4 +44,9 @@ export class SearchRequestProduct {
   categoryName?: string;
   minPrice?: string;
   maxPrice?: string;
+  pageIndex?: string;
+}
+
+export class Inventory {
+  quantity: number;
 }

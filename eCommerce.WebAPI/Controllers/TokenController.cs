@@ -57,11 +57,18 @@ namespace eCommerce.WebAPI.Controllers
                 }
             }
 
+            string urlImage = "";
+            if (user.UrlImage!=null)
+            {
+                urlImage = user.UrlImage;
+            }
+
             var claims = new[]
             {
                 new Claim("id", user.Id.ToString()),
                 new Claim("username", user.Username.ToString()),
-                new Claim("role",user.Role.ToString())
+                new Claim("role",user.Role.ToString()),
+                new Claim("avatar",urlImage)
             };
             var jwtResult = _jwtAuthManager.GenerateTokens(rq.Username, claims);
             return jwtResult;
@@ -80,7 +87,7 @@ namespace eCommerce.WebAPI.Controllers
         {
             try
             {
-                var username = User.Identity?.Name;
+                //var username = User.Identity?.Name;
 
                 if (string.IsNullOrWhiteSpace(request.RefreshToken))
                 {
@@ -89,11 +96,11 @@ namespace eCommerce.WebAPI.Controllers
 
                 var accessToken = await HttpContext.GetTokenAsync("Bearer", "access_token");
                 var jwtResult = _jwtAuthManager.Refresh(request.RefreshToken, accessToken);
-                return Ok(new LoginResult
+                return Ok(new JwtAuthResult
                 {
-                    Username = username,
+                    //Username = username,
                     AccessToken = jwtResult.AccessToken,
-                    RefreshToken = jwtResult.RefreshToken.Value
+                    RefreshToken = jwtResult.RefreshToken
                 });
             }
             catch (SecurityTokenException e)
