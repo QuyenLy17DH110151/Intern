@@ -1,13 +1,13 @@
 export class Product {
-    id: string;
-    name: string;
-    price: number;
-    category: ProductCategory;
-    owner: User;
-    photos: Photos[];
-    description: string;
-    lastUpdated: Date;
-    quantity: number;
+  id: string;
+  name: string;
+  price: number;
+  category: ProductCategory;
+  owner: User;
+  photos: Photos[];
+  description: string;
+  lastUpdated: Date;
+  inventory: Inventory;
 }
 
 class Photos {
@@ -35,4 +35,8 @@ export class SearchRequestProduct {
     minPrice?: string;
     maxPrice?: string;
     pageIndex?: string;
+}
+
+export class Inventory {
+  quantity: number;
 }
