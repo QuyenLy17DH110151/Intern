@@ -5,7 +5,7 @@ using System.Text;
 
 namespace eCommerce.Domain.Entities
 {
-    public class ProductRating: Entity
+    public class ProductRating : Entity
     {
         public string FullName { get; set; }
 
@@ -18,5 +18,9 @@ namespace eCommerce.Domain.Entities
         public string ReviewTitle { get; set; }
 
         public string ReviewContent { get; set; }
+
+        public int NumberStar { get; set; }
+
+        public DateTime CreatedDate { get; set; }
     }
 }
