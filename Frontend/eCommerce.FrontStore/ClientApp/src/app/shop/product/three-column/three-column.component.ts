@@ -108,7 +108,7 @@ export class ThreeColumnComponent implements OnInit {
       let labels: any[] = [];
       let category = this.productAPI.category;
 
-      if (category.c1Lable != null) {
+      if (category && category.c1Lable) {
         //options.push(category.c1Options.split(/[ ,]+/))
         labels.push(
           {
@@ -117,7 +117,7 @@ export class ThreeColumnComponent implements OnInit {
           }
         )
       }
-      if (category.c2Lable != null) {
+      if (category && category.c2Lable) {
         labels.push(
           {
             label: category.c2Lable,
@@ -126,7 +126,7 @@ export class ThreeColumnComponent implements OnInit {
         )
 
       }
-      if (category.c3Lable != null) {
+      if (category && category.c3Lable) {
         labels.push(
           {
             label: category.c3Lable,
@@ -134,7 +134,7 @@ export class ThreeColumnComponent implements OnInit {
           }
         )
       }
-      if (category.c4Lable != null) {
+      if (category && category.c4Lable) {
         labels.push(
           {
             label: category.c4Lable,
@@ -142,7 +142,7 @@ export class ThreeColumnComponent implements OnInit {
           }
         )
       }
-      if (category.c5Lable != null) {
+      if (category && category.c5Lable) {
         labels.push(
           {
             label: category.c5Lable,
