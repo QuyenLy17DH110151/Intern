@@ -19,7 +19,7 @@ namespace eCommerce.Domain.Entities
 
         public string ReviewContent { get; set; }
 
-        public int NumberStart { get; set; }
+        public int NumberStar { get; set; }
 
         public DateTime CreatedDate { get; set; }
     }
