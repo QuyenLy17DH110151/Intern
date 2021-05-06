@@ -1,14 +1,13 @@
+import { Observable } from "rxjs";
+import { PagedList } from "./../../../api-clients/models/common.model";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ViewportScroller } from "@angular/common";
 import { ProductService } from "../../../shared/services/product.service";
-import { Product } from "../../../shared/classes/product";
 import {
   SearchRequestProduct,
   Product as ProductAPI,
 } from "src/app/api-clients/models/product.model";
-import { Observable } from "rxjs";
-import { switchMap } from "rxjs/operators";
 
 @Component({
   selector: "app-collection-left-sidebar",
@@ -18,7 +17,6 @@ import { switchMap } from "rxjs/operators";
 export class CollectionLeftSidebarComponent implements OnInit {
   public grid: string = "col-xl-3 col-md-6";
   public layoutView: string = "grid-view";
-  // public products: Product[] = [];
   public brands: any[] = [];
   public colors: any[] = [];
   public size: any[] = [];
@@ -26,12 +24,13 @@ export class CollectionLeftSidebarComponent implements OnInit {
   public maxPrice: number = 0;
   public tags: any[] = [];
   public category: string;
-  public pageNo: number = 1;
+  // public pageNo: number = 0;
   public paginate: any = {}; // Pagination use only
   public sortBy: string; // Sorting Order
   public mobileSidebar: boolean = false;
   public loader: boolean = true;
-  products: ProductAPI | any;
+  totalItem: number;
+  products: PagedList<ProductAPI>;
   rq: SearchRequestProduct = {};
 
   constructor(
@@ -39,43 +38,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     private router: Router,
     private viewScroller: ViewportScroller,
     public productService: ProductService
-  ) {
-    // Get Query params..
-    // this.route.queryParams.subscribe((params) => {
-    //   this.brands = params.brand ? params.brand.split(",") : [];
-    //   this.colors = params.color ? params.color.split(",") : [];
-    //   this.size = params.size ? params.size.split(",") : [];
-    //   this.minPrice = params.minPrice ? params.minPrice : this.minPrice;
-    //   this.maxPrice = params.maxPrice ? params.maxPrice : this.maxPrice;
-    //   this.tags = [...this.brands, ...this.colors, ...this.size]; // All Tags Array
-    //   this.category = params.category ? params.category : null;
-    //   this.sortBy = params.sortBy ? params.sortBy : "ascending";
-    //   this.pageNo = params.page ? params.page : this.pageNo;
-    //   // Get Filtered Products..
-    //   this.productService.filterProducts(this.tags).subscribe((response) => {
-    //     // Sorting Filter
-    //     this.products = this.productService.sortProducts(response, this.sortBy);
-    //     // Category Filter
-    //     if (params.category)
-    //       this.products = this.products.filter(
-    //         (item) => item.type == this.category
-    //       );
-    //     // Price Filter
-    //     this.products = this.products.filter(
-    //       (item) => item.price >= this.minPrice && item.price <= this.maxPrice
-    //     );
-    //     // Paginate Products
-    //     this.paginate = this.productService.getPager(
-    //       this.products.length,
-    //       +this.pageNo
-    //     ); // get paginate object from service
-    //     this.products = this.products.slice(
-    //       this.paginate.startIndex,
-    //       this.paginate.endIndex + 1
-    //     ); // get current page of items
-    //   });
-    // });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -83,8 +46,24 @@ export class CollectionLeftSidebarComponent implements OnInit {
       this.rq.categoryName = params["category"] ? params["category"] : "";
       this.rq.minPrice = params["minPrice"] ? params["minPrice"] : 0;
       this.rq.maxPrice = params["maxPrice"] ? params["maxPrice"] : 0;
+      this.rq.sort = params["sortBy"] ? params["sortBy"] : "";
+      this.rq.pageSize = "4";
+      this.rq.pageIndex = params["page"]
+        ? (params["page"] - 1).toString()
+        : "0";
       this.loadListProduct();
+      // this.GetTotalItem();
     });
+  }
+
+  // Paginate Products
+  pagingProduct(totalRow) {
+    this.paginate = this.productService.getPager(
+      totalRow,
+      Number(this.rq.pageIndex),
+      Number(this.rq.pageSize)
+    ); // get paginate object from service
+    console.log("Paginate", this.paginate);
   }
 
   // Append filter value to Url
@@ -192,8 +171,16 @@ export class CollectionLeftSidebarComponent implements OnInit {
   //Get Product
   loadListProduct() {
     this.productService.searchProducts(this.rq).subscribe((response) => {
-      this.products = response.items;
-      this.clearSearchRequest();
+      this.products = response;
+      this.pagingProduct(response.totalRows);
+      console.log(
+        "return products res",
+        this.products,
+        "lenght product",
+        this.products.items.length
+      );
+      console.log("rq", this.rq);
+      console.log("check error", this.products.items);
     });
   }
 

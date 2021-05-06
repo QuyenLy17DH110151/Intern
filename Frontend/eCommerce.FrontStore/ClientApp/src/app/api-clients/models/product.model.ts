@@ -5,7 +5,6 @@ export class Product {
   category: ProductCategory;
   owner: User;
   photos: Photos[];
-  items?: any;
   description: string;
   lastUpdated: Date;
 }
@@ -34,4 +33,5 @@ export class SearchRequestProduct {
   categoryName?: string;
   minPrice?: string;
   maxPrice?: string;
+  pageIndex?: string;
 }

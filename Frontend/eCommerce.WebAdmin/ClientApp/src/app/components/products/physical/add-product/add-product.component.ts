@@ -170,6 +170,6 @@ export class AddProductComponent implements OnInit {
         this.fileUpload = null;
         this.inputImage.nativeElement.value = '';
         this.selectedFiles = null;
-        this.listUrlImage = null;
+        this.listUrlImage = [];
     }
 }
