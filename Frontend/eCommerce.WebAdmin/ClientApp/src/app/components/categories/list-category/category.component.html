@@ -10,7 +10,8 @@
                     <div id="batchDelete" class="category-table custom-datatable">
                         <div class="table-responsive">
                             <ng2-smart-table [settings]="settings" [source]="category"
-                                (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)">
+                                (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)"
+                                (userRowSelect)="onCategoryRowSelected($event)">
                             </ng2-smart-table>
                         </div>
                     </div>

@@ -18,6 +18,16 @@ class Photos {
 export class ProductCategory {
   id: string;
   name: string;
+  c1Lable: string;
+  c1Options: string;
+  c2Lable: string;
+  c2Options: string;
+  c3Lable: string;
+  c3Options: string;
+  c4Lable: string;
+  c4Options: string;
+  c5Lable: string;
+  c5Options: string;
 }
 
 class User {

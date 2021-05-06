@@ -20,9 +20,8 @@ export class CategoryDetailsComponent implements OnInit {
     public name: string = "";
 
     constructor(private route: ActivatedRoute, private categoryClient: CategoryClient) {
-        this.route.queryParams.subscribe(params => {
-            this.id = params['id'];
-        });
+
+        this.id = this.route.snapshot.paramMap.get('categoryId');
         this.getData();
     }
 
@@ -41,7 +40,7 @@ export class CategoryDetailsComponent implements OnInit {
         },
         columns: {
             lable: {
-                title: 'Lable',
+                title: 'Label',
             },
             options: {
                 title: 'Options'
