@@ -7,6 +7,7 @@ export class Product {
   photos: Photos[];
   description: string;
   lastUpdated: Date;
+  inventory: Inventory;
 }
 
 class Photos {
@@ -34,4 +35,8 @@ export class SearchRequestProduct {
   minPrice?: string;
   maxPrice?: string;
   pageIndex?: string;
+}
+
+export class Inventory {
+  quantity: number;
 }
