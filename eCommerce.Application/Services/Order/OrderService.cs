@@ -5,10 +5,13 @@ using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
+using eCommerce.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using eCommerce.Domain.Enums;
+using eCommerce.Application.Services.Coupons;
 
 namespace eCommerce.Application.Services.Order
 {
@@ -20,7 +23,8 @@ namespace eCommerce.Application.Services.Order
         private readonly ApplicationContext _appContext;
         private readonly IInventoryRepository _inventoryRepo;
         private readonly IProductRepository _productRepository;
-        public OrderService(IOrderRepository orderRepo, IMapper mapper, IEmailSender emailSender, ApplicationContext appContext, IInventoryRepository inventoryRepository, IProductRepository productRepository)
+        private readonly ICouponService _couponService;
+        public OrderService(IOrderRepository orderRepo, IMapper mapper, IEmailSender emailSender, ApplicationContext appContext, IInventoryRepository inventoryRepository, IProductRepository productRepository, ICouponService couponService)
         {
             _orderRepo = orderRepo;
             _mapper = mapper;
@@ -28,6 +32,7 @@ namespace eCommerce.Application.Services.Order
             _appContext = appContext;
             _inventoryRepo = inventoryRepository;
             _productRepository = productRepository;
+            _couponService = couponService;
         }
 
         public async Task<bool> RejectOrderAsync(Guid Id)
@@ -128,6 +133,31 @@ namespace eCommerce.Application.Services.Order
             await _orderRepo.UnitOfWork.SaveChangesAsync();
             SendEmailAccept("eCommerce", order.BuyerEmail, Id);
             return true;
+        }
+
+        public async Task CreateAsync(OrderRequestModels.Create req)
+        {
+            var coupon = await _couponService.GetCouponByCodeAsync(req.couponCode);
+            var percent = _couponService.isValidCoupon(coupon);
+
+            foreach(var product in req.Products)
+            {
+                var order = new eCommerce.Domain.Entities.Order()
+                {
+                    BuyerEmail = req.BuyerEmail,
+                    BuyerName = req.BuyerName,
+                    BuyerPhone = req.BuyerPhone,
+                    Address = req.Address,
+                    ProductId = product.Id,
+                    Price = product.Price,
+                    ActualPrice = product.Price - product.Price * percent / 100,
+                    Quantity = product.Quantity,
+                    Status = OrderStatuses.New,
+                };
+                _orderRepo.Add(order);
+            }
+
+            await _orderRepo.UnitOfWork.SaveChangesAsync();
         }
     }
 }

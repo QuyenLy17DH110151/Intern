@@ -134,5 +134,10 @@ namespace eCommerce.Persistence.Repositories
             order.Status = orderStatuses;
             return true;
         }
+
+        public Order Add(Order order)
+        {
+            return _genericRepo.Add(order);
+        }
     }
 }

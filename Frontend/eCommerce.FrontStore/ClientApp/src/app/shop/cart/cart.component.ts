@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CouponClient } from 'src/app/api-clients/coupon.client';
 import { Coupon } from 'src/app/api-clients/models/coupon.model';
@@ -23,7 +24,8 @@ export class CartComponent implements OnInit {
     constructor(
         private cartService: CartService,
         public productService: ProductService,
-        private couponClient: CouponClient
+        private couponClient: CouponClient,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -67,11 +69,17 @@ export class CartComponent implements OnInit {
             (response) => {
                 this.errorMessage = "";
                 this.discountPercent = response;
+                localStorage.setItem('discountPercent', this.discountPercent.toString())
                 this.calculateTotalAmountAfterApplyCoupon();
             },
             (error) => {
                 this.errorMessage = error.error.errorMessage;
             }
         );
+    }
+
+    checkout() {
+        localStorage.setItem('code', this.code);
+        this.router.navigate(['/shop/checkout']);
     }
 }

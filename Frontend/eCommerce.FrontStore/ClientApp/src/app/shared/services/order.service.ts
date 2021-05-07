@@ -35,5 +35,11 @@ export class OrderService {
     localStorage.removeItem("cartItems");
     this.router.navigate(['/shop/checkout/success', orderId]);
   }
+
+  public resetData() {
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("code");
+    localStorage.removeItem("discountPercent");
+  }
   
 }

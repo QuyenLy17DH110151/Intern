@@ -8,6 +8,7 @@ import { Product } from "../../../shared/classes/product";
 import { Product as ProductAPI } from "src/app/api-clients/models/product.model";
 import { ProductService } from "../../../shared/services/product.service";
 import { SizeModalComponent } from "../../../shared/components/modal/size-modal/size-modal.component";
+import { CartService } from "src/app/shared/services/cart.service";
 
 @Component({
   selector: "app-three-column",
@@ -30,7 +31,8 @@ export class ThreeColumnComponent implements OnInit {
   constructor(
     private router: Router,
     public productService: ProductService,
-    private _router: ActivatedRoute
+    private _router: ActivatedRoute,
+    private cartService: CartService
   ) {
     this._router.params.subscribe((response) => {
       console.log("response", response);
@@ -60,16 +62,16 @@ export class ThreeColumnComponent implements OnInit {
   }
 
   // Add to cart
-  async addToCart(product: any) {
-    product.quantity = this.counter || 1;
-    const status = await this.productService.addToCart(product);
+  async addToCart(productAPI) {
+    productAPI.quantity = this.counter || 1;
+    const status = await this.cartService.addToCart(productAPI);
     if (status) this.router.navigate(["/shop/cart"]);
   }
 
   // Buy Now
-  async buyNow(product: any) {
-    product.quantity = this.counter || 1;
-    const status = await this.productService.addToCart(product);
+  async buyNow(productAPI: any) {
+    productAPI.quantity = this.counter || 1;
+    const status = await this.cartService.addToCart(productAPI);
     if (status) this.router.navigate(["/shop/checkout"]);
   }
 

@@ -23,10 +23,7 @@ export class CartService {
         });
         return <Observable<Product[]>>itemsStream;
     }
-    // public get cartItems() {
-    //     return of(state.cart);
-    // }
-
+    
     // Add to Cart
     public addToCart(product: Product): any {
         const cartItem = state.cart.find((item) => item.id === product.id);

@@ -51,5 +51,20 @@ namespace eCommerce.WebAPI.Controllers
             
             return Ok();
         }
+
+        [HttpPost("/frontstore/api/orders")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Create([FromBody] OrderRequestModels.Create req)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _orderService.CreateAsync(req);
+            //var coupon = await _orderService.GetCouponByIdAsync(couponId);
+
+            return Ok(); ;
+        }
     }
 }

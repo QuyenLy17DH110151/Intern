@@ -9,5 +9,6 @@ namespace eCommerce.Application.Services.Order
         Task<PaginatedResult<OrderReturnModel.Order>> SearchOrdersAsync(OrderRequestModels.Search rq);
         Task<bool> RejectOrderAsync(Guid Id);        
         Task<bool> AcceptOrderAsync(Guid Id);
+        Task CreateAsync(OrderRequestModels.Create req);
     }
 }
