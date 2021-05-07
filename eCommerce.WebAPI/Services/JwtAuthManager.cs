@@ -92,8 +92,8 @@ namespace eCommerce.WebAPI.Services
             {
                 throw new SecurityTokenException("Invalid token");
             }
-
-            return GenerateTokens(username, principal.Claims.ToArray());
+            var user = jwtToken.Claims.ToArray();
+            return GenerateTokens(username, user);
         }
 
         public (ClaimsPrincipal, JwtSecurityToken) DecodeJwtToken(string token)
