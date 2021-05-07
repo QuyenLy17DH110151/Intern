@@ -24,7 +24,7 @@ const routes: Routes = [{
             },
         },
         {
-            path: 'details',
+            path: 'details/:categoryId',
             component: CategoryDetailsComponent,
             data: {
                 title: 'Category Details',

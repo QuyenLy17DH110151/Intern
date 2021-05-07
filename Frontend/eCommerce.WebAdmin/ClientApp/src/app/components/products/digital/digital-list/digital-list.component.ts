@@ -13,7 +13,7 @@ export class DigitalListComponent implements OnInit {
     public product_list: any;
     rq: SearchRequestProduct = {};
 
-    constructor(protected productClient: ProductClient, private router: Router) {}
+    constructor(protected productClient: ProductClient, private router: Router) { }
 
     async loadData() {
         let products = await this.productClient
@@ -26,7 +26,7 @@ export class DigitalListComponent implements OnInit {
 
     public settings = {
         actions: {
-            position: 'right',
+            position: 'left',
         },
         columns: {
             photos: {

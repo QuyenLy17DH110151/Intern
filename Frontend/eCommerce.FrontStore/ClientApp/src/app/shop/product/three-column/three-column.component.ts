@@ -9,6 +9,7 @@ import { Product as ProductAPI } from "src/app/api-clients/models/product.model"
 import { ProductService } from "../../../shared/services/product.service";
 import { SizeModalComponent } from "../../../shared/components/modal/size-modal/size-modal.component";
 
+
 @Component({
   selector: "app-three-column",
   templateUrl: "./three-column.component.html",
@@ -22,6 +23,8 @@ export class ThreeColumnComponent implements OnInit {
   public productAPI: ProductAPI;
   date: Date;
   productId: string;
+  public labels: string[] = [];
+
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
   public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
@@ -82,6 +85,54 @@ export class ThreeColumnComponent implements OnInit {
     this.productService.getProductDetail(productId).subscribe((response) => {
       this.productAPI = response;
       console.log(this.productAPI);
+      let labels: any[] = [];
+      let category = this.productAPI.category;
+
+      if (category && category.c1Lable) {
+        //options.push(category.c1Options.split(/[ ,]+/))
+        labels.push(
+          {
+            label: category.c1Lable,
+            options: category.c1Options.split(/[ ,]+/)
+          }
+        )
+      }
+      if (category && category.c2Lable) {
+        labels.push(
+          {
+            label: category.c2Lable,
+            options: category.c2Options.split(/[ ,]+/)
+          }
+        )
+
+      }
+      if (category && category.c3Lable) {
+        labels.push(
+          {
+            label: category.c3Lable,
+            options: category.c3Options.split(/[ ,]+/)
+          }
+        )
+      }
+      if (category && category.c4Lable) {
+        labels.push(
+          {
+            label: category.c4Lable,
+            options: category.c4Options.split(/[ ,]+/)
+          }
+        )
+      }
+      if (category && category.c5Lable) {
+        labels.push(
+          {
+            label: category.c5Lable,
+            options: category.c5Options.split(/[ ,]+/)
+          }
+        )
+      }
+      this.labels = labels;
+      console.log(this.labels)
     });
   }
+
 }
