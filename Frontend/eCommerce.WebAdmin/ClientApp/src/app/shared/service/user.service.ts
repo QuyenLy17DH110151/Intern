@@ -13,9 +13,9 @@ import { delay, tap } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
-    tokenInfo: TokenInfo;
     private timer: Subscription;
     constructor(private userClient: UserClient) {}
+
     loggedIn() {
         return !!localStorage.getItem('access_token');
     }
@@ -33,12 +33,11 @@ export class UserService {
     }
 
     getRole(): string {
-        let token_info: TokenInfo = JSON.parse(
-            localStorage.getItem('token_info')
-        );
-        console.log(UserRole[token_info.role]);
+        return UserRole[this.getTokenInfo().role];
+    }
 
-        return UserRole[token_info.role];
+    getUserId(): string {
+        return this.getTokenInfo().id;
     }
 
     localStorageSetToken(responseToken: JwtAuthResult, tokenInfo: TokenInfo) {
@@ -114,7 +113,12 @@ export class UserService {
         localStorage.setItem('refresh_token', JSON.stringify(x.refreshToken));
         localStorage.setItem('token_info', JSON.stringify(tokenInfo));
     }
+
     stopTokenTimer() {
         this.timer?.unsubscribe();
+    }
+
+    getTokenInfo(): TokenInfo {
+        return JSON.parse(localStorage.getItem('token_info'));
     }
 }
