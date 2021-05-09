@@ -1,8 +1,8 @@
+import { DashboardService } from './../../shared/service/dashboard.service';
 import { Component, OnInit } from '@angular/core';
 import * as chartData from '../../shared/data/chart'; // khac gi import chartData thoi
 import { doughnutData, pieData } from '../../shared/data/chart';
-
-import { UserClient } from 'src/app/api-clients/_index';
+import { DashboardClient } from 'src/app/api-clients/Dashboard.client';
 
 @Component({
     selector: 'app-dashboard',
@@ -12,7 +12,7 @@ import { UserClient } from 'src/app/api-clients/_index';
 export class DashboardComponent implements OnInit {
     public doughnutData = doughnutData;
     public pieData = pieData;
-    constructor(private userClient: UserClient) {
+    constructor(private _dashBoard: DashboardClient) {
         Object.assign(this, { doughnutData, pieData });
     }
 
@@ -71,7 +71,33 @@ export class DashboardComponent implements OnInit {
     public chartClicked(e: any): void {}
     public chartHovered(e: any): void {}
 
-    async ngOnInit() {
-        let users = await this.userClient.searchUsers().toPromise();
+    ngOnInit() {
+        this.getSumEarnings();
+        this.getCountComment();
+        this.getCountUser();
+        this.getCountProduct();
+        // this._dashBoard.getSumEarnings();
+    }
+
+    sumEarnings: number;
+    countProduct: number;
+    countUser: number;
+    countComment: number;
+    getSumEarnings() {
+        // this.sumEarnings = this._dashBoard.getSumEarnings();
+        console.log('sads', this._dashBoard.getSumEarnings());
+        this.sumEarnings = 3000;
+    }
+
+    getCountProduct() {
+        this.countProduct = this._dashBoard.getCountProduct();
+    }
+
+    getCountComment() {
+        this.countComment = this._dashBoard.getCountComment();
+    }
+
+    getCountUser() {
+        this.countUser = this._dashBoard.getCountUser();
     }
 }
