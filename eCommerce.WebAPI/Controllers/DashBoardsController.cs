@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using eCommerce.Application.Services.DashBoard;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,32 @@ namespace eCommerce.WebAPI.Controllers
     [ApiController]
     public class DashBoardsController : ControllerBase
     {
+        private readonly IDashBoardService _dashBoardService;
+
+        public DashBoardsController(IDashBoardService dashBoardService)
+        {
+            _dashBoardService = dashBoardService;
+        }
+
         [HttpGet("SumEarnings")]
-        public ActionResult GetSumEarnings()
+        public async Task<ActionResult> GetSumEarningsAsync()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            return Ok(1000);
+            var sumEarning = await _dashBoardService.GetSumEarnings();
+            return Ok(sumEarning);
         }
         [HttpGet("CountProduct")]
-        public ActionResult GetCountProduct()
+        public async Task<ActionResult> GetCountProductAsync()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            return Ok(2000);
+            var countProduct = await _dashBoardService.GetCountProduct();
+            return Ok(countProduct);
         }
         [HttpGet("CountComment")]
         public ActionResult GetCountComment()
@@ -39,13 +49,14 @@ namespace eCommerce.WebAPI.Controllers
             return Ok(3000);
         }
         [HttpGet("GetCountUser")]
-        public ActionResult GetCountUser()
+        public async Task<ActionResult> GetCountUserAsync()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            return Ok(4000);
+            var countUsers = await _dashBoardService.GetCountUserAsync();
+            return Ok(countUsers);
         }
     }
 }

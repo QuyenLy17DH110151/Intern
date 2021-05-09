@@ -85,19 +85,29 @@ export class DashboardComponent implements OnInit {
     countComment: number;
     getSumEarnings() {
         // this.sumEarnings = this._dashBoard.getSumEarnings();
-        console.log('sads', this._dashBoard.getSumEarnings());
-        this.sumEarnings = 3000;
+        console.log(
+            'sads',
+            this._dashBoard.getSumEarnings().subscribe((res) => {
+                this.sumEarnings = Number(res);
+            })
+        );
     }
 
     getCountProduct() {
-        this.countProduct = this._dashBoard.getCountProduct();
+        this._dashBoard.getCountProduct().subscribe((res) => {
+            this.countProduct = Number(res);
+        });
     }
 
     getCountComment() {
-        this.countComment = this._dashBoard.getCountComment();
+        this._dashBoard.getCountComment().subscribe((res) => {
+            this.countComment = Number(res);
+        });
     }
 
     getCountUser() {
-        this.countUser = this._dashBoard.getCountUser();
+        this._dashBoard.getCountUser().subscribe((res) => {
+            this.countUser = Number(res);
+        });
     }
 }

@@ -171,5 +171,11 @@ namespace eCommerce.Persistence.Repositories
             var result = await _genericRepo.SearchAsync(queryObject, req.Pagination, x => x.Include(m => m.Category).Include(m => m.Owner).Include(m => m.Photos));
             return result;
         }
+
+        public async Task<int> CountProductAsync()
+        {
+            var products=  await _genericRepo.GetAllAsync();
+            return products.Count();
+        }
     }
 }

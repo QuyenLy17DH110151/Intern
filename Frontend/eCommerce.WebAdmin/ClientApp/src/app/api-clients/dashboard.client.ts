@@ -8,21 +8,25 @@ import { environment } from 'src/environments/environment';
 })
 export class DashboardClient {
     private apiSumEarnings = `${environment.apiUrl}/DashBoards/SumEarnings`;
+    private apiCountProduct = `${environment.apiUrl}/DashBoards/CountProduct`;
+    private apiCountComment = `${environment.apiUrl}/DashBoards/CountComment`;
+    private apiGetCountUser = `${environment.apiUrl}/DashBoards/GetCountUser`;
+
     constructor(private http: HttpClient) {}
 
     getSumEarnings() {
         return this.http.get(this.apiSumEarnings);
     }
 
-    getCountProduct(): number {
-        return 1000;
+    getCountProduct() {
+        return this.http.get(this.apiCountProduct);
     }
 
-    getCountComment(): number {
-        return 2000;
+    getCountComment() {
+        return this.http.get(this.apiCountComment);
     }
 
-    getCountUser(): number {
-        return 4000;
+    getCountUser() {
+        return this.http.get(this.apiGetCountUser);
     }
 }

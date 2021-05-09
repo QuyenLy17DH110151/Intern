@@ -55,7 +55,7 @@ namespace eCommerce.Persistence.Repositories
             }
 
             //Filter by role
-            if(rq.Role != UserRoles.Admin)
+            if (rq.Role != UserRoles.Admin)
             {
                 var role = rq.Role;
                 queryObject.And(new OrderQueryObject.HasRole(role));
@@ -75,7 +75,7 @@ namespace eCommerce.Persistence.Repositories
             }
             rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
 
-            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination, x=>x.Include(m=>m.Product));
+            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination, x => x.Include(m => m.Product));
             return result;
         }
 
@@ -109,12 +109,12 @@ namespace eCommerce.Persistence.Repositories
 
         private bool CheckStartDate(DateTime startDate)
         {
-            if(startDate == null)
+            if (startDate == null)
             {
                 return false;
             }
             DateTime now = DateTime.Now;
-            if (DateTime.Compare(now, startDate)<0)
+            if (DateTime.Compare(now, startDate) < 0)
             {
                 return false;
             }
@@ -134,5 +134,13 @@ namespace eCommerce.Persistence.Repositories
             order.Status = orderStatuses;
             return true;
         }
+
+        public async Task<decimal> GetSumEarnings()
+        {
+            var orders = await _genericRepo.GetAllAsync();
+            var sum = orders.Where(s => s.Status == OrderStatuses.Approved).Sum(x=>x.Price);
+            return sum;
+        }
+
     }
 }

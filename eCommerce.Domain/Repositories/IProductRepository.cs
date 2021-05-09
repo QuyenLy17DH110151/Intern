@@ -21,5 +21,6 @@ namespace eCommerce.Domain.Repositories
         Task<PaginatedResult<Product>> SearchAsync(SearchProductModel req);
         Task<PaginatedResult<Product>> SearchPublicAsync(SearchProductModel req);
         Task<int> GetQuantityByProductIdAsync(Guid id);
+        Task<int> CountProductAsync();
     }
 }
