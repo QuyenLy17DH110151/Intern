@@ -1,4 +1,3 @@
-import { DashboardService } from './../../shared/service/dashboard.service';
 import { Component, OnInit } from '@angular/core';
 import * as chartData from '../../shared/data/chart'; // khac gi import chartData thoi
 import { doughnutData, pieData } from '../../shared/data/chart';
