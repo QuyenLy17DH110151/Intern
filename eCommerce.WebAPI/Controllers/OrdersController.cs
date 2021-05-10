@@ -25,6 +25,7 @@ namespace eCommerce.WebAPI.Controllers
             var orders = await _orderService.SearchOrdersAsync(rq);
             return orders;
         }
+
         [HttpPost("Reject_Order/{Id}")]
         public async Task<ActionResult> RejectOrder(Guid Id)
         {
@@ -48,7 +49,7 @@ namespace eCommerce.WebAPI.Controllers
                 return BadRequest();
             }
             await _orderService.AcceptOrderAsync(Id);
-            
+
             return Ok();
         }
     }

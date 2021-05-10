@@ -114,6 +114,91 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-xl-6 xl-100">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Market Value</h5>
+                </div>
+                <div class="card-body">
+                    <div class="market-chart">
+                        <x-chartist
+                            class="board-chart ct-golden-section"
+                            [data]="chart3.data"
+                            [type]="chart3.type"
+                            [options]="chart3.options"
+                            [events]="chart3.events"
+                        >
+                        </x-chartist>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 xl-100">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Latest Orders</h5>
+                </div>
+                <div class="card-body">
+                    <div
+                        class="user-status table-responsive latest-order-table"
+                    >
+                        <table class="table table-bordernone">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Buyer Name</th>
+                                    <th scope="col">Buyer Phone</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Total Amount</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="
+                                        let order of orderListVM;
+                                        index as i
+                                    "
+                                >
+                                    <td>{{ i }}</td>
+                                    <td class="digits">
+                                        {{ order.product.name }}
+                                    </td>
+                                    <td class="digits">
+                                        {{ order.customer }}
+                                    </td>
+                                    <td class="digits">
+                                        {{ order.phoneNumber }}
+                                    </td>
+                                    <td class="digits">
+                                        {{ order.quantity }}
+                                    </td>
+                                    <td class="digits">$ {{ order.price }}</td>
+                                    <td class="digits">
+                                        {{ order.totalAmount }}
+                                    </td>
+                                    <td class="digits">
+                                        {{ order.createdDate }}
+                                    </td>
+                                    <td class="digits">
+                                        {{ order.statusString }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a
+                            [routerLink]="['/orders/list-order']"
+                            class="btn btn-primary"
+                            >View All Orders</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Container-fluid Ends-->
