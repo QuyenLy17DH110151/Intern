@@ -1,5 +1,6 @@
 ﻿using eCommerce.Application.Services.DashBoard;
 using eCommerce.Application.Services.Order;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DashBoardsController : ControllerBase
     {
         private readonly IDashBoardService _dashBoardService;
