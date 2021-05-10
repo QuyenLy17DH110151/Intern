@@ -25,7 +25,7 @@ namespace eCommerce.WebAPI.Controllers
             var orders = await _orderService.SearchOrdersAsync(rq);
             return orders;
         }
-        [HttpPost("Reject_Order/{Id}")]
+        [HttpPost("reject_order/{Id}")]
         public async Task<ActionResult> RejectOrder(Guid Id)
         {
             if (!ModelState.IsValid)
@@ -40,7 +40,7 @@ namespace eCommerce.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("Accept_Order/{Id}")]
+        [HttpPost("accept_order/{Id}")]
         public async Task<ActionResult> AcceptOrder(Guid Id)
         {
             if (!ModelState.IsValid)
