@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/shared/service/user.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
@@ -8,6 +9,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { CategoryReturnModel } from 'src/app/api-clients/models/_index';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-add-product',
@@ -22,14 +24,17 @@ export class AddProductComponent implements OnInit {
     selectedFiles?: FileList = null;
     fileUpload?: FileUpload;
     categories = [];
-    listUrlImage = [];
+    listUrlImage: string[] = [];
+    listUrlImageTemp = [];
+
     @ViewChild('inputImage', { static: true, read: ElementRef })
     inputImage: ElementRef<HTMLInputElement>;
     constructor(
         private fb: FormBuilder,
         private productClient: ProductClient,
         private db: AngularFireDatabase,
-        private storage: AngularFireStorage
+        private storage: AngularFireStorage,
+        private userService: UserService
     ) {}
 
     get name() {
@@ -112,7 +117,7 @@ export class AddProductComponent implements OnInit {
     }
 
     getOwnerId() {
-        return localStorage.getItem('userId');
+        return this.userService.getUserId();
     }
 
     async uploadImage() {
@@ -122,6 +127,7 @@ export class AddProductComponent implements OnInit {
                 console.log(this.selectedFiles[index]);
                 this.uploadSingleImage(this.selectedFiles[index]);
             }
+            this.listUrlImage = this.listUrlImageTemp;
             // this.listUrlImage = [];
         }
     }
@@ -147,7 +153,7 @@ export class AddProductComponent implements OnInit {
                         storageRef.getDownloadURL().subscribe((downloadURL) => {
                             this.fileUpload.url = downloadURL;
                             this.fileUpload.name = this.fileUpload.file.name;
-                            this.listUrlImage.push(this.fileUpload.url);
+                            this.listUrlImageTemp.push(this.fileUpload.url);
                             console.log('list url', this.listUrlImage);
                         });
                     })
@@ -170,6 +176,7 @@ export class AddProductComponent implements OnInit {
         this.fileUpload = null;
         this.inputImage.nativeElement.value = '';
         this.selectedFiles = null;
+        this.listUrlImageTemp = [];
         this.listUrlImage = [];
     }
 }

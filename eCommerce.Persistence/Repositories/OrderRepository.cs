@@ -135,12 +135,6 @@ namespace eCommerce.Persistence.Repositories
             return true;
         }
 
-        public async Task<decimal> GetSumEarnings()
-        {
-            var orders = await _genericRepo.GetAllAsync();
-            var sum = orders.Where(s => s.Status == OrderStatuses.Approved).Sum(x=>x.Price);
-            return sum;
-        }
 
     }
 }

@@ -14,6 +14,5 @@ namespace eCommerce.Domain.Repositories
         Task<PaginatedResult<Order>> SearchAsync(SearchOrderModel searchOrderModel);
         Task<Order> GetOrderByIdAsync(Guid Id);
         Task<bool> UpdateStatusAsync(Guid Id, OrderStatuses orderStatuses);
-        Task<decimal> GetSumEarnings();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using eCommerce.Application.Services.DashBoard;
+using eCommerce.Application.Services.Order;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,10 +14,11 @@ namespace eCommerce.WebAPI.Controllers
     public class DashBoardsController : ControllerBase
     {
         private readonly IDashBoardService _dashBoardService;
-
-        public DashBoardsController(IDashBoardService dashBoardService)
+        private readonly IOrderService _orderService;
+        public DashBoardsController(IDashBoardService dashBoardService, IOrderService orderService)
         {
             _dashBoardService = dashBoardService;
+            _orderService = orderService;
         }
 
         [HttpGet("SumEarnings")]
@@ -26,9 +28,10 @@ namespace eCommerce.WebAPI.Controllers
             {
                 return BadRequest();
             }
-            var sumEarning = await _dashBoardService.GetSumEarnings();
+            var sumEarning = await _dashBoardService.GetSumEarningsAsync();
             return Ok(sumEarning);
         }
+
         [HttpGet("CountProduct")]
         public async Task<ActionResult> GetCountProductAsync()
         {
@@ -36,9 +39,10 @@ namespace eCommerce.WebAPI.Controllers
             {
                 return BadRequest();
             }
-            var countProduct = await _dashBoardService.GetCountProduct();
+            var countProduct = await _dashBoardService.GetCountProductAsync();
             return Ok(countProduct);
         }
+
         [HttpGet("CountComment")]
         public ActionResult GetCountComment()
         {
