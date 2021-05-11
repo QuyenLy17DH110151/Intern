@@ -25,6 +25,10 @@ export class DigitalListComponent implements OnInit {
     }
 
     public settings = {
+        pager: {
+            display: true,
+            perPage: 5,
+        },
         actions: {
             position: 'left',
             add: false,
