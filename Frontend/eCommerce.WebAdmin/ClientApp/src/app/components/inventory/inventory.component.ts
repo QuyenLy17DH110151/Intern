@@ -28,6 +28,10 @@ export class InventoryComponent implements OnInit {
   }
 
   public settings = {
+    pager: {
+      display: true,
+      perPage: 5,
+    },
     edit: {
       confirmSave: true,
     },

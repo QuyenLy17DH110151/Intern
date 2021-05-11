@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {Router, ActivatedRoute, Params} from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Image } from '@ks89/angular-modal-gallery';
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,8 @@ export class ProductDetailComponent implements OnInit {
     public closeResult: string;
     public counter: number = 1;
     product: any;
-    productId:string;
+    productId: string;
+    public labels: string[] = [];
 
     public imagesRect: Image[] = [
         new Image(
@@ -74,10 +75,63 @@ export class ProductDetailComponent implements OnInit {
         }
     }
 
-    async getProductDetail() {
+    async getProductDetail(productId: string) {
         return await this.productClient
             .getProductDetail(this.productId)
-            .toPromise();
+            .subscribe((response) => {
+                this.product = response;
+                console.log(this.product);
+                let labels: any[] = [];
+                let category = this.product.category;
+
+                if (category && category.c1Lable) {
+                    //options.push(category.c1Options.split(/[ ,]+/))
+                    labels.push(
+                        {
+                            label: category.c1Lable,
+                            options: category.c1Options.split(/[ ,]+/)
+                        }
+                    )
+                }
+                if (category && category.c2Lable) {
+                    labels.push(
+                        {
+                            label: category.c2Lable,
+                            options: category.c2Options.split(/[ ,]+/)
+                        }
+                    )
+
+                }
+                if (category && category.c3Lable) {
+                    labels.push(
+                        {
+                            label: category.c3Lable,
+                            options: category.c3Options.split(/[ ,]+/)
+                        }
+                    )
+                }
+                if (category && category.c4Lable) {
+                    labels.push(
+                        {
+                            label: category.c4Lable,
+                            options: category.c4Options.split(/[ ,]+/)
+                        }
+                    )
+                }
+                if (category && category.c5Lable) {
+                    labels.push(
+                        {
+                            label: category.c5Lable,
+                            options: category.c5Options.split(/[ ,]+/)
+                        }
+                    )
+                }
+                this.labels = labels;
+                console.log(this.labels)
+            });
+
+
+
     }
 
     increment() {
@@ -90,9 +144,9 @@ export class ProductDetailComponent implements OnInit {
 
     async ngOnInit() {
         this.productId = this._route.snapshot.paramMap.get('productId');
-        this.product = await this.getProductDetail();
+        this.product = await this.getProductDetail(this.productId);
 
-        if(!this.product.quantity) {
+        if (!this.product.quantity) {
             this.product.quantity = 0;
         }
     }
