@@ -198,7 +198,7 @@
                   <div class="div-content-start">
                     <div>
                       <div class="top-left-content-start">
-                        <p>{{starAvg}}</p>
+                        <p>{{getStarResponse.avgValue}}</p>
                       </div>
                       <div class="top-right-content-start">
                         <div>
@@ -213,25 +213,27 @@
                       </div>
                     </div>
                     <div class="bottom-content-start">
-                      <div class="row">
-                        <div class="col pr-3">
-                          <i class="fa fa-star active-start"></i>
-                          <i class="fa fa-star active-start"></i>
-                          <i class="fa fa-star active-start"></i>
-                          <i class="fa fa-star active-start"></i>
-                          <i class="fa fa-star active-start"></i>
+                      <div class="row" *ngFor="let starValue of getStarResponse.startValues">
+                        <div class="col pr-3 star-render">
+                          <div *ngFor="let starValue1 of getStarResponse.startValues, index as i">
+
+                            <i class="fa fa-star"
+                              [ngClass]="{'active-start':  getActiveStar(i, starValue.numberStar)}"></i>
+                          </div>
                         </div>
                         <div class="col-6">
-                          <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[4].active}"
-                            [ngClass]="{'rating-level-full' : withRatingCss[4].active==300}"></div>
-                          <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[4].nonActive}"
-                            [ngClass]="{'rating-level-full' : withRatingCss[4].nonActive==300}"></div>
+                          <div class="rating-level-active" [ngStyle]="{'width.px': getWidth( starValue.value, true)}"
+                            [ngClass]="{'rating-level-full' : getWidth( starValue.value, true)==300}">
+                          </div>
+                          <div class="rating-level" [ngStyle]="{'width.px': getWidth( starValue.value, false)}"
+                            [ngClass]="{'rating-level-full' : getWidth( starValue.value, false)==300}">
+                          </div>
                         </div>
                         <div class="col">
-                          <label class="ml-5">{{getStarResponse.starFive}} nhận xét</label>
+                          <label class="ml-5">{{starValue.value}} nhận xét</label>
                         </div>
                       </div>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col pr-3">
                           <div class="bottom-left-content-start">
                             <i class="fa fa-star "></i>
@@ -250,8 +252,8 @@
                         <div class="col">
                           <label class="ml-5">{{getStarResponse.starFour}} nhận xét</label>
                         </div>
-                      </div>
-                      <div class="row">
+                      </div> -->
+                      <!-- <div class="row">
                         <div class="col pr-3">
                           <div class="bottom-left-content-start">
                             <i class="fa fa-star "></i>
@@ -270,8 +272,8 @@
                         <div class="col">
                           <label class="ml-5">{{getStarResponse.starThree}} nhận xét</label>
                         </div>
-                      </div>
-                      <div class="row">
+                      </div> -->
+                      <!-- <div class="row">
                         <div class="col pr-3">
                           <div class="bottom-left-content-start">
                             <div class="bottom-left-content-start">
@@ -292,8 +294,8 @@
                         <div class="col">
                           <label class="ml-5">{{getStarResponse.starTwo}} nhận xét</label>
                         </div>
-                      </div>
-                      <div class="row">
+                      </div> -->
+                      <!-- <div class="row">
                         <div class="col pr-3">
                           <div class="bottom-left-content-start">
                             <div class="bottom-left-content-start">
@@ -316,7 +318,7 @@
                         <div class="col">
                           <label class="ml-5">{{getStarResponse.starOne}} nhận xét</label>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <div class="mt-3">

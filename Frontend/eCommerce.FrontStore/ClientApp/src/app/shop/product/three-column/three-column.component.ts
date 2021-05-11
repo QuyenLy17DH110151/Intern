@@ -68,146 +68,28 @@ export class ThreeColumnComponent implements OnInit {
 
   }
 
-  getWidthRating() {
-    let stars = this.getStarResponse;
-
-    this.withRatingCss = [];
-    //set width star one
-    if (stars.starOne != 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 1,
-          active: Math.ceil(stars.starOne / stars.numberStart * 300),
-          nonActive: 300 - Math.ceil(stars.starOne / stars.numberStart * 300)
-        }
-      )
-    }
-
-    if (stars.starOne == 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 1,
-          active: 0,
-          nonActive: 300
-        }
-      )
-    }
-
-    //set width star tow
-    if (stars.starTwo != 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 2,
-          active: Math.ceil(stars.starTwo / stars.numberStart * 300),
-          nonActive: 300 - Math.ceil(stars.starTwo / stars.numberStart * 300)
-        }
-      )
-    }
-
-    if (stars.starTwo == 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 2,
-          active: 0,
-          nonActive: 300
-        }
-      )
-    }
-
-    //set width star three
-    if (stars.starThree != 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 3,
-          active: Math.ceil(stars.starThree / stars.numberStart * 300),
-          nonActive: 300 - Math.ceil(stars.starThree / stars.numberStart * 300)
-        }
-      )
-    }
-
-    if (stars.starThree == 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 3,
-          active: 0,
-          nonActive: 300
-        }
-      )
-    }
-
-    //set with star four
-    if (stars.starFour != 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 4,
-          active: Math.ceil(stars.starFour / stars.numberStart * 300),
-          nonActive: 300 - Math.ceil(stars.starFour / stars.numberStart * 300)
-        }
-      )
-    }
-
-    if (stars.starFour == 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 4,
-          active: 0,
-          nonActive: 300
-        }
-      )
-    }
-
-
-    //set width star five
-    if (stars.starFive != 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 1,
-          active: Math.ceil(stars.starFive / stars.numberStart * 300),
-          nonActive: 300 - Math.ceil(stars.starFive / stars.numberStart * 300)
-        }
-      )
-    }
-
-    if (stars.starFive == 0) {
-      this.withRatingCss.push(
-        {
-          indexStar: 1,
-          active: 0,
-          nonActive: 300
-        }
-      )
-    }
-    console.log('this.withRatingCss'); console.log(this.withRatingCss);
-  }
-
-  getStarAvg() {
-    if (this.reviews.length == 0) {
-      this.starAvg = 5;
-      return;
-    }
-    let sumValue = 0;
-    let stars = this.getStarResponse;
-    sumValue += stars.starOne;
-    sumValue += stars.starTwo * 2;
-    sumValue += stars.starThree * 3;
-    sumValue += stars.starFour * 4;
-    sumValue += stars.starFive * 5;
-    let avgValue = sumValue / stars.numberStart;
-    avgValue *= 10;
-    avgValue = Math.ceil(avgValue);
-    this.starAvg = avgValue / 10;
+  getActiveStar(index: number, numberStar: number) {
+    return numberStar > (this.getStarResponse.startValues.length - 1 - index);
   }
 
   getDataStar() {
     this.productRatingClient.getStart(this.productAPI.id).subscribe(
       rp => {
         this.getStarResponse = rp;
-        this.getWidthRating();
-        this.getStarAvg();
+        console.log(this.getStarResponse)
       }
     )
 
   }
+
+  getWidth(value: number, isEnable: boolean) {
+    if (isEnable) {
+      return Math.ceil(value / this.getStarResponse.numberStart * 300);
+    }
+    return 300 - Math.ceil(value / this.getStarResponse.numberStart * 300);
+  }
+
+
 
   getDataPageReview(pageIndex: number) {
     this.productRatingClient.getProductRating(new GetProductRatingRequest(this.productAPI.id, pageIndex - 1, 5)).subscribe(

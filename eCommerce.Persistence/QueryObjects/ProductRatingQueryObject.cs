@@ -9,11 +9,11 @@ namespace eCommerce.Persistence.QueryObjects
 {
     public class ProductRatingQueryObject
     {
-        public class ContainsProductId : QueryObject<ProductRating>
+        public class BelongsToProduct : QueryObject<ProductRating>
         {
             private Guid _productId;
 
-            public ContainsProductId(Guid productId)
+            public BelongsToProduct(Guid productId)
             {
                 _productId = productId;
             }

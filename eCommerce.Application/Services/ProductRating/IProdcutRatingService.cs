@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Application.Services.ProductRating
 {
-    public interface IProdcutRatingService
+    public interface IProductRatingService
     {
         Task<PaginatedResult<ProductRatingReturnModels.ProductRating>> SearchProductRatingAsync(ProductRatingRequestModels.Search rq);
-        Task<Guid> CreateProductRating(ProductRatingRequestModels.Create rq);
-        Task<ProductRatingReturnModels.GetStarResponse> GetStar(Guid idProduct);
+        Task<Guid> CreateProductRatingAsync(ProductRatingRequestModels.Create rq);
+        Task<ProductRatingReturnModels.GetStarResponse> GetStarAsync(Guid idProduct);
     }
 }

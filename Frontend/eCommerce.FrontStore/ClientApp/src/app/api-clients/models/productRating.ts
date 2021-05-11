@@ -52,10 +52,16 @@ export class GetProductRatingRequest {
 }
 
 export class GetStarResponse {
+    productId: string;
+    productName: string;
     numberStart: number;
-    starOne: number;
-    starTwo: number;
-    starThree: number;
-    starFour: number;
-    starFive: number;
+    sumValue: number;
+    avgValue: number;
+    maxStart: number;
+    startValues: StartValue[];
+}
+
+export class StartValue {
+    numberStar: number;
+    value: number;
 }

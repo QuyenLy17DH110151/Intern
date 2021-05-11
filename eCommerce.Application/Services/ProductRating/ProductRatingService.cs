@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Application.Services.ProductRating
 {
-    public class ProductRatingService : IProdcutRatingService
+    public class ProductRatingService : IProductRatingService
     {
 
         private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ namespace eCommerce.Application.Services.ProductRating
             _productRepository = productRepository;
         }
 
-        public async Task<Guid> CreateProductRating(ProductRatingRequestModels.Create rq)
+        public async Task<Guid> CreateProductRatingAsync(ProductRatingRequestModels.Create rq)
         {
             var productRating = _mapper.Map<Domain.Entities.ProductRating>(rq);
 
@@ -48,7 +48,7 @@ namespace eCommerce.Application.Services.ProductRating
             return productRating.Id;
         }
 
-        public async Task<ProductRatingReturnModels.GetStarResponse> GetStar(Guid idProduct)
+        public async Task<ProductRatingReturnModels.GetStarResponse> GetStarAsync(Guid idProduct)
         {
             var productRatings = await _productRatingRepository.SearchAsync(
                 new SearchProductRating
@@ -56,13 +56,36 @@ namespace eCommerce.Application.Services.ProductRating
                     ProductId = idProduct,
                     Pagination = new Pagination { PageIndex = 0, ItemsPerPage = 1000 },
                 });
+
+            if (productRatings == null)
+            {
+                throw new EntityNotFound("productRating");
+            }
+
+            var product = await _productRepository.GetProductByIdAsync(idProduct);
+
+            if (product == null)
+            {
+                throw new EntityNotFound("product");
+            }
+
+            //init GetStarResponse 
             ProductRatingReturnModels.GetStarResponse getStarResponse = new ProductRatingReturnModels.GetStarResponse
             {
-                StarOne = 0,
-                StarTwo = 0,
-                StarThree = 0,
-                StarFour = 0,
-                StarFive = 0,
+                StartValues = new List<ProductRatingReturnModels.StartValue>()
+                {
+                    new ProductRatingReturnModels.StartValue{NumberStar = 1, Value =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 2, Value =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 3, Value =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 4, Value =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 5, Value =0}
+                },
+                MaxStart = 5,
+                NumberStart = 0,
+                ProductId = product.Id,
+                ProductName = product.Name,
+                SumValue = 0,
+                AvgValue = 0
             };
 
 

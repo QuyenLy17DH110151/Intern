@@ -33,51 +33,65 @@ namespace eCommerce.Application.Services.ProductRating
             }
         }
 
+        public class StartValue
+        {
+            public int NumberStar { get; set; }
+            public int Value { get; set; }
+        }
+
         public class GetStarResponse
         {
+
+            public Guid ProductId { get; set; }
+
+            public string ProductName { get; set; }
+
             public int NumberStart { get; set; }
-            public int StarOne { get; set; }
-            public int StarTwo { get; set; }
-            public int StarThree { get; set; }
-            public int StarFour { get; set; }
-            public int StarFive { get; set; }
+
+            public List<StartValue> StartValues { get; set; }
+
+            public int MaxStart { get; set; }
+
+            public int SumValue { get; set; }
+
+            public Double AvgValue { get; set; }
 
             public void AddStart(int numberStar)
             {
-                if (numberStar < 1 || numberStar > 5)
-                {
-                    return;
-                }
-
                 NumberStart++;
 
-                if (numberStar == 1)
+                //set SumValue And Avg Value
+                SumValue += numberStar;
+
+                AvgValue = (Double)10 * SumValue / NumberStart;
+                int avg = (int)AvgValue;
+                AvgValue = (Double)avg / 10;
+
+                //check MaxStar < numberStar to do add all element star integer with < numberStar
+                if (MaxStart < numberStar)
                 {
-                    StarOne++;
-                    return;
+                    for (; MaxStart <= numberStar; MaxStart++)
+                    {
+                        StartValues.Add(new StartValue { NumberStar = MaxStart, Value = 0 });
+                    }
+                    MaxStart = numberStar;
                 }
 
-                if (numberStar == 2)
+                //check star is exist in arry after increment 1 value
+                int i = 0;
+                foreach (StartValue startValue in StartValues)
                 {
-                    StarTwo++;
-                    return;
+                    if (startValue.NumberStar == numberStar)
+                    {
+                        ++StartValues[i].Value;
+                        return;
+                    }
+                    i++;
                 }
 
-                if (numberStar == 3)
-                {
-                    StarThree++;
-                    return;
-                }
-
-                if (numberStar == 4)
-                {
-                    StarFour++;
-                    return;
-                }
-
-                StarFive++;
 
             }
+
         }
     }
 }

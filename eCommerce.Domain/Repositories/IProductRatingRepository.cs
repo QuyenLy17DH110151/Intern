@@ -14,6 +14,5 @@ namespace eCommerce.Domain.Repositories
         Task<PaginatedResult<ProductRating>> SearchAsync(SearchProductRating searchProductRating);
 
         ProductRating Add(ProductRating productRating);
-
     }
 }

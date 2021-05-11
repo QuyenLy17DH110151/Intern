@@ -31,7 +31,7 @@ namespace eCommerce.Persistence.Repositories
             if (searchProductRating.ProductId != null)
             {
                 var productId = searchProductRating.ProductId;
-                productRatingsQuery.And(new ProductRatingQueryObject.ContainsProductId(productId));
+                productRatingsQuery.And(new ProductRatingQueryObject.BelongsToProduct(productId));
             }
 
             searchProductRating.Sort.ForEach(x => productRatingsQuery.AddOrderBy(x.FieldName, x.IsDescending));
