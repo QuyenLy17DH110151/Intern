@@ -25,6 +25,10 @@ export class ListUserComponent implements OnInit {
     }
 
     public settings = {
+        pager: {
+            display: true,
+            perPage: 5,
+        },
         delete: {
             confirmDelete: true,
         },
