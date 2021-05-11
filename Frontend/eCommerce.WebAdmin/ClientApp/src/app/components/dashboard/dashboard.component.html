@@ -22,8 +22,8 @@
                                     [CountTo]="sumEarnings"
                                     [from]="100000"
                                     [duration]="2"
-                                    >{{ sumEarnings }}</span
-                                ><small> This Month</small>
+                                    >{{ sumEarnings | currency }}</span
+                                >
                             </h3>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="media-body col-8">
-                            <span class="m-0">Products</span>
+                            <span class="m-0"> Total Products</span>
                             <h3 class="mb-0">
                                 <span
                                     class="counter"
@@ -51,7 +51,7 @@
                                     [from]="0"
                                     [duration]="2"
                                     >{{ countProduct }}</span
-                                ><small> This Month</small>
+                                >
                             </h3>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                                     [from]="0"
                                     [duration]="2"
                                     >{{ countComment }}</span
-                                ><small> This Month</small>
+                                >
                             </h3>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <div class="media-body col-8">
-                            <span class="m-0">New Users</span>
+                            <span class="m-0">Total Customers</span>
                             <h3 class="mb-0">
                                 <span
                                     class="counter"
@@ -107,7 +107,7 @@
                                     [from]="0"
                                     [duration]="2"
                                     >{{ countUser }}</span
-                                ><small> This Month</small>
+                                >
                             </h3>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                                         index as i
                                     "
                                 >
-                                    <td>{{ i }}</td>
+                                    <td>{{ i + 1 }}</td>
                                     <td class="digits">
                                         {{ order.product.name }}
                                     </td>
@@ -158,12 +158,16 @@
                                     <td class="digits">
                                         {{ order.quantity }}
                                     </td>
-                                    <td class="digits">$ {{ order.price }}</td>
+                                    <td class="digits">
+                                        {{ order.price | currency }}
+                                    </td>
                                     <td class="digits">
                                         {{ order.totalAmount }}
                                     </td>
                                     <td class="digits">
-                                        {{ order.createdDate }}
+                                        {{
+                                            order.createdDate | date: "fullDate"
+                                        }}
                                     </td>
                                     <td class="digits">
                                         {{ order.statusString }}
