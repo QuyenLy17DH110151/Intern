@@ -2,17 +2,28 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { CreateProductRatingRequest } from "./models/productRating";
+import { PagedList } from "./models/common.model";
+import { CreateProductRatingRequest, GetProductRatingRequest, GetStarResponse, ProductRatingResponse } from "./models/productRating";
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProductRatingClient {
-    private apiEndpoint = `${environment.apiUrl}/ProductRating`;
+    private apiEndpoint = `${environment.apiUrl}/api/ProductRating`;
+    private getStartApi = `${environment.apiUrl}/api/ProductRating/star`;
+
 
     constructor(private http: HttpClient) { }
 
     addProductRating(productRating: CreateProductRatingRequest): Observable<any> {
         return this.http.post<any>(this.apiEndpoint, productRating);
+    }
+
+    getProductRating(getProductRatingRequest: GetProductRatingRequest): Observable<PagedList<ProductRatingResponse>> {
+        return this.http.get<PagedList<ProductRatingResponse>>(`${this.apiEndpoint}?PageIndex= ${getProductRatingRequest.pageIndex}&PageSize=${getProductRatingRequest.pagesize}&ProductId=${getProductRatingRequest.productId}`);
+    }
+
+    getStart(idProduct: string): Observable<GetStarResponse> {
+        return this.http.get<GetStarResponse>(`${this.getStartApi}/${idProduct}`);
     }
 }

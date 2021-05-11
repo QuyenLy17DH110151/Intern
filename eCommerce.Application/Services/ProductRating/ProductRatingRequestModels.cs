@@ -16,6 +16,8 @@ namespace eCommerce.Application.Services.ProductRating
 
             public int PageSize { get; set; }
 
+            public Guid ProductId { get; set; }
+
         }
 
         public class Create
@@ -27,6 +29,8 @@ namespace eCommerce.Application.Services.ProductRating
             public string Email { get; set; }
 
             public string ReviewTitle { get; set; }
+
+            public int NumberStar { get; set; }
 
             public string ReviewContent { get; set; }
         }
@@ -53,6 +57,8 @@ namespace eCommerce.Application.Services.ProductRating
                 RuleFor(c => c.ReviewTitle).NotEmpty();
 
                 RuleFor(c => c.ReviewContent).NotEmpty();
+
+                RuleFor(c => c.NumberStar).NotEmpty();
             }
         }
     }

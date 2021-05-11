@@ -1,19 +1,61 @@
-export class CreateProductRatingRequest {
+class ProductRatingBase {
     fullName: string;
-
-    productId: number;
 
     email: string;
 
     reviewTitle: string;
 
+    numberStar: number
+
     reviewContent: string;
 
-    constructor(fullName: string, email: string, productId: number, reviewTitle: string, reviewContent: string) {
+}
+
+
+export class CreateProductRatingRequest extends ProductRatingBase {
+
+    productId: string;
+
+
+    constructor(fullName: string, email: string, productId: string, reviewTitle: string, reviewContent: string, numberStar: number) {
+        super();
         this.fullName = fullName;
         this.email = email;
         this.productId = productId;
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
+        this.numberStar = numberStar;
     }
+}
+
+export class ProductRatingResponse extends ProductRatingBase {
+    product: Product;
+    createDate: Date;
+}
+
+class Product {
+    id: string;
+    name: string;
+    price: number
+}
+
+export class GetProductRatingRequest {
+    productId: string;
+    pageIndex: number;
+    pagesize: number;
+
+    constructor(productId: string, pageIndex: number, pageSize: number) {
+        this.productId = productId;
+        this.pageIndex = pageIndex;
+        this.pagesize = pageSize;
+    }
+}
+
+export class GetStarResponse {
+    numberStart: number;
+    starOne: number;
+    starTwo: number;
+    starThree: number;
+    starFour: number;
+    starFive: number;
 }

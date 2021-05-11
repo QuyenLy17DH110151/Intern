@@ -10,5 +10,6 @@ namespace eCommerce.Application.Services.ProductRating
     {
         Task<PaginatedResult<ProductRatingReturnModels.ProductRating>> SearchProductRatingAsync(ProductRatingRequestModels.Search rq);
         Task<Guid> CreateProductRating(ProductRatingRequestModels.Create rq);
+        Task<ProductRatingReturnModels.GetStarResponse> GetStar(Guid idProduct);
     }
 }

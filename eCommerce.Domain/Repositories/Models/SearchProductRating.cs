@@ -7,6 +7,7 @@ namespace eCommerce.Domain.Repositories.Models
 {
     public class SearchProductRating
     {
+        public Guid ProductId { get; set; }
 
         public Pagination Pagination { get; set; } = new Pagination();
 

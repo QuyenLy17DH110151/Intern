@@ -3,6 +3,8 @@ using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
 using eCommerce.Domain.Shared.Models;
+using eCommerce.Persistence.QueryObjects;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,8 +27,15 @@ namespace eCommerce.Persistence.Repositories
         public async Task<PaginatedResult<ProductRating>> SearchAsync(SearchProductRating searchProductRating)
         {
             var productRatingsQuery = QueryObject<ProductRating>.Empty;
+
+            if (searchProductRating.ProductId != null)
+            {
+                var productId = searchProductRating.ProductId;
+                productRatingsQuery.And(new ProductRatingQueryObject.ContainsProductId(productId));
+            }
+
             searchProductRating.Sort.ForEach(x => productRatingsQuery.AddOrderBy(x.FieldName, x.IsDescending));
-            var result = await _genericRepo.SearchAsync(productRatingsQuery, searchProductRating.Pagination);
+            var result = await _genericRepo.SearchAsync(productRatingsQuery, searchProductRating.Pagination, x => x.Include(p => p.Product));
             return result;
         }
 
@@ -35,5 +44,7 @@ namespace eCommerce.Persistence.Repositories
             var rp = _genericRepo.Add(productRating);
             return rp;
         }
+
     }
+
 }
