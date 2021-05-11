@@ -27,6 +27,9 @@ export class DigitalListComponent implements OnInit {
     public settings = {
         actions: {
             position: 'left',
+            add: false,
+            delete: false,
+            edit: false,
         },
         columns: {
             photos: {
