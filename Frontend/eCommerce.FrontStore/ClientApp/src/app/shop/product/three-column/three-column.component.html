@@ -41,6 +41,19 @@
               <h6 class="product-title">product details</h6>
               <p>{{ productAPI?.description?.substring(0, 200) + "..." }}</p>
             </div>
+
+            <div class="border-product">
+              <div class="container" *ngFor="let l of labels">
+                <label>{{l.label}}</label>
+                <div class="label-option">
+                  <div *ngFor="let o of l.options">
+                    <label class="options-style">{{o}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+
             <!-- <div class="single-product-tables border-product detail-section">
               <table>
                 <tbody>
@@ -82,7 +95,7 @@
                   </li>
                 </ul>
                 <form class="d-inline-block">
-                  <button class="wishlist-btn">
+                  <button class="wishlist-btn" (click)="addToWishlist(product)">
                     <i class="fa fa-heart"></i><span class="title-font">Add To WishList</span>
                   </button>
                 </form>
@@ -132,333 +145,304 @@
               }}
             </h3> -->
             <h3>{{ productAPI?.price | currency }}</h3>
-            <div class="product-description border-product">
-              <h6 class="product-title size-text">
-                select size
-                <span>
-                  <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size chart</a>
-                </span>
-              </h6>
-              <!-- <div class="size-box" *ngIf="Size(product.variants).length">
-                <ul>
-                  <li
-                    [class.active]="selectedSize == size"
-                    *ngFor="let size of Size(product.variants)"
-                  >
-                    <a href="javascript:void(0)" (click)="selectSize(size)">{{
-                      size | titlecase
-                    }}</a>
-                  </li>
-                </ul>
-              </div> -->
-              <!-- <h5 class="avalibility" *ngIf="counter <= product.stock">-->
-              <!-- <h3>{{ productAPI.inventory.quantity }} piece available</h3> -->
+            <!-- <h3>{{ productAPI.inventory.quantity }} piece available</h3> -->
 
-              <div class="product-description border-product">
-                <h5 class="avalibility" *ngIf="counter <= productAPI?.inventory?.quantity">
-                  <h5>{{ productAPI.inventory.quantity }} piece available</h5>
-                  <span>In Stock</span>
-                </h5>
-                <h5 class="avalibility" *ngIf="counter > productAPI?.inventory?.quantity">
-                  <span>Out of Stock</span>
-                </h5>
-                <h6 class="product-title">quantity</h6>
-                <div class="qty-box">
-                  <div class="input-group">
-                    <span class="input-group-prepend">
-                      <button type="button" class="btn quantity-left-minus" data-type="minus" (click)="decrement()">
-                        <i class="ti-angle-left"></i>
-                      </button>
-                    </span>
-                    <input type="text" name="quantity" class="form-control input-number" [value]="counter" disabled />
-                    <span class="input-group-prepend">
-                      <button type="button" class="btn quantity-right-plus" data-type="plus" (click)="increment()">
-                        <i class="ti-angle-right"></i>
-                      </button>
-                    </span>
-                  </div>
+            <div class="product-description border-product">
+              <h5 class="avalibility" *ngIf="counter <= productAPI?.inventory?.quantity">
+                <h5>{{ productAPI.inventory.quantity }} piece available</h5>
+                <span>In Stock</span>
+              </h5>
+              <h5 class="avalibility" *ngIf="counter > productAPI?.inventory?.quantity">
+                <span>Out of Stock</span>
+              </h5>
+              <h6 class="product-title">quantity</h6>
+              <div class="qty-box">
+                <div class="input-group">
+                  <span class="input-group-prepend">
+                    <button type="button" class="btn quantity-left-minus" data-type="minus" (click)="decrement()">
+                      <i class="ti-angle-left"></i>
+                    </button>
+                  </span>
+                  <input type="text" name="quantity" class="form-control input-number" [value]="counter" disabled />
+                  <span class="input-group-prepend">
+                    <button type="button" class="btn quantity-right-plus" data-type="plus" (click)="increment()">
+                      <i class="ti-angle-right"></i>
+                    </button>
+                  </span>
                 </div>
               </div>
-              <div class="product-buttons">
-                <a href="javascrip:void(0)" class="btn btn-solid">add to cart</a>
-                <a href="javascrip:void(0)" class="btn btn-solid">buy now</a>
-              </div>
+            </div>
+            <div class="product-buttons">
+              <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock"
+                (click)="addToCart(product)">add to cart</a>
+              <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock"
+                (click)="buyNow(product)">buy now</a>
             </div>
           </div>
         </div>
-        <section class="tab-product m-0">
-          <div class="row">
-            <div class="col-sm-12 col-lg-12">
-              <ngb-tabset #tabSet="ngbTabset" [type]="'tabs'" class="nav-material">
-                <ngb-tab id="tab-0">
-                  <ng-template ngbTabTitle>Description</ng-template>
-                  <ng-template ngbTabContent>
-                    <p>{{ productAPI?.description }}</p>
-                  </ng-template>
-                </ngb-tab>
-                <ngb-tab id="tab-1">
-                  <ng-template ngbTabTitle>Review</ng-template>
-                  <ng-template ngbTabContent>
-                    <div class="div-content-start">
-                      <div>
-                        <div class="top-left-content-start">
-                          <p>{{starAvg}}</p>
-                        </div>
-                        <div class="top-right-content-start">
-                          <div>
-                            <i class="fa fa-star active-start"></i>
-                            <i class="fa fa-star active-start"></i>
-                            <i class="fa fa-star active-start"></i>
-                            <i class="fa fa-star active-start"></i>
-                            <i class="fa fa-star active-start"></i>
-                          </div>
-                          <br />
-                          <label>{{getStarResponse.numberStart}} nhận xét</label>
-                        </div>
+      </div>
+      <section class="tab-product m-0">
+        <div class="row">
+          <div class="col-sm-12 col-lg-12">
+            <ngb-tabset #tabSet="ngbTabset" [type]="'tabs'" class="nav-material">
+              <ngb-tab id="tab-0">
+                <ng-template ngbTabTitle>Description</ng-template>
+                <ng-template ngbTabContent>
+                  <p>{{ productAPI?.description }}</p>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab id="tab-1">
+                <ng-template ngbTabTitle>Review</ng-template>
+                <ng-template ngbTabContent>
+                  <div class="div-content-start">
+                    <div>
+                      <div class="top-left-content-start">
+                        <p>{{starAvg}}</p>
                       </div>
-                      <div class="bottom-content-start">
-                        <div class="row">
-                          <div class="col pr-3">
-                            <i class="fa fa-star active-start"></i>
-                            <i class="fa fa-star active-start"></i>
-                            <i class="fa fa-star active-start"></i>
-                            <i class="fa fa-star active-start"></i>
-                            <i class="fa fa-star active-start"></i>
-                          </div>
-                          <div class="col-6">
-                            <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[4].active}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[4].active==300}"></div>
-                            <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[4].nonActive}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[4].nonActive==300}"></div>
-                          </div>
-                          <div class="col">
-                            <label class="ml-5">{{getStarResponse.starFive}} nhận xét</label>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col pr-3">
-                            <div class="bottom-left-content-start">
-                              <i class="fa fa-star "></i>
-                              <i class="fa fa-star active-start"></i>
-                              <i class="fa fa-star active-start"></i>
-                              <i class="fa fa-star active-start"></i>
-                              <i class="fa fa-star active-start"></i>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[3].active}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[3].active==300}"></div>
-                            <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[3].nonActive}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[3].nonActive==300}"></div>
-                          </div>
-                          <div class="col">
-                            <label class="ml-5">{{getStarResponse.starFour}} nhận xét</label>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col pr-3">
-                            <div class="bottom-left-content-start">
-                              <i class="fa fa-star "></i>
-                              <i class="fa fa-star "></i>
-                              <i class="fa fa-star active-start"></i>
-                              <i class="fa fa-star active-start"></i>
-                              <i class="fa fa-star active-start"></i>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[2].active}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[2].active==300}"></div>
-                            <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[2].nonActive}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[2].nonActive==300}"></div>
-                          </div>
-                          <div class="col">
-                            <label class="ml-5">{{getStarResponse.starThree}} nhận xét</label>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col pr-3">
-                            <div class="bottom-left-content-start">
-                              <div class="bottom-left-content-start">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star active-start"></i>
-                                <i class="fa fa-star active-start"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[1].active}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[1].active==300}"></div>
-                            <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[1].nonActive}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[1].nonActive==300}"></div>
-                          </div>
-                          <div class="col">
-                            <label class="ml-5">{{getStarResponse.starTwo}} nhận xét</label>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col pr-3">
-                            <div class="bottom-left-content-start">
-                              <div class="bottom-left-content-start">
-                                <div class="bottom-left-content-start">
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star active-start"></i>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[0].active}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[0].active==300}"></div>
-                            <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[0].nonActive}"
-                              [ngClass]="{'rating-level-full' : withRatingCss[0].nonActive==300}"></div>
-
-                          </div>
-                          <div class="col">
-                            <label class="ml-5">{{getStarResponse.starOne}} nhận xét</label>
-                          </div>
-                        </div>
-
-
-                      </div>
-                    </div>
-
-                    <div class="mt-3 text-center">
-                      <div *ngFor='let review of reviews'>
+                      <div class="top-right-content-start">
                         <div>
-                          <div class="avata">
-                            <p class="text-avata">{{review.fullName.charAt(0)}}</p>
-                          </div>
-                          <div class="name-avata">
-                            <label class="fullname-avata">{{review.fullName}}</label>
-                            <br />
-                            <label class="email-avata">{{review.email}}</label>
-                          </div>
+                          <i class="fa fa-star active-start"></i>
+                          <i class="fa fa-star active-start"></i>
+                          <i class="fa fa-star active-start"></i>
+                          <i class="fa fa-star active-start"></i>
+                          <i class="fa fa-star active-start"></i>
                         </div>
                         <br />
-                        <div class="div-content-review">
-                          <div class="media-body">
-                            <div class="rating">
-                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(1,review.numberStar)}"></i>
-                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(2,review.numberStar)}"></i>
-                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(3,review.numberStar)}"></i>
-                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(4,review.numberStar)}"></i>
-                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(5,review.numberStar)}"></i>
+                        <label>{{getStarResponse.numberStart}} nhận xét</label>
+                      </div>
+                    </div>
+                    <div class="bottom-content-start">
+                      <div class="row">
+                        <div class="col pr-3">
+                          <i class="fa fa-star active-start"></i>
+                          <i class="fa fa-star active-start"></i>
+                          <i class="fa fa-star active-start"></i>
+                          <i class="fa fa-star active-start"></i>
+                          <i class="fa fa-star active-start"></i>
+                        </div>
+                        <div class="col-6">
+                          <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[4].active}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[4].active==300}"></div>
+                          <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[4].nonActive}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[4].nonActive==300}"></div>
+                        </div>
+                        <div class="col">
+                          <label class="ml-5">{{getStarResponse.starFive}} nhận xét</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col pr-3">
+                          <div class="bottom-left-content-start">
+                            <i class="fa fa-star "></i>
+                            <i class="fa fa-star active-start"></i>
+                            <i class="fa fa-star active-start"></i>
+                            <i class="fa fa-star active-start"></i>
+                            <i class="fa fa-star active-start"></i>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[3].active}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[3].active==300}"></div>
+                          <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[3].nonActive}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[3].nonActive==300}"></div>
+                        </div>
+                        <div class="col">
+                          <label class="ml-5">{{getStarResponse.starFour}} nhận xét</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col pr-3">
+                          <div class="bottom-left-content-start">
+                            <i class="fa fa-star "></i>
+                            <i class="fa fa-star "></i>
+                            <i class="fa fa-star active-start"></i>
+                            <i class="fa fa-star active-start"></i>
+                            <i class="fa fa-star active-start"></i>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[2].active}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[2].active==300}"></div>
+                          <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[2].nonActive}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[2].nonActive==300}"></div>
+                        </div>
+                        <div class="col">
+                          <label class="ml-5">{{getStarResponse.starThree}} nhận xét</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col pr-3">
+                          <div class="bottom-left-content-start">
+                            <div class="bottom-left-content-start">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star active-start"></i>
+                              <i class="fa fa-star active-start"></i>
                             </div>
                           </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[1].active}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[1].active==300}"></div>
+                          <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[1].nonActive}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[1].nonActive==300}"></div>
+                        </div>
+                        <div class="col">
+                          <label class="ml-5">{{getStarResponse.starTwo}} nhận xét</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col pr-3">
+                          <div class="bottom-left-content-start">
+                            <div class="bottom-left-content-start">
+                              <div class="bottom-left-content-start">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star active-start"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="rating-level-active" [ngStyle]="{'width.px': withRatingCss[0].active}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[0].active==300}"></div>
+                          <div class="rating-level" [ngStyle]="{'width.px': withRatingCss[0].nonActive}"
+                            [ngClass]="{'rating-level-full' : withRatingCss[0].nonActive==300}"></div>
+                        </div>
+                        <div class="col">
+                          <label class="ml-5">{{getStarResponse.starOne}} nhận xét</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <br />
+                    <div *ngFor='let review of reviews'>
+                      <div>
+                        <div class="avata">
+                          <p class="text-avata">{{review.fullName.charAt(0)}}</p>
+                        </div>
+                        <div class="name-avata">
+                          <label class="fullname-avata">{{review.fullName}}</label>
                           <br />
-                          <label class="title-review">{{review.reviewTitle}}</label>
-                          <br />
-                          <p class="content-review">{{review.reviewContent}}</p>
-                          <label class="time-review">{{review.createdDate | date:'shortDate'}}</label>
+                          <label class="email-avata">{{review.email}}</label>
                         </div>
                       </div>
                       <br />
-                      <ul class="pagination" *ngIf="getDisplayPagination()">
-                        <li [ngClass]="{'disabled-page':pager.currentPage === 1}">
-                          <a (click)="getDataPageReview(1)">First</a>
-                        </li>
-                        <li [ngClass]="{'disabled-page':pager.currentPage === 1}">
-                          <a (click)="getDataPageReview(pager.currentPage - 1)">Previous</a>
-                        </li>
-                        <li *ngFor="let page of pager.pages" [ngClass]="{'active-page':pager.currentPage === page}">
-                          <a (click)="getDataPageReview(page)">{{page}}</a>
-                        </li>
-                        <li [ngClass]="{'disabled-page':pager.currentPage === pager.totalPages}">
-                          <a (click)="getDataPageReview(pager.currentPage + 1)">Next</a>
-                        </li>
-                        <li [ngClass]="{'disabled-page':pager.currentPage === pager.totalPages}">
-                          <a (click)="getDataPageReview(pager.totalPages)">Last</a>
-                        </li>
-                      </ul>
-                      <div *ngIf="this.reviews.length==0">
-                        <label>This Product no review</label>
+                      <div class="div-content-review">
+                        <div class="media-body">
+                          <div class="rating">
+                            <i class="fa fa-star" [ngClass]="{'active-start' : isStar(1,review.numberStar)}"></i>
+                            <i class="fa fa-star" [ngClass]="{'active-start' : isStar(2,review.numberStar)}"></i>
+                            <i class="fa fa-star" [ngClass]="{'active-start' : isStar(3,review.numberStar)}"></i>
+                            <i class="fa fa-star" [ngClass]="{'active-start' : isStar(4,review.numberStar)}"></i>
+                            <i class="fa fa-star" [ngClass]="{'active-start' : isStar(5,review.numberStar)}"></i>
+                          </div>
+                        </div>
+                        <br />
+                        <label class="title-review">{{review.reviewTitle}}</label>
+                        <br />
+                        <p class="content-review">{{review.reviewContent}}</p>
+                        <label class="time-review">{{review.createdDate | date:'shortDate'}}</label>
                       </div>
                     </div>
-                  </ng-template>
-                </ngb-tab>
-                <ngb-tab id="tab-2">
-                  <ng-template ngbTabTitle>Write Review</ng-template>
-                  <ng-template ngbTabContent>
-                    <form class="theme-form">
-                      <div class="form-row">
-                        <div class="col-md-12">
-                          <div class="media">
-                            <label>Rating</label>
-                            <div class="media-body ml-3">
-                              <div class="rating">
-                                <i class="fa fa-star" [ngClass]="{'active-start' : isStar(1,-1)}"
-                                  (click)="rating(1)"></i>
-                                <i class="fa fa-star" [ngClass]="{'active-start' : isStar(2,-1)}"
-                                  (click)="rating(2)"></i>
-                                <i class="fa fa-star" [ngClass]="{'active-start' : isStar(3,-1)}"
-                                  (click)="rating(3)"></i>
-                                <i class="fa fa-star" [ngClass]="{'active-start' : isStar(4,-1)}"
-                                  (click)="rating(4)"></i>
-                                <i class="fa fa-star" [ngClass]="{'active-start' : isStar(5,-1)}"
-                                  (click)="rating(5)"></i>
-                              </div>
+                    <br />
+                    <ul class="pagination" *ngIf="getDisplayPagination()">
+                      <li [ngClass]="{'disabled-page':pager.currentPage === 1}">
+                        <a (click)="getDataPageReview(1)">First</a>
+                      </li>
+                      <li [ngClass]="{'disabled-page':pager.currentPage === 1}">
+                        <a (click)="getDataPageReview(pager.currentPage - 1)">Previous</a>
+                      </li>
+                      <li *ngFor="let page of pager.pages" [ngClass]="{'active-page':pager.currentPage === page}">
+                        <a (click)="getDataPageReview(page)">{{page}}</a>
+                      </li>
+                      <li [ngClass]="{'disabled-page':pager.currentPage === pager.totalPages}">
+                        <a (click)="getDataPageReview(pager.currentPage + 1)">Next</a>
+                      </li>
+                      <li [ngClass]="{'disabled-page':pager.currentPage === pager.totalPages}">
+                        <a (click)="getDataPageReview(pager.totalPages)">Last</a>
+                      </li>
+                    </ul>
+                    <div *ngIf="this.reviews.length==0">
+                      <label>This Product no review</label>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab id="tab-2">
+                <ng-template ngbTabTitle>Write Review</ng-template>
+                <ng-template ngbTabContent>
+                  <form class="theme-form">
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <div class="media">
+                          <label>Rating</label>
+                          <div class="media-body ml-3">
+                            <div class="rating">
+                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(1,-1)}" (click)="rating(1)"></i>
+                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(2,-1)}" (click)="rating(2)"></i>
+                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(3,-1)}" (click)="rating(3)"></i>
+                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(4,-1)}" (click)="rating(4)"></i>
+                              <i class="fa fa-star" [ngClass]="{'active-start' : isStar(5,-1)}" (click)="rating(5)"></i>
                             </div>
                           </div>
                         </div>
-                        <form [formGroup]="formReview" (submit)="submitReview()" class="col-md-12 form-row">
-                          <div class="col-md-6">
-                            <label for="name">Full Name</label>
-                            <input formControlName="fullName" type="text" class="form-control" id="name"
-                              placeholder="Enter Your name" required />
-                            <label class="message-erro" *ngIf="displayErro && formReviewValidators.fullName.errors">Full
-                              Name not null</label>
-                          </div>
-                          <div class="col-md-6">
-                            <label for="email">Email</label>
-                            <input formControlName="email" type="text" class="form-control" id="email"
-                              placeholder="Email" required />
-                            <label class="message-erro" *ngIf="displayErro && formReviewValidators.email.errors">Email
-                              not
-                              type email</label>
-                          </div>
-                          <div class="col-md-12">
-                            <label for="review">Review Title</label>
-                            <input formControlName="reviewTitle" type="text" class="form-control" id="review"
-                              placeholder="Enter your Review Subjects" required />
-                            <label class="message-erro"
-                              *ngIf="displayErro && formReviewValidators.reviewTitle.errors">Review Title not
-                              null</label>
-                          </div>
-                          <div class="col-md-12">
-                            <label for="review">Review Content</label>
-                            <textarea formControlName="reviewContent" class="form-control"
-                              placeholder="Wrire Your Testimonial Here" id="exampleFormControlTextarea1"
-                              rows="6"></textarea>
-                            <label class="message-erro"
-                              *ngIf="displayErro && formReviewValidators.reviewContent.errors">Review Content not
-                              null</label>
-                          </div>
-                          <div class="col-md-12">
-                            <button class="btn btn-solid" type="submit">
-                              Submit Your Review
-                            </button>
-                          </div>
-                        </form>
                       </div>
-                    </form>
-                  </ng-template>
-                </ngb-tab>
-              </ngb-tabset>
-            </div>
+                      <form [formGroup]="formReview" (submit)="submitReview()" class="col-md-12 form-row">
+                        <div class="col-md-6">
+                          <label for="name">Full Name</label>
+                          <input formControlName="fullName" type="text" class="form-control" id="name"
+                            placeholder="Enter Your name" required />
+                          <label class="message-erro" *ngIf="displayErro && formReviewValidators.fullName.errors">Full
+                            Name not null</label>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="email">Email</label>
+                          <input formControlName="email" type="text" class="form-control" id="email" placeholder="Email"
+                            required />
+                          <label class="message-erro" *ngIf="displayErro && formReviewValidators.email.errors">Email
+                            not
+                            type email</label>
+                        </div>
+                        <div class="col-md-12">
+                          <label for="review">Review Title</label>
+                          <input formControlName="reviewTitle" type="text" class="form-control" id="review"
+                            placeholder="Enter your Review Subjects" required />
+                          <label class="message-erro"
+                            *ngIf="displayErro && formReviewValidators.reviewTitle.errors">Review Title not
+                            null</label>
+                        </div>
+                        <div class="col-md-12">
+                          <label for="review">Review Content</label>
+                          <textarea formControlName="reviewContent" class="form-control"
+                            placeholder="Wrire Your Testimonial Here" id="exampleFormControlTextarea1"
+                            rows="6"></textarea>
+                          <label class="message-erro"
+                            *ngIf="displayErro && formReviewValidators.reviewContent.errors">Review Content not
+                            null</label>
+                        </div>
+                        <div class="col-md-12">
+                          <button class="btn btn-solid" type="submit">
+                            Submit Your Review
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </form>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
           </div>
-        </section>
-      </div>
-    </div>
-    <div *ngIf="productAPI">
-      <app-related-product [type]="productAPI?.category"></app-related-product>
+        </div>
+      </section>
     </div>
   </div>
+  <div *ngIf="productAPI">
+    <app-related-product [type]="productAPI?.category"></app-related-product>
+  </div>
 </section>
-<app-size-modal #sizeChart></app-size-modal>
-<!-- Section ends -->
+<app-size-modal></app-size-modal>

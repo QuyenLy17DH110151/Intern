@@ -102,7 +102,10 @@
   border-radius: 2px;
   cursor: pointer;
   min-width: 30px;
+  text-align: center;
 }
+
+
 
 .pagination{
   width: 100%;
@@ -192,3 +195,16 @@
 .rating-level-full{
   border-radius: 5px !important;
 }
+
+.options-style{
+  border: 1px solid gray;
+  margin-right: 5px;
+  border-radius: 4px;
+  padding: 3px 10px 3px 10px;
+  float: left;
+  width: auto;
+}
+
+.label-option {
+  height: 50px;
+} 

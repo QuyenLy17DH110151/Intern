@@ -12,6 +12,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ProductRatingClient } from "src/app/api-clients/productRating.client";
 import { CreateProductRatingRequest, GetProductRatingRequest, GetStarResponse, ProductRatingResponse } from "src/app/api-clients/models/productRating";
 import { PagerService } from "src/app/shared/services/page.service";
+import { Product } from "src/app/shared/classes/product";
+
 
 @Component({
   selector: "app-three-column",
@@ -29,6 +31,8 @@ export class ThreeColumnComponent implements OnInit {
   productId: string;
   public formReview: FormGroup;
   public displayErro: boolean = false;
+  public labels: string[] = [];
+  public product: Product = {};
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
   @ViewChild('tabSet', { static: false }) tabSet;
   pages: string[] = ["tab-0", "tab-1", "tab-2"];
@@ -171,6 +175,7 @@ export class ThreeColumnComponent implements OnInit {
         }
       )
     }
+    console.log('this.withRatingCss'); console.log(this.withRatingCss);
   }
 
   getStarAvg() {
@@ -312,17 +317,63 @@ export class ThreeColumnComponent implements OnInit {
     this.productService.addToWishlist(product);
   }
 
+  goToReview(): void {
+    this.tabSet.select(this.pages[1]);
+  }
+
+
   getProduct(productId: string) {
     this.productService.getProductDetail(productId).subscribe((response) => {
       this.productAPI = response;
+      let labels: any[] = [];
+      let category = this.productAPI.category;
+
+      if (category && category.c1Lable) {
+        //options.push(category.c1Options.split(/[ ,]+/))
+        labels.push(
+          {
+            label: category.c1Lable,
+            options: category.c1Options.split(/[ ,]+/)
+          }
+        )
+      }
+      if (category && category.c2Lable) {
+        labels.push(
+          {
+            label: category.c2Lable,
+            options: category.c2Options.split(/[ ,]+/)
+          }
+        )
+
+      }
+      if (category && category.c3Lable) {
+        labels.push(
+          {
+            label: category.c3Lable,
+            options: category.c3Options.split(/[ ,]+/)
+          }
+        )
+      }
+      if (category && category.c4Lable) {
+        labels.push(
+          {
+            label: category.c4Lable,
+            options: category.c4Options.split(/[ ,]+/)
+          }
+        )
+      }
+      if (category && category.c5Lable) {
+        labels.push(
+          {
+            label: category.c5Lable,
+            options: category.c5Options.split(/[ ,]+/)
+          }
+        )
+      }
+      this.labels = labels;
       this.getDataPageReview(1);
       this.getDataStar();
     });
   }
 
-
-
-  goToReview(): void {
-    this.tabSet.select(this.pages[1]);
-  }
 }
