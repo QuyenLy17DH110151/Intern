@@ -28,7 +28,7 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> CreateProductRarting([FromQuery] ProductRatingRequestModels.Create rq)
+        public async Task<ActionResult<Guid>> CreateProductRarting([FromBody] ProductRatingRequestModels.Create rq)
         {
             var id = await _prodcutRatingService.CreateProductRating(rq);
             return id;

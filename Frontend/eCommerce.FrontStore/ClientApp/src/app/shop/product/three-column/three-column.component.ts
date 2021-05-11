@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, Renderer2, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   ProductDetailsMainSlider,
@@ -42,12 +42,14 @@ export class ThreeColumnComponent implements OnInit {
   public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
   public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
   public withRatingCss: any[] = [];
-  public starAvg: number = 0
+  public starAvg: number = 0;
+  public isStartToTopReview: boolean = false;
   pager: any = {
     pages: []
   };
 
   constructor(
+    private renderer: Renderer2,
     private productRatingClient: ProductRatingClient,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -275,6 +277,17 @@ export class ThreeColumnComponent implements OnInit {
     // this.allItems = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 10]
     // // get current page of items
     // this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+
+    //set layout go to top review
+    if (this.isStartToTopReview) {
+      try {
+        const errorField = this.renderer.selectRootElement('.first-review');
+        errorField.scrollIntoView();
+      } catch (err) {
+
+      }
+    }
+    this.isStartToTopReview = true;
 
   }
 
