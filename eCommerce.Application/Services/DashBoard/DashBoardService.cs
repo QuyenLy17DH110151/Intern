@@ -54,5 +54,15 @@ namespace eCommerce.Application.Services.DashBoard
                 OwnerId = _appContext.Principal.UserId
             });
         }
+
+        public async Task<string> StatisticsCategories()
+        {
+            return await _orderRepository.StatisticsCategories(new SearchOrderModel
+            {
+                Role = _appContext.Principal.Role,
+                OwnerId = _appContext.Principal.UserId,
+                OwnerUserName = _appContext.Principal.Username
+            });
+        }
     }
 }

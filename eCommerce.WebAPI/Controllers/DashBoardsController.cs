@@ -64,5 +64,16 @@ namespace eCommerce.WebAPI.Controllers
             var countUsers = await _dashBoardService.GetCountUserAsync();
             return Ok(countUsers);
         }
+
+        [HttpGet("GetCategory")]
+        public async Task<ActionResult> GetCategoryAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var result = await _dashBoardService.StatisticsCategories();
+            return Ok(result);
+        }
     }
 }

@@ -7,6 +7,7 @@ import { DashboardClient } from 'src/app/api-clients/Dashboard.client';
 import { SearchRequestOrder } from 'src/app/api-clients/models/order.model';
 import { OrderViewModel } from '../orders/order.viewModel';
 import * as HighCharts from 'highcharts';
+import { resolveModuleNameFromCache } from 'typescript';
 
 @Component({
     selector: 'app-dashboard',
@@ -20,6 +21,7 @@ export class DashboardComponent implements OnInit {
     orders: Order[];
     header = [];
     orderListVM: OrderViewModel[] = [];
+    categories = [];
     constructor(
         private _dashBoard: DashboardClient,
         private _orderClient: OrderClient
@@ -37,7 +39,7 @@ export class DashboardComponent implements OnInit {
         this.getCountUser();
         this.getCountProduct();
         this.getLastedOrder();
-        this.pieChartBrowser();
+        this.getCategories();
         // this.createChart();
         // this._dashBoard.getSumEarnings();
     }
@@ -76,6 +78,15 @@ export class DashboardComponent implements OnInit {
         });
     }
 
+    getCategories() {
+        this._dashBoard.getCountCategory().subscribe((res) => {
+            console.log('cate', res, 'type', typeof res);
+            this.categories.concat(res);
+            this.pieChartBrowser(res);
+            console.log(res);
+        });
+    }
+
     getLastedOrder() {
         // Get 5 Orders Lastest
         this.rq.orderBy = 'createdDate|true';
@@ -90,7 +101,7 @@ export class DashboardComponent implements OnInit {
         });
     }
 
-    pieChartBrowser() {
+    pieChartBrowser(response) {
         HighCharts.chart('pieChart', {
             chart: {
                 plotBackgroundColor: null,
@@ -119,46 +130,7 @@ export class DashboardComponent implements OnInit {
                     name: 'Brands',
                     colorByPoint: true,
                     type: undefined,
-                    data: [
-                        {
-                            name: 'Chrome',
-                            y: 61.41,
-                            sliced: true,
-                            selected: true,
-                        },
-                        {
-                            name: 'Internet Explorer',
-                            y: 11.84,
-                        },
-                        {
-                            name: 'Firefox',
-                            y: 10.85,
-                        },
-                        {
-                            name: 'Edge',
-                            y: 4.67,
-                        },
-                        {
-                            name: 'Safari',
-                            y: 4.18,
-                        },
-                        {
-                            name: 'Sogou Explorer',
-                            y: 1.64,
-                        },
-                        {
-                            name: 'Opera',
-                            y: 1.6,
-                        },
-                        {
-                            name: 'QQ',
-                            y: 1.2,
-                        },
-                        {
-                            name: 'Other',
-                            y: 2.61,
-                        },
-                    ],
+                    data: response,
                 },
             ],
         });

@@ -11,6 +11,7 @@ export class DashboardClient {
     private apiCountProduct = `${environment.apiUrl}/DashBoards/CountProduct`;
     private apiCountComment = `${environment.apiUrl}/DashBoards/CountComment`;
     private apiGetCountUser = `${environment.apiUrl}/DashBoards/GetCountUser`;
+    private apiGetCategory = `${environment.apiUrl}/DashBoards/GetCategory`;
 
     constructor(private http: HttpClient) {}
 
@@ -28,5 +29,9 @@ export class DashboardClient {
 
     getCountUser() {
         return this.http.get(this.apiGetCountUser);
+    }
+
+    getCountCategory() {
+        return this.http.get(this.apiGetCategory);
     }
 }

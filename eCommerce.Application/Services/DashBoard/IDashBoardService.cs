@@ -30,5 +30,11 @@ namespace eCommerce.Application.Services.DashBoard
         /// </summary>
         /// <returns></returns>
         Task<int> GetCountProductAsync();
+
+        /// <summary>
+        /// Statistics Categories
+        /// </summary>
+        /// <returns></returns>
+        Task<string> StatisticsCategories();
     }
 }

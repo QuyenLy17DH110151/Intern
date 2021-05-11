@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace eCommerce.Persistence.Repositories
 {
@@ -165,7 +166,36 @@ namespace eCommerce.Persistence.Repositories
 
             var result = await _genericRepo.SearchAsync(queryObject);
 
-            return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o=>o.Price);
+            return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o => o.Price);
         }
+
+        public async Task<string> StatisticsCategories(SearchOrderModel rq)
+        {
+            IQueryable<object> result;
+            if (rq.Role != UserRoles.Admin)
+            {
+                result = from p in _dbContext.Set<Product>()
+                         join pc in _dbContext.Set<ProductCategory>()
+                         on p.CategoryId equals pc.Id
+                         join o in _dbContext.Set<Order>()
+                         on p.Id equals o.ProductId
+                         where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         group o by o.Product.Category.Name into g
+                         select new { name = g.Key, y = g.Sum(o => o.Quantity) };
+            }
+            else
+            {
+                result = from p in _dbContext.Set<Product>()
+                         join pc in _dbContext.Set<ProductCategory>()
+                         on p.CategoryId equals pc.Id
+                         join o in _dbContext.Set<Order>()
+                         on p.Id equals o.ProductId
+                         group o by o.Product.Category.Name into g
+                         select new { name = g.Key, y = g.Sum(o => o.Quantity) };
+            }
+            var json = JsonSerializer.Serialize(await result.ToListAsync());
+            return json;
+        }
+
     }
 }
