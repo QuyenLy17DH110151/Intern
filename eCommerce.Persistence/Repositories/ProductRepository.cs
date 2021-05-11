@@ -172,9 +172,19 @@ namespace eCommerce.Persistence.Repositories
             return result;
         }
 
-        public async Task<int> CountProductAsync()
+
+        public async Task<int> CountProductAsync(SearchProductModel rq)
         {
-            var products=  await _genericRepo.GetAllAsync();
+            var queryObject = QueryObject<Product>.Empty;
+
+            // filter by Owner
+            if (!string.IsNullOrWhiteSpace(rq.OwnerName))
+            {
+                var keyword = rq.OwnerName;
+                queryObject.And(new ProductQueryObjects.FilterBySeller(keyword));
+            }
+
+            var products = await _genericRepo.SearchAsync(queryObject);
             return products.Count();
         }
     }

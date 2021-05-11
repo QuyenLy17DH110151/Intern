@@ -135,6 +135,37 @@ namespace eCommerce.Persistence.Repositories
             return true;
         }
 
+        public async Task<int> GetCountUsers(SearchOrderModel rq)
+        {
+            var queryObject = QueryObject<Order>.Empty;
 
+            //Filter by current user name
+            if (!string.IsNullOrWhiteSpace(rq.OwnerUserName) && rq.Role != UserRoles.Admin)
+            {
+                var userName = rq.OwnerUserName;
+                queryObject.And(new OrderQueryObject.FilterByCurrentUserName(userName));
+            }
+
+            var result = await _genericRepo.SearchAsync(queryObject);
+            return result.Where(o => o.Status == OrderStatuses.Approved)
+                .Select(o => o.BuyerName).Distinct()
+                .Count();
+        }
+
+        public async Task<decimal> GetSumEarningsAsync(SearchOrderModel rq)
+        {
+            var queryObject = QueryObject<Order>.Empty;
+
+            //Filter by current user name
+            if (!string.IsNullOrWhiteSpace(rq.OwnerUserName) && rq.Role != UserRoles.Admin)
+            {
+                var userName = rq.OwnerUserName;
+                queryObject.And(new OrderQueryObject.FilterByCurrentUserName(userName));
+            }
+
+            var result = await _genericRepo.SearchAsync(queryObject);
+
+            return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o=>o.Price);
+        }
     }
 }
