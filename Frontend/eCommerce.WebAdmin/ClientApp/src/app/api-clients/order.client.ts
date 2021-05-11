@@ -19,10 +19,10 @@ export class OrderClient {
     }
 
     acceptOrder(id: string) {
-        return this.httpClient.post(`${environment.apiUrl}/Orders/Accept_Order/${id}`, id);
+        return this.httpClient.post(`${environment.apiUrl}/Orders/${id}/accept`, id);
     }
 
     rejectOrder(id: string) {
-        return this.httpClient.post(`${environment.apiUrl}/Orders/Reject_Order/${id}`, id);
+        return this.httpClient.post(`${environment.apiUrl}/Orders/${id}/reject`, id);
     }
 }

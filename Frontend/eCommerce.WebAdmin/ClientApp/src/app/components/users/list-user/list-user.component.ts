@@ -36,12 +36,9 @@ export class ListUserComponent implements OnInit {
             confirmSave: true,
         },
         actions: {
-            custom: [
-                {
-                    name: 'Button',
-                    title: 'Button ',
-                },
-            ],
+            custom: false,
+            delete: false,
+            add: false,
         },
         columns: {
             username: {
@@ -81,6 +78,12 @@ export class ListUserComponent implements OnInit {
             },
             lastUpdated: {
                 title: 'Last Updated',
+                valuePrepareFunction: (lastUpdated) => {
+                    return this.datePipe.transform(
+                        new Date(lastUpdated),
+                        'dd MMM yyyy'
+                    );
+                },
             },
             lastUpdatedBy: {
                 title: 'Last Updated By',

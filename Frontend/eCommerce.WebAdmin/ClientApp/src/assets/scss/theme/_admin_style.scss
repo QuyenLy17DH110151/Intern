@@ -311,6 +311,14 @@ ng2-smart-table {
         font-size: 19px;
       }
     }
+
+    .ng2-smart-action-custom-custom{
+      &:before {
+        content: "\f00c";
+        color: #4466f2;
+      }
+    }
+
     .ng2-smart-action-edit-edit {
       &:before {
         content: "\f040";
@@ -319,7 +327,7 @@ ng2-smart-table {
     }
     .ng2-smart-action-edit-save {
       &:before {
-        content: "\f021";
+        content: "\f0c7";
         color: #4466f2;
       }
     }
