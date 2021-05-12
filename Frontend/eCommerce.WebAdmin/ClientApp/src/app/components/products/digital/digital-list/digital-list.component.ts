@@ -13,7 +13,7 @@ export class DigitalListComponent implements OnInit {
     public product_list: any;
     rq: SearchRequestProduct = {};
 
-    constructor(protected productClient: ProductClient, private router: Router) {}
+    constructor(protected productClient: ProductClient, private router: Router) { }
 
     async loadData() {
         let products = await this.productClient
@@ -25,8 +25,15 @@ export class DigitalListComponent implements OnInit {
     }
 
     public settings = {
+        pager: {
+            display: true,
+            perPage: 5,
+        },
         actions: {
-            position: 'right',
+            position: 'left',
+            add: false,
+            delete: false,
+            edit: false,
         },
         columns: {
             photos: {

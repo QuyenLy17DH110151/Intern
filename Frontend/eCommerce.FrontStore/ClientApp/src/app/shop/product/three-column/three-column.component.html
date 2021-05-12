@@ -41,6 +41,19 @@
               <h6 class="product-title">product details</h6>
               <p>{{ productAPI?.description?.substring(0, 200) + "..." }}</p>
             </div>
+
+            <div class="border-product">
+              <div class="container" *ngFor="let l of labels">
+                <label>{{l.label}}</label>
+                <div class="label-option">
+                  <div *ngFor="let o of l.options">
+                    <label class="options-style">{{o}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+
             <!-- <div class="single-product-tables border-product detail-section">
               <table>
                 <tbody>

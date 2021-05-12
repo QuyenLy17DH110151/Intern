@@ -60,8 +60,8 @@ export class NavService {
 		{
 			title: 'Order', icon: 'box', type: 'sub', active: false, children: [
 				{ path: '/orders/list-order', title: 'Order List', type: 'link' },
-				{ path: '/orders/details-order', title: 'Order Details', type: 'link' },
-				{ path: '/orders/status-order', title: 'Order Status', type: 'link' },
+				// { path: '/orders/details-order', title: 'Order Details', type: 'link' },
+				// { path: '/orders/status-order', title: 'Order Status', type: 'link' },
 			]
 		},
 		{

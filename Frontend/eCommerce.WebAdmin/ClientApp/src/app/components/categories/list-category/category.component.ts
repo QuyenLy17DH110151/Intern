@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Category } from 'src/app/api-clients/models/category.model';
 import { CategoryClient } from 'src/app/api-clients/category.client';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category',
@@ -14,7 +15,7 @@ export class CategoryComponent implements OnInit {
 
   category: Category;
 
-  constructor(protected categoryClient: CategoryClient, private toastr: ToastrService) {
+  constructor(protected categoryClient: CategoryClient, private toastr: ToastrService, private router: Router) {
 
 
   }
@@ -44,9 +45,18 @@ export class CategoryComponent implements OnInit {
     })
   }
 
+  onCategoryRowSelected(event) {
+    let categoryId = event.data.id;
+    this.router.navigate(['/categories/details', categoryId]);
+  }
+
 
 
   public settings = {
+    pager: {
+      display: true,
+      perPage: 5,
+    },
     delete: {
       confirmDelete: true,
     },

@@ -27,19 +27,17 @@ export class ListOrderComponent implements OnInit {
     ) { }
 
     public settings = {
+        pager: {
+            display: true,
+            perPage: 5,
+        },
         delete: {
             confirmDelete: true,
         },
-        edit: {
-            confirmSave: true,
-        },
         actions: {
-            custom: [
-                {
-                    name: 'Button',
-                    title: 'Button ',
-                },
-            ],
+            add:false,
+            edit: false,
+            custom: [{ name: 'ourCustomAction' }],
         },
         columns: {
             index: {
@@ -100,17 +98,6 @@ export class ListOrderComponent implements OnInit {
             },
             statusString: {
                 title: 'statusString',
-                editor: {
-                    type: 'list',
-                    config: {
-                        selectText: 'Select',
-                        list: [
-                            { value: 0, title: 'New' },
-                            { value: 1, title: 'Approved' },
-                            { value: 2, title: 'Cancelled' },
-                        ],
-                    },
-                },
             },
         },
     };
@@ -134,24 +121,13 @@ export class ListOrderComponent implements OnInit {
 
     }
 
-    async onEditConfirm(event) {
-        if (window.confirm('Are you sure you want to save?')) {
-            event.confirm.resolve(event.newData);
-            console.log('event', event.newData);
-            switch (event.newData.statusString) {
-                case '0':
-                    break;
-                case '1':
-                    await this.AcceptOrder(event.newData.id);
-                    break;
-                case '2':
-                    await this.RejectOrder(event.newData.id);
-                    break;
-            }
-            this.loadData();
-        } else {
-            event.confirm.reject();
-        }
+    async onDeleteConfirm(event) {
+        this.RejectOrder(event.data.id);
+    }
+
+
+    async onCustomAction(event) {
+        this.AcceptOrder(event.data.id);
     }
 
     AcceptOrder(id: string) {
@@ -163,6 +139,7 @@ export class ListOrderComponent implements OnInit {
             })
 
     }
+
     RejectOrder(id: string) {
         this.orderClient
             .rejectOrder(id)
@@ -171,4 +148,6 @@ export class ListOrderComponent implements OnInit {
                 this.loadData();
             })
     }
+
+
 }
