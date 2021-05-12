@@ -197,5 +197,32 @@ namespace eCommerce.Persistence.Repositories
             return json;
         }
 
+        public async Task<string> StatisticsProducts(SearchOrderModel rq)
+        {
+            IQueryable<object> result;
+            if (rq.Role != UserRoles.Admin)
+            {
+                result = from p in _dbContext.Set<Product>()
+                         join pc in _dbContext.Set<ProductCategory>()
+                         on p.CategoryId equals pc.Id
+                         join o in _dbContext.Set<Order>()
+                         on p.Id equals o.ProductId
+                         where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         group o by o.Product.Name into g
+                         select new { name = g.Key, y = g.Sum(o => o.Quantity) };
+            }
+            else
+            {
+                result = from p in _dbContext.Set<Product>()
+                         join pc in _dbContext.Set<ProductCategory>()
+                         on p.CategoryId equals pc.Id
+                         join o in _dbContext.Set<Order>()
+                         on p.Id equals o.ProductId
+                         group o by o.Product.Name into g
+                         select new { name = g.Key, y = g.Sum(o => o.Quantity) };
+            }
+            var json = JsonSerializer.Serialize(await result.ToListAsync());
+            return json;
+        }
     }
 }

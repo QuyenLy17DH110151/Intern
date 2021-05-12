@@ -12,7 +12,7 @@ namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class DashBoardsController : ControllerBase
     {
         private readonly IDashBoardService _dashBoardService;
@@ -73,6 +73,17 @@ namespace eCommerce.WebAPI.Controllers
                 return BadRequest();
             }
             var result = await _dashBoardService.StatisticsCategories();
+            return Ok(result);
+        }
+
+        [HttpGet("GetProducts")]
+        public async Task<ActionResult> GetGetProductsAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var result = await _dashBoardService.StatisticsProducts();
             return Ok(result);
         }
     }

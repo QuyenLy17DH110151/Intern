@@ -12,7 +12,7 @@ export class DashboardClient {
     private apiCountComment = `${environment.apiUrl}/DashBoards/CountComment`;
     private apiGetCountUser = `${environment.apiUrl}/DashBoards/GetCountUser`;
     private apiGetCategory = `${environment.apiUrl}/DashBoards/GetCategory`;
-
+    private apiGetProducts = `${environment.apiUrl}/DashBoards/GetProducts`;
     constructor(private http: HttpClient) {}
 
     getSumEarnings() {
@@ -31,7 +31,11 @@ export class DashboardClient {
         return this.http.get(this.apiGetCountUser);
     }
 
-    getCountCategory() {
+    getStatisticsCategory() {
         return this.http.get(this.apiGetCategory);
+    }
+
+    getStatisticsProduct() {
+        return this.http.get(this.apiGetProducts);
     }
 }

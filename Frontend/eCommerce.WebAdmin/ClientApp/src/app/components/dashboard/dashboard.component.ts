@@ -21,7 +21,6 @@ export class DashboardComponent implements OnInit {
     orders: Order[];
     header = [];
     orderListVM: OrderViewModel[] = [];
-    categories = [];
     constructor(
         private _dashBoard: DashboardClient,
         private _orderClient: OrderClient
@@ -40,6 +39,7 @@ export class DashboardComponent implements OnInit {
         this.getCountProduct();
         this.getLastedOrder();
         this.getCategories();
+        this.getProducts();
         // this.createChart();
         // this._dashBoard.getSumEarnings();
     }
@@ -79,11 +79,15 @@ export class DashboardComponent implements OnInit {
     }
 
     getCategories() {
-        this._dashBoard.getCountCategory().subscribe((res) => {
-            console.log('cate', res, 'type', typeof res);
-            this.categories.concat(res);
+        this._dashBoard.getStatisticsCategory().subscribe((res) => {
             this.pieChartBrowser(res);
-            console.log(res);
+        });
+    }
+
+    getProducts() {
+        this._dashBoard.getStatisticsProduct().subscribe((res) => {
+            console.log('res test', res);
+            this.barChartBrowser(res);
         });
     }
 
@@ -110,7 +114,7 @@ export class DashboardComponent implements OnInit {
                 type: 'pie',
             },
             title: {
-                text: 'Best Selling Categories',
+                text: 'Statistics Categories',
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
@@ -128,6 +132,44 @@ export class DashboardComponent implements OnInit {
             series: [
                 {
                     name: 'Brands',
+                    colorByPoint: true,
+                    type: undefined,
+                    data: response,
+                },
+            ],
+        });
+    }
+
+    barChartBrowser(response) {
+        HighCharts.chart('barChart', {
+            chart: {
+                type: 'column',
+            },
+            title: {
+                text: 'Statistics Products',
+            },
+            tooltip: {
+                pointFormat: '{point.y:.1f}</b>',
+            },
+            xAxis: {
+                type: 'category',
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                    },
+                },
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Quantity',
+                },
+            },
+            series: [
+                {
+                    name: 'Product Name',
                     colorByPoint: true,
                     type: undefined,
                     data: response,

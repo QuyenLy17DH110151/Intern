@@ -35,5 +35,12 @@ namespace eCommerce.Domain.Repositories
         /// <param name="rq"></param>
         /// <returns></returns>
         Task<string> StatisticsCategories(SearchOrderModel rq);
+
+        /// <summary>
+        /// Statistics Products
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<string> StatisticsProducts(SearchOrderModel rq);
     }
 }
