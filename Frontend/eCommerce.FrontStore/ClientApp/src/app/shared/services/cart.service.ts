@@ -1,113 +1,110 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from '../../api-clients/models/product.model';
-
-const state = {
-    cart: JSON.parse(localStorage['cartItems'] || '[]'),
-};
 @Injectable({
     providedIn: 'root',
 })
 export class CartService {
+    public Currency = {
+        name: 'VND',
+        currency: 'VND',
+        price: 1,
+    };
+    public DELIVERY_PRICE = 9999;
     public OpenCart: boolean = false;
+    public cartItems: Product[] = JSON.parse(localStorage['cartItems'] || '[]');
+    private productSubject = new BehaviorSubject<Product[]>(this.cartItems);
+
     constructor(private http: HttpClient, private toastrService: ToastrService) {}
 
-    // Get Cart Items
-    public get cartItems(): Observable<Product[]> {
-        const itemsStream = new Observable((observer) => {
-            observer.next(state.cart);
-            observer.complete();
-        });
-        return <Observable<Product[]>>itemsStream;
+    subscribe(observer) {
+        this.cartItems = JSON.parse(localStorage['cartItems'] || '[]');
+        this.productSubject.next(this.cartItems);
+        return this.productSubject.subscribe(observer);
     }
-    
-    // Add to Cart
-    public addToCart(product: Product): any {
-        const cartItem = state.cart.find((item) => item.id === product.id);
-        const qty = product.quantity ? product.quantity : 1;
-        const items = cartItem ? cartItem : product;
-        const stock = this.calculateStockCounts(items, qty);
 
-        if (!stock) return false;
+    setCartItems(products) {
+        this.cartItems.push(...products);
+        this.productSubject.next(products);
+    }
+
+    // Add to Cart
+    public addToCart(product: Product): void {
+        const cartItem = this.cartItems.find((item) => item.id === product.id);
+        product.quantity = product.quantity ? product.quantity : 1;
 
         if (cartItem) {
-            cartItem.quantity += qty;
+            cartItem.quantity += product.quantity;
         } else {
-            state.cart.push({
-                ...product,
-                quantity: qty,
-            });
+            this.cartItems.push(product);
         }
 
+        this.productSubject.next(this.cartItems);
         this.OpenCart = true; // If we use cart variation modal
-        localStorage.setItem('cartItems', JSON.stringify(state.cart));
-        return true;
+        localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+    }
+
+    // Remove Cart items
+    public removeCartItem(product: Product): any {
+        const index = this.cartItems.indexOf(product);
+        this.cartItems.splice(index, 1);
+        localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+        // update streams
+        this.productSubject.next(this.cartItems);
+    }
+
+    // remove all the  items added to the cart
+    removeAllCartItem() {
+        this.cartItems.length = 0;
+        this.productSubject.next(this.cartItems);
+    }
+
+    getTotalPrice() {
+        let total = 0;
+        this.cartItems.forEach((item) => {
+            total += item.price * item.quantity;
+        });
+
+        return total;
+    }
+
+    cartTotalAmount(deliveryPrice, discountPercent) {
+        const shipFee = deliveryPrice ? deliveryPrice : this.DELIVERY_PRICE;
+        const totalPrice = this.getTotalPrice();
+        return totalPrice + shipFee - (totalPrice * discountPercent) / 100;
     }
 
     // Update Cart Quantity
     public updateCartQuantity(product: Product, quantity: number): Product | boolean {
-        return state.cart.find((items, index) => {
+        return this.cartItems.find((items, index) => {
             if (items.id === product.id) {
-                const qty = state.cart[index].quantity + quantity;
-                const stock = this.calculateStockCounts(state.cart[index], quantity);
-                if (qty !== 0 && stock) {
-                    state.cart[index].quantity = qty;  //=>******
+                const qty = this.cartItems[index].quantity + quantity;
+
+                if (qty !== 0) {
+                    this.cartItems[index].quantity = qty;
                 }
-                localStorage.setItem('cartItems', JSON.stringify(state.cart));
+
+                localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+                this.productSubject.next(this.cartItems);
                 return true;
             }
         });
     }
 
-    // Calculate Stock Counts
-    public calculateStockCounts(product, quantity) {
-        const qty = product.quantity + quantity;
-        const stock = product.stock;
-        if (stock < qty || stock == 0) {
-            this.toastrService.error(
-                'You can not add more items than available. In stock ' + stock + ' items.'
-            );
-            return false;
-        }
-        return true;
+    public get itemNumber(): number {
+        let itemNumber = 0;
+        this.cartItems.forEach((item) => {
+            itemNumber += item.quantity;
+        });
+
+        return itemNumber;
     }
 
-    // Remove Cart items
-    public removeCartItem(product: Product): any {
-        const index = state.cart.indexOf(product);
-        state.cart.splice(index, 1);
-        localStorage.setItem('cartItems', JSON.stringify(state.cart));
-        return true;
-    }
-
-    // Total amount
-    public cartTotalAmount(): Observable<number> {
-        return this.cartItems.pipe(
-            map((product: Product[]) => {
-                return product.reduce((prev, curr: Product) => {
-                    let price = curr.price;
-
-                    return prev + price * curr.quantity;
-                }, 0);
-            })
-        );
-    }
-
-    // public cartTotalAmountFinally(deliveryPrice, discountPercent): Observable<number> {
-    //     return this.cartItems.pipe(
-    //         map((product: Product[]) => {
-    //             return product.reduce((prev, curr: Product) => {
-    //                 let price = curr.price;
-
-    //                 if (discountPercent) {
-    //                     price = curr.price - (curr.price * discountPercent) / 100;
-    //                 }
-    //                 return prev + price * curr.inventory.quantity + deliveryPrice;
-    //             }, 0);
-    //         })
-    //     );
-    // }
+    public resetLocalStorage() {
+        localStorage.removeItem("cartItems");
+        localStorage.removeItem("code");
+      }
 }

@@ -137,8 +137,13 @@ namespace eCommerce.Application.Services.Order
 
         public async Task CreateAsync(OrderRequestModels.Create req)
         {
-            var coupon = await _couponService.GetCouponByCodeAsync(req.couponCode);
-            var percent = _couponService.isValidCoupon(coupon);
+            decimal percent = 0;
+  
+            if (req.couponCode != "")
+            {
+                var coupon = await _couponService.GetCouponByCodeAsync(req.couponCode);
+                percent = _couponService.isValidCoupon(coupon);
+            }
 
             foreach(var product in req.Products)
             {

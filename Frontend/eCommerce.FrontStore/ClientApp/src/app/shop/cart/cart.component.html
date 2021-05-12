@@ -44,8 +44,8 @@
                                     </div>
                                     <div class="col-xs-3">
                                         <h2 class="td-color">
-                                            {{ (product.price | discount:product) * productService?.Currency.price |
-                                            currency:productService?.Currency.currency:'symbol' }}
+                                            {{ (product.price | discount:product) * cartService?.Currency.price |
+                                            currency:cartService?.Currency.currency:'symbol':'4.0-2' }}
                                         </h2>
                                     </div>
                                     <div class="col-xs-3">
@@ -59,8 +59,8 @@
                             </td>
                             <td>
                                 <h2>
-                                    {{ (product.price | discount:product) * productService?.Currency.price |
-                                    currency:productService?.Currency.currency:'symbol' }}
+                                    {{ (product.price | discount:product) * cartService?.Currency.price |
+                                    currency:cartService?.Currency.currency:'symbol':'4.0-2' }}
                                 </h2>
                             </td>
                             <td>
@@ -91,7 +91,8 @@
                             <td>
                                 <h2 class="td-color">
                                     {{ ((product.price | discount:product) * product.quantity) *
-                                    productService?.Currency.price | currency:productService?.Currency.currency:'symbol'
+                                    cartService?.Currency.price |
+                                    currency:cartService?.Currency.currency:'symbol':'4.0-2'
                                     }}
                                 </h2>
                             </td>
@@ -128,26 +129,32 @@
                         Thông tin đơn hàng
                     </h3>
                     <div class="cart-order__value cart-order__block">
-                        <span class="cart-order__text">Tạm tính (2 sản phẩm)</span>
-                        <span class="cart-order__price">{{ getTotal | async |
-                            currency:productService?.Currency.currency:'symbol'}}</span>
+                        <span class="cart-order__text">Tạm tính ({{cartService.itemNumber}} sản phẩm)</span>
+                        <span class="cart-order__price">{{ getTotal |
+                            currency:cartService?.Currency.currency:'symbol':'4.0-2'}}</span>
                     </div>
                     <div class="cart-order__delivery cart-order__block">
                         <span class="cart-order__text">Phí giao hàng</span>
-                        <span class="cart-order__price">20.000đ</span>
+                        <span class="cart-order__price">{{ cartService.DELIVERY_PRICE |
+                            currency:cartService?.Currency.currency:'symbol':'4.0-2'}}</span>
                     </div>
                     <div class="cart-order__coupon cart-order__block">
                         <input type="text" class="cart-order__coupon-input" id="" [(ngModel)]='code'>
                         <button (click)="handleCoupon()" type="button" class="btn btn-info text-right btn-coupon">Áp
                             Dụng</button>
                     </div>
-                    <div class="cart-order__message-error" >
+                    <div class="cart-order__message-error">
                         {{errorMessage}}
                     </div>
                     <div class="cart-order__total-price cart-order__block">
+                        <span>Đã giảm</span>
+                        <span class="cart-order__price">{{ getTotal | saleoff: discountPercent |
+                            currency:cartService?.Currency.currency:'symbol':'1.0-2'}}</span>
+                    </div>
+                    <div class="cart-order__total-price cart-order__block">
                         <span>Tổng cộng</span>
-                        <span class="cart-order__price">{{ finalAmount |
-                            currency:productService?.Currency.currency:'symbol'}}</span>
+                        <span class="cart-order__price">{{ cartTotalAmount |
+                            currency:cartService?.Currency.currency:'symbol':'4.0-2'}}</span>
                     </div>
                     <div class="mt-3">
                         <a class="btn btn-solid d-block" (click)="checkout()">check out</a>

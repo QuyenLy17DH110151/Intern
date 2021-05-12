@@ -16,61 +16,47 @@ export class CartComponent implements OnInit {
     public products: Product[] = [];
     discountPercent: number = 0;
     code: string = '';
-    orderValue: number;
     errorMessage: string;
-    deliveryPrice = 20;
-    finalAmount: number;
+    private subscription;
 
     constructor(
-        private cartService: CartService,
-        public productService: ProductService,
+        public cartService: CartService,
         private couponClient: CouponClient,
         private router: Router
     ) {}
 
     ngOnInit() {
-        this.cartService.cartItems.subscribe((response) => {
-            console.log(response);
-            this.products = response;
-        });
-        console.log('cart: ', this.products);
-
-        this.calculateTotalAmountAfterApplyCoupon();
+        this.subscription = this.cartService.subscribe((response) => (this.products = response));
     }
 
-    public get getTotal(): Observable<number> {
-        return this.cartService.cartTotalAmount();
+    public get getTotal(): number {
+        return this.cartService.getTotalPrice();
     }
 
-    async calculateTotalAmountAfterApplyCoupon() {
-        const rawValue = await this.getTotal.toPromise();
-        this.finalAmount = rawValue - this.deliveryPrice - (rawValue * this.discountPercent) / 100;
+    public get cartTotalAmount(): number {
+        return this.cartService.cartTotalAmount(null, this.discountPercent);
     }
 
     // Increament
     increment(product, qty = 1) {
         this.cartService.updateCartQuantity(product, qty);
-        this.calculateTotalAmountAfterApplyCoupon();
     }
 
     // Decrement
     decrement(product, qty = -1) {
         this.cartService.updateCartQuantity(product, qty);
-        this.calculateTotalAmountAfterApplyCoupon();
     }
 
     public removeItem(product: any) {
         this.cartService.removeCartItem(product);
-        this.calculateTotalAmountAfterApplyCoupon();
     }
 
     handleCoupon() {
         this.couponClient.getCouponValue(this.code).subscribe(
             (response) => {
-                this.errorMessage = "";
+                this.errorMessage = '';
                 this.discountPercent = response;
-                localStorage.setItem('discountPercent', this.discountPercent.toString())
-                this.calculateTotalAmountAfterApplyCoupon();
+                localStorage.setItem('discountPercent', this.discountPercent.toString());
             },
             (error) => {
                 this.errorMessage = error.error.errorMessage;
@@ -81,5 +67,9 @@ export class CartComponent implements OnInit {
     checkout() {
         localStorage.setItem('code', this.code);
         this.router.navigate(['/shop/checkout']);
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 }

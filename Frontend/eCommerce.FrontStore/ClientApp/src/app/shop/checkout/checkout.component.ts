@@ -1,14 +1,15 @@
+import { response } from 'express';
+import { CouponClient } from './../../api-clients/coupon.client';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { environment } from '../../../environments/environment';
 import { Product } from '../../api-clients/models/product.model';
-import { ProductService } from '../../shared/services/product.service';
 import { OrderService } from '../../shared/services/order.service';
-import { OrderClient } from 'src/app/api-clients/order.client';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from 'src/app/shared/services/cart.service';
+import { OrderClient } from 'src/app/api-clients/order.client';
 
 @Component({
     selector: 'app-checkout',
@@ -21,23 +22,20 @@ export class CheckoutComponent implements OnInit {
     public payPalConfig?: IPayPalConfig;
     public payment: string = 'Stripe';
     public amount: any;
-    public productList = [];
-    public deliveryPrice = 20;
-    public finalAmount: number;
+    private subscription;
+    private code: string;
+    private discountPercent: number;
 
     constructor(
         private fb: FormBuilder,
-        public productService: ProductService,
-        private cartService: CartService,
+        public cartService: CartService,
         private orderService: OrderService,
-        private orderClident: OrderClient,
+        private couponClient: CouponClient,
+        private orderClient: OrderClient,
         private toastr: ToastrService
     ) {
         this.checkoutForm = this.fb.group({
-            fullName: [
-                '',
-                [Validators.required],
-            ],
+            fullName: ['', [Validators.required]],
             phone: ['', [Validators.required, Validators.pattern('[0-9]+')]],
             email: ['', [Validators.required, Validators.email]],
             province: ['', Validators.required],
@@ -48,24 +46,21 @@ export class CheckoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.cartService.cartItems.subscribe((response) => {
-            this.products = response;
-            console.log('product in checkout: ', this.products);
-        });
-        this.getTotal.subscribe((amount) => (this.amount = amount));
+        this.code = localStorage.getItem('code') ? localStorage.getItem('code') : '';
+        this.couponClient
+            .getCouponValue(this.code)
+            .subscribe((response) => (this.discountPercent = response));
+        this.subscription = this.cartService.subscribe((response) => (this.products = response));
         this.initConfig();
-        this.getTotalFinnally();
-        this.getProductsInCart();
+        //this.getProductsInCart();
     }
 
-    public get getTotal(): Observable<number> {
-        return this.cartService.cartTotalAmount();
+    public get getTotal(): number {
+        return this.cartService.getTotalPrice();
     }
 
-    public async getTotalFinnally() {
-        const rawValue = await this.getTotal.toPromise();
-        const discountPercent = +localStorage.getItem('discountPercent');
-        this.finalAmount = rawValue - this.deliveryPrice - (rawValue * discountPercent) / 100;
+    public get cartTotalAmount(): number {
+        return this.cartService.cartTotalAmount(null, this.discountPercent);
     }
 
     // Stripe Payment Gateway
@@ -94,7 +89,7 @@ export class CheckoutComponent implements OnInit {
     // Paypal Payment Gateway
     private initConfig(): void {
         this.payPalConfig = {
-            currency: this.productService.Currency.currency,
+            currency: this.cartService.Currency.currency,
             clientId: environment.paypal_token,
             createOrderOnClient: (data) =>
                 <ICreateOrderRequest>{
@@ -102,11 +97,11 @@ export class CheckoutComponent implements OnInit {
                     purchase_units: [
                         {
                             amount: {
-                                currency_code: this.productService.Currency.currency,
+                                currency_code: this.cartService.Currency.currency,
                                 value: this.amount,
                                 breakdown: {
                                     item_total: {
-                                        currency_code: this.productService.Currency.currency,
+                                        currency_code: this.cartService.Currency.currency,
                                         value: this.amount,
                                     },
                                 },
@@ -160,37 +155,38 @@ export class CheckoutComponent implements OnInit {
     }
 
     checkout() {
+        if (!this.checkoutForm.valid) {
+            this.toastr.error('Please fill in the delivery address', 'Error');
+            return;
+        }
+
         const checkoutForm = this.checkoutForm.value;
         const formData = {
             buyerEmail: checkoutForm.email,
             buyerName: checkoutForm.fullName,
             buyerPhone: checkoutForm.phone,
             Address:
-                checkoutForm.street + ' ' +
-                checkoutForm.ward + ' ' +
-                checkoutForm.district + ' ' +
+                checkoutForm.street +
+                ', ' +
+                checkoutForm.ward +
+                ', ' +
+                checkoutForm.district +
+                ', ' +
                 checkoutForm.province,
-            products: this.productList,
-            couponCode: localStorage.getItem('code'),
+            products: this.products,
+            couponCode: this.code,
         };
 
-        this.orderClident.checkout(formData).subscribe();
-        this.orderService.resetData();
-        this.toastr.success('Checkout is successful', 'Notification');
+        this.orderClient.checkout(formData).subscribe(
+            (response) => {
+                this.cartService.resetLocalStorage();
+                this.toastr.success('Checkout is successful', 'Notification');
+            },
+            (error) => this.toastr.error('Checkout is failed', 'Notification')
+        );
     }
 
-    getProductsInCart() {
-      debugger;
-        const cartItems = JSON.parse(localStorage['cartItems']);
-
-        cartItems.forEach((item, index) => {
-          let product: any = {};
-          product.id = item.id;
-          product.quantity = item.quantity;
-          product.price = item.price;    
-          this.productList.push(product);
-        });
-
-        console.log(this.productList);
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 }

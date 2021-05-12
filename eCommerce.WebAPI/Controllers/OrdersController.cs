@@ -62,9 +62,8 @@ namespace eCommerce.WebAPI.Controllers
             }
 
             await _orderService.CreateAsync(req);
-            //var coupon = await _orderService.GetCouponByIdAsync(couponId);
 
-            return Ok(); ;
+            return Ok();
         }
     }
 }
