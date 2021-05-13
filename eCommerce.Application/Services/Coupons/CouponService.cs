@@ -105,22 +105,20 @@ namespace eCommerce.Application.Services.Coupons
         {
             var coupon = await _couponRepo.GetCouponByCodeAsync(code);
 
-            if (coupon == null)
-            {
-                throw new EntityNotFound("Coupon");
-            }
-
             return _mapper.Map<CouponReturnModels.Coupon>(coupon);
         }
 
         public decimal IsValidCoupon(CouponReturnModels.Coupon coupon)
         {
-            DateTime now = DateTime.Now;
-            if (DateTime.Compare(coupon.StartDate, now) < 0 && DateTime.Compare(now, coupon.EndDate) < 0)
+            if (coupon != null)
             {
-                return coupon.Value;
+                DateTime now = DateTime.Now;
+                if (DateTime.Compare(coupon.StartDate, now) < 0 && DateTime.Compare(now, coupon.EndDate) < 0)
+                {
+                    return coupon.Value;
+                }
             }
-
+           
             throw new BusinessException("Coupon is invalid");
         }
     }

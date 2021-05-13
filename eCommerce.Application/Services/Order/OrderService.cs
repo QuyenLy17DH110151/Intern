@@ -145,14 +145,14 @@ namespace eCommerce.Application.Services.Order
         public async Task CreateAsync(OrderRequestModels.Create req)
         {
             decimal percent = 0;
-  
-            if (string.IsNullOrEmpty(req.couponCode))
+            var coupon = await _couponService.GetCouponByCodeAsync(req.couponCode);
+
+            if(coupon != null)
             {
-                var coupon = await _couponService.GetCouponByCodeAsync(req.couponCode);
                 percent = _couponService.IsValidCoupon(coupon);
             }
 
-            foreach(var product in req.Products)
+            foreach (var product in req.Products)
             {
                 var order = new eCommerce.Domain.Entities.Order()
                 {

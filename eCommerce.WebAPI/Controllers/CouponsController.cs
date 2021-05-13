@@ -1,5 +1,6 @@
 ﻿using eCommerce.Application.Services.Coupons;
 using eCommerce.Application.Services.Products;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -79,7 +80,7 @@ namespace eCommerce.WebAPI.Controllers
             var coupon = await _couponService.GetCouponByCodeAsync(code);
             if (coupon == null)
             {
-                return NotFound();
+                throw new BusinessException("Coupon is invalid");
             }
 
             return _couponService.IsValidCoupon(coupon);

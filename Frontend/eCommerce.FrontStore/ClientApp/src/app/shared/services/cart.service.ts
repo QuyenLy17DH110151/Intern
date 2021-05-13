@@ -74,10 +74,12 @@ export class CartService {
         return total;
     }
 
-    cartTotalAmount(deliveryPrice, discountPercent) {
+    cartTotalAmount(deliveryPrice, discountPercent = 0) {
         const shipFee = deliveryPrice ? deliveryPrice : this.DELIVERY_PRICE;
         const totalPrice = this.getTotalPrice();
-        return totalPrice + shipFee - (totalPrice * discountPercent) / 100;
+        const total = totalPrice + shipFee - (totalPrice * discountPercent) / 100;
+        debugger;
+        return total;
     }
 
     // Update Cart Quantity
