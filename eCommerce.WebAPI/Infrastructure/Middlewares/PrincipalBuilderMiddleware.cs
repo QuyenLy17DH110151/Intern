@@ -38,7 +38,7 @@ namespace eCommerce.WebAPI.Infrastructure.Middlewares
                         case "id":
                             userId = claim.Value;
                             break;
-                        case "role":
+                        case ClaimTypes.Role:
                             //role = claim.Value;
                             role = (UserRoles)Enum.Parse(typeof(UserRoles), claim.Value); ;
                             break;
