@@ -48,7 +48,7 @@ namespace eCommerce.WebAPI.Controllers
                 return BadRequest();
             }
             await _orderService.AcceptOrderAsync(Id);
-            
+
             return Ok();
         }
 

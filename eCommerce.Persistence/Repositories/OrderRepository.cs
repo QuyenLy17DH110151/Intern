@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace eCommerce.Persistence.Repositories
 {
@@ -55,7 +56,7 @@ namespace eCommerce.Persistence.Repositories
             }
 
             //Filter by role
-            if(rq.Role != UserRoles.Admin)
+            if (rq.Role != UserRoles.Admin)
             {
                 var role = rq.Role;
                 queryObject.And(new OrderQueryObject.HasRole(role));
@@ -75,7 +76,7 @@ namespace eCommerce.Persistence.Repositories
             }
             rq.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
 
-            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination, x=>x.Include(m=>m.Product));
+            var result = await _genericRepo.SearchAsync(queryObject, rq.Pagination, x => x.Include(m => m.Product));
             return result;
         }
 
@@ -109,12 +110,12 @@ namespace eCommerce.Persistence.Repositories
 
         private bool CheckStartDate(DateTime startDate)
         {
-            if(startDate == null)
+            if (startDate == null)
             {
                 return false;
             }
             DateTime now = DateTime.Now;
-            if (DateTime.Compare(now, startDate)<0)
+            if (DateTime.Compare(now, startDate) < 0)
             {
                 return false;
             }
@@ -138,6 +139,93 @@ namespace eCommerce.Persistence.Repositories
         public Order Add(Order order)
         {
             return _genericRepo.Add(order);
+        public async Task<int> GetCountUsers(SearchOrderModel rq)
+        {
+            var queryObject = QueryObject<Order>.Empty;
+
+            //Filter by current user name
+            if (!string.IsNullOrWhiteSpace(rq.OwnerUserName) && rq.Role != UserRoles.Admin)
+            {
+                var userName = rq.OwnerUserName;
+                queryObject.And(new OrderQueryObject.FilterByCurrentUserName(userName));
+            }
+
+            var result = await _genericRepo.SearchAsync(queryObject);
+            return result.Where(o => o.Status == OrderStatuses.Approved)
+                .Select(o => o.BuyerName).Distinct()
+                .Count();
+        }
+
+        public async Task<decimal> GetSumEarningsAsync(SearchOrderModel rq)
+        {
+            var queryObject = QueryObject<Order>.Empty;
+
+            //Filter by current user name
+            if (!string.IsNullOrWhiteSpace(rq.OwnerUserName) && rq.Role != UserRoles.Admin)
+            {
+                var userName = rq.OwnerUserName;
+                queryObject.And(new OrderQueryObject.FilterByCurrentUserName(userName));
+            }
+
+            var result = await _genericRepo.SearchAsync(queryObject);
+
+            return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o => o.Price);
+        }
+
+        public async Task<string> StatisticsCategories(SearchOrderModel rq)
+        {
+            IQueryable<object> result;
+            if (rq.Role != UserRoles.Admin)
+            {
+                result = from p in _dbContext.Set<Product>()
+                         join pc in _dbContext.Set<ProductCategory>()
+                         on p.CategoryId equals pc.Id
+                         join o in _dbContext.Set<Order>()
+                         on p.Id equals o.ProductId
+                         where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         group o by o.Product.Category.Name into g
+                         select new { name = g.Key, y = g.Sum(o => o.Quantity) };
+            }
+            else
+            {
+                result = from p in _dbContext.Set<Product>()
+                         join pc in _dbContext.Set<ProductCategory>()
+                         on p.CategoryId equals pc.Id
+                         join o in _dbContext.Set<Order>()
+                         on p.Id equals o.ProductId
+                         group o by o.Product.Category.Name into g
+                         select new { name = g.Key, y = g.Sum(o => o.Quantity) };
+            }
+            var json = JsonSerializer.Serialize(await result.ToListAsync());
+            return json;
+        }
+
+        public async Task<string> StatisticsProducts(SearchOrderModel rq)
+        {
+            IQueryable<object> result;
+            if (rq.Role != UserRoles.Admin)
+            {
+                result = from p in _dbContext.Set<Product>()
+                         join pc in _dbContext.Set<ProductCategory>()
+                         on p.CategoryId equals pc.Id
+                         join o in _dbContext.Set<Order>()
+                         on p.Id equals o.ProductId
+                         where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         group o by o.Product.Name into g
+                         select new { name = g.Key, y = g.Sum(o => o.Quantity) };
+            }
+            else
+            {
+                result = from p in _dbContext.Set<Product>()
+                         join pc in _dbContext.Set<ProductCategory>()
+                         on p.CategoryId equals pc.Id
+                         join o in _dbContext.Set<Order>()
+                         on p.Id equals o.ProductId
+                         group o by o.Product.Name into g
+                         select new { name = g.Key, y = g.Sum(o => o.Quantity) };
+            }
+            var json = JsonSerializer.Serialize(await result.ToListAsync());
+            return json;
         }
     }
 }

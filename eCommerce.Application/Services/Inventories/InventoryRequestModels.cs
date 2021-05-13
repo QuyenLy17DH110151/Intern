@@ -24,6 +24,7 @@ namespace eCommerce.Application.Services.Inventories
             public int Quantity { get; set; }
             public string[] RowVersion { get; set; }
         }
+
         public class UpdateInventoryValidator : AbstractValidator<Update>
         {
             public UpdateInventoryValidator()

@@ -17,4 +17,8 @@
     <ProjectReference Include="..\eCommerce.Domain\eCommerce.Domain.csproj" PrivateAssets="Compile " />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\ProductRating\" />
+  </ItemGroup>
+
 </Project>

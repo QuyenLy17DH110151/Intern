@@ -10,6 +10,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartistModule } from 'ng-chartist';
 import { SharedModule } from '../../shared/shared.module';
 import { UserClient } from 'src/app/api-clients/user.client';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
     declarations: [DashboardComponent],
@@ -21,10 +22,9 @@ import { UserClient } from 'src/app/api-clients/user.client';
         ChartsModule,
         Ng2GoogleChartsModule,
         NgxChartsModule,
-        ChartistModule
+        ChartistModule,
+        HighchartsChartModule,
     ],
-    providers: [
-        UserClient
-    ]
+    providers: [UserClient],
 })
-export class DashboardModule { }
+export class DashboardModule {}
