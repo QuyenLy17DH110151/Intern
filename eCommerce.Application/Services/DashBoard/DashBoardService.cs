@@ -39,7 +39,7 @@ namespace eCommerce.Application.Services.DashBoard
 
         public async Task<int> GetCountUserAsync()
         {
-            return await _orderRepository.GetCountUsers(new SearchOrderModel { 
+            return await _orderRepository.GetCountUsersAsync(new SearchOrderModel { 
                 OwnerId = _appContext.Principal.UserId,
                 OwnerUserName = _appContext.Principal.Username,
                 Role = _appContext.Principal.Role
@@ -55,9 +55,19 @@ namespace eCommerce.Application.Services.DashBoard
             });
         }
 
+        public async Task<string> RevenueMonthly()
+        {
+            return await _orderRepository.RevenueMonthlyBySellerAsync(new SearchOrderModel
+            {
+                Role = _appContext.Principal.Role,
+                OwnerId = _appContext.Principal.UserId,
+                OwnerUserName = _appContext.Principal.Username
+            });
+        }
+
         public async Task<string> StatisticsCategories()
         {
-            return await _orderRepository.StatisticsCategories(new SearchOrderModel
+            return await _orderRepository.StatisticsCategoriesAsync(new SearchOrderModel
             {
                 Role = _appContext.Principal.Role,
                 OwnerId = _appContext.Principal.UserId,
@@ -67,7 +77,7 @@ namespace eCommerce.Application.Services.DashBoard
 
         public async Task<string> StatisticsProducts()
         {
-            return await _orderRepository.StatisticsProducts(new SearchOrderModel
+            return await _orderRepository.StatisticsProductsAsync(new SearchOrderModel
             {
                 Role = _appContext.Principal.Role,
                 OwnerId = _appContext.Principal.UserId,

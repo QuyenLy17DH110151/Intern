@@ -7,7 +7,6 @@ import { DashboardClient } from 'src/app/api-clients/Dashboard.client';
 import { SearchRequestOrder } from 'src/app/api-clients/models/order.model';
 import { OrderViewModel } from '../orders/order.viewModel';
 import * as HighCharts from 'highcharts';
-import { resolveModuleNameFromCache } from 'typescript';
 
 @Component({
     selector: 'app-dashboard',
@@ -21,6 +20,8 @@ export class DashboardComponent implements OnInit {
     orders: Order[];
     header = [];
     orderListVM: OrderViewModel[] = [];
+    data = [];
+    dataApi;
     constructor(
         private _dashBoard: DashboardClient,
         private _orderClient: OrderClient
@@ -40,6 +41,9 @@ export class DashboardComponent implements OnInit {
         this.getLastedOrder();
         this.getCategories();
         this.getProducts();
+        // this.DataRevenueMonthly();
+        // this.lineChartBrowser(this.data);
+        this.getRevenueMonthly();
         // this.createChart();
         // this._dashBoard.getSumEarnings();
     }
@@ -86,7 +90,6 @@ export class DashboardComponent implements OnInit {
 
     getProducts() {
         this._dashBoard.getStatisticsProduct().subscribe((res) => {
-            console.log('res test', res);
             this.barChartBrowser(res);
         });
     }
@@ -97,7 +100,6 @@ export class DashboardComponent implements OnInit {
         this.rq.pageSize = '5';
         this.rq.pageIndex = '0';
         this._orderClient.searchOrder(this.rq).subscribe((res) => {
-            console.log('get Lasted Order', res);
             this.orders = res.items;
             this.orderListVM = this.orders.map(
                 (order, index) => new OrderViewModel(order, index)
@@ -176,5 +178,77 @@ export class DashboardComponent implements OnInit {
                 },
             ],
         });
+    }
+
+    lineChartBrowser(data) {
+        let option = {
+            chart: {
+                type: 'line',
+            },
+            title: {
+                text: 'Revenue Products',
+            },
+            tooltip: {
+                pointFormat: '{point.y:.1f}</b>',
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec',
+                ],
+            },
+            yAxis: {
+                title: {
+                    text: 'Revenue Monthly',
+                },
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true,
+                    },
+                    enableMouseTracking: false,
+                },
+            },
+            series: [
+                {
+                    name: 'Product Name',
+                    colorByPoint: true,
+                    type: undefined,
+                    data: data,
+                },
+            ],
+        };
+        HighCharts.chart('lineChart', option);
+    }
+
+    getRevenueMonthly() {
+        this._dashBoard.getRevenueMonthly().subscribe((res) => {
+            this.dataApi = res;
+            const data = this.DataRevenueMonthly(res);
+            this.lineChartBrowser(data);
+        });
+    }
+
+    DataRevenueMonthly(data): number[] {
+        let dataChart = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for (let index = 0; index < dataChart.length; index++) {
+            if (data[index] === undefined) {
+                console.log(0);
+            } else {
+                dataChart[data[index].month - 1] = data[index].value;
+            }
+        }
+        return dataChart;
     }
 }

@@ -77,13 +77,24 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet("GetProducts")]
-        public async Task<ActionResult> GetGetProductsAsync()
+        public async Task<ActionResult> GetProductsAsync()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             var result = await _dashBoardService.StatisticsProducts();
+            return Ok(result);
+        }
+
+        [HttpGet("RevenueMonthly")]
+        public async Task<ActionResult> RevenueMonthly()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var result = await _dashBoardService.RevenueMonthly();
             return Ok(result);
         }
     }
