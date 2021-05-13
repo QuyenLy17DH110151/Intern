@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CategoryClient } from 'src/app/api-clients/category.client';
 import { CreateCategoryRequest, LableOptions } from 'src/app/api-clients/models/category.model';
@@ -17,7 +18,8 @@ export class CreateCategoryComponent implements OnInit {
     public settings;
     public isStart: boolean = false;
 
-    constructor(private toastr: ToastrService, private formBuilder: FormBuilder, private categoryClient: CategoryClient) {
+    constructor(private toastr: ToastrService, private formBuilder: FormBuilder,
+        private categoryClient: CategoryClient, private router: Router) {
         this.createForm();
         this.settings = this.sourceSettings;
     }
@@ -95,13 +97,14 @@ export class CreateCategoryComponent implements OnInit {
 
         if (!this.generalForm.invalid) {
             let createCategoryRequest = new CreateCategoryRequest(this.generalForm.value.name, properties);
-            this.categoryClient.addCategory(createCategoryRequest).subscribe(() => {
+            this.categoryClient.addCategory(createCategoryRequest).subscribe(rp => {
                 this.toastr.success('Create category success', 'Notification');
                 this.isStart = false;
                 this.properties = [];
                 this.settings = this.sourceSettings;
                 this.createForm();
                 this.event = null;
+                this.router.navigate(['/categories/details', rp]);
             })
         }
     }
