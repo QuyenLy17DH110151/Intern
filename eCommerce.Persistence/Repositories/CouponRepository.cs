@@ -104,7 +104,7 @@ namespace eCommerce.Persistence.Repositories
             return result;
         }
 
-        public async Task<Coupon> GetCouponByCode(string code)
+        public async Task<Coupon> GetCouponByCodeAsync(string code)
         {
             return await _dbContext.Set<Coupon>().SingleOrDefaultAsync(x => x.Code == code);
         }

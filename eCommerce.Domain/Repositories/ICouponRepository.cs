@@ -16,6 +16,6 @@ namespace eCommerce.Domain.Repositories
         void Update(Coupon coupon);
         void Detete(Coupon coupon);
         Task<Coupon> GetCouponById(Guid id);
-        Task<Coupon> GetCouponByCode(string code);
+        Task<Coupon> GetCouponByCodeAsync(string code);
     }
 }

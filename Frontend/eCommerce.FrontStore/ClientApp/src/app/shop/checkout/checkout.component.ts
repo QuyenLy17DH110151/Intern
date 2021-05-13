@@ -1,8 +1,7 @@
-import { response } from 'express';
 import { CouponClient } from './../../api-clients/coupon.client';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { environment } from '../../../environments/environment';
 import { Product } from '../../api-clients/models/product.model';
@@ -10,13 +9,14 @@ import { OrderService } from '../../shared/services/order.service';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { OrderClient } from 'src/app/api-clients/order.client';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-checkout',
     templateUrl: './checkout.component.html',
     styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, OnDestroy {
     public checkoutForm: FormGroup;
     public products: Product[] = [];
     public payPalConfig?: IPayPalConfig;
@@ -25,6 +25,7 @@ export class CheckoutComponent implements OnInit {
     private subscription;
     private code: string;
     private discountPercent: number;
+    ngUnsubscribe = new Subject<void>();
 
     constructor(
         private fb: FormBuilder,
@@ -50,7 +51,10 @@ export class CheckoutComponent implements OnInit {
         this.couponClient
             .getCouponValue(this.code)
             .subscribe((response) => (this.discountPercent = response));
-        this.subscription = this.cartService.subscribe((response) => (this.products = response));
+        //this.subscription = this.cartService.subscribe((response) => (this.products = response));
+        this.cartService.cart$
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response) => (this.products = response));
         this.initConfig();
         //this.getProductsInCart();
     }
@@ -187,6 +191,7 @@ export class CheckoutComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }

@@ -82,7 +82,7 @@ namespace eCommerce.WebAPI.Controllers
                 return NotFound();
             }
 
-            return _couponService.isValidCoupon(coupon);
+            return _couponService.IsValidCoupon(coupon);
         }
 
     }

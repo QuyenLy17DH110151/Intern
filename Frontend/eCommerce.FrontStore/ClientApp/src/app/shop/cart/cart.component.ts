@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CouponClient } from 'src/app/api-clients/coupon.client';
 import { Coupon } from 'src/app/api-clients/models/coupon.model';
 import { CartService } from 'src/app/shared/services/cart.service';
-import { ProductService } from 'src/app/shared/services/product.service';
 import { Product } from '../../api-clients/models/product.model';
 
 @Component({
@@ -17,7 +17,7 @@ export class CartComponent implements OnInit {
     discountPercent: number = 0;
     code: string = '';
     errorMessage: string;
-    private subscription;
+    ngUnsubscribe = new Subject<void>();
 
     constructor(
         public cartService: CartService,
@@ -26,7 +26,9 @@ export class CartComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.subscription = this.cartService.subscribe((response) => (this.products = response));
+        this.cartService.cart$
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response) => (this.products = response));
     }
 
     public get getTotal(): number {
@@ -70,6 +72,7 @@ export class CartComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }

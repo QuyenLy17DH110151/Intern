@@ -67,7 +67,7 @@ namespace eCommerce.WebAPI.Controllers
             {
                 new Claim("id", user.Id.ToString()),
                 new Claim("username", user.Username.ToString()),
-                new Claim("userrole",user.Role.ToString()),
+                new Claim("role",user.Role.ToString()),
                 new Claim("avatar",urlImage)
             };
             var jwtResult = _jwtAuthManager.GenerateTokens(rq.Username, claims);

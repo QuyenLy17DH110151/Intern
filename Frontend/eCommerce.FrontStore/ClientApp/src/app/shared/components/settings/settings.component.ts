@@ -1,20 +1,20 @@
-import { Component, OnInit, Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, Injectable, PLATFORM_ID, Inject, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../classes/product';
+import { Product } from '../../../api-clients/models/product.model';
 import { CartService } from '../../services/cart.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-settings',
     templateUrl: './settings.component.html',
     styleUrls: ['./settings.component.scss'],
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
     public products: Product[] = [];
     public search: boolean = false;
-    private subscription;
 
     public languages = [
         {
@@ -50,6 +50,7 @@ export class SettingsComponent implements OnInit {
         },
     ];
 
+    ngUnsubscribe = new Subject<void>();
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
         private translate: TranslateService,
@@ -57,7 +58,11 @@ export class SettingsComponent implements OnInit {
         public cartService: CartService
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.cartService.cart$
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response) => (this.products = response));
+    }
 
     searchToggle() {
         this.search = !this.search;
@@ -81,5 +86,8 @@ export class SettingsComponent implements OnInit {
         this.productService.Currency = currency;
     }
 
-    ngOnDestroy() {}
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
 }

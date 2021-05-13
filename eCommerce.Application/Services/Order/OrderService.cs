@@ -139,10 +139,10 @@ namespace eCommerce.Application.Services.Order
         {
             decimal percent = 0;
   
-            if (req.couponCode != "")
+            if (string.IsNullOrEmpty(req.couponCode))
             {
                 var coupon = await _couponService.GetCouponByCodeAsync(req.couponCode);
-                percent = _couponService.isValidCoupon(coupon);
+                percent = _couponService.IsValidCoupon(coupon);
             }
 
             foreach(var product in req.Products)

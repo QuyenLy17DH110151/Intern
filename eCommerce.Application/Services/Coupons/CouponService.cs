@@ -103,7 +103,7 @@ namespace eCommerce.Application.Services.Coupons
 
         public async Task<CouponReturnModels.Coupon> GetCouponByCodeAsync(string code)
         {
-            var coupon = await _couponRepo.GetCouponByCode(code);
+            var coupon = await _couponRepo.GetCouponByCodeAsync(code);
 
             if (coupon == null)
             {
@@ -113,7 +113,7 @@ namespace eCommerce.Application.Services.Coupons
             return _mapper.Map<CouponReturnModels.Coupon>(coupon);
         }
 
-        public decimal isValidCoupon(CouponReturnModels.Coupon coupon)
+        public decimal IsValidCoupon(CouponReturnModels.Coupon coupon)
         {
             DateTime now = DateTime.Now;
             if (DateTime.Compare(coupon.StartDate, now) < 0 && DateTime.Compare(now, coupon.EndDate) < 0)

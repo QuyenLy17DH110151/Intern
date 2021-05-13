@@ -16,20 +16,23 @@ export class CartService {
     public DELIVERY_PRICE = 9999;
     public OpenCart: boolean = false;
     public cartItems: Product[] = JSON.parse(localStorage['cartItems'] || '[]');
-    private productSubject = new BehaviorSubject<Product[]>(this.cartItems);
+    private _cart$ = new BehaviorSubject<Product[]>(this.cartItems);
+    cart$ = this._cart$.asObservable();
 
     constructor(private http: HttpClient, private toastrService: ToastrService) {}
 
-    subscribe(observer) {
-        this.cartItems = JSON.parse(localStorage['cartItems'] || '[]');
-        this.productSubject.next(this.cartItems);
-        return this.productSubject.subscribe(observer);
-    }
+    // subscribe() {
+    //     //this._cart$.getValue()
+    //     this.cartItems = JSON.parse(localStorage['cartItems'] || '[]');
+    //     this._cart$.next(this.cartItems);
+    //     return this._cart$.asObservable();
+    //     //return this._cart$.subscribe(observer);
+    // }
 
-    setCartItems(products) {
-        this.cartItems.push(...products);
-        this.productSubject.next(products);
-    }
+    // setCartItems(products) {
+    //     this.cartItems.push(...products);
+    //     this._cart$.next(products);
+    // }
 
     // Add to Cart
     public addToCart(product: Product): void {
@@ -42,7 +45,7 @@ export class CartService {
             this.cartItems.push(product);
         }
 
-        this.productSubject.next(this.cartItems);
+        this._cart$.next(this.cartItems);
         this.OpenCart = true; // If we use cart variation modal
         localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     }
@@ -53,13 +56,13 @@ export class CartService {
         this.cartItems.splice(index, 1);
         localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
         // update streams
-        this.productSubject.next(this.cartItems);
+        this._cart$.next(this.cartItems);
     }
 
     // remove all the  items added to the cart
     removeAllCartItem() {
         this.cartItems.length = 0;
-        this.productSubject.next(this.cartItems);
+        this._cart$.next(this.cartItems);
     }
 
     getTotalPrice() {
@@ -88,7 +91,7 @@ export class CartService {
                 }
 
                 localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
-                this.productSubject.next(this.cartItems);
+                this._cart$.next(this.cartItems);
                 return true;
             }
         });
@@ -104,7 +107,7 @@ export class CartService {
     }
 
     public resetLocalStorage() {
-        localStorage.removeItem("cartItems");
-        localStorage.removeItem("code");
-      }
+        localStorage.removeItem('cartItems');
+        localStorage.removeItem('code');
+    }
 }
