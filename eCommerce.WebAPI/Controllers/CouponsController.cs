@@ -1,5 +1,6 @@
 ﻿using eCommerce.Application.Services.Coupons;
 using eCommerce.Application.Services.Products;
+using eCommerce.Domain.Shared.Exceptions;
 using eCommerce.Domain.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -70,6 +71,19 @@ namespace eCommerce.WebAPI.Controllers
             }
 
             return coupon;
+        }
+
+        [HttpGet("/frontstore/api/coupons/verify/{code}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<decimal>> FrontStoreVerifyCoupon(string code)
+        {
+            var coupon = await _couponService.GetCouponByCodeAsync(code);
+            if (coupon == null)
+            {
+                throw new BusinessException("Coupon is invalid");
+            }
+
+            return _couponService.IsValidCoupon(coupon);
         }
 
     }

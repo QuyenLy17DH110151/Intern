@@ -14,3 +14,6 @@ export class ToggleFullscreenDirective {
     }
   }
 }
+
+
+// custome event, handle input....

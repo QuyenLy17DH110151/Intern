@@ -16,5 +16,22 @@ namespace eCommerce.Application.Services.Order
             public int PageSize { get; set; }
             public string OrderBy { get; set; }
         }
+
+        public class Create
+        {
+            public string BuyerEmail { get; set; }
+            public string BuyerName { get; set; }
+            public string BuyerPhone { get; set; }
+            public string Address { get; set; }
+            public List<Product> Products { get; set; }
+            public string couponCode { get; set; }
+        }
+
+        public  class Product
+        {
+            public Guid Id { get; set; }
+            public int Quantity { get; set; }
+            public int Price { get; set; }
+        }
     }
 }

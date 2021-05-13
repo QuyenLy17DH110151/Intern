@@ -14,5 +14,6 @@ namespace eCommerce.Domain.Repositories.Models
         public DateTime? EndDate { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal Value { get; set; }
+        public string Code { get; set; }
     }
 }

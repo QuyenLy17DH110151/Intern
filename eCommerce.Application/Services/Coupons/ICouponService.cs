@@ -43,5 +43,19 @@ namespace eCommerce.Application.Services.Coupons
         /// <param name="couponId"></param>
         /// <returns></returns>
         Task DeleteCouponAsync(Guid couponId);
+
+        /// <summary>
+        /// Get coupon by code
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        Task<CouponReturnModels.Coupon> GetCouponByCodeAsync(string code);
+
+        /// <summary>
+        /// Check coupon is valid in current time or not?
+        /// </summary>
+        /// <param name="coupon"></param>
+        /// <returns></returns>
+        decimal IsValidCoupon(CouponReturnModels.Coupon coupon);
     }
 }

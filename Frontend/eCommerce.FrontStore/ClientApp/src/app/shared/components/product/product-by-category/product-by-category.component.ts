@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Product } from 'src/app/shared/classes/product';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { ProductSlider } from '../../../../shared/data/slider';
-import { Product as CustomProduct } from '../../../../api-clients/models/product.model'
+import { Product as CustomProduct } from '../../../../api-clients/models/product.model';
 
 @Component({
     selector: 'product-by-category',
@@ -17,11 +17,8 @@ export class ProductByCategoryComponent implements OnInit {
     constructor(public productService: ProductService) {}
 
     ngOnInit(): void {
-        this.productService
-            .getProductsByCategoryId(this.categoryId)
-            .subscribe((response: any) => {
-                console.log('product-by-category: ', response);
-                this.products = response
-            });
+        this.productService.getProductsByCategoryId(this.categoryId).subscribe((response: any) => {
+            this.products = response;
+        });
     }
 }

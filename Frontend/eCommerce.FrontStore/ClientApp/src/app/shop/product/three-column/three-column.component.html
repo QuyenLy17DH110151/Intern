@@ -148,11 +148,11 @@
             <!-- <h3>{{ productAPI.inventory.quantity }} piece available</h3> -->
 
             <div class="product-description border-product">
-              <h5 class="avalibility" *ngIf="counter <= productAPI?.inventory?.quantity">
-                <h5>{{ productAPI.inventory.quantity }} piece available</h5>
+              <h5 class="avalibility" *ngIf="counter <= productAPI?.quantity">
+                <h5>{{ productAPI.quantity }} piece available</h5>
                 <span>In Stock</span>
               </h5>
-              <h5 class="avalibility" *ngIf="counter > productAPI?.inventory?.quantity">
+              <h5 class="avalibility" *ngIf="counter > productAPI?.quantity">
                 <span>Out of Stock</span>
               </h5>
               <h6 class="product-title">quantity</h6>
@@ -174,9 +174,9 @@
             </div>
             <div class="product-buttons">
               <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock"
-                (click)="addToCart(product)">add to cart</a>
+                (click)="addToCart(productAPI)">add to cart</a>
               <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock"
-                (click)="buyNow(product)">buy now</a>
+                (click)="buyNow(productAPI)">buy now</a>
             </div>
           </div>
         </div>

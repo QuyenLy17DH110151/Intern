@@ -14,6 +14,7 @@ namespace eCommerce.Domain.Repositories
         Task<PaginatedResult<Order>> SearchAsync(SearchOrderModel searchOrderModel);
         Task<Order> GetOrderByIdAsync(Guid Id);
         Task<bool> UpdateStatusAsync(Guid Id, OrderStatuses orderStatuses);
+        Order Add(Order order);
 
         /// <summary>
         /// Count buyer from order

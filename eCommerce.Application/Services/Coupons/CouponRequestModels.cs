@@ -14,6 +14,7 @@ namespace eCommerce.Application.Services.Coupons
             public DateTime EndDate { get; set; }
             public decimal? MinPrice { get; set; }
             public decimal Value { get; set; }
+            public string Code { get; set; }
         }
 
         public class Update
@@ -24,6 +25,7 @@ namespace eCommerce.Application.Services.Coupons
             public DateTime EndDate { get; set; }
             public decimal? MinPrice { get; set; }
             public decimal Value { get; set; }
+            public string Code { get; set; }
         }
 
         public class Search
@@ -33,6 +35,7 @@ namespace eCommerce.Application.Services.Coupons
             public DateTime? EndDate { get; set; }
             public decimal? MinPrice { get; set; }
             public decimal Value { get; set; }
+            public string Code { get; set; }
             public int PageIndex { get; set; }
             public int PageSize { get; set; }
             public string Sort { get; set; }

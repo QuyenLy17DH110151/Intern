@@ -136,6 +136,11 @@ namespace eCommerce.Persistence.Repositories
             return true;
         }
 
+        public Order Add(Order order)
+        {
+            return _genericRepo.Add(order);
+        }
+
         public async Task<int> GetCountUsers(SearchOrderModel rq)
         {
             var queryObject = QueryObject<Order>.Empty;

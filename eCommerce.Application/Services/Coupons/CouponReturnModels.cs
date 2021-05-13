@@ -16,6 +16,7 @@ namespace eCommerce.Application.Services.Coupons
             public DateTime EndDate { get; set; }
             public decimal? MinPrice { get; set; }
             public decimal Value { get; set; }
+            public string Code { get; set; }
             public DateTime? LastUpdated { get; set; }
             public string LastUpdatedBy { get; set; }
         }

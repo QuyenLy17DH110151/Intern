@@ -84,5 +84,20 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
+        public class FilterByCode : QueryObject<Coupon>
+        {
+            private string _code;
+
+            public FilterByCode(string code)
+            {
+                _code = code;
+            }
+
+            protected override Expression<Func<Coupon, bool>> AsExpression()
+            {
+                return s => s.Code == _code;
+            }
+        }
+
     }
 }
