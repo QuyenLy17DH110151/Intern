@@ -121,4 +121,7 @@ export class UserService {
     getTokenInfo(): TokenInfo {
         return JSON.parse(localStorage.getItem('token_info'));
     }
+    getUsername(): string {
+        return this.getTokenInfo().username;
+    }
 }

@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/shared/service/user.service';
 import { Order } from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
 import { Component, OnInit } from '@angular/core';
@@ -24,7 +25,8 @@ export class DashboardComponent implements OnInit {
     dataApi;
     constructor(
         private _dashBoard: DashboardClient,
-        private _orderClient: OrderClient
+        private _orderClient: OrderClient,
+        private _userService: UserService
     ) {
         Object.assign(this, { doughnutData, pieData });
     }
@@ -186,7 +188,7 @@ export class DashboardComponent implements OnInit {
                 type: 'line',
             },
             title: {
-                text: 'Revenue Products',
+                text: 'Revenue Order',
             },
             tooltip: {
                 pointFormat: '{point.y:.1f}</b>',
@@ -222,7 +224,7 @@ export class DashboardComponent implements OnInit {
             },
             series: [
                 {
-                    name: 'Product Name',
+                    name: this._userService.getUsername(),
                     colorByPoint: true,
                     type: undefined,
                     data: data,

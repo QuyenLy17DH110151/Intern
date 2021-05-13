@@ -185,6 +185,7 @@ namespace eCommerce.Persistence.Repositories
                          join o in _dbContext.Set<Order>()
                          on p.Id equals o.ProductId
                          where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         where o.Status == OrderStatuses.Approved
                          group o by o.Product.Category.Name into g
                          select new { name = g.Key, y = g.Sum(o => o.Quantity) };
             }
@@ -195,6 +196,7 @@ namespace eCommerce.Persistence.Repositories
                          on p.CategoryId equals pc.Id
                          join o in _dbContext.Set<Order>()
                          on p.Id equals o.ProductId
+                         where o.Status == OrderStatuses.Approved
                          group o by o.Product.Category.Name into g
                          select new { name = g.Key, y = g.Sum(o => o.Quantity) };
             }
@@ -213,6 +215,7 @@ namespace eCommerce.Persistence.Repositories
                          join o in _dbContext.Set<Order>()
                          on p.Id equals o.ProductId
                          where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         where o.Status == OrderStatuses.Approved
                          group o by o.Product.Name into g
                          select new { name = g.Key, y = g.Sum(o => o.Quantity) };
             }
@@ -223,6 +226,7 @@ namespace eCommerce.Persistence.Repositories
                          on p.CategoryId equals pc.Id
                          join o in _dbContext.Set<Order>()
                          on p.Id equals o.ProductId
+                         where o.Status == OrderStatuses.Approved
                          group o by o.Product.Name into g
                          select new { name = g.Key, y = g.Sum(o => o.Quantity) };
             }
@@ -236,6 +240,7 @@ namespace eCommerce.Persistence.Repositories
                          join p in _dbContext.Set<Product>()
                          on o.ProductId equals p.Id
                          where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         where o.Status == OrderStatuses.Approved
                          group o by o.CreatedDate.Month into g
                          orderby g.Key
                          select new { month = g.Key, value = g.Sum(o => o.Price) };
