@@ -112,7 +112,7 @@ namespace eCommerce.Application.Services.Coupons
         {
             if (coupon != null)
             {
-                DateTime now = DateTime.Now;
+                DateTime now = DateTime.UtcNow;
                 if (DateTime.Compare(coupon.StartDate, now) < 0 && DateTime.Compare(now, coupon.EndDate) < 0)
                 {
                     return coupon.Value;
