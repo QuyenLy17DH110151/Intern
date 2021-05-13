@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using eCommerce.Domain.Shared;
 
 namespace eCommerce.Application.Services.Order
 {
@@ -45,12 +46,18 @@ namespace eCommerce.Application.Services.Order
 
         public async Task<PaginatedResult<OrderReturnModel.Order>> SearchOrdersAsync(OrderRequestModels.Search rq)
         {
+            List<SortItem> sortRequest = new List<SortItem>();
+            if (!String.IsNullOrEmpty(rq.OrderBy))
+            {
+                sortRequest = Sort.ListSort(rq.OrderBy);
+            }
             var order = await _orderRepo.SearchAsync(
                 new SearchOrderModel
                 {
                     StartDate = rq.StartDate,
                     EndDate = rq.EndDate,
                     Status = rq.Status,
+                    Sort = sortRequest,
 
                     OwnerId = _appContext.Principal.UserId,
                     OwnerUserName = _appContext.Principal.Username,
@@ -82,7 +89,7 @@ namespace eCommerce.Application.Services.Order
         {
             var order = await _orderRepo.GetOrderByIdAsync(orderId);
             var product = await _productRepository.GetProductByIdAsync(productId);
-            await _inventoryRepo.CheckQuantityAsync(product.Inventory.Quantity, order.Quantity);            
+            await _inventoryRepo.CheckQuantityAsync(product.Inventory.Quantity, order.Quantity);
 
             return true;
         }
@@ -90,7 +97,7 @@ namespace eCommerce.Application.Services.Order
         private async Task<int> ReduceQuantityAsync(Guid Id)
         {
             var order = await _orderRepo.GetOrderByIdAsync(Id);
-            var inventory = await _inventoryRepo.ReduceQuantityAsync(order.Product.Inventory.Id, order.Quantity);            
+            var inventory = await _inventoryRepo.ReduceQuantityAsync(order.Product.Inventory.Id, order.Quantity);
 
             return inventory;
         }
@@ -122,7 +129,7 @@ namespace eCommerce.Application.Services.Order
                 throw new EntityNotFound("Order");
             }
 
-            await CheckQuantityAsync(order.ProductId, Id);  
+            await CheckQuantityAsync(order.ProductId, Id);
             await ReduceQuantityAsync(Id);
             await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Approved);
             await _orderRepo.UnitOfWork.SaveChangesAsync();

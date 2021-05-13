@@ -87,5 +87,12 @@ namespace eCommerce.Persistence.Repositories
             return result;
         }
 
+        public async Task<int> CountUsersAsync()
+        {
+            int countUsers = 0;
+            var test = await _genericRepo.GetAllAsync();
+            countUsers = test.Count();
+            return countUsers;
+        }
     }
 }

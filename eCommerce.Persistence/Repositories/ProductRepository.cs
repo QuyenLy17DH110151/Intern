@@ -171,5 +171,21 @@ namespace eCommerce.Persistence.Repositories
             var result = await _genericRepo.SearchAsync(queryObject, req.Pagination, x => x.Include(m => m.Category).Include(m => m.Owner).Include(m => m.Photos));
             return result;
         }
+
+
+        public async Task<int> CountProductAsync(SearchProductModel rq)
+        {
+            var queryObject = QueryObject<Product>.Empty;
+
+            // filter by Owner
+            if (!string.IsNullOrWhiteSpace(rq.OwnerName))
+            {
+                var keyword = rq.OwnerName;
+                queryObject.And(new ProductQueryObjects.FilterBySeller(keyword));
+            }
+
+            var products = await _genericRepo.SearchAsync(queryObject);
+            return products.Count();
+        }
     }
 }

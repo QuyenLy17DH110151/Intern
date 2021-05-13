@@ -24,5 +24,14 @@ class Product {
 enum OrderStatus {
     New = 1,
     Approved = 2,
-    Cancelled = 3
+    Cancelled = 3,
+}
+
+export class SearchRequestOrder {
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+    pageIndex?: string;
+    pageSize?: string;
+    orderBy?: string;
 }

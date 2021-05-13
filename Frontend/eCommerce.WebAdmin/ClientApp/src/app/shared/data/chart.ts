@@ -306,29 +306,27 @@ export var smallLine4ChartType = 'line';
 
 // Chart 3
 export var chart3: Chart = {
-  type: 'Bar',
-  data: {
-    labels: ['100', '200', '300', '400', '500', '600', '700', '800'],
-    series: [
-      [2.5, 3, 3, 0.9, 1.3, 1.8, 3.8, 1.5],
-      [3.8, 1.8, 4.3, 2.3, 3.6, 2.8, 2.8, 2.8]
-    ]
-  },
-  options: {
-    height: 303,
-    seriesBarDistance: 12,
-    axisX: {
-      showGrid: false,
-      labelInterpolationFnc: function (value) {
-        return value[0];
-      }
-    }
-  },
-  events: {
-    created: (data) => {
-
-    }
-  }
+    type: 'Bar',
+    data: {
+        labels: ['100', '200', '300', '400', '500', '600', '700', '800'],
+        series: [
+            [2.5, 3, 3, 0.9, 1.3, 1.8, 3.8, 1.5],
+            [3.8, 1.8, 4.3, 2.3, 3.6, 2.8, 2.8, 2.8],
+        ],
+    },
+    options: {
+        height: 303,
+        seriesBarDistance: 12,
+        axisX: {
+            showGrid: false,
+            labelInterpolationFnc: function (value) {
+                return value[0];
+            },
+        },
+    },
+    events: {
+        created: (data) => {},
+    },
 };
 
 
