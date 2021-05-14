@@ -138,6 +138,7 @@
                         <span class="cart-order__price">{{ cartService.DELIVERY_PRICE |
                             currency:cartService?.Currency.currency:'symbol':'4.0-2'}}</span>
                     </div>
+                    <span (click)="open()">Choose a coupon</span>
                     <div class="cart-order__coupon cart-order__block">
                         <input type="text" class="cart-order__coupon-input" id="" [(ngModel)]='code'>
                         <button (click)="handleCoupon()" type="button" class="btn btn-info text-right btn-coupon">Áp

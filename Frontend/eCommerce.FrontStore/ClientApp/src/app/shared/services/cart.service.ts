@@ -21,19 +21,6 @@ export class CartService {
 
     constructor(private http: HttpClient, private toastrService: ToastrService) {}
 
-    // subscribe() {
-    //     //this._cart$.getValue()
-    //     this.cartItems = JSON.parse(localStorage['cartItems'] || '[]');
-    //     this._cart$.next(this.cartItems);
-    //     return this._cart$.asObservable();
-    //     //return this._cart$.subscribe(observer);
-    // }
-
-    // setCartItems(products) {
-    //     this.cartItems.push(...products);
-    //     this._cart$.next(products);
-    // }
-
     // Add to Cart
     public addToCart(product: Product): void {
         const cartItem = this.cartItems.find((item) => item.id === product.id);
@@ -78,7 +65,6 @@ export class CartService {
         const shipFee = deliveryPrice ? deliveryPrice : this.DELIVERY_PRICE;
         const totalPrice = this.getTotalPrice();
         const total = totalPrice + shipFee - (totalPrice * discountPercent) / 100;
-        debugger;
         return total;
     }
 

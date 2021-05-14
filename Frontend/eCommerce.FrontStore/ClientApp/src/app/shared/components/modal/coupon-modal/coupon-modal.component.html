@@ -1,0 +1,73 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Choose Coupon</h4>
+    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="https://via.placeholder.com/150" alt="coupon image">
+            </div>
+            <div class="col-md-8 coupon-main">
+                <div class="card-body coupon-body">
+                    <h5 class="card-title coupon-name">Giảm 30% giá trị đơn hàng từ 150k</h5>
+                    <p class="card-text coupon-min-price"><small class="text-muted">Orders from 0 VND</small></p>
+                    <p class="card-text"><small class="text-muted coupon-expiration-date">HSD: 19.05.2021</small>
+                    </p>
+                </div>
+                <div class="coupon-action">
+                    <input class="coupon-action-check" type="radio" id="" name="coupon" value="">
+                    <a href="">Condition</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="https://via.placeholder.com/150" alt="coupon image">
+            </div>
+            <div class="col-md-8 coupon-main">
+                <div class="card-body coupon-body">
+                    <h5 class="card-title coupon-name">Giảm 10% giá trị đơn hàng từ Ođ</h5>
+                    <p class="card-text coupon-min-price"><small class="text-muted">Orders from 0 VND</small></p>
+                    <p class="card-text"><small class="text-muted coupon-expiration-date">HSD: 19.05.2021</small>
+                    </p>
+                </div>
+                <div class="coupon-action">
+                    <input class="coupon-action-check" type="radio" id="" name="coupon" value="">
+                    <a href="">Condition</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="https://via.placeholder.com/150" alt="coupon image">
+            </div>
+            <div class="col-md-8 coupon-main">
+                <div class="card-body coupon-body">
+                    <h5 class="card-title coupon-name">Giảm 50% giá trị đơn hàng mọi đơn hàng</h5>
+                    <p class="card-text coupon-min-price"><small class="text-muted">Orders from 0 VND</small></p>
+                    <p class="card-text"><small class="text-muted coupon-expiration-date">HSD: 19.05.2021</small>
+                    </p>
+                </div>
+                <div class="coupon-action">
+                    <input class="coupon-action-check" type="radio" id="" name="coupon" value="">
+                    <a href="">Condition</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn coupon-btn btn-outline-secondary"
+        (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button" class="btn coupon-btn btn-danger" (click)="modal.close('Ok click')">Ok</button>
+</div>
