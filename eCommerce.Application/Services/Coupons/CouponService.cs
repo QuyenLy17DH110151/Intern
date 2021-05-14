@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace eCommerce.Application.Services.Coupons
 {
@@ -122,5 +123,15 @@ namespace eCommerce.Application.Services.Coupons
            
             throw new BusinessException("Coupon is invalid");
         }
+
+        public async Task<List<CouponReturnModels.Coupon>> GetAllValidCouponAsync(CouponRequestModels.GetValidCoupon req)
+        {
+            List<Coupon> result;
+            var coupons = await _couponRepo.GetAllValidCouponAsync(req.valueOrder);
+            result = coupons.ToList();
+
+            return _mapper.Map<List<CouponReturnModels.Coupon>>(result);
+        }
+
     }
 }

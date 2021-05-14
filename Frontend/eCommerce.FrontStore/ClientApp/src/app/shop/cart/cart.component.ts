@@ -56,8 +56,8 @@ export class CartComponent implements OnInit {
         this.cartService.removeCartItem(product);
     }
 
-    handleCoupon() {
-        this.couponClient.getCouponValue(this.code).subscribe(
+    handleCoupon(code) {
+        this.couponClient.getCouponValue(code).subscribe(
             (response) => {
                 this.errorMessage = '';
                 this.discountPercent = response;
@@ -75,7 +75,12 @@ export class CartComponent implements OnInit {
     }
 
     open() {
-        this._modalService.open(CouponModalComponent);
+        const modalRef = this._modalService.open(CouponModalComponent);
+        modalRef.componentInstance.orderValue = this.getTotal;
+        modalRef.componentInstance.emitService.subscribe((emmitedValue) => {
+            this.code = emmitedValue;
+            this.handleCoupon(this.code);
+        });
     }
 
     ngOnDestroy() {

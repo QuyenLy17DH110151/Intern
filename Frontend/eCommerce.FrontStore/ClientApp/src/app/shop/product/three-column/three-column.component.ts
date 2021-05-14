@@ -58,7 +58,8 @@ export class ThreeColumnComponent implements OnInit {
         private router: Router,
         public productService: ProductService,
         private _router: ActivatedRoute,
-        private pagerService: PagerService
+        private pagerService: PagerService,
+        public cartService:CartService
     ) {
         this._router.params.subscribe((response) => {
             // console.log("response", response);
@@ -194,17 +195,16 @@ export class ThreeColumnComponent implements OnInit {
     }
 
     // Add to cart
-    async addToCart(productAPI: any) {
+    async addToCart(productAPI: ProductAPI) {
         productAPI.quantity = this.counter || 1;
-        const status = await this.productService.addToCart(ProductAPI);
-        if (status) this.router.navigate(['/shop/cart']);
+        await this.cartService.addToCart(productAPI);
     }
 
     // Buy Now
-    async buyNow(productAPI: any) {
+    async buyNow(productAPI: ProductAPI) {
         productAPI.quantity = this.counter || 1;
-        const status = await this.productService.addToCart(ProductAPI);
-        if (status) this.router.navigate(['/shop/checkout']);
+        await this.cartService.addToCart(productAPI);
+        if (status) this.router.navigate(['/shop/cart']);
     }
 
     // Add to Wishlist
