@@ -45,10 +45,8 @@ export class ListCouponComponent implements OnInit {
     },
 
     columns: {
-      id: {
+      code: {
         title: 'Code',
-        editable: false,
-        addable: false,
       },
       name: {
         title: 'Name',
@@ -126,6 +124,7 @@ export class ListCouponComponent implements OnInit {
 
   onEditConfirm(event) {
     var data = {
+      "code": event.newData.code,
       "name": event.newData.name,
       "description": event.newData.description,
       "startDate": event.newData.startDate,
