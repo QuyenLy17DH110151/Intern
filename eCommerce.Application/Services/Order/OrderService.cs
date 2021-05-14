@@ -39,13 +39,14 @@ namespace eCommerce.Application.Services.Order
         public async Task<bool> RejectOrderAsync(Guid Id)
         {
             var order = await _orderRepo.GetOrderByIdAsync(Id);
+            var product = await _productRepository.GetProductByIdAsync(order.ProductId);
             if (order == null)
             {
                 throw new EntityNotFound("Order");
             }
             await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Cancelled);
             await _orderRepo.UnitOfWork.SaveChangesAsync();
-            SendEmailRejectOrder("eCommerce", order.BuyerEmail, Id);
+            SendEmailRejectOrder("eCommerce", order.BuyerEmail, Id, order, product);
             return true;
         }
 
@@ -72,7 +73,7 @@ namespace eCommerce.Application.Services.Order
                 });
             return _mapper.Map<PaginatedResult<OrderReturnModel.Order>>(order);
         }
-        private void SendEmailRejectOrder(string from, string to, Guid id)
+        private void SendEmailRejectOrder(string from, string to, Guid id, Domain.Entities.Order order, Domain.Entities.Product product)
         {
             string html = "<!DOCTYPE html>";
             html += "<html>";
@@ -84,6 +85,16 @@ namespace eCommerce.Application.Services.Order
             html += "<input type='hidden' name='key' value='" + "'/>";
             html += "<input type='hidden' name='email' value='" + to + "'/>";
             html += $"Order id : {id} is Reject ";
+            html += "<br>";
+            html += $"<img src={product.Photos[0].Url} > ";
+            html += "<br>";
+            html += $"ProductName : {product.Name} ";
+            html += "<br>";
+            html += $"Quantity : {order.Quantity} ";
+            html += "<br>";
+            html += $"ActualPrice : {order.ActualPrice} ";
+            html += "<br>";
+            html += $"Status : {order.Status} ";
             html += "</form>";
             html += "</body>";
             html += "</html>";
@@ -107,7 +118,7 @@ namespace eCommerce.Application.Services.Order
             return inventory;
         }
 
-        private void SendEmailAccept(string from, string to, Guid id)
+        private void SendEmailAccept(string from, string to, Guid id, Domain.Entities.Order order, Product product)
         {
             string html = "<!DOCTYPE html>";
             html += "<html>";
@@ -119,6 +130,16 @@ namespace eCommerce.Application.Services.Order
             html += "<input type='hidden' name='key' value='" + "'/>";
             html += "<input type='hidden' name='email' value='" + to + "'/>";
             html += $"Order id : {id} is Accepted ";
+            html += "<br>";
+            html += $"<img src={product.Photos[0].Url} > ";
+            html += "<br>";
+            html += $"ProductName : {product.Name} ";
+            html += "<br>";
+            html += $"Quantity : {order.Quantity} ";
+            html += "<br>";
+            html += $"ActualPrice : {order.ActualPrice} ";
+            html += "<br>";
+            html += $"Status : {order.Status} ";
             html += "</form>";
             html += "</body>";
             html += "</html>";
@@ -133,12 +154,13 @@ namespace eCommerce.Application.Services.Order
             {
                 throw new EntityNotFound("Order");
             }
+            var product = await _productRepository.GetProductByIdAsync(order.Id);
 
             await CheckQuantityAsync(order.ProductId, Id);
             await ReduceQuantityAsync(Id);
             await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Approved);
             await _orderRepo.UnitOfWork.SaveChangesAsync();
-            SendEmailAccept("eCommerce", order.BuyerEmail, Id);
+            SendEmailAccept("eCommerce", order.BuyerEmail, Id, order, product);
             return true;
         }
 
@@ -147,7 +169,7 @@ namespace eCommerce.Application.Services.Order
             decimal percent = 0;
             var coupon = await _couponService.GetCouponByCodeAsync(req.couponCode);
 
-            if(coupon != null)
+            if (coupon != null)
             {
                 percent = _couponService.IsValidCoupon(coupon);
             }
