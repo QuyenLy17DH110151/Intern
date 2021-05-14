@@ -141,7 +141,7 @@ namespace eCommerce.Persistence.Repositories
             return _genericRepo.Add(order);
         }
 
-        public async Task<int> GetCountUsers(SearchOrderModel rq)
+        public async Task<int> GetCountUsersAsync(SearchOrderModel rq)
         {
             var queryObject = QueryObject<Order>.Empty;
 
@@ -174,7 +174,7 @@ namespace eCommerce.Persistence.Repositories
             return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o => o.Price);
         }
 
-        public async Task<string> StatisticsCategories(SearchOrderModel rq)
+        public async Task<string> StatisticsCategoriesAsync(SearchOrderModel rq)
         {
             IQueryable<object> result;
             if (rq.Role != UserRoles.Admin)
@@ -185,6 +185,7 @@ namespace eCommerce.Persistence.Repositories
                          join o in _dbContext.Set<Order>()
                          on p.Id equals o.ProductId
                          where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         where o.Status == OrderStatuses.Approved
                          group o by o.Product.Category.Name into g
                          select new { name = g.Key, y = g.Sum(o => o.Quantity) };
             }
@@ -195,6 +196,7 @@ namespace eCommerce.Persistence.Repositories
                          on p.CategoryId equals pc.Id
                          join o in _dbContext.Set<Order>()
                          on p.Id equals o.ProductId
+                         where o.Status == OrderStatuses.Approved
                          group o by o.Product.Category.Name into g
                          select new { name = g.Key, y = g.Sum(o => o.Quantity) };
             }
@@ -202,7 +204,7 @@ namespace eCommerce.Persistence.Repositories
             return json;
         }
 
-        public async Task<string> StatisticsProducts(SearchOrderModel rq)
+        public async Task<string> StatisticsProductsAsync(SearchOrderModel rq)
         {
             IQueryable<object> result;
             if (rq.Role != UserRoles.Admin)
@@ -213,6 +215,7 @@ namespace eCommerce.Persistence.Repositories
                          join o in _dbContext.Set<Order>()
                          on p.Id equals o.ProductId
                          where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         where o.Status == OrderStatuses.Approved
                          group o by o.Product.Name into g
                          select new { name = g.Key, y = g.Sum(o => o.Quantity) };
             }
@@ -223,9 +226,25 @@ namespace eCommerce.Persistence.Repositories
                          on p.CategoryId equals pc.Id
                          join o in _dbContext.Set<Order>()
                          on p.Id equals o.ProductId
+                         where o.Status == OrderStatuses.Approved
                          group o by o.Product.Name into g
                          select new { name = g.Key, y = g.Sum(o => o.Quantity) };
             }
+            var json = JsonSerializer.Serialize(await result.ToListAsync());
+            return json;
+        }
+
+        public async Task<string> RevenueMonthlyBySellerAsync(SearchOrderModel rq)
+        {
+            var result = from o in _dbContext.Set<Order>()
+                         join p in _dbContext.Set<Product>()
+                         on o.ProductId equals p.Id
+                         where p.OwnerId == Guid.Parse(rq.OwnerId)
+                         where o.Status == OrderStatuses.Approved
+                         group o by o.CreatedDate.Month into g
+                         orderby g.Key
+                         select new { month = g.Key, value = g.Sum(o => o.Price) };
+
             var json = JsonSerializer.Serialize(await result.ToListAsync());
             return json;
         }

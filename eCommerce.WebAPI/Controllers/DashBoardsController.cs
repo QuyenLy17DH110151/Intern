@@ -12,7 +12,7 @@ namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class DashBoardsController : ControllerBase
     {
         private readonly IDashBoardService _dashBoardService;
@@ -46,13 +46,14 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet("CountComment")]
-        public ActionResult GetCountComment()
+        public async Task<ActionResult> GetCountCommentAsync()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            return Ok(3000);
+            var countComment = await _dashBoardService.GetCountComment();
+            return Ok(countComment);
         }
         [HttpGet("GetCountUser")]
         public async Task<ActionResult> GetCountUserAsync()
@@ -77,13 +78,24 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet("GetProducts")]
-        public async Task<ActionResult> GetGetProductsAsync()
+        public async Task<ActionResult> GetProductsAsync()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             var result = await _dashBoardService.StatisticsProducts();
+            return Ok(result);
+        }
+
+        [HttpGet("RevenueMonthly")]
+        public async Task<ActionResult> RevenueMonthly()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var result = await _dashBoardService.RevenueMonthly();
             return Ok(result);
         }
     }

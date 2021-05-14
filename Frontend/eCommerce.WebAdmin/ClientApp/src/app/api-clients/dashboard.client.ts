@@ -13,6 +13,8 @@ export class DashboardClient {
     private apiGetCountUser = `${environment.apiUrl}/DashBoards/GetCountUser`;
     private apiGetCategory = `${environment.apiUrl}/DashBoards/GetCategory`;
     private apiGetProducts = `${environment.apiUrl}/DashBoards/GetProducts`;
+    private apiRevenueMonthly = `${environment.apiUrl}/DashBoards/RevenueMonthly`;
+
     constructor(private http: HttpClient) {}
 
     getSumEarnings() {
@@ -37,5 +39,9 @@ export class DashboardClient {
 
     getStatisticsProduct() {
         return this.http.get(this.apiGetProducts);
+    }
+
+    getRevenueMonthly() {
+        return this.http.get(this.apiRevenueMonthly);
     }
 }
