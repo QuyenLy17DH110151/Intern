@@ -37,7 +37,8 @@ export class ProfileComponent implements OnInit {
         private userClient: UserClient,
         private storage: AngularFireStorage,
         private formBuilder: FormBuilder,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private userService: UserService
     ) {
         this.createUserForm();
         this.getInformation();
@@ -88,19 +89,20 @@ export class ProfileComponent implements OnInit {
                 this.getInformation();
                 //return page profile
                 this.clickEditProfile();
-                console.log(this.user);
+
             });
     }
 
     getInformation() {
         this.userClient.getMyInformation().subscribe((res) => {
             this.user = res;
-            console.log('user', this.user);
-
             this.setValueDefaultInUserForm();
+            this.userService.updatedUrlAvatar(this.user.urlImage);
         });
     }
-    ngOnInit() {}
+
+    ngOnInit() { }
+
     clickImg() {
         this.displayBtnActionImg = !this.displayBtnActionImg;
     }
