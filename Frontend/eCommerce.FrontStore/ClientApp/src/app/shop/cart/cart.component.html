@@ -32,9 +32,10 @@
                             </td>
                             <td>
                                 <!-- <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]">{{ product.title | titlecase }}</a> -->
-                                <a class="item-name" href="">{{product.name}}</a>
+                                <a class="item-name"
+                                    [routerLink]="['/shop/product/three/column', product.id]">{{product.name}}</a>
                                 <div class="mobile-cart-content row">
-                                    <div class="col-xs-3">
+                                    <div class="col-xs-3">s
                                         <div class="qty-box">
                                             <div class="input-group">
                                                 <input type="text" name="quantity" class="form-control input-number"
