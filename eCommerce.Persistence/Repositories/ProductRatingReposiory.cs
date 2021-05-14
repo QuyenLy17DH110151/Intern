@@ -2,12 +2,12 @@
 using eCommerce.Domain.Repositories;
 using eCommerce.Domain.Repositories.Models;
 using eCommerce.Domain.Seedwork;
+using eCommerce.Domain.Shared;
 using eCommerce.Domain.Shared.Models;
 using eCommerce.Persistence.QueryObjects;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace eCommerce.Persistence.Repositories
@@ -45,6 +45,22 @@ namespace eCommerce.Persistence.Repositories
             return rp;
         }
 
+        public async Task<int> CountCommentAsync(SearchProductRating rq)
+        {
+            var queryObject = QueryObject<ProductRating>.Empty;
+
+            //Filter by current user name
+            if (!string.IsNullOrWhiteSpace(rq.OwnerUserName) && rq.Role != UserRoles.Admin)
+            {
+                var userName = rq.OwnerUserName;
+                queryObject.And(new ProductRatingQueryObject.FilterByCurrentUserName(userName));
+            }
+
+            var result = await _genericRepo.SearchAsync(queryObject);
+            return result
+                .Select(pr=>pr.ReviewContent)
+                .Count();
+        }
     }
 
 }

@@ -42,5 +42,11 @@ namespace eCommerce.Application.Services.DashBoard
         /// </summary>
         /// <returns></returns>
         Task<string> StatisticsProducts();
+
+        /// <summary>
+        /// Revenue Monthly
+        /// </summary>
+        /// <returns></returns>
+        Task<string> RevenueMonthly();
     }
 }

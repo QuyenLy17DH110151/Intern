@@ -8,6 +8,7 @@ export class Coupon {
     endDate: Date;
     minPrice: number;
     value: number;
+    code: string;
 }
 
 export class CreateCouponRequest {

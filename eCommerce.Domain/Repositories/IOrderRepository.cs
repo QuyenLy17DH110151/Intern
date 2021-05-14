@@ -21,7 +21,7 @@ namespace eCommerce.Domain.Repositories
         /// </summary>
         /// <param name="rq"></param>
         /// <returns></returns>
-        Task<int> GetCountUsers(SearchOrderModel rq);
+        Task<int> GetCountUsersAsync(SearchOrderModel rq);
 
         /// <summary>
         /// Get Sum Earning Form Orders
@@ -35,13 +35,20 @@ namespace eCommerce.Domain.Repositories
         /// </summary>
         /// <param name="rq"></param>
         /// <returns></returns>
-        Task<string> StatisticsCategories(SearchOrderModel rq);
+        Task<string> StatisticsCategoriesAsync(SearchOrderModel rq);
 
         /// <summary>
         /// Statistics Products
         /// </summary>
         /// <param name="rq"></param>
         /// <returns></returns>
-        Task<string> StatisticsProducts(SearchOrderModel rq);
+        Task<string> StatisticsProductsAsync(SearchOrderModel rq);
+
+        /// <summary>
+        /// Statistics Revenue Monthly By Seller 
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<string> RevenueMonthlyBySellerAsync(SearchOrderModel rq);
     }
 }
