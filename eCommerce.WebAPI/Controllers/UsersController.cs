@@ -15,7 +15,6 @@ namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -46,7 +45,7 @@ namespace eCommerce.WebAPI.Controllers
         }
 
 
-        
+
         [HttpPost("reset-password")]
         [Authorize(Policy = "PermissionSeller")]
         public async Task<ActionResult> ResetPassword()
@@ -59,7 +58,7 @@ namespace eCommerce.WebAPI.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdatePassword([FromBody] UserRequestModels.UpdatePassword rq)
         {
-             await _userService.UpdatePasswordAsync(rq);
+            await _userService.UpdatePasswordAsync(rq);
             return Ok();
         }
 
@@ -90,7 +89,7 @@ namespace eCommerce.WebAPI.Controllers
         public async Task<ActionResult> ForgotPassword([FromBody] UserRequestModels.ForgotPassword rq)
         {
             await _userService.ForgotPasswordAsync(rq, _clienUrl.FrontEndUrl);
-            
+
             return Ok();
         }
 
@@ -117,7 +116,7 @@ namespace eCommerce.WebAPI.Controllers
         public async Task<ActionResult> UpdateInformation([FromBody] UserRequestModels.UserUpdateInformation user)
         {
             var username = _applicationContext.Principal.Username;
-            await _userService.UpdateInformationAsync(username,user);
+            await _userService.UpdateInformationAsync(username, user);
             return Ok();
         }
     }
