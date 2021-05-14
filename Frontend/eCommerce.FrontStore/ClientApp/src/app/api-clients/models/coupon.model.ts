@@ -8,4 +8,5 @@ export class Coupon {
     value: number;
     lastUpdated: Date;
     lastUpdatedBy: string;
+    code: string;
 }

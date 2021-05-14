@@ -86,5 +86,14 @@ namespace eCommerce.WebAPI.Controllers
             return _couponService.IsValidCoupon(coupon);
         }
 
+        [HttpGet("/frontstore/api/coupons/valid")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<CouponReturnModels.Coupon>>> FrontStoreGetValidCoupon([FromQuery] CouponRequestModels.GetValidCoupon req)
+        {
+            var coupons = await _couponService.GetAllValidCouponAsync(req);
+
+            return coupons;
+        }
+
     }
 }

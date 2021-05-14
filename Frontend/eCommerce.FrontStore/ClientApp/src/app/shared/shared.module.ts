@@ -60,6 +60,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { ProductByCategoryComponent } from './components/product/product-by-category/product-by-category.component';
+import { CouponModalComponent } from './components/modal/coupon-modal/coupon-modal.component';
 
 @NgModule({
     declarations: [
@@ -96,6 +97,7 @@ import { ProductByCategoryComponent } from './components/product/product-by-cate
         DiscountPipe,
         SaleOffPipe,
         ProductByCategoryComponent,
+        CouponModalComponent,
     ],
     imports: [
         CommonModule,
@@ -154,6 +156,7 @@ import { ProductByCategoryComponent } from './components/product/product-by-cate
         DiscountPipe,
         SaleOffPipe,
         ProductByCategoryComponent,
+        CouponModalComponent,
     ],
 })
 export class SharedModule {}

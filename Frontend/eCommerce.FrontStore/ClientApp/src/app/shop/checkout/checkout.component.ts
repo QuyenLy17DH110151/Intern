@@ -185,6 +185,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             (response) => {
                 this.cartService.resetLocalStorage();
                 this.toastr.success('Checkout is successful', 'Notification');
+                this.cartService.resetLocalStorage();
             },
             (error) => this.toastr.error('Checkout is failed', 'Notification')
         );

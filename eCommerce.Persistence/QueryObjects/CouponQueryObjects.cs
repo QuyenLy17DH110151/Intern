@@ -99,5 +99,35 @@ namespace eCommerce.Persistence.QueryObjects
             }
         }
 
+        public class IsValid : QueryObject<Coupon>
+        {
+            private DateTime _now;
+
+            public IsValid()
+            {
+                _now = DateTime.UtcNow;
+            }
+
+            protected override Expression<Func<Coupon, bool>> AsExpression()
+            {
+                return s => s.StartDate <= _now && s.EndDate >= _now;
+            }
+        }
+
+        public class FilterByValueOrder : QueryObject<Coupon>
+        {
+            private decimal _valueOrder;
+
+            public FilterByValueOrder(decimal valueOrder)
+            {
+                _valueOrder = valueOrder;
+            }
+
+            protected override Expression<Func<Coupon, bool>> AsExpression()
+            {
+                return s => s.MinPrice <= _valueOrder;
+            }
+        }
+
     }
 }

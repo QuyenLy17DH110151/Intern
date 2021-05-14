@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CouponClient } from 'src/app/api-clients/coupon.client';
 import { Coupon } from 'src/app/api-clients/models/coupon.model';
+import { CouponModalComponent } from 'src/app/shared/components/modal/coupon-modal/coupon-modal.component';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { Product } from '../../api-clients/models/product.model';
 
@@ -22,7 +24,8 @@ export class CartComponent implements OnInit {
     constructor(
         public cartService: CartService,
         private couponClient: CouponClient,
-        private router: Router
+        private router: Router,
+        private _modalService: NgbModal
     ) {}
 
     ngOnInit() {
@@ -53,8 +56,8 @@ export class CartComponent implements OnInit {
         this.cartService.removeCartItem(product);
     }
 
-    handleCoupon() {
-        this.couponClient.getCouponValue(this.code).subscribe(
+    handleCoupon(code) {
+        this.couponClient.getCouponValue(code).subscribe(
             (response) => {
                 this.errorMessage = '';
                 this.discountPercent = response;
@@ -69,6 +72,15 @@ export class CartComponent implements OnInit {
     checkout() {
         localStorage.setItem('code', this.code);
         this.router.navigate(['/shop/checkout']);
+    }
+
+    open() {
+        const modalRef = this._modalService.open(CouponModalComponent);
+        modalRef.componentInstance.orderValue = this.getTotal;
+        modalRef.componentInstance.emitService.subscribe((emmitedValue) => {
+            this.code = emmitedValue;
+            this.handleCoupon(this.code);
+        });
     }
 
     ngOnDestroy() {

@@ -40,5 +40,10 @@ namespace eCommerce.Application.Services.Coupons
             public int PageSize { get; set; }
             public string Sort { get; set; }
         }
+
+        public class GetValidCoupon
+        {
+            public decimal? valueOrder { get; set; }
+        }
     }
 }

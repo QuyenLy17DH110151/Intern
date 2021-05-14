@@ -21,4 +21,9 @@ export class CouponClient {
         const url = `${environment.apiUrl}/frontstore/api/coupons/verify/${code}`;
         return this.http.get<number>(url);
     }
+
+    getAllValidCoupon(orderValue): Observable<Coupon[]> {
+        const url = `${environment.apiUrl}/frontstore/api/coupons/valid?valueOrder=${orderValue}`;
+        return this.http.get<Coupon[]>(url);
+    }
 }

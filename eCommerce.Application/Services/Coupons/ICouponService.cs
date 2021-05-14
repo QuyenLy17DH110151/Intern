@@ -57,5 +57,12 @@ namespace eCommerce.Application.Services.Coupons
         /// <param name="coupon"></param>
         /// <returns></returns>
         decimal IsValidCoupon(CouponReturnModels.Coupon coupon);
+
+        /// <summary>
+        /// Get all valid coupon in DB
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        Task<List<CouponReturnModels.Coupon>> GetAllValidCouponAsync(CouponRequestModels.GetValidCoupon req);
     }
 }

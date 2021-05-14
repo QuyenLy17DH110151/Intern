@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Domain.Repositories
 {
-    public interface ICouponRepository: IRepository<Coupon>
+    public interface ICouponRepository : IRepository<Coupon>
     {
         Task<PaginatedResult<Coupon>> SearchAsync(SearchCouponModel req);
         Coupon Add(Coupon coupon);
@@ -17,5 +17,6 @@ namespace eCommerce.Domain.Repositories
         void Detete(Coupon coupon);
         Task<Coupon> GetCouponById(Guid id);
         Task<Coupon> GetCouponByCodeAsync(string code);
+        Task<IEnumerable<Coupon>> GetAllValidCouponAsync(decimal? valueOrder);
     }
 }

@@ -108,5 +108,25 @@ namespace eCommerce.Persistence.Repositories
         {
             return await _dbContext.Set<Coupon>().SingleOrDefaultAsync(x => x.Code == code);
         }
+
+        public async Task<IEnumerable<Coupon>> GetAllValidCouponAsync(decimal? valueOrder)
+        {
+            // filter
+            var queryObject = QueryObject<Coupon>.Empty;
+            
+            // fillter by value order
+            if (valueOrder.HasValue)
+            {
+                var value = valueOrder.Value;
+                queryObject.And(new CouponQueryObjects.FilterByValueOrder(value));
+            }
+
+            // fillter coupon is valid
+            queryObject.And(new CouponQueryObjects.IsValid());
+
+            // execute
+            var result = await _genericRepo.SearchAsync(queryObject);
+            return result;
+        }
     }
 }

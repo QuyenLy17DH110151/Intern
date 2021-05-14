@@ -64,7 +64,7 @@ namespace eCommerce.WebAPI.Controllers
 
             return productCategories;
         }
-
+         
         [HttpGet("{id}")]   
         public async Task<ProductCategoryReturnModels.ProductCategoryDetails> GetProductCategoryDetailsById(Guid id)
         {
