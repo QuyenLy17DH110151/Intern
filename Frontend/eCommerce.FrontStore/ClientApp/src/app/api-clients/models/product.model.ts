@@ -8,6 +8,7 @@ export class Product {
   description: string;
   lastUpdated: Date;
   inventory: Inventory;
+  quantity: number;
 }
 export class Inventory {
   quantity: number;
