@@ -81,7 +81,7 @@ export class ListCouponComponent implements OnInit {
         valuePrepareFunction: (minPrice) => {
           return this.currencyPipe.transform(
             minPrice,
-            'USD',
+            'VND',
             'symbol',
             '1.2-2'
           );
