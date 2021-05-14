@@ -3,6 +3,7 @@ import { Component, Input, ViewEncapsulation, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { NavService, Menu } from '../../service/nav.service';
 import { TokenInfo } from 'src/app/api-clients/models/common.model';
+import { UserService } from '../../service/user.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -15,10 +16,21 @@ export class SidebarComponent implements OnInit {
     public url: any;
     public fileurl: any;
     user: TokenInfo;
+    public urlAvatar: string;
     public defaultUrlAvata = 'assets/images/dashboard/designer.jpg';
     // userName: string = localStorage.getItem('userName');
     // role: string = localStorage.getItem('userRole');
-    constructor(private router: Router, public navServices: NavService) {}
+    constructor(private router: Router, public navServices: NavService, private userService: UserService) {
+        this.userService.getUrlAvatarObs().subscribe(rs => {
+
+            setTimeout(() => {
+                this.urlAvatar = this.userService.getUrlAvatar();
+                console.log(this.urlAvatar);
+            }, 2000);
+
+        });
+
+    }
     ngOnInit(): void {
         this.loadUser();
         this.navServices.items.subscribe((menuItems) => {

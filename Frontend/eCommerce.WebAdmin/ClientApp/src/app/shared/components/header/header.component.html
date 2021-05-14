@@ -2,23 +2,15 @@
     <div class="main-header-right row">
         <div class="main-header-left d-lg-none">
             <div class="logo-wrapper">
-                <a [routerLink]="'/dashboard/default'"
-                    ><img
-                        class="blur-up lazyloaded"
-                        src="./assets/images/dashboard/multikart-logo.png"
-                        alt=""
-                /></a>
+                <a [routerLink]="'/dashboard/default'"><img class="blur-up lazyloaded"
+                        src="./assets/images/dashboard/multikart-logo.png" alt="" /></a>
             </div>
         </div>
         <div class="mobile-sidebar">
             <div class="media-body text-right switch-sm">
                 <label class="switch">
                     <a>
-                        <app-feather-icons
-                            id="sidebar-toggle"
-                            [icon]="'align-left'"
-                            (click)="collapseSidebar()"
-                        >
+                        <app-feather-icons id="sidebar-toggle" [icon]="'align-left'" (click)="collapseSidebar()">
                         </app-feather-icons>
                     </a>
                 </label>
@@ -29,31 +21,18 @@
                 <li>
                     <form class="form-inline search-form">
                         <div class="form-group">
-                            <input
-                                class="form-control-plaintext"
-                                [class.open]="isOpenMobile"
-                                type="search"
-                                placeholder="Search.."
-                            />
+                            <input class="form-control-plaintext" [class.open]="isOpenMobile" type="search"
+                                placeholder="Search.." />
                             <span class="d-sm-none mobile-search">
-                                <app-feather-icons
-                                    [icon]="'search'"
-                                    (click)="isOpenMobile = !isOpenMobile"
-                                >
+                                <app-feather-icons [icon]="'search'" (click)="isOpenMobile = !isOpenMobile">
                                 </app-feather-icons>
                             </span>
                         </div>
                     </form>
                 </li>
                 <li>
-                    <a
-                        href="javascript:void(0)"
-                        class="text-dark"
-                        toggleFullscreen
-                    >
-                        <app-feather-icons
-                            [icon]="'maximize-2'"
-                        ></app-feather-icons>
+                    <a href="javascript:void(0)" class="text-dark" toggleFullscreen>
+                        <app-feather-icons [icon]="'maximize-2'"></app-feather-icons>
                     </a>
                 </li>
                 <li class="onhover-dropdown">
@@ -62,57 +41,39 @@
                     </a>
                     <ul class="language-dropdown onhover-show-div p-20">
                         <li>
-                            <a href="javascript:void(0)" data-lng="en"
-                                ><i class="flag-icon flag-icon-is"></i>
-                                English</a
-                            >
+                            <a href="javascript:void(0)" data-lng="en"><i class="flag-icon flag-icon-is"></i>
+                                English</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" data-lng="es"
-                                ><i class="flag-icon flag-icon-um"></i>
-                                Spanish</a
-                            >
+                            <a href="javascript:void(0)" data-lng="es"><i class="flag-icon flag-icon-um"></i>
+                                Spanish</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" data-lng="pt"
-                                ><i class="flag-icon flag-icon-uy"></i>
-                                Portuguese</a
-                            >
+                            <a href="javascript:void(0)" data-lng="pt"><i class="flag-icon flag-icon-uy"></i>
+                                Portuguese</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" data-lng="fr"
-                                ><i class="flag-icon flag-icon-nz"></i>
-                                French</a
-                            >
+                            <a href="javascript:void(0)" data-lng="fr"><i class="flag-icon flag-icon-nz"></i>
+                                French</a>
                         </li>
                     </ul>
                 </li>
                 <li class="onhover-dropdown">
-                    <span
-                        class="badge badge-pill badge-primary pull-right notification-badge"
-                        >3</span
-                    >
-                    <app-feather-icons [icon]="'bell'"></app-feather-icons
-                    ><span class="dot"></span>
+                    <span class="badge badge-pill badge-primary pull-right notification-badge">3</span>
+                    <app-feather-icons [icon]="'bell'"></app-feather-icons><span class="dot"></span>
                     <ul class="notification-dropdown onhover-show-div">
                         <li>
                             Notification
-                            <span
-                                class="badge badge-pill badge-primary pull-right"
-                                >3</span
-                            >
+                            <span class="badge badge-pill badge-primary pull-right">3</span>
                         </li>
                         <li>
                             <div class="media">
                                 <div class="media-body">
                                     <h6 class="mt-0">
                                         <span>
-                                            <app-feather-icons
-                                                class="shopping-color"
-                                                [icon]="'shopping-bag'"
-                                            >
-                                            </app-feather-icons> </span
-                                        >Your order ready for Ship..!
+                                            <app-feather-icons class="shopping-color" [icon]="'shopping-bag'">
+                                            </app-feather-icons>
+                                        </span>Your order ready for Ship..!
                                     </h6>
                                     <p class="mb-0">
                                         Lorem ipsum dolor sit amet,
@@ -126,12 +87,9 @@
                                 <div class="media-body">
                                     <h6 class="mt-0 txt-success">
                                         <span>
-                                            <app-feather-icons
-                                                class="download-color font-success"
-                                                [icon]="'download'"
-                                            >
-                                            </app-feather-icons> </span
-                                        >Download Complete
+                                            <app-feather-icons class="download-color font-success" [icon]="'download'">
+                                            </app-feather-icons>
+                                        </span>Download Complete
                                     </h6>
                                     <p class="mb-0">
                                         Lorem ipsum dolor sit amet,
@@ -145,12 +103,9 @@
                                 <div class="media-body">
                                     <h6 class="mt-0 txt-danger">
                                         <span>
-                                            <app-feather-icons
-                                                class="alert-color font-danger"
-                                                [icon]="'alert-circle'"
-                                            >
-                                            </app-feather-icons> </span
-                                        >250 MB trash files
+                                            <app-feather-icons class="alert-color font-danger" [icon]="'alert-circle'">
+                                            </app-feather-icons>
+                                        </span>250 MB trash files
                                     </h6>
                                     <p class="mb-0">
                                         Lorem ipsum dolor sit amet,
@@ -166,81 +121,51 @@
                 </li>
                 <li>
                     <a>
-                        <app-feather-icons
-                            class="right_side_toggle"
-                            [icon]="'message-square'"
-                            (click)="right_side_bar()"
-                        >
-                        </app-feather-icons
-                        ><span class="dot"></span>
+                        <app-feather-icons class="right_side_toggle" [icon]="'message-square'"
+                            (click)="right_side_bar()">
+                        </app-feather-icons><span class="dot"></span>
                     </a>
                 </li>
                 <li class="onhover-dropdown">
                     <div class="media align-items-center" *ngIf="user">
-                        <img
-                            class="align-self-center pull-right img-50 rounded-circle"
-                            [src]="user.avatar || defaultUrlAvata"
-                            alt="header-user"
-                        />
+                        <img class="align-self-center pull-right img-50 rounded-circle"
+                            [src]="urlAvatar || defaultUrlAvata" alt="header-user" />
 
                         <div class="dotted-animation">
-                            <span class="animate-circle"></span
-                            ><span class="main-circle"></span>
+                            <span class="animate-circle"></span><span class="main-circle"></span>
                         </div>
                     </div>
-                    <ul
-                        class="profile-dropdown onhover-show-div p-20 profile-dropdown-hover"
-                    >
+                    <ul class="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
                         <li>
                             <a [routerLink]="'/settings/profile'">
-                                <app-feather-icons
-                                    [icon]="'user'"
-                                ></app-feather-icons
-                                >Edit Profile
+                                <app-feather-icons [icon]="'user'"></app-feather-icons>Edit Profile
                             </a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">
-                                <app-feather-icons
-                                    [icon]="'mail'"
-                                ></app-feather-icons
-                                >Inbox
+                                <app-feather-icons [icon]="'mail'"></app-feather-icons>Inbox
                             </a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">
-                                <app-feather-icons
-                                    [icon]="'lock'"
-                                ></app-feather-icons
-                                >Lock Screen
+                                <app-feather-icons [icon]="'lock'"></app-feather-icons>Lock Screen
                             </a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">
-                                <app-feather-icons
-                                    [icon]="'settings'"
-                                ></app-feather-icons
-                                >Settings
+                                <app-feather-icons [icon]="'settings'"></app-feather-icons>Settings
                             </a>
                         </li>
                         <li>
                             <a [routerLink]="'/auth/login'" (click)="Logout()">
-                                <app-feather-icons
-                                    [icon]="'log-out'"
-                                ></app-feather-icons
-                                >Logout
+                                <app-feather-icons [icon]="'log-out'"></app-feather-icons>Logout
                             </a>
                         </li>
                     </ul>
                 </li>
             </ul>
-            <div
-                class="d-lg-none mobile-toggle pull-right"
-                (click)="openMobileNav()"
-            >
-                <app-feather-icons
-                    [icon]="'more-horizontal'"
-                ></app-feather-icons>
+            <div class="d-lg-none mobile-toggle pull-right" (click)="openMobileNav()">
+                <app-feather-icons [icon]="'more-horizontal'"></app-feather-icons>
             </div>
         </div>
     </div>

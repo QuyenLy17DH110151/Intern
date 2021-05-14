@@ -10,14 +10,36 @@ import {
 } from 'src/app/api-clients/models/common.model';
 import { of, Subscription } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserService {
+
+
+    private urlAvatarSource: BehaviorSubject<string> = new BehaviorSubject('');
     private timer: Subscription;
-    constructor(private userClient: UserClient) {}
+
+    constructor(private userClient: UserClient) {
+
+
+    }
 
     loggedIn() {
         return !!localStorage.getItem('access_token');
+    }
+
+    getUrlAvatarObs(): Observable<string> {
+        return this.urlAvatarSource.asObservable();
+    }
+
+    getUrlAvatar(): string {
+        return localStorage.getItem('url_avatar');
+    }
+
+    updatedUrlAvatar(url: string) {
+        this.setUrlAvatar(url);
+        this.urlAvatarSource.next(url);
     }
 
     getDecodedAccessToken(token: string): any {
@@ -29,6 +51,7 @@ export class UserService {
     }
 
     getToken(): string {
+        this.urlAvatarSource.next(localStorage.getItem('url_avatar'));
         return localStorage.getItem('access_token');
     }
 
@@ -79,8 +102,6 @@ export class UserService {
         //     return res;
         // });
         return this.userClient.refreshToken(rq).subscribe((res) => {
-            console.log(rq);
-            console.log(res);
             let token_info = this.getDecodedAccessToken(res.accessToken);
             this.setLocalStorage(res, token_info);
             this.startTokenTimer();
@@ -90,10 +111,14 @@ export class UserService {
 
     getTokenRemainingTime() {
         const accessToken = localStorage.getItem('access_token');
+        console.log("test", jwt_decode(accessToken))
+
         if (!accessToken) {
             return 0;
         }
-        const jwtToken = JSON.parse(atob(accessToken.split('.')[1]));
+        const jwtToken: TokenInfo = jwt_decode(accessToken);
+        this.setUrlAvatar(jwtToken.avatar);
+        this.updatedUrlAvatar(jwtToken.avatar);
         const expires = new Date(jwtToken.exp * 1000);
         console.log(expires.getTime() - Date.now());
         return expires.getTime() - Date.now();
@@ -106,6 +131,10 @@ export class UserService {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('token_info');
         localStorage.setItem('logout-event', 'logout' + Math.random());
+    }
+
+    private setUrlAvatar(url: string) {
+        localStorage.setItem('url_avatar', url);
     }
 
     setLocalStorage(x: JwtAuthResult, tokenInfo?: TokenInfo) {
@@ -121,6 +150,7 @@ export class UserService {
     getTokenInfo(): TokenInfo {
         return JSON.parse(localStorage.getItem('token_info'));
     }
+
     getUsername(): string {
         return this.getTokenInfo().username;
     }

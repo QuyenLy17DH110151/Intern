@@ -16,38 +16,46 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable({
     providedIn: 'root',
 })
+
 export class ExceptionInterceptor implements HttpInterceptor {
+
     constructor(
         private router: Router,
         private toastr: ToastrService,
         private userService: UserService
-    ) {}
+    ) { }
+
     intercept(
         request: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
-                console.log(error);
-
-                //authen
-                if (
-                    error instanceof HttpErrorResponse &&
-                    error.status === 401
-                ) {
-                    console.log('access_token is expires');
-
-                    this.toastr.error('access_token is expires');
-                    this.Logout();
-                }
-
-                let message = '';
-
                 //err reset password
                 if (error.error.errorMessage == 'token or username invalid') {
                     this.router.navigate(['/reset-password-error']);
                     return;
                 }
+
+                //authen
+                if (error.status === 401) {
+                    this.toastr.error('access_token is expires');
+                    this.Logout();
+                    return;
+                }
+
+                if (error.status === 500) {
+                    Swal.fire(
+                        'Error',
+                        'Internal Server Error',
+                        'error'
+                    );
+                    return;
+                }
+
+                let message = '';
+                console.log("errrrrrrrrrrrr")
+                console.log(error)
 
                 if (error.error instanceof ErrorEvent) {
                     // handle client-side error
@@ -73,6 +81,7 @@ export class ExceptionInterceptor implements HttpInterceptor {
             })
         );
     }
+
     Logout() {
         this.userService.clearLocalStorage();
         this.router.navigate(['./auth/login']);

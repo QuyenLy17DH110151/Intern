@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
     public open: boolean = false;
     public openNav: boolean = false;
     public isOpenMobile: boolean;
+    public urlAvatar: string;
     user: TokenInfo;
     public defaultUrlAvata = 'assets/images/dashboard/designer.jpg';
 
@@ -21,7 +22,16 @@ export class HeaderComponent implements OnInit {
     constructor(
         public navServices: NavService,
         private userService: UserService
-    ) {}
+    ) {
+        this.userService.getUrlAvatarObs().subscribe(rs => {
+
+            setTimeout(() => {
+                this.urlAvatar = this.userService.getUrlAvatar();
+                console.log(this.urlAvatar);
+            }, 2000);
+
+        });
+    }
 
     collapseSidebar() {
         this.open = !this.open;

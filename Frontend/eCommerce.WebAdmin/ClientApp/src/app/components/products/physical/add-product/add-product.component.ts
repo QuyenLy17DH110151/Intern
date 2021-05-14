@@ -20,7 +20,7 @@ export class AddProductComponent implements OnInit {
     public productForm: FormGroup;
     private basePath = '/uploads';
     private defaultPrice = 1000;
-    defaultUrl = 'https://via.placeholder.com/150';
+    defaultUrl = 'assets/images/pro3/1.jpg';
     selectedFiles?: FileList = null;
     fileUpload?: FileUpload;
     categories = [];
@@ -113,6 +113,7 @@ export class AddProductComponent implements OnInit {
                 title: 'Success...',
                 text: 'Create new product successfully!',
             });
+            this.discard();
         }
     }
 
