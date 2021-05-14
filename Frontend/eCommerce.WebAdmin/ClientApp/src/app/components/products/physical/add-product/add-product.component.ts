@@ -113,6 +113,7 @@ export class AddProductComponent implements OnInit {
                 title: 'Success...',
                 text: 'Create new product successfully!',
             });
+            this.discard();
         }
     }
 
