@@ -12,7 +12,7 @@ namespace eCommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class DashBoardsController : ControllerBase
     {
         private readonly IDashBoardService _dashBoardService;
@@ -46,13 +46,14 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet("CountComment")]
-        public ActionResult GetCountComment()
+        public async Task<ActionResult> GetCountCommentAsync()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            return Ok(3000);
+            var countComment = await _dashBoardService.GetCountComment();
+            return Ok(countComment);
         }
         [HttpGet("GetCountUser")]
         public async Task<ActionResult> GetCountUserAsync()

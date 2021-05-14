@@ -23,5 +23,20 @@ namespace eCommerce.Persistence.QueryObjects
                 return p => p.ProductId == _productId;
             }
         }
+
+        internal class FilterByCurrentUserName : QueryObject<ProductRating>
+        {
+            private string _userName;
+
+            public FilterByCurrentUserName(string userName)
+            {
+                this._userName = userName;
+            }
+
+            protected override Expression<Func<ProductRating, bool>> AsExpression()
+            {
+                return o => o.Product.Owner.Username.Equals(this._userName);
+            }
+        }
     }
 }

@@ -14,5 +14,12 @@ namespace eCommerce.Domain.Repositories
         Task<PaginatedResult<ProductRating>> SearchAsync(SearchProductRating searchProductRating);
 
         ProductRating Add(ProductRating productRating);
+
+        /// <summary>
+        /// Get count Comment
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<int> CountCommentAsync(SearchProductRating rq);
     }
 }
