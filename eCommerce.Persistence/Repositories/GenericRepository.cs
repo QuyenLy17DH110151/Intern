@@ -55,6 +55,13 @@ namespace eCommerce.Persistence.Repositories
             }
 
             var totalRows = await query.CountAsync();
+
+            if (totalRows == 0)
+            {
+                return new PaginatedResult<T> { Items = null, TotalPages = 0, TotalRows = 0 };
+
+            }
+
             var items = await query.Skip(pagingRq.PageIndex * pagingRq.ItemsPerPage).Take(pagingRq.ItemsPerPage).ToListAsync();
             var totalPages = (totalRows + pagingRq.ItemsPerPage - 1) / pagingRq.ItemsPerPage;
 
