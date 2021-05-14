@@ -82,6 +82,7 @@ namespace eCommerce.Application.Services.Coupons
             coupon.EndDate = request.EndDate;
             coupon.Value = request.Value;
             coupon.MinPrice = request.MinPrice;
+            coupon.Code = request.Code;
 
             // Save changed into DB
             _couponRepo.Update(coupon);

@@ -9,6 +9,7 @@ export class User {
     createBy: string;
     lastUpdate?: Date;
     lastUpdateBy: string;
+    urlImage: string;
 }
 export enum UserRole {
     Admin = 1,

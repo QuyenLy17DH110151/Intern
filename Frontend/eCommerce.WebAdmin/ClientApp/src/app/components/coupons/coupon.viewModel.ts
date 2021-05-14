@@ -8,6 +8,7 @@ export class CouponViewModel {
     endDate: Date;
     minPrice: number;
     value: number;
+    code: string;
 
     constructor(coupon: Coupon) {
         this.id = coupon.id;
@@ -17,5 +18,6 @@ export class CouponViewModel {
         this.endDate = coupon.endDate;
         this.minPrice = coupon.minPrice;
         this.value = coupon.value;
+        this.code = coupon.code;
     }
 }

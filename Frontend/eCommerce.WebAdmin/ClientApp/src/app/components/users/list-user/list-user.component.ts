@@ -16,6 +16,7 @@ export class ListUserComponent implements OnInit {
     public user_list = [];
     rq: SearchRequest = {};
     keyWordSearch: string = '';
+    urlImageUser = "https://via.placeholder.com/150";
     constructor(
         private userClient: UserClient,
         private datePipe: DatePipe,
@@ -41,6 +42,21 @@ export class ListUserComponent implements OnInit {
             add: false,
         },
         columns: {
+            urlImage: {
+                title: 'Avatar',
+                type: 'html',
+                valuePrepareFunction: (urlImage) => {
+                    if (!urlImage) {
+                        return (
+                            `<img src="${this.urlImageUser}" height="100" width="100"/>`
+                        );
+                    }
+                    return (
+                        `<img src="${urlImage}" height="100" width="100"/>`
+                    );
+                },
+                filter: false,
+            },
             username: {
                 title: 'User name',
                 type: 'email',

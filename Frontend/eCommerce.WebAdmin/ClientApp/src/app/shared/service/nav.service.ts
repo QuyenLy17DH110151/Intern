@@ -55,23 +55,23 @@ export class NavService {
 			]
 		},
 		{
-			title: 'Inventory', path: '/inventory', icon: 'box', type: 'link', active: false
+			title: 'Inventory', path: '/inventory', icon: 'database', type: 'link', active: false
 		},
 		{
-			title: 'Order', icon: 'box', type: 'sub', active: false, children: [
+			title: 'Order', icon: 'clipboard', type: 'sub', active: false, children: [
 				{ path: '/orders/list-order', title: 'Order List', type: 'link' },
 				// { path: '/orders/details-order', title: 'Order Details', type: 'link' },
 				// { path: '/orders/status-order', title: 'Order Status', type: 'link' },
 			]
 		},
 		{
-			title: 'Category', icon: 'box', type: 'sub', active: false, children: [
+			title: 'Category', icon: 'layers', type: 'sub', active: false, children: [
 				{ path: '/categories/list-category', title: 'Category List', type: 'link' },
 				{ path: '/categories/create-category', title: 'Create Category', type: 'link' }
 			]
 		},
 		{
-			title: 'Coupon', icon: 'box', type: 'sub', active: false, children: [
+			title: 'Coupon', icon: 'star', type: 'sub', active: false, children: [
 				{ path: '/coupons/list-coupon', title: 'Coupon List', type: 'link' },
 			]
 		}
