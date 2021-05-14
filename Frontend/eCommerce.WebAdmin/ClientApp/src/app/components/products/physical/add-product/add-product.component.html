@@ -9,10 +9,44 @@
                 <div class="col-lg-4 cardImage">
                     <div class="add-product">
                         <div class="row">
-                            <label class="col-xl-3 col-sm-4 mb-0"
-                                ><b>Image</b>
-                            </label>
-
+                            <div class="img" *ngIf="listUrlImage.length > 0">
+                                <ngb-carousel>
+                                    <ng-template
+                                        ngbSlide
+                                        *ngFor="let image of listUrlImage"
+                                    >
+                                        <div class="picsum-img-wrapper">
+                                            <img
+                                                [src]="image"
+                                                alt="Random slide"
+                                                style="
+                                                    height: 250px;
+                                                    width: 300px;
+                                                    box-shadow: 0 4px 8px 0
+                                                            rgba(0, 0, 0, 0.2),
+                                                        0 6px 20px 0
+                                                            rgba(0, 0, 0, 0.19);
+                                                "
+                                            />
+                                        </div>
+                                    </ng-template>
+                                </ngb-carousel>
+                            </div>
+                            <div
+                                class="col-xl-3 col-sm-4 mb-0"
+                                *ngIf="!listUrlImage.length"
+                            >
+                                <img
+                                    [src]="defaultUrl"
+                                    style="
+                                        height: 250px;
+                                        width: 300px;
+                                        box-shadow: 0 4px 8px 0
+                                                rgba(0, 0, 0, 0.2),
+                                            0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                    "
+                                />
+                            </div>
                             <div class="mt-3">
                                 <input
                                     type="file"
@@ -21,55 +55,16 @@
                                     #inputImage
                                     multiple
                                 />
-                                <!-- <button
-                                    class="btn btn-success btn-sm"
-                                    [disabled]="!selectedFiles"
-                                    (click)="uploadImage()"
-                                    [class.disabled]="!selectedFiles"
-                                >
-                                    Upload
-                                </button> -->
                                 <button
                                     type="button"
-                                    class="btn btn-primary mr-1"
+                                    class="btn btn-success mr-1"
                                     (click)="uploadImage()"
                                     [class.disabled]="!selectedFiles"
                                 >
-                                    Add
+                                    Add Image
                                 </button>
                             </div>
                         </div>
-                    </div>
-                    <div class="img" *ngIf="listUrlImage.length > 0">
-                        <!-- <carousel>
-                            <div
-                                class="carousel-cell"
-                                *ngFor="let image of listUrlImage"
-                            >
-                                <img [src]="image || defaultUrl" />
-                            </div>
-                        </carousel> -->
-                        <ngb-carousel>
-                            <ng-template
-                                ngbSlide
-                                *ngFor="let image of listUrlImage"
-                            >
-                                <div class="picsum-img-wrapper">
-                                    <img
-                                        [src]="image"
-                                        alt="Random slide"
-                                        style="height: 300px; width: 380px"
-                                    />
-                                </div>
-                            </ng-template>
-                        </ngb-carousel>
-
-                        <!-- <ul *ngFor="let image of listUrlImage">
-                            <li><img [src]="image" /></li>
-                        </ul> -->
-                    </div>
-                    <div class="img" *ngIf="!listUrlImage.length">
-                        <img [src]="defaultUrl" />
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -128,7 +123,6 @@
                                         numbers.
                                     </div>
                                 </div>
-                                <!-- <span>{{name?.errors | json}}</span> -->
                             </div>
                             <div class="form-group row">
                                 <label
@@ -166,7 +160,11 @@
                                     >Category :</label
                                 >
                                 <select
-                                    class="form-control digits col-xl-8 col-sm-7"
+                                    class="
+                                        form-control
+                                        digits
+                                        col-xl-8 col-sm-7
+                                    "
                                     id="exampleFormControlSelect1"
                                     formControlName="categoryId"
                                 >
@@ -198,14 +196,19 @@
                                     >Description :</label
                                 >
                                 <div
-                                    class="col-xl-8 col-sm-7 pl-0 description-sm"
+                                    class="
+                                        col-xl-8 col-sm-7
+                                        pl-0
+                                        description-sm
+                                    "
                                     style="padding-right: 0"
                                 >
-                                    <!-- <textarea name="editor1" [(ngModel)]="descriptionValue"
-                                                [ngModelOptions]="{standalone: true}" rows="4" cols="50">
-                                            </textarea> -->
                                     <textarea
-                                        class="form-control digits col-xl-8 col-sm-7"
+                                        class="
+                                            form-control
+                                            digits
+                                            col-xl-8 col-sm-7
+                                        "
                                         style="max-width: 100%"
                                         name="description"
                                         formControlName="description"
@@ -256,7 +259,11 @@
                     </form>
                     <div class="form-group row mb-0">
                         <div
-                            class="product-buttons col-sm-8 offset-xl-3 offset-sm-4"
+                            class="
+                                product-buttons
+                                col-sm-8
+                                offset-xl-3 offset-sm-4
+                            "
                         >
                             <button
                                 type="button"
