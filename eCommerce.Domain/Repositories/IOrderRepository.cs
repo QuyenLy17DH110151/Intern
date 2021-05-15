@@ -49,6 +49,6 @@ namespace eCommerce.Domain.Repositories
         /// </summary>
         /// <param name="rq"></param>
         /// <returns></returns>
-        Task<string> RevenueMonthlyBySellerAsync(SearchOrderModel rq);
+        Task<LineChartModels> RevenueMonthlyBySellerAsync(SearchOrderModel rq);
     }
 }

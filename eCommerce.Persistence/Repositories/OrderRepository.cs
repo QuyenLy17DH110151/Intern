@@ -234,7 +234,7 @@ namespace eCommerce.Persistence.Repositories
             return json;
         }
 
-        public async Task<string> RevenueMonthlyBySellerAsync(SearchOrderModel rq)
+        public async Task<LineChartModels> RevenueMonthlyBySellerAsync(SearchOrderModel rq)
         {
             var result = from o in _dbContext.Set<Order>()
                          join p in _dbContext.Set<Product>()
@@ -243,10 +243,17 @@ namespace eCommerce.Persistence.Repositories
                          where o.Status == OrderStatuses.Approved
                          group o by o.CreatedDate.Month into g
                          orderby g.Key
-                         select new { month = g.Key, value = g.Sum(o => o.Price) };
+                         select new ChartModels(g.Key, g.Sum(o => o.Price));
 
-            var json = JsonSerializer.Serialize(await result.ToListAsync());
-            return json;
+            var lines = await result.ToListAsync();
+            decimal[] data;
+            data = new decimal[12] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            foreach (var item in lines)
+            {
+                data[item.Month - 1] = item.Value;
+            }
+            LineChartModels lineChartModels = new LineChartModels(rq.OwnerUserName, data);
+            return lineChartModels;
         }
     }
 }

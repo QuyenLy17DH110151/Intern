@@ -67,31 +67,33 @@ namespace eCommerce.Application.Services.DashBoard
             });
         }
 
-        public async Task<string> RevenueMonthly()
+        public async Task<List<LineChartModels>> RevenueMonthly()
         {
 
             var users = await _userRepository.GetAllAsync();
+            List<LineChartModels> lineChartModels = new List<LineChartModels>(); ;
+            LineChartModels lineChart;
             if (_appContext.Principal.Role == Domain.Shared.UserRoles.Admin)
             {
-                string result = "";
-                string temp = "";
                 foreach (var item in users)
                 {
-                    temp = await RevenueMonthlyBySellerAsync(new SearchOrderModel(item.Id.ToString(), item.Username, item.Role));
-                    result = String.Concat(result, temp);
+                    lineChart = await RevenueMonthlyBySellerAsync(new SearchOrderModel(item.Id.ToString(), item.Username, item.Role));
+                    lineChartModels.Add(lineChart);
                 }
-                return result;
+                return lineChartModels;
             }
             else
             {
-                return await RevenueMonthlyBySellerAsync(new SearchOrderModel(
+                lineChart = await RevenueMonthlyBySellerAsync(new SearchOrderModel(
                     _appContext.Principal.UserId,
                     _appContext.Principal.Username,
                     _appContext.Principal.Role));
+                lineChartModels.Add(lineChart);
             }
+            return lineChartModels;
         }
 
-        private async Task<string> RevenueMonthlyBySellerAsync(SearchOrderModel searchOrderModel)
+        private async Task<LineChartModels> RevenueMonthlyBySellerAsync(SearchOrderModel searchOrderModel)
         {
             return await _orderRepository.RevenueMonthlyBySellerAsync(searchOrderModel);
         }
