@@ -59,7 +59,7 @@ export class ThreeColumnComponent implements OnInit {
         public productService: ProductService,
         private _router: ActivatedRoute,
         private pagerService: PagerService,
-        public cartService:CartService
+        public cartService: CartService
     ) {
         this._router.params.subscribe((response) => {
             // console.log("response", response);
@@ -70,22 +70,31 @@ export class ThreeColumnComponent implements OnInit {
         //set page review
     }
 
-    getActiveStar(index: number, numberStar: number) {
+    getActiveStar(index: number, numberStar: number): boolean {
         return numberStar > this.getStarResponse.startValues.length - 1 - index;
+    }
+
+    getActiveStarAvg(index: number): boolean {
+        return index <= this.getStarResponse.avgValueDouble - 0.5;
     }
 
     getDataStar() {
         this.productRatingClient.getStart(this.productAPI.id).subscribe((rp) => {
             this.getStarResponse = rp;
-            console.log(this.getStarResponse);
         });
     }
 
-    getWidth(value: number, isEnable: boolean) {
-        if (isEnable) {
-            return Math.ceil((value / this.getStarResponse.numberStart) * 300);
+    getWidth(numberRating: number, isEnable: boolean) {
+        if (this.getStarResponse.numberRating == 0) {
+            if (isEnable) {
+                return 0;
+            }
+            return 300;
         }
-        return 300 - Math.ceil((value / this.getStarResponse.numberStart) * 300);
+        if (isEnable) {
+            return Math.ceil((numberRating / this.getStarResponse.numberRating) * 300);
+        }
+        return 300 - Math.ceil((numberRating / this.getStarResponse.numberRating) * 300);
     }
 
     getDataPageReview(pageIndex: number) {
@@ -123,7 +132,7 @@ export class ThreeColumnComponent implements OnInit {
     }
 
     getDisplayPagination() {
-        return this.pager.totalPages > 1;
+        return this.totalRowsReview > 5;
     }
 
     submitReview() {
@@ -169,7 +178,7 @@ export class ThreeColumnComponent implements OnInit {
             try {
                 const errorField = this.renderer.selectRootElement('.first-review');
                 errorField.scrollIntoView();
-            } catch (err) {}
+            } catch (err) { }
         }
         this.isStartToTopReview = true;
     }
