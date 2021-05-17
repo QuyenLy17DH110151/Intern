@@ -16,7 +16,7 @@ import { RightSidebarComponent } from './components/right-sidebar/right-sidebar.
 import { UserService } from './service/user.service';
 
 //pipes
-import { VndCurrencyPipe } '../'
+import { VndCurrencyPipe } from '../pipes/vndCurrency.pipe';
 
 @NgModule({
     declarations: [
@@ -28,10 +28,14 @@ import { VndCurrencyPipe } '../'
         ContentLayoutComponent,
         BreadcrumbComponent,
         RightSidebarComponent,
-        VndCurrencyPipe
+        VndCurrencyPipe,
     ],
     imports: [CommonModule, RouterModule],
     providers: [NavService, WINDOW_PROVIDERS, UserService],
-    exports: [FeatherIconsComponent, ToggleFullscreenDirective, VndCurrencyPipe],
+    exports: [
+        FeatherIconsComponent,
+        ToggleFullscreenDirective,
+        VndCurrencyPipe,
+    ],
 })
 export class SharedModule {}
