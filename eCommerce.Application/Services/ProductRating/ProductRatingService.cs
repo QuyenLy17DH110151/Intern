@@ -85,8 +85,7 @@ namespace eCommerce.Application.Services.ProductRating
                 ProductId = product.Id,
                 ProductName = product.Name,
                 SumValue = 0,
-                AvgValueDouble = 0,
-                AvgValueInt = 0
+                AvgValueDouble = 0
             };
 
             if (productRatings.Items == null)
@@ -106,8 +105,7 @@ namespace eCommerce.Application.Services.ProductRating
                     ProductId = product.Id,
                     ProductName = product.Name,
                     SumValue = 5,
-                    AvgValueDouble = 5,
-                    AvgValueInt = 5
+                    AvgValueDouble = 5
                 };
             }
             foreach (var productRating in productRatings.Items)
