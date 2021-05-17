@@ -74,25 +74,48 @@ namespace eCommerce.Application.Services.ProductRating
             {
                 StartValues = new List<ProductRatingReturnModels.StartValue>()
                 {
-                    new ProductRatingReturnModels.StartValue{NumberStar = 1, Value =0},
-                    new ProductRatingReturnModels.StartValue{NumberStar = 2, Value =0},
-                    new ProductRatingReturnModels.StartValue{NumberStar = 3, Value =0},
-                    new ProductRatingReturnModels.StartValue{NumberStar = 4, Value =0},
-                    new ProductRatingReturnModels.StartValue{NumberStar = 5, Value =0}
+                    new ProductRatingReturnModels.StartValue{NumberStar = 1, NumberRating =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 2, NumberRating =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 3, NumberRating =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 4, NumberRating =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 5, NumberRating =0}
                 },
-                MaxStart = 5,
-                NumberStart = 0,
+                MaxStar = 5,
+                NumberRating = 0,
                 ProductId = product.Id,
                 ProductName = product.Name,
                 SumValue = 0,
-                AvgValue = 0
+                AvgValueDouble = 0,
+                AvgValueInt = 0
             };
 
-
+            if (productRatings.Items == null)
+            {
+                return new ProductRatingReturnModels.GetStarResponse
+                {
+                    StartValues = new List<ProductRatingReturnModels.StartValue>()
+                {
+                    new ProductRatingReturnModels.StartValue{NumberStar = 1, NumberRating =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 2, NumberRating =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 3, NumberRating =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 4, NumberRating =0},
+                    new ProductRatingReturnModels.StartValue{NumberStar = 5, NumberRating =0}
+                },
+                    MaxStar = 5,
+                    NumberRating = 0,
+                    ProductId = product.Id,
+                    ProductName = product.Name,
+                    SumValue = 5,
+                    AvgValueDouble = 5,
+                    AvgValueInt = 5
+                };
+            }
             foreach (var productRating in productRatings.Items)
             {
-                getStarResponse.AddStart(productRating.NumberStar);
+                getStarResponse.AddRating(productRating.NumberStar);
             }
+
+            getStarResponse.CalculatorAvg();
 
             return getStarResponse;
 

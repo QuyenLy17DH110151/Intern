@@ -36,7 +36,7 @@ namespace eCommerce.Application.Services.ProductRating
         public class StartValue
         {
             public int NumberStar { get; set; }
-            public int Value { get; set; }
+            public int NumberRating { get; set; }
         }
 
         public class GetStarResponse
@@ -46,35 +46,33 @@ namespace eCommerce.Application.Services.ProductRating
 
             public string ProductName { get; set; }
 
-            public int NumberStart { get; set; }
+            public int NumberRating { get; set; }
 
             public List<StartValue> StartValues { get; set; }
 
-            public int MaxStart { get; set; }
+            public int MaxStar { get; set; }
 
             public int SumValue { get; set; }
 
-            public Double AvgValue { get; set; }
+            public Double AvgValueDouble { get; set; }
 
-            public void AddStart(int numberStar)
+            public void AddRating(int numberStar)
             {
-                NumberStart++;
+                NumberRating++;
 
                 //set SumValue And Avg Value
                 SumValue += numberStar;
 
-                AvgValue = (Double)10 * SumValue / NumberStart;
-                int avg = (int)AvgValue;
-                AvgValue = (Double)avg / 10;
+
 
                 //check MaxStar < numberStar to do add all element star integer with < numberStar
-                if (MaxStart < numberStar)
+                if (MaxStar < numberStar)
                 {
-                    for (; MaxStart <= numberStar; MaxStart++)
+                    for (; MaxStar <= numberStar; MaxStar++)
                     {
-                        StartValues.Add(new StartValue { NumberStar = MaxStart, Value = 0 });
+                        StartValues.Add(new StartValue { NumberStar = MaxStar, NumberRating = 0 });
                     }
-                    MaxStart = numberStar;
+                    MaxStar = numberStar;
                 }
 
                 //check star is exist in arry after increment 1 value
@@ -83,13 +81,20 @@ namespace eCommerce.Application.Services.ProductRating
                 {
                     if (startValue.NumberStar == numberStar)
                     {
-                        ++StartValues[i].Value;
+                        ++StartValues[i].NumberRating;
                         return;
                     }
                     i++;
                 }
 
 
+            }
+
+            public void CalculatorAvg()
+            {
+                AvgValueDouble = (Double)SumValue * 10 / NumberRating;
+                var AvgValueInt = (int)AvgValueDouble;
+                AvgValueDouble = (Double)AvgValueInt / 10;
             }
 
         }

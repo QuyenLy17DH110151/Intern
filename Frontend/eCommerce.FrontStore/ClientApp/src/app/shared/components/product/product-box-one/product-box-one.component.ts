@@ -4,6 +4,8 @@ import { CartModalComponent } from '../../modal/cart-modal/cart-modal.component'
 import { Product } from 'src/app/api-clients/models/product.model';
 import { ProductService } from '../../../services/product.service';
 import { CartService } from 'src/app/shared/services/cart.service';
+import { ProductRatingClient } from 'src/app/api-clients/productRating.client';
+import { interval } from 'rxjs';
 
 @Component({
     selector: 'app-product-box-one',
@@ -17,20 +19,40 @@ export class ProductBoxOneComponent implements OnInit {
     @Input() onHowerChangeImage: boolean = false; // Default False
     @Input() cartModal: boolean = false; // Default False
     @Input() loader: boolean = false;
-
+    starAvg: number = 5;
+    killOb: boolean = true;
     @ViewChild('quickView') QuickView: QuickViewComponent;
     @ViewChild('cartModal') CartModal: CartModalComponent;
 
     public ImageSrc: string;
 
-    constructor(private productService: ProductService, private cartService: CartService) {}
+    constructor(private productService: ProductService, private cartService: CartService, private productRatingClient: ProductRatingClient,) {
+        this.getStarAvg();
+    }
 
     ngOnInit(): void {
         if (this.loader) {
             setTimeout(() => {
-                this.loader = false;
             }, 2000); // Skeleton Loader
         }
+    }
+
+    getStarAvg() {
+        let subscription = interval(1000).subscribe({
+            next: () => {
+                if (this.product.id != null) {
+                    this.productRatingClient.getStart(this.product.id).subscribe((rp) => {
+                        this.starAvg = (rp.avgValueDouble + 0.5 | 0);
+
+                    });
+                    unsubscribe();
+                }
+            },
+            error: () => { },
+            complete: () => { }
+        })
+
+        let unsubscribe = () => { subscription.unsubscribe() };
     }
 
     // Get Product Color
@@ -74,3 +96,5 @@ export class ProductBoxOneComponent implements OnInit {
         this.productService.addToCompare(product);
     }
 }
+
+

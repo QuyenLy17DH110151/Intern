@@ -54,14 +54,14 @@ export class GetProductRatingRequest {
 export class GetStarResponse {
     productId: string;
     productName: string;
-    numberStart: number;
+    numberRating: number;
     sumValue: number;
-    avgValue: number;
     maxStart: number;
+    avgValueDouble: number;
     startValues: StartValue[];
 }
 
 export class StartValue {
     numberStar: number;
-    value: number;
+    numberRating: number;
 }
