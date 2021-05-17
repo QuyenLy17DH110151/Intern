@@ -154,7 +154,7 @@ namespace eCommerce.Application.Services.Order
             {
                 throw new EntityNotFound("Order");
             }
-            var product = await _productRepository.GetProductByIdAsync(order.Id);
+            var product = await _productRepository.GetProductByIdAsync(order.ProductId);
 
             await CheckQuantityAsync(order.ProductId, Id);
             await ReduceQuantityAsync(Id);
