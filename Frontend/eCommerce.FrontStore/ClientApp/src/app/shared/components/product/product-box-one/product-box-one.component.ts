@@ -38,7 +38,7 @@ export class ProductBoxOneComponent implements OnInit {
     }
 
     getStarAvg() {
-        let subscription = interval(1).subscribe({
+        let subscription = interval(1000).subscribe({
             next: () => {
                 if (this.product.id != null) {
                     this.productRatingClient.getStart(this.product.id).subscribe((rp) => {
