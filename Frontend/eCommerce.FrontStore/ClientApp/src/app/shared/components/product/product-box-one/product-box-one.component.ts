@@ -6,6 +6,7 @@ import { ProductService } from '../../../services/product.service';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { ProductRatingClient } from 'src/app/api-clients/productRating.client';
 import { interval } from 'rxjs';
+import { WishListService } from 'src/app/shared/services/wishlist.service';
 
 @Component({
     selector: 'app-product-box-one',
@@ -23,18 +24,25 @@ export class ProductBoxOneComponent implements OnInit {
     killOb: boolean = true;
     @ViewChild('quickView') QuickView: QuickViewComponent;
     @ViewChild('cartModal') CartModal: CartModalComponent;
+    public isWishlist: boolean = false;
 
     public ImageSrc: string;
 
-    constructor(private productService: ProductService, private cartService: CartService, private productRatingClient: ProductRatingClient,) {
+    constructor(
+        private productService: ProductService,
+        private cartService: CartService,
+        private productRatingClient: ProductRatingClient,
+        private wishListService: WishListService
+    ) {
         this.getStarAvg();
     }
 
     ngOnInit(): void {
         if (this.loader) {
-            setTimeout(() => {
-            }, 2000); // Skeleton Loader
+            setTimeout(() => {}, 2000); // Skeleton Loader
         }
+
+        this.isWishlist = this.wishListService.isWishlist(this.product.id);
     }
 
     getStarAvg() {
@@ -42,17 +50,18 @@ export class ProductBoxOneComponent implements OnInit {
             next: () => {
                 if (this.product.id != null) {
                     this.productRatingClient.getStart(this.product.id).subscribe((rp) => {
-                        this.starAvg = (rp.avgValueDouble + 0.5 | 0);
-
+                        this.starAvg = (rp.avgValueDouble + 0.5) | 0;
                     });
                     unsubscribe();
                 }
             },
-            error: () => { },
-            complete: () => { }
-        })
+            error: () => {},
+            complete: () => {},
+        });
 
-        let unsubscribe = () => { subscription.unsubscribe() };
+        let unsubscribe = () => {
+            subscription.unsubscribe();
+        };
     }
 
     // Get Product Color
@@ -89,12 +98,17 @@ export class ProductBoxOneComponent implements OnInit {
     }
 
     addToWishlist(product: any) {
-        this.productService.addToWishlist(product);
+        if (this.isWishlist) {
+            this.wishListService.removeWishlistItem(product);
+            this.isWishlist = !this.isWishlist;
+            return;
+        }
+
+        this.wishListService.addToWishlist(product);
+        this.isWishlist = !this.isWishlist;
     }
 
     addToCompare(product: any) {
         this.productService.addToCompare(product);
     }
 }
-
-
