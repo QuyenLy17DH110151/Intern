@@ -42,6 +42,24 @@ export class SidebarComponent implements OnInit {
             ],
         },
         {
+            title: 'Category',
+            icon: 'layers',
+            type: 'sub',
+            active: false,
+            children: [
+                {
+                    path: '/categories/list-category',
+                    title: 'Category List',
+                    type: 'link',
+                },
+                {
+                    path: '/categories/create-category',
+                    title: 'Create Category',
+                    type: 'link',
+                },
+            ],
+        },
+        {
             title: 'Products',
             icon: 'box',
             type: 'sub',
@@ -79,24 +97,7 @@ export class SidebarComponent implements OnInit {
                 },
             ],
         },
-        {
-            title: 'Category',
-            icon: 'layers',
-            type: 'sub',
-            active: false,
-            children: [
-                {
-                    path: '/categories/list-category',
-                    title: 'Category List',
-                    type: 'link',
-                },
-                {
-                    path: '/categories/create-category',
-                    title: 'Create Category',
-                    type: 'link',
-                },
-            ],
-        },
+
         {
             title: 'Coupon',
             icon: 'star',
@@ -132,7 +133,7 @@ export class SidebarComponent implements OnInit {
         if (this.user.role === 'Admin') {
             this.loadMenu(menuItems);
         } else {
-            menuItems.splice(1, 1);
+            menuItems.splice(1, 2);
             this.loadMenu(menuItems);
         }
     }
