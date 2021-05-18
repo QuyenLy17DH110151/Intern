@@ -17,6 +17,7 @@ export class ListOrderComponent implements OnInit {
     orderListVM: OrderViewModel[] = [];
     totalPages: number;
     totalRows: number;
+    listCurrrentIdOrderApproved: string[] = [];
 
     keyWordSearch: string = '';
     constructor(
@@ -35,7 +36,7 @@ export class ListOrderComponent implements OnInit {
             confirmDelete: true,
         },
         actions: {
-            add:false,
+            add: false,
             edit: false,
             custom: [{ name: 'ourCustomAction' }],
         },
@@ -131,6 +132,14 @@ export class ListOrderComponent implements OnInit {
     }
 
     AcceptOrder(id: string) {
+        if (this.listCurrrentIdOrderApproved.length != 0) {
+            this.listCurrrentIdOrderApproved.map(idOrder => {
+                if (idOrder == id) {
+                    return;
+                }
+            })
+        }
+        this.listCurrrentIdOrderApproved.push(id);
         this.orderClient
             .acceptOrder(id)
             .subscribe(() => {
