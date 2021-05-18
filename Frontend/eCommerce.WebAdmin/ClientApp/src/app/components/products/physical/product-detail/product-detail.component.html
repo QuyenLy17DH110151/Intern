@@ -66,13 +66,17 @@
                     <hr />
 
                     <div class="m-t-15">
-                        <button
+                        <a
                             class="btn btn-warning"
                             type="button"
                             style="margin: 5px"
+                            [routerLink]="[
+                                '/products/update-product',
+                                product.id
+                            ]"
                         >
                             Update
-                        </button>
+                        </a>
                         <button
                             class="btn btn-primary"
                             type="button"
