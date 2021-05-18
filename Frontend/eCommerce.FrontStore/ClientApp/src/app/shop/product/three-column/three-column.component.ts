@@ -16,6 +16,7 @@ import {
 import { PagerService } from 'src/app/shared/services/page.service';
 import { Product } from 'src/app/shared/classes/product';
 import { CartService } from 'src/app/shared/services/cart.service';
+import { WishListService } from 'src/app/shared/services/wishlist.service';
 
 @Component({
     selector: 'app-three-column',
@@ -59,7 +60,8 @@ export class ThreeColumnComponent implements OnInit {
         public productService: ProductService,
         private _router: ActivatedRoute,
         private pagerService: PagerService,
-        public cartService: CartService
+        public cartService: CartService,
+        private wishListService: WishListService
     ) {
         this._router.params.subscribe((response) => {
             // console.log("response", response);
@@ -178,7 +180,7 @@ export class ThreeColumnComponent implements OnInit {
             try {
                 const errorField = this.renderer.selectRootElement('.first-review');
                 errorField.scrollIntoView();
-            } catch (err) { }
+            } catch (err) {}
         }
         this.isStartToTopReview = true;
     }
@@ -217,8 +219,8 @@ export class ThreeColumnComponent implements OnInit {
     }
 
     // Add to Wishlist
-    addToWishlist(product: any) {
-        this.productService.addToWishlist(product);
+    addToWishlist(productAPI: ProductAPI) {
+        this.wishListService.addToWishlist(productAPI);
     }
 
     goToReview(): void {
