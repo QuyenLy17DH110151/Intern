@@ -18,24 +18,114 @@ export class SidebarComponent implements OnInit {
     user: TokenInfo;
     public urlAvatar: string;
     public defaultUrlAvata = 'assets/images/dashboard/designer.jpg';
-    // userName: string = localStorage.getItem('userName');
-    // role: string = localStorage.getItem('userRole');
-    constructor(private router: Router, public navServices: NavService, private userService: UserService) {
-        this.userService.getUrlAvatarObs().subscribe(rs => {
-
+    MENUITEMS: Menu[] = [
+        {
+            path: '/dashboard/default',
+            title: 'Dashboard',
+            icon: 'home',
+            type: 'link',
+            badgeType: 'primary',
+            active: true,
+        },
+        {
+            title: 'Users',
+            icon: 'user-plus',
+            type: 'sub',
+            active: false,
+            children: [
+                { path: '/users/list-user', title: 'User List', type: 'link' },
+                {
+                    path: '/users/create-user',
+                    title: 'Create User',
+                    type: 'link',
+                },
+            ],
+        },
+        {
+            title: 'Products',
+            icon: 'box',
+            type: 'sub',
+            active: false,
+            children: [
+                {
+                    path: '/products/list-product',
+                    title: 'Product List',
+                    type: 'link',
+                },
+                {
+                    path: '/products/add-product',
+                    title: 'Add Product',
+                    type: 'link',
+                },
+            ],
+        },
+        {
+            title: 'Inventory',
+            path: '/inventory',
+            icon: 'database',
+            type: 'link',
+            active: false,
+        },
+        {
+            title: 'Order',
+            icon: 'clipboard',
+            type: 'sub',
+            active: false,
+            children: [
+                {
+                    path: '/orders/list-order',
+                    title: 'Order List',
+                    type: 'link',
+                },
+            ],
+        },
+        {
+            title: 'Category',
+            icon: 'layers',
+            type: 'sub',
+            active: false,
+            children: [
+                {
+                    path: '/categories/list-category',
+                    title: 'Category List',
+                    type: 'link',
+                },
+                {
+                    path: '/categories/create-category',
+                    title: 'Create Category',
+                    type: 'link',
+                },
+            ],
+        },
+        {
+            title: 'Coupon',
+            icon: 'star',
+            type: 'sub',
+            active: false,
+            children: [
+                {
+                    path: '/coupons/list-coupon',
+                    title: 'Coupon List',
+                    type: 'link',
+                },
+            ],
+        },
+    ];
+    constructor(
+        private router: Router,
+        public navServices: NavService,
+        private userService: UserService
+    ) {
+        this.userService.getUrlAvatarObs().subscribe((rs) => {
             setTimeout(() => {
                 this.urlAvatar = this.userService.getUrlAvatar();
                 console.log(this.urlAvatar);
             }, 2000);
-
         });
-
     }
     ngOnInit(): void {
         this.loadUser();
-        this.navServices.items.subscribe((menuItems) => {
-            this.checkRole(menuItems);
-        });
+        this.checkRole(this.MENUITEMS);
     }
 
     checkRole(menuItems) {
