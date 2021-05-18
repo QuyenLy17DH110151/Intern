@@ -144,16 +144,20 @@
                         <div class="product-box">
                           <app-product-box-one
                             [product]="product"
-                            [currency]="productService?.Currency"
                             [thumbnail]="false"
                             [cartModal]="true"
-                            [loader]="true"
                           >
                           </app-product-box-one>
                         </div>
                       </div>
                       <div
-                        class="col-sm-12 text-center section-b-space mt-5 no-found"
+                        class="
+                          col-sm-12
+                          text-center
+                          section-b-space
+                          mt-5
+                          no-found
+                        "
                         *ngIf="!products.items?.length"
                       >
                         <img
