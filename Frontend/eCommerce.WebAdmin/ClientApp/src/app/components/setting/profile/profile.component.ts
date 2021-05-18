@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { interval } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import {
     UrlImage,
@@ -32,6 +33,7 @@ export class ProfileComponent implements OnInit {
     public defaultUrl = 'https://via.placeholder.com/150';
     public defaultUrlAvata = 'assets/images/dashboard/designer.jpg';
     userUrlImage: string;
+    public isStart: boolean = false;
 
     constructor(
         private userClient: UserClient,
@@ -73,6 +75,7 @@ export class ProfileComponent implements OnInit {
     }
 
     async saveUser() {
+        this.isStart = true;
         this.userUpdateInformation = new UserUpdateInformation(
             this.formUser.value.firstName,
             this.formUser.value.lastName,
@@ -89,7 +92,7 @@ export class ProfileComponent implements OnInit {
                 this.getInformation();
                 //return page profile
                 this.clickEditProfile();
-
+                this.isStart = false;
             });
     }
 
@@ -103,17 +106,18 @@ export class ProfileComponent implements OnInit {
 
     ngOnInit() { }
 
-    clickImg() {
-        this.displayBtnActionImg = !this.displayBtnActionImg;
-    }
-
     selectFile(event: any): void {
         this.selectedFiles = event.target.files;
+        this.uploadImage();
     }
 
     changeImage() {
         this.displayEditImg = !this.displayEditImg;
+        this.selectedFiles = null;
     }
+
+
+
     async uploadImage() {
         if (this.selectedFiles) {
             const file: File | null = this.selectedFiles.item(0);
@@ -138,19 +142,19 @@ export class ProfileComponent implements OnInit {
                                 .subscribe((downloadURL) => {
                                     this.fileUpload.url = downloadURL;
                                     this.fileUpload.name = this.fileUpload.file.name;
+                                    console.log(this.fileUpload);
+                                    this.saveChangeImage();
+
                                 });
                         })
                     )
                     .subscribe();
             }
         }
+
     }
 
     saveChangeImage() {
-        if (this.fileUpload == null || this.fileUpload.url == null) {
-            Swal.fire('Cancelled', 'upload image please!', 'error');
-            return;
-        }
         var urlImage: UrlImage = new UrlImage(this.fileUpload.url);
         this.userClient.updateAvata(urlImage).subscribe(() => {
             this.fileUpload = null;
