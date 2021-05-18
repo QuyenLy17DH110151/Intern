@@ -43,11 +43,7 @@ export class DashboardComponent implements OnInit {
         this.getLastedOrder();
         this.getCategories();
         this.getProducts();
-        // this.DataRevenueMonthly();
-        // this.lineChartBrowser(this.data);
         this.getRevenueMonthly();
-        // this.createChart();
-        // this._dashBoard.getSumEarnings();
     }
 
     public chart3 = chartData.chart3;
@@ -222,35 +218,15 @@ export class DashboardComponent implements OnInit {
                     enableMouseTracking: false,
                 },
             },
-            series: [
-                {
-                    name: this._userService.getUsername(),
-                    colorByPoint: true,
-                    type: undefined,
-                    data: data,
-                },
-            ],
+            series: data,
         };
         HighCharts.chart('lineChart', option);
     }
 
     getRevenueMonthly() {
         this._dashBoard.getRevenueMonthly().subscribe((res) => {
-            this.dataApi = res;
-            const data = this.DataRevenueMonthly(res);
-            this.lineChartBrowser(data);
+            console.log(res);
+            this.lineChartBrowser(res);
         });
-    }
-
-    DataRevenueMonthly(data): number[] {
-        let dataChart = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        for (let index = 0; index < dataChart.length; index++) {
-            if (data[index] === undefined) {
-                console.log(0);
-            } else {
-                dataChart[data[index].month - 1] = data[index].value;
-            }
-        }
-        return dataChart;
     }
 }

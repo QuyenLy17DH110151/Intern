@@ -19,5 +19,6 @@ namespace eCommerce.Domain.Repositories
         Task<User> GetUserByUsernameAsync(string username);
         Task<PaginatedResult<User>> SearchAsync(SearchUserModel rq);
         Task<int> CountUsersAsync();
+        Task<IEnumerable<User>> GetAllAsync();
     }
 }

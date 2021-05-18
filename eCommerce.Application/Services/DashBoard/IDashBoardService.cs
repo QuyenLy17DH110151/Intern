@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eCommerce.Domain.Shared.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +48,6 @@ namespace eCommerce.Application.Services.DashBoard
         /// Revenue Monthly
         /// </summary>
         /// <returns></returns>
-        Task<string> RevenueMonthly();
+        Task<List<LineChartModels>> RevenueMonthly();
     }
 }
