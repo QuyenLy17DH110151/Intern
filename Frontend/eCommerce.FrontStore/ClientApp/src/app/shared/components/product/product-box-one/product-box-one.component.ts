@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { QuickViewComponent } from '../../modal/quick-view/quick-view.component';
 import { CartModalComponent } from '../../modal/cart-modal/cart-modal.component';
-import { Product } from 'src/app/api-clients/models/product.model';
+import { Product, Property } from 'src/app/api-clients/models/product.model';
 import { ProductService } from '../../../services/product.service';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { ProductRatingClient } from 'src/app/api-clients/productRating.client';
@@ -94,6 +94,8 @@ export class ProductBoxOneComponent implements OnInit {
     }
 
     addToCart(product) {
+        this.initializeSelectedProperty(product);
+        debugger;
         this.cartService.addToCart(product);
     }
 
@@ -110,5 +112,12 @@ export class ProductBoxOneComponent implements OnInit {
 
     addToCompare(product: any) {
         this.productService.addToCompare(product);
+    }
+
+    initializeSelectedProperty(product) {
+        const name = product.category.c1Lable;
+        const value = product.category.c1Options.split(',')[0].trim();
+        this.product.selectedProperty = [new Property(0, name, value)];
+        debugger;
     }
 }

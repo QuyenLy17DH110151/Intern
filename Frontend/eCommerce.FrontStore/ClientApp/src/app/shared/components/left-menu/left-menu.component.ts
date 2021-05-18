@@ -32,11 +32,6 @@ export class LeftMenuComponent implements OnInit {
         this.navServices.leftMenuToggle = !this.navServices.leftMenuToggle;
     }
 
-    // Click Toggle menu (Mobile)
-    toggletNavActive(item) {
-        item.active = !item.active;
-    }
-
     onHover(menuItem) {
         if (window.innerWidth > 1200 && menuItem) {
             document.getElementById('unset').classList.add('sidebar-unset');
