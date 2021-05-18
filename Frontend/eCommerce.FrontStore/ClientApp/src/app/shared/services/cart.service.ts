@@ -97,5 +97,7 @@ export class CartService {
     public resetLocalStorage() {
         localStorage.removeItem('cartItems');
         localStorage.removeItem('code');
+        this.cartItems = [];
+        this._cart$.next(this.cartItems);
     }
 }

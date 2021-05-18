@@ -74,12 +74,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
         }
     }
 
-    get getTotal(): Observable<number> {
-        return this.productService.cartTotalAmount();
+    get getTotal(): number {
+        return this.cartService.getTotalPrice();
     }
 
-    removeItem(product: any) {
-        this.productService.removeCartItem(product);
+    removeItem(product: Product) {
+        this.cartService.removeCartItem(product);
     }
 
     changeCurrency(currency: any) {

@@ -10,6 +10,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { CategoryReturnModel } from 'src/app/api-clients/models/_index';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-add-product',
@@ -34,7 +35,8 @@ export class AddProductComponent implements OnInit {
         private productClient: ProductClient,
         private db: AngularFireDatabase,
         private storage: AngularFireStorage,
-        private userService: UserService
+        private userService: UserService,
+        private toastr: ToastrService
     ) {}
 
     get name() {
@@ -97,6 +99,12 @@ export class AddProductComponent implements OnInit {
             return;
         }
 
+        // If form isvalid => show error => prevent submit form
+        if (this.productForm.invalid) {
+            this.productForm.markAllAsTouched();
+            return;
+        }
+
         const formData = {
             ...this.productForm.value,
             ownerId: this.getOwnerId(),
@@ -108,11 +116,11 @@ export class AddProductComponent implements OnInit {
             .toPromise();
         console.log('response: ', response);
         if (response !== null) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success...',
-                text: 'Create new product successfully!',
-            });
+            this.toastr.success(
+                'Create new product successfully!',
+                'Success...'
+            );
+
             this.discard();
         }
     }
@@ -129,7 +137,8 @@ export class AddProductComponent implements OnInit {
                 this.uploadSingleImage(this.selectedFiles[index]);
             }
             this.listUrlImage = this.listUrlImageTemp;
-            // this.listUrlImage = [];
+
+            this.toastr.success('Add image successfully!', 'Success...');
         }
     }
     uploadSingleImage(selectedFiles) {

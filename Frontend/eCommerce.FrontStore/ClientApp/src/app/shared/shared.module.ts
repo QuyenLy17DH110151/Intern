@@ -54,6 +54,7 @@ import { TapToTopComponent } from './components/tap-to-top/tap-to-top.component'
 // Pipes
 import { DiscountPipe } from './pipes/discount.pipe';
 import { SaleOffPipe } from './pipes/saleoff.pipe';
+import { VndCurrencyPipe } from './pipes/vndCurrency.pipe';
 
 // Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -96,6 +97,7 @@ import { CouponModalComponent } from './components/modal/coupon-modal/coupon-mod
         TapToTopComponent,
         DiscountPipe,
         SaleOffPipe,
+        VndCurrencyPipe,
         ProductByCategoryComponent,
         CouponModalComponent,
     ],
@@ -155,6 +157,7 @@ import { CouponModalComponent } from './components/modal/coupon-modal/coupon-mod
         TapToTopComponent,
         DiscountPipe,
         SaleOffPipe,
+        VndCurrencyPipe,
         ProductByCategoryComponent,
         CouponModalComponent,
     ],

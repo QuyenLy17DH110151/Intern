@@ -162,7 +162,7 @@
                       {{ product.name }} × {{ product.quantity }}
                       <span class="currency">
                         {{ (product.price | discount:product) * cartService?.Currency.price |
-                        currency:cartService?.Currency.currency:'symbol':'4.0-2' }}
+                        vndCurrency }}
                       </span>
                     </li>
                   </ul>
@@ -172,7 +172,7 @@
                   <ul class="sub-total">
                     <li>
                       Subtotal <span class="count currency">{{ getTotal |
-                        currency:cartService?.Currency.currency:'symbol':'4.0-2'}}</span>
+                        vndCurrency}}</span>
                     </li>
                     <li *ngIf='products.length'>
                       Shipping
@@ -185,13 +185,13 @@
                                                 <input type="radio"  name="shipping" id="local-pickup">
                                                 <label for="local-pickup">Local Pickup</label>
                                             </div> -->
-                        {{cartService.DELIVERY_PRICE | currency:cartService?.Currency.currency:'symbol':'4.0-2'}}
+                        {{cartService.DELIVERY_PRICE | vndCurrency}}
                       </div>
                     </li>
                   </ul>
                   <ul class="total">
                     <li>Total <span class="count">{{ cartTotalAmount |
-                        currency:cartService?.Currency.currency:'symbol':'4.0-2'}}</span></li>
+                        vndCurrency }}</span></li>
                   </ul>
                 </div>
 
