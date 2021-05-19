@@ -23,7 +23,7 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>> Search([FromQuery]ProductCategoryRequestModels.Search rq)
+        public async Task<ActionResult<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>> Search([FromQuery] ProductCategoryRequestModels.Search rq)
         {
             var productCategories = await _productCategoryService.SearchProductCategoriesAsync(rq);
             return productCategories;
@@ -31,17 +31,17 @@ namespace eCommerce.WebAPI.Controllers
 
         [HttpPost]
         [Authorize(Policy = "PermissionAdmin")]
-        public async Task<Guid> Create([FromBody]ProductCategoryRequestModels.Create rq)
+        public async Task<Guid> Create([FromBody] ProductCategoryRequestModels.Create rq)
         {
             var productCategoryId = await _productCategoryService.CreateProductCategoryAsync(rq);
             return productCategoryId;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("")]
         [Authorize(Policy = "PermissionAdmin")]
-        public async Task<ActionResult> Update([FromBody]ProductCategoryRequestModels.Update rq, Guid id)
+        public async Task<ActionResult> Update([FromBody] ProductCategoryRequestModels.Update rq)
         {
-            var productCategory = await _productCategoryService.UpdateProductCategoryAsync(rq, id);
+            var productCategory = await _productCategoryService.UpdateProductCategoryAsync(rq);
             if (productCategory == null)
                 return BadRequest();
 
@@ -64,12 +64,12 @@ namespace eCommerce.WebAPI.Controllers
 
             return productCategories;
         }
-         
-        [HttpGet("{id}")]   
+
+        [HttpGet("{id}")]
         public async Task<ProductCategoryReturnModels.ProductCategoryDetails> GetProductCategoryDetailsById(Guid id)
         {
             var rs = await _productCategoryService.GetProductCategoryDetailsById(id);
             return rs;
-        } 
+        }
     }
 }

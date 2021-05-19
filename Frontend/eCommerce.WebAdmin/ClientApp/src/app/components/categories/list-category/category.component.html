@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <div id="batchDelete" class="category-table custom-datatable">
                         <div class="table-responsive">
-                            <ng2-smart-table [settings]="settings" [source]="category"
+                            <ng2-smart-table [settings]="settings" [source]="categories"
                                 (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)"
                                 (userRowSelect)="onCategoryRowSelected($event)">
                             </ng2-smart-table>

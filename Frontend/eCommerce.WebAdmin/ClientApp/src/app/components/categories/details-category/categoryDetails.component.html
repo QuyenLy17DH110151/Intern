@@ -2,14 +2,13 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card tab2-card">
-                <div class="card-header">
-                    <h5>Category Details</h5>
+                <div class="card-header" class="label-name">
+                    <label>Category name: </label><label>{{name}} </label>
+                    <a href="#" class="ng2-smart-action ng2-smart-action-edit-edit ng-star-inserted"></a>
                 </div>
-                <div class="card-body tab2-card">
-                    <label for="name" class="col-xl-3 col-md-4 mt-2">Name: {{name}}</label>
-                </div>
-                <label id="title-property">List Property</label>
-                <ng2-smart-table [settings]="settings" [source]="properties">
+                <label id="title-property">Properties</label>
+                <ng2-smart-table [settings]="settings" [source]="properties" (createConfirm)="onCreateConfirm($event)"
+                    (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)">
                 </ng2-smart-table>
             </div>
         </div>
