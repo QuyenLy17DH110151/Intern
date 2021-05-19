@@ -2,7 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 //import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Product, ProductList } from 'src/app/api-clients/models/product.model';
+import {
+    Product,
+    ProductList,
+    UpdateProductModel,
+} from 'src/app/api-clients/models/product.model';
 import { Observable } from 'rxjs';
 import { PagedList, SearchRequestProduct } from './models/common.model';
 
@@ -44,5 +48,10 @@ export class ProductClient {
     deleteProducts(productId: string) {
         const url = `${this.baseUrl}/${productId}`;
         return this.httpClient.delete(url);
+    }
+
+    updateProduct(rq: any): Observable<Product> {
+        const option = { params: { ...rq } };
+        return this.httpClient.put<Product>(this.baseUrl, rq);
     }
 }
