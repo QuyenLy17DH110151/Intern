@@ -4,6 +4,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Image } from '@ks89/angular-modal-gallery';
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ProductClient } from 'src/app/api-clients/product.client';
+import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-product-detail',
@@ -24,7 +26,9 @@ export class ProductDetailComponent implements OnInit {
         private modalService: NgbModal,
         config: NgbRatingConfig,
         private productClient: ProductClient,
-        private _route: ActivatedRoute
+        private _route: ActivatedRoute,
+        private toastr: ToastrService,
+        private location: Location
     ) {
         config.max = 5;
         config.readonly = false;
@@ -115,5 +119,13 @@ export class ProductDetailComponent implements OnInit {
         }
         this.listUrlImage = this.listUrlImageTemp;
         console.log(this.listUrlImage);
+    }
+
+    deleteProduct(productId: string) {
+        console.log(productId);
+        this.productClient.deleteProducts(productId).subscribe((res) => {
+            this.toastr.success('delete product successfully!', 'Success...');
+            this.location.back();
+        });
     }
 }
