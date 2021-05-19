@@ -6,6 +6,7 @@ import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ProductClient } from 'src/app/api-clients/product.client';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-product-detail',
@@ -123,9 +124,31 @@ export class ProductDetailComponent implements OnInit {
 
     deleteProduct(productId: string) {
         console.log(productId);
-        this.productClient.deleteProducts(productId).subscribe((res) => {
-            this.toastr.success('delete product successfully!', 'Success...');
-            this.location.back();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.productClient
+                    .deleteProducts(productId)
+                    .subscribe((res) => {
+                        this.toastr.success(
+                            'delete product successfully!',
+                            'Success...'
+                        );
+                        this.location.back();
+                    });
+                Swal.fire(
+                    'Deleted!',
+                    'Your product has been deleted.',
+                    'success'
+                );
+            }
         });
     }
 }
