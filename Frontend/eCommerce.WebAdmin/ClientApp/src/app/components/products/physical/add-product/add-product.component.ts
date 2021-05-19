@@ -98,7 +98,6 @@ export class AddProductComponent implements OnInit {
                 title: 'Error...',
                 text: 'Please upload photos before submitting!',
             });
-            this.ngOnInit();
             return;
         }
 
