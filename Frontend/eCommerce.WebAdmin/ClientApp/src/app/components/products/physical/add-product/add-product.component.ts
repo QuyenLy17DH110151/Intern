@@ -197,7 +197,7 @@ export class AddProductComponent implements OnInit {
     public config1: DropzoneConfigInterface = {
         clickable: true,
         maxFiles: 10,
-        autoReset: null,
+        autoReset: 1,
         errorReset: null,
         cancelReset: null,
     };
