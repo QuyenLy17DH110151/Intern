@@ -19,7 +19,7 @@ namespace eCommerce.Application.Services.ProductCategory
             public int PageSize { get; set; }
         }
 
-        public class Create
+        public class Base
         {
             public string Name { get; set; }
 
@@ -44,11 +44,24 @@ namespace eCommerce.Application.Services.ProductCategory
             public string C5Options { get; set; }
         }
 
+        public class Create : Base
+        {
+
+        }
+
+        public class Update : Base
+        {
+            public Guid Id { get; set; }
+
+        }
+
+
         public class MappingProfile : Profile
         {
             public MappingProfile()
             {
-                CreateMap<Create,Domain.Entities.ProductCategory>();
+                CreateMap<Create, Domain.Entities.ProductCategory>();
+                CreateMap<Update, Domain.Entities.ProductCategory>();
             }
         }
 
@@ -60,10 +73,14 @@ namespace eCommerce.Application.Services.ProductCategory
             }
         }
 
-        public class Update
+        public class UpdateValidator : AbstractValidator<Update>
         {
-            public string Name { get; set; }
+            public UpdateValidator()
+            {
+                RuleFor(c => c.Id).NotEmpty();
+                RuleFor(c => c.Name).NotEmpty();
+            }
         }
-        
+
     }
 }

@@ -10,7 +10,28 @@ namespace eCommerce.Application.Services.ProductCategory
         public class ProductCategory
         {
             public Guid Id { get; set; }
+
             public string Name { get; set; }
+
+            public string C1Lable { get; set; }
+
+            public string C1Options { get; set; }
+
+            public string C2Lable { get; set; }
+
+            public string C2Options { get; set; }
+
+            public string C3Lable { get; set; }
+
+            public string C3Options { get; set; }
+
+            public string C4Lable { get; set; }
+
+            public string C4Options { get; set; }
+
+            public string C5Lable { get; set; }
+
+            public string C5Options { get; set; }
         }
 
         public class MappingProfile : Profile
@@ -19,7 +40,7 @@ namespace eCommerce.Application.Services.ProductCategory
             {
                 CreateMap<Domain.Entities.ProductCategory, ProductCategory>();
                 CreateMap<Domain.Entities.ProductCategory, ProductCategoryDetails>()
-                    .ForMember(a => a.LableOptions, b => b.MapFrom(c =>  
+                    .ForMember(a => a.LableOptions, b => b.MapFrom(c =>
                         new List<LableOptions>()
                         {
                            ( c.C1Lable != null && c.C1Options != null ) ? new LableOptions(){Lable = c.C1Lable,Options = c.C1Options} : null,
