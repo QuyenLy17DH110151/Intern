@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { PagedList } from "./models/common.model";
-import { CreateProductRatingRequest, GetProductRatingRequest, GetStarResponse, ProductRatingResponse } from "./models/productRating";
+import { CreateProductRatingRequest, GetProductRatingRequest, GetStarInCardResponse, GetStarResponse, ProductRatingResponse } from "./models/productRating";
 
 @Injectable({
     providedIn: 'root',
@@ -11,7 +11,7 @@ import { CreateProductRatingRequest, GetProductRatingRequest, GetStarResponse, P
 export class ProductRatingClient {
     private apiEndpoint = `${environment.apiUrl}/api/ProductRating`;
     private getStartApi = `${environment.apiUrl}/api/ProductRating/star`;
-
+    private getStartInCardApi = `${environment.apiUrl}/api/ProductRating/star-in-card`;
 
     constructor(private http: HttpClient) { }
 
@@ -25,5 +25,9 @@ export class ProductRatingClient {
 
     getStart(idProduct: string): Observable<GetStarResponse> {
         return this.http.get<GetStarResponse>(`${this.getStartApi}/${idProduct}`);
+    }
+
+    getStartInCard(idProduct: string): Observable<GetStarInCardResponse> {
+        return this.http.get<GetStarInCardResponse>(`${this.getStartApi}/${idProduct}`);
     }
 }

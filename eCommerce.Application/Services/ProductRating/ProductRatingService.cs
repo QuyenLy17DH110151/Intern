@@ -62,13 +62,6 @@ namespace eCommerce.Application.Services.ProductRating
                 throw new EntityNotFound("productRating");
             }
 
-            var product = await _productRepository.GetProductByIdAsync(idProduct);
-
-            if (product == null)
-            {
-                throw new EntityNotFound("product");
-            }
-
             //init GetStarResponse 
             ProductRatingReturnModels.GetStarResponse getStarResponse = new ProductRatingReturnModels.GetStarResponse
             {
@@ -82,8 +75,7 @@ namespace eCommerce.Application.Services.ProductRating
                 },
                 MaxStar = 5,
                 NumberRating = 0,
-                ProductId = product.Id,
-                ProductName = product.Name,
+                ProductId = idProduct,
                 SumValue = 0,
                 AvgValueDouble = 0
             };
@@ -102,8 +94,7 @@ namespace eCommerce.Application.Services.ProductRating
                 },
                     MaxStar = 5,
                     NumberRating = 0,
-                    ProductId = product.Id,
-                    ProductName = product.Name,
+                    ProductId = idProduct,
                     SumValue = 0,
                     AvgValueDouble = 0
                 };
@@ -116,6 +107,42 @@ namespace eCommerce.Application.Services.ProductRating
             getStarResponse.CalculatorAvg();
 
             return getStarResponse;
+
+        }
+
+        public async Task<ProductRatingReturnModels.GetStarInCardResponse> GetStarInCardAsync(Guid idProduct)
+        {
+            var productRatings = await _productRatingRepository.SearchAsync(
+                new SearchProductRating
+                {
+                    ProductId = idProduct,
+                    Pagination = new Pagination { PageIndex = 0, ItemsPerPage = 1000 },
+                });
+
+
+            if (productRatings.Items == null)
+            {
+
+                return new ProductRatingReturnModels.GetStarInCardResponse
+                {
+                    ProductId = idProduct,
+                    AvgValueDouble = 0
+                };
+            }
+
+            int sumValue = 0, index = 0;
+
+            foreach (var productRating in productRatings.Items)
+            {
+                index++;
+                sumValue += productRating.NumberStar;
+            }
+
+            return new ProductRatingReturnModels.GetStarInCardResponse
+            {
+                ProductId = idProduct,
+                AvgValueDouble = (Double)sumValue / index
+            };
 
         }
 
