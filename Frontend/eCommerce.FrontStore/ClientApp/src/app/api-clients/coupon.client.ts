@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Category } from './models/category.model';
 import { PagedList } from './models/common.model';
-import { Coupon } from './models/coupon.model';
+import { Coupon, SearchValidCouponRequest } from './models/coupon.model';
 
 @Injectable({
     providedIn: 'root',
@@ -17,9 +17,12 @@ export class CouponClient {
         return this.http.get<Coupon>(url);
     }
 
-    getCouponValue(code: string): Observable<number> {
-        const url = `${environment.apiUrl}/frontstore/api/coupons/verify/${code}`;
-        return this.http.get<number>(url);
+    getCouponValue(params: SearchValidCouponRequest): Observable<number> {
+        const url = `${environment.apiUrl}/frontstore/api/coupons/verify`;
+        const options = {
+            params: { ...params },
+        };
+        return this.http.get<number>(url, options);
     }
 
     getAllValidCoupon(orderValue): Observable<Coupon[]> {

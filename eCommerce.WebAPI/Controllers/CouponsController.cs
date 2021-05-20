@@ -73,17 +73,17 @@ namespace eCommerce.WebAPI.Controllers
             return coupon;
         }
 
-        [HttpGet("/frontstore/api/coupons/verify/{code}")]
+        [HttpGet("/frontstore/api/coupons/verify")]
         [AllowAnonymous]
-        public async Task<ActionResult<decimal>> FrontStoreVerifyCoupon(string code)
+        public async Task<ActionResult<decimal>> FrontStoreVerifyCoupon([FromQuery]CouponRequestModels.Verify req)
         {
-            var coupon = await _couponService.GetCouponByCodeAsync(code);
+            var coupon = await _couponService.GetCouponByCodeAsync(req.code);
             if (coupon == null)
             {
                 throw new BusinessException("Coupon is invalid");
             }
 
-            return _couponService.IsValidCoupon(coupon);
+            return _couponService.IsValidCoupon(coupon, req.orderValue);
         }
 
         [HttpGet("/frontstore/api/coupons/valid")]

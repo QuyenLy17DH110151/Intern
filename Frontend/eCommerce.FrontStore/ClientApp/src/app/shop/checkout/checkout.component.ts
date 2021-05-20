@@ -11,6 +11,7 @@ import { CartService } from 'src/app/shared/services/cart.service';
 import { OrderClient } from 'src/app/api-clients/order.client';
 import { takeUntil } from 'rxjs/operators';
 import { Order, OrderDetail } from 'src/app/api-clients/models/order.model';
+import { SearchValidCouponRequest } from 'src/app/api-clients/models/coupon.model';
 
 @Component({
     selector: 'app-checkout',
@@ -22,9 +23,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     public orderDetails: OrderDetail[] = [];
     public payPalConfig?: IPayPalConfig;
     public payment: string = 'Stripe';
-    public amount: any;
     private code: string;
-    private discountPercent: number;
+    public discountPercent: number = 0;
     ngUnsubscribe = new Subject<void>();
 
     constructor(
@@ -56,8 +56,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.code = localStorage.getItem('code') ? localStorage.getItem('code') : '';
+        const params = new SearchValidCouponRequest(this.code, this.getTotal);
+
         this.couponClient
-            .getCouponValue(this.code)
+            .getCouponValue(params)
             .subscribe((response) => (this.discountPercent = response));
 
         this.cartService.cart$
@@ -95,16 +97,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
                 checkoutForm.province,
             orderItems: this.orderDetails,
             couponCode: this.code,
+            orderValue: this.getTotal,
         };
 
         this.orderClient.checkout(formData).subscribe(
             (response) => {
                 this.cartService.resetLocalStorage();
-                this.toastr.success('Checkout is successful', 'Notification');
+                this.toastr.success('Checkout is successful', 'Success');
                 this.cartService.resetLocalStorage();
                 this.storeAddressToLocalStorage();
             },
-            (error) => this.toastr.error('Checkout is failed', 'Notification')
+            (error) => this.toastr.error('Checkout is failed', 'Error')
         );
     }
 

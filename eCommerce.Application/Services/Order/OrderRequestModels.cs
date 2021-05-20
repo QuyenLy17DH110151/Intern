@@ -24,7 +24,8 @@ namespace eCommerce.Application.Services.Order
             public string BuyerPhone { get; set; }
             public string Address { get; set; }
             public List<OrderItem> OrderItems { get; set; }
-            public string couponCode { get; set; }
+            public string CouponCode { get; set; }
+            public decimal OrderValue { get; set; }
         }
 
         public  class OrderItem

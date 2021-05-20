@@ -179,11 +179,11 @@ namespace eCommerce.Application.Services.Order
         public async Task CreateAsync(OrderRequestModels.Create req)
         {
             decimal percent = 0;
-            var coupon = await _couponService.GetCouponByCodeAsync(req.couponCode);
+            var coupon = await _couponService.GetCouponByCodeAsync(req.CouponCode);
 
             if (coupon != null)
             {
-                percent = _couponService.IsValidCoupon(coupon);
+                percent = _couponService.IsValidCoupon(coupon, req.OrderValue);
             }
 
             foreach (var item in req.OrderItems)

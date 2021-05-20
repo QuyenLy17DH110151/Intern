@@ -124,6 +124,9 @@
                         {{cartService.DELIVERY_PRICE | vndCurrency}}
                       </div>
                     </li>
+                    <li>
+                      Discount <span class="count currency">-{{ getTotal*discountPercent/100 | vndCurrency }}</span>
+                    </li>
                   </ul>
                   <ul class="total">
                     <li>Total <span class="count">{{ cartTotalAmount | vndCurrency }}</span></li>

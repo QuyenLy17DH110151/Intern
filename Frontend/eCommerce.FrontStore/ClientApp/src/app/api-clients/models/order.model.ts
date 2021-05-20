@@ -53,5 +53,6 @@ export class Order {
     address: string;
     orderItems: OrderDetail[];
     couponCode: string;
+    orderValue: number;
     // buyDate: Date;
 }

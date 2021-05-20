@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CouponClient } from 'src/app/api-clients/coupon.client';
-import { Coupon } from 'src/app/api-clients/models/coupon.model';
+import { Coupon, SearchValidCouponRequest } from 'src/app/api-clients/models/coupon.model';
 import { CouponModalComponent } from 'src/app/shared/components/modal/coupon-modal/coupon-modal.component';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { Product } from '../../api-clients/models/product.model';
@@ -58,19 +58,32 @@ export class CartComponent implements OnInit, OnDestroy {
     }
 
     handleCoupon(code) {
-        this.couponClient.getCouponValue(code).subscribe(
+        this.discountPercent = 0;
+        if (!code) {
+            this.errorMessage = 'Please enter coupon code';
+            return;
+        }
+        const params = new SearchValidCouponRequest(code, this.getTotal);
+        console.log('params: ', params);
+        this.couponClient.getCouponValue(params).subscribe(
             (response) => {
                 this.errorMessage = '';
                 this.discountPercent = response;
                 localStorage.setItem('discountPercent', this.discountPercent.toString());
             },
             (error) => {
+                this.discountPercent = 0;
                 this.errorMessage = error.error.errorMessage;
             }
         );
     }
 
     checkout() {
+        this.handleCoupon(this.code);
+        if (this.discountPercent === 0) {
+            this.code = '';
+        }
+
         localStorage.setItem('code', this.code);
         this.router.navigate(['/shop/checkout']);
     }
@@ -82,6 +95,10 @@ export class CartComponent implements OnInit, OnDestroy {
             this.code = emmitedValue;
             this.handleCoupon(this.code);
         });
+    }
+
+    onCouponInput() {
+        this.errorMessage = '';
     }
 
     ngOnDestroy() {

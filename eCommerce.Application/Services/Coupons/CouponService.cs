@@ -110,17 +110,18 @@ namespace eCommerce.Application.Services.Coupons
             return _mapper.Map<CouponReturnModels.Coupon>(coupon);
         }
 
-        public decimal IsValidCoupon(CouponReturnModels.Coupon coupon)
+        public decimal IsValidCoupon(CouponReturnModels.Coupon coupon, decimal orderValue)
         {
             if (coupon != null)
             {
                 DateTime now = DateTime.UtcNow;
-                if (DateTime.Compare(coupon.StartDate, now) < 0 && DateTime.Compare(now, coupon.EndDate) < 0)
+                bool isValidDate = DateTime.Compare(coupon.StartDate, now) < 0 && DateTime.Compare(now, coupon.EndDate) < 0;
+                if (isValidDate && coupon.MinPrice <= orderValue)
                 {
                     return coupon.Value;
                 }
             }
-           
+
             throw new BusinessException("Coupon is invalid");
         }
 

@@ -11,7 +11,7 @@ import { Product, SearchRequestProduct } from './models/product.model';
 })
 export class ProductClient {
     public Products;
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
     //Search  Product
     searchProducts(
