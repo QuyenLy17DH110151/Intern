@@ -59,45 +59,54 @@ export class CategoryDetailsComponent implements OnInit {
     }
 
     onCreateConfirm(e): void {
+        let p: LableOptions[] = this.properties;
         if (this.properties.length >= 5) {
             this.toastr.error('Property can not more 5', 'Erro');
             return;
         }
-        e.confirm.resolve(e.newData);
-        this.properties.push(e.newData);
-        this.updateCategory();
+
+
+        p.push(e.newData);
+
+
+        this.updateCategory(p, e);
+
     }
 
     onEditConfirm(e): void {
-        e.confirm.resolve(e.newData);
+
         let i = 0;
-        this.properties.map(value => {
+        let p: LableOptions[] = this.properties;
+        p.map(value => {
             if (value.lable == e.data.lable && value.options == e.data.options) {
                 this.properties.splice(i, 1);
             }
             i++;
         });
-        this.properties.push(e.newData);
-        this.updateCategory();
+        p.push(e.newData);
+        this.updateCategory(p, e);
     }
 
     onDeleteConfirm(e): void {
-        e.confirm.resolve(e.newData);
+
         let i = 0;
-        this.properties.map(value => {
+        let p: LableOptions[] = this.properties;
+        p.map(value => {
             if (value.lable == e.data.lable && value.options == e.data.options) {
                 this.properties.splice(i, 1);
             }
             i++;
         });
-        this.updateCategory();
+        this.updateCategory(p, e);
     }
 
-    updateCategory() {
-        let category: Category = new Category(this.id, this.name, this.properties);
+    updateCategory(p: LableOptions[], e: any) {
+        let category: Category = new Category(this.id, this.name, p);
         this.categoryClient.updateCategory(category).subscribe(() => {
-            this.toastr.success('Change Category Success!', 'Notification');
+            e.confirm.resolve(e.newData);
             this.getData();
+            this.toastr.success('Change Category Success!', 'Notification');
+
         });
     }
 }

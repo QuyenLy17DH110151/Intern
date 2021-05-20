@@ -13,6 +13,7 @@ import {
     ForgotPasswordRequest,
     UserRole,
 } from 'src/app/api-clients/models/user.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-login',
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private userClient: UserClient,
         private route: Router,
-        private userService: UserService
+        private userService: UserService,
+        private toastr: ToastrService
     ) {
         this.createLoginForm();
         this.createForgotPasswordForm();
@@ -125,7 +127,7 @@ export class LoginComponent implements OnInit {
             this.createForgotPasswordForm();
             this.isStartForgotPassword = false;
             this.userClient.forgotPassword(rq).subscribe((res) => {
-                alert('Request change password Success');
+                this.toastr.success('Request change password Success!', 'Notification');
                 this.createForgotPasswordForm();
             });
         }

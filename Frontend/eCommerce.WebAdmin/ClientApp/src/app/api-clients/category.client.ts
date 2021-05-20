@@ -36,8 +36,8 @@ export class CategoryClient {
         return this.httpClient.delete<any>(this.apiEndpoint + id)
     }
 
-    updateCategory(category: Category): Observable<any> {
-        return this.httpClient.put<any>(this.apiEndpoint, category)
+    updateCategory(category: Category): Observable<CategoryDetails> {
+        return this.httpClient.put<CategoryDetails>(this.apiEndpoint, category)
     }
 
     getCategoryDetailsById(id: string): Observable<CategoryDetails> {

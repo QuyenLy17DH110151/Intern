@@ -27,7 +27,7 @@ namespace eCommerce.Application.Services.ProductCategory
         /// </summary>
         /// <param name="rq"></param>
         /// <returns></returns>
-        Task<Guid> UpdateProductCategoryAsync(ProductCategoryRequestModels.Update rq);
+        Task<ProductCategoryReturnModels.ProductCategoryDetails> UpdateProductCategoryAsync(ProductCategoryRequestModels.Update rq);
 
         /// <summary>
         /// Delete product category

@@ -45,8 +45,7 @@ namespace eCommerce.WebAPI.Controllers
             if (productCategory == null)
                 return BadRequest();
 
-            var category = await _productCategoryService.GetProductCategoryByIdAsync(productCategory);
-            return Ok(category);
+            return Ok(productCategory);
         }
 
         [HttpDelete("{id}")]
