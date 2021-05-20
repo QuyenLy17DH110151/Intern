@@ -19,6 +19,8 @@ import { ToastrService } from 'ngx-toastr';
 
 export class ExceptionInterceptor implements HttpInterceptor {
 
+    private isErrorAuth = true;
+
     constructor(
         private router: Router,
         private toastr: ToastrService,
@@ -33,16 +35,16 @@ export class ExceptionInterceptor implements HttpInterceptor {
             catchError((error: HttpErrorResponse) => {
                 //authen
                 if (error.status === 401) {
-                    this.toastr.error('access_token is expires');
-                    this.Logout();
-                    return;
-                }
+                    if (this.isErrorAuth) {
+                        this.toastr.error('access_token is expires');
+                        this.Logout();
+                        this.isErrorAuth = false;
+                    }
 
-                //err reset password
-                if (error.error.errorMessage == 'token or username invalid') {
-                    this.router.navigate(['/reset-password-error']);
                     return;
                 }
+                this.isErrorAuth = true;
+
 
 
                 if (error.status === 500) {
@@ -64,7 +66,10 @@ export class ExceptionInterceptor implements HttpInterceptor {
                     message = `Error Status: ${error.status}.\nMessage: ${error.message}`;
                 }
 
-                console.log(error.error);
+                if (error.error.errorMessage == 'token or username invalid') {
+                    this.router.navigate(['/reset-password-error']);
+                    return;
+                }
                 Swal.fire(
                     'Error',
                     error.error.message || error.error.errorMessage,
@@ -76,6 +81,7 @@ export class ExceptionInterceptor implements HttpInterceptor {
                 //     title: 'Error...',
                 //     text: message,
                 // });
+
                 return throwError(message);
             })
         );

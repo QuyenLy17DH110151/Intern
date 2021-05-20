@@ -44,13 +44,13 @@ export class ResetPasswordComponent implements OnInit {
             if (this.formResetPassword.value.password === this.formResetPassword.value.rePassword) {
                 this.updatePasswordRequest = new UpdatePasswordRequest(this.email, this.key, this.formResetPassword.value.password);
                 this.userClient.updatePassword(this.updatePasswordRequest).subscribe((res) => {
-                    alert('Update Password Success');
+                    this.toastr.success('Change Password Success!', 'Notification');
                     this.router.navigate(['/auth/login']);
                 });
                 this.createFromResetPassword;
             }
             if (this.formResetPassword.value.password != this.formResetPassword.value.rePassword) {
-                this.toastr.success('Change Password Success!', 'Notification');
+                this.toastr.error('RePassword not equal to Password!', 'Erro');
 
             }
         }
