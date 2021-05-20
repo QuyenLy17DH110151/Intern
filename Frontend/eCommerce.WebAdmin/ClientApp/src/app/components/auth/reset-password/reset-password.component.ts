@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UpdatePasswordRequest } from 'src/app/api-clients/models/_index';
 import { UserClient } from 'src/app/api-clients/_index';
 @Component({
@@ -16,7 +17,12 @@ export class ResetPasswordComponent implements OnInit {
     public displayErro: boolean = false;
     public updatePasswordRequest: UpdatePasswordRequest = null;
 
-    constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private userClient: UserClient, private router: Router) {
+    constructor(private formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private userClient: UserClient,
+        private router: Router,
+        private toastr: ToastrService) {
+
         this.createFromResetPassword();
     }
 
@@ -38,13 +44,14 @@ export class ResetPasswordComponent implements OnInit {
             if (this.formResetPassword.value.password === this.formResetPassword.value.rePassword) {
                 this.updatePasswordRequest = new UpdatePasswordRequest(this.email, this.key, this.formResetPassword.value.password);
                 this.userClient.updatePassword(this.updatePasswordRequest).subscribe((res) => {
-                    alert('Update Password Success');
+                    this.toastr.success('Change Password Success!', 'Notification');
                     this.router.navigate(['/auth/login']);
                 });
                 this.createFromResetPassword;
             }
             if (this.formResetPassword.value.password != this.formResetPassword.value.rePassword) {
-                alert('password not equals password again');
+                this.toastr.error('RePassword not equal to Password!', 'Erro');
+
             }
         }
     }

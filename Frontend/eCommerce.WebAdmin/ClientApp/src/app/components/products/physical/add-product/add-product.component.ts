@@ -12,7 +12,6 @@ import { CategoryReturnModel } from 'src/app/api-clients/models/_index';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
-import { DropzoneEvents } from 'ngx-dropzone-wrapper/lib/dropzone.interfaces';
 
 @Component({
     selector: 'app-add-product',
@@ -39,7 +38,7 @@ export class AddProductComponent implements OnInit {
         private storage: AngularFireStorage,
         private userService: UserService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     get name() {
         return this.productForm.get('name');
@@ -197,14 +196,14 @@ export class AddProductComponent implements OnInit {
     public config1: DropzoneConfigInterface = {
         clickable: true,
         maxFiles: 10,
-        autoReset: null,
+        autoReset: 1,
         errorReset: null,
         cancelReset: null,
     };
 
-    public onUploadInit(args: any): void {}
+    public onUploadInit(args: any): void { }
 
-    public onUploadError(args: any): void {}
+    public onUploadError(args: any): void { }
 
     public onUploadSuccess(args: any): void {
         this.uploadSingleImage(args[0]);

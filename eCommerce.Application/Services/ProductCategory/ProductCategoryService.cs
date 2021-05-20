@@ -43,40 +43,41 @@ namespace eCommerce.Application.Services.ProductCategory
             return productCategory.Id;
         }
 
-        public async Task<Guid> UpdateProductCategoryAsync(ProductCategoryRequestModels.Update rq)
+        public async Task<ProductCategoryReturnModels.ProductCategoryDetails> UpdateProductCategoryAsync(ProductCategoryRequestModels.Update rq)
         {
             var productCategory = await _productCategoryRepo.GetByIdAsync(rq.Id);
-            if (productCategory == null) { 
+            if (productCategory == null)
+            {
                 throw new EntityNotFound("Category");
-        }
-           
-                productCategory.Name = rq.Name;
+            }
 
-            
-                productCategory.C1Lable = rq.C1Lable;
-                productCategory.C1Lable = rq.C1Options;
-       
+            productCategory.Name = rq.Name;
 
-                productCategory.C2Lable = rq.C2Lable;
-                productCategory.C2Options = rq.C2Options;
-           
 
-                productCategory.C3Lable = rq.C3Lable;
-                productCategory.C3Options = rq.C3Options;
-        
-                productCategory.C4Lable = rq.C4Lable;
-                productCategory.C4Options = rq.C4Options;
-  
+            productCategory.C1Lable = rq.C1Lable;
+            productCategory.C1Lable = rq.C1Options;
 
-                productCategory.C5Lable = rq.C5Lable;
-                productCategory.C5Options = rq.C5Options;
+
+            productCategory.C2Lable = rq.C2Lable;
+            productCategory.C2Options = rq.C2Options;
+
+
+            productCategory.C3Lable = rq.C3Lable;
+            productCategory.C3Options = rq.C3Options;
+
+            productCategory.C4Lable = rq.C4Lable;
+            productCategory.C4Options = rq.C4Options;
+
+
+            productCategory.C5Lable = rq.C5Lable;
+            productCategory.C5Options = rq.C5Options;
 
 
             _productCategoryRepo.Update(productCategory);
 
             await _productCategoryRepo.UnitOfWork.SaveChangesAsync();
 
-            return productCategory.Id;
+            return _mapper.Map<ProductCategoryReturnModels.ProductCategoryDetails>(productCategory);
         }
 
         private async Task<bool> CheckCanDeleteAsync(Guid Id)

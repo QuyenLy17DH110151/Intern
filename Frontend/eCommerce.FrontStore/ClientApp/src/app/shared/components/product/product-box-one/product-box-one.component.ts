@@ -39,7 +39,7 @@ export class ProductBoxOneComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.loader) {
-            setTimeout(() => {}, 2000); // Skeleton Loader
+            setTimeout(() => { }, 2000); // Skeleton Loader
         }
 
         this.isWishlist = this.wishListService.isWishlist(this.product.id);
@@ -49,14 +49,14 @@ export class ProductBoxOneComponent implements OnInit {
         let subscription = interval(1000).subscribe({
             next: () => {
                 if (this.product.id != null) {
-                    this.productRatingClient.getStart(this.product.id).subscribe((rp) => {
+                    this.productRatingClient.getStartInCard(this.product.id).subscribe((rp) => {
                         this.starAvg = (rp.avgValueDouble + 0.5) | 0;
                     });
                     unsubscribe();
                 }
             },
-            error: () => {},
-            complete: () => {},
+            error: () => { },
+            complete: () => { },
         });
 
         let unsubscribe = () => {

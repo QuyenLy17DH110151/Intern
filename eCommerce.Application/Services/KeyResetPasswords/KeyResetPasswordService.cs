@@ -16,7 +16,7 @@ namespace eCommerce.Application.Services.KeyResetPasswords
         private readonly IKeyResetPasswordRepository _repo;
 
 
-        public KeyResetPasswordService(IKeyResetPasswordRepository keyResetPasswordRepository, IMapper mapper)
+        public KeyResetPasswordService(IKeyResetPasswordRepository keyResetPasswordRepository)
         {
             _repo = keyResetPasswordRepository;
 
@@ -26,10 +26,11 @@ namespace eCommerce.Application.Services.KeyResetPasswords
         {
 
             DateTime now = DateTime.UtcNow;
-            string key = email + now.ToShortDateString() + SECRET;
+            var random = new Random();
+            string key = email + now.ToShortDateString() + SECRET + random.Next();
             return SHA.ComputeSHA256Hash(key);
         }
-       
+
         public async Task<string> AddAsync(User u)
         {
             //check user reseted pass, if yes will remove token exsist
@@ -54,13 +55,13 @@ namespace eCommerce.Application.Services.KeyResetPasswords
             {
                 throw new BusinessException("token or username invalid");
             }
-            string keyParamHash = generateKeyParama(username);
-            if (keyResetPassword.KeyParam != keyParamHash)
+
+            if (keyResetPassword.KeyParam != keyParam)
             {
                 throw new BusinessException("token or username invalid");
             }
             _repo.Remove(keyResetPassword);
-            
+
         }
     }
 }

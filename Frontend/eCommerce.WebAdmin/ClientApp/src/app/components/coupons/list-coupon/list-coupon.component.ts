@@ -116,10 +116,14 @@ export class ListCouponComponent implements OnInit {
   }
 
   onDeleteConfirm(event) {
-    this.couponClient.deleteCoupon(event.data.id).subscribe(() => {
-      this.toastr.success('Change Coupon Success!', 'Notification');
-      this.loadData();
-    })
+    if (window.confirm("Are you sure you want to delete?")) {
+      this.couponClient.deleteCoupon(event.data.id).subscribe(() => {
+        this.toastr.success('Change Coupon Success!', 'Notification');
+        this.loadData();
+      })
+    } else {
+      event.confirm.reject();
+    }
   }
 
   onEditConfirm(event) {
@@ -133,10 +137,14 @@ export class ListCouponComponent implements OnInit {
       "value": event.newData.value,
     };
 
-    this.couponClient.updateCoupon(event.data.id, data).subscribe(() => {
-      this.toastr.success('Change Coupon Success!', 'Notification');
-      this.loadData();
-    })
+    if (window.confirm("Are you sure you want to edit?")) {
+      this.couponClient.updateCoupon(event.data.id, data).subscribe(() => {
+        this.toastr.success('Change Coupon Success!', 'Notification');
+        this.loadData();
+      })
+    } else {
+      event.confirm.reject();
+    }
   }
 
 
