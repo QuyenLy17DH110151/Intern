@@ -28,10 +28,14 @@ export class CategoryComponent implements OnInit {
   }
 
   onDeleteConfirm(event) {
-    this.categoryClient.deleteCategory(event.data.id).subscribe(() => {
-      this.toastr.success('Change Category Success!', 'Notification');
-      this.getListCategory();
-    })
+    if (window.confirm("Are you sure you want to delete?")) {
+      this.categoryClient.deleteCategory(event.data.id).subscribe(() => {
+        this.toastr.success('Change Category Success!', 'Notification');
+        this.getListCategory();
+      })
+    } else {
+      event.confirm.reject();
+    }
   }
 
   onEditConfirm(event): void {
@@ -39,10 +43,14 @@ export class CategoryComponent implements OnInit {
       "name": event.newData.name,
     };
 
-    this.categoryClient.updateCategory(event.data.id, data).subscribe(() => {
-      this.toastr.success('Change Category Success!', 'Notification');
-      this.getListCategory();
-    })
+    if (window.confirm("Are you sure you want to edit?")) {
+      this.categoryClient.updateCategory(event.data.id, data).subscribe(() => {
+        this.toastr.success('Change Category Success!', 'Notification');
+        this.getListCategory();
+      })
+    } else {
+      event.confirm.reject();
+    }
   }
 
   onCategoryRowSelected(event) {
