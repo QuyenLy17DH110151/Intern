@@ -74,7 +74,7 @@
                 </div>
                 <div class="col-lg-8">
                     <form class="needs-validation" [formGroup]="productForm" novalidate autocomplete="off"
-                        (ngSubmit)="onSubmit()" *ngIf="productForm">
+                        *ngIf="productForm">
                         <div class="add-product-form">
                             <div class="form-group row">
                                 <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Name:
@@ -186,8 +186,11 @@
                                 col-sm-8
                                 offset-xl-3 offset-sm-4
                             ">
-                            <button type="button" class="btn btn-primary mr-1" (click)="onSubmit()">
+                            <button type="button" class="btn btn-primary mr-1" (click)="onSubmit(false)">
                                 Add
+                            </button>
+                            <button type="button" class="btn btn-primary mr-1" (click)="onSubmit(true)">
+                                Add & continue
                             </button>
                             <button type="button" class="btn btn-light" (click)="discard()">
                                 Discard

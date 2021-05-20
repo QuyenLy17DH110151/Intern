@@ -40,19 +40,16 @@ export class LoginComponent implements OnInit {
 
     owlcarousel = [
         {
-            title: 'Welcome to Multikart',
-            desc:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
+            title: 'Welcome to FourMen Store',
+            desc: 'Established in 1999, Fourmen shop is proud to be the largest fashion brand in Vietnam.',
         },
         {
-            title: 'Welcome to Multikart',
-            desc:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
+            title: 'Welcome to FourMen Store',
+            desc: 'Established in 1999, Fourmen shop is proud to be the largest fashion brand in Vietnam.',
         },
         {
-            title: 'Welcome to Multikart',
-            desc:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
+            title: 'Welcome to FourMen Store',
+            desc: 'Established in 1999, Fourmen shop is proud to be the largest fashion brand in Vietnam.',
         },
     ];
     owlcarouselOptions = {
@@ -127,7 +124,10 @@ export class LoginComponent implements OnInit {
             this.createForgotPasswordForm();
             this.isStartForgotPassword = false;
             this.userClient.forgotPassword(rq).subscribe((res) => {
-                this.toastr.success('Request change password Success!', 'Notification');
+                this.toastr.success(
+                    'Request change password Success!',
+                    'Notification'
+                );
                 this.createForgotPasswordForm();
             });
         }

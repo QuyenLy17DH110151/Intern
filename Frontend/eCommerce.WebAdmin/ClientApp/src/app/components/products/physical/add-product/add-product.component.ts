@@ -12,6 +12,7 @@ import { CategoryReturnModel } from 'src/app/api-clients/models/_index';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-add-product',
@@ -37,8 +38,9 @@ export class AddProductComponent implements OnInit {
         private db: AngularFireDatabase,
         private storage: AngularFireStorage,
         private userService: UserService,
-        private toastr: ToastrService
-    ) { }
+        private toastr: ToastrService,
+        private router: Router
+    ) {}
 
     get name() {
         return this.productForm.get('name');
@@ -90,7 +92,7 @@ export class AddProductComponent implements OnInit {
         );
     }
 
-    async onSubmit() {
+    async onSubmit(isContinue: boolean) {
         if (!this.fileUpload) {
             Swal.fire({
                 icon: 'error',
@@ -115,7 +117,7 @@ export class AddProductComponent implements OnInit {
         const response = await this.productClient
             .addProduct(formData)
             .toPromise();
-        console.log('response: ', response);
+
         if (response !== null) {
             this.toastr.success(
                 'Create new product successfully!',
@@ -123,6 +125,9 @@ export class AddProductComponent implements OnInit {
             );
 
             this.discard();
+            if (!isContinue) {
+                this.router.navigate(['/products/product-detail', response.id]);
+            }
         }
     }
 
@@ -201,9 +206,9 @@ export class AddProductComponent implements OnInit {
         cancelReset: null,
     };
 
-    public onUploadInit(args: any): void { }
+    public onUploadInit(args: any): void {}
 
-    public onUploadError(args: any): void { }
+    public onUploadError(args: any): void {}
 
     public onUploadSuccess(args: any): void {
         this.uploadSingleImage(args[0]);
