@@ -12,6 +12,7 @@ import { OrderClient } from 'src/app/api-clients/order.client';
 import { takeUntil } from 'rxjs/operators';
 import { Order, OrderDetail } from 'src/app/api-clients/models/order.model';
 import { SearchValidCouponRequest } from 'src/app/api-clients/models/coupon.model';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
     selector: 'app-checkout',
@@ -103,9 +104,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.orderClient.checkout(formData).subscribe(
             (response) => {
                 this.cartService.resetLocalStorage();
-                this.toastr.success('Checkout is successful', 'Success');
+                //this.toastr.success('Checkout is successful', 'Success');
+                //next(data);
                 this.cartService.resetLocalStorage();
                 this.storeAddressToLocalStorage();
+                this.
             },
             (error) => this.toastr.error('Checkout is failed', 'Error')
         );

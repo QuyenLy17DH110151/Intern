@@ -61,19 +61,22 @@
                         <div class="col-3 order_detail">
                             <div>
                                 <h4>price</h4>
-                                <h5>{{ product?.price * productService?.Currency?.price | discount:product | currency:productService?.Currency.currency:'symbol' }}</h5>
+                                <h5>{{ product?.price * productService?.Currency?.price | discount:product |
+                                    currency:productService?.Currency.currency:'symbol' }}</h5>
                             </div>
                         </div>
                     </div>
                     <div class="total-sec">
                         <ul>
-                            <li>Subtotal <span>{{ orderDetails.totalAmount | currency:productService?.Currency.currency:'symbol' }}</span></li>
+                            <li>Subtotal <span>{{ orderDetails.totalAmount |
+                                    currency:productService?.Currency.currency:'symbol' }}</span></li>
                             <li>Shipping <span>$00.00</span></li>
                             <li>Tax <span>$00.00</span></li>
                         </ul>
                     </div>
                     <div class="final-total">
-                        <h3>total <span>{{ orderDetails.totalAmount | currency:productService?.Currency.currency:'symbol' }}</span></h3>
+                        <h3>total <span>{{ orderDetails.totalAmount |
+                                currency:productService?.Currency.currency:'symbol' }}</span></h3>
                     </div>
                 </div>
             </div>
@@ -84,7 +87,8 @@
                         <ul class="order-detail">
                             <li>order ID: {{ orderDetails.orderId }}</li>
                             <li>Order Date: October 22, 2021</li>
-                            <li>Order Total: {{ orderDetails.totalAmount | currency:productService?.Currency.currency:'symbol' }}</li>
+                            <li>Order Total: {{ orderDetails.totalAmount |
+                                currency:productService?.Currency.currency:'symbol' }}</li>
                         </ul>
                     </div>
                     <div class="col-sm-6">
@@ -92,14 +96,15 @@
                         <ul class="order-detail">
                             <li>{{ orderDetails.shippingDetails.address }}</li>
                             <li>{{ orderDetails.shippingDetails.state }}</li>
-                            <li>{{ orderDetails.shippingDetails.country }}, {{ orderDetails.shippingDetails.postalcode }}</li>
+                            <li>{{ orderDetails.shippingDetails.country }}, {{ orderDetails.shippingDetails.postalcode
+                                }}</li>
                             <li>Contact No. {{ orderDetails.shippingDetails.phone }}</li>
                         </ul>
                     </div>
 
                     <div class="col-sm-12 payment-mode">
                         <h4>payment method</h4>
-                        <p>Pay on Delivery (Cash/Card). Cash on delivery (COD) available. Card/Net banking acceptance subject to device availability.</p>
+                        <p>Cash on delivery (COD) available. </p>
                     </div>
                     <div class="col-md-12">
                         <div class="delivery-sec">

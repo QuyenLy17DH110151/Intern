@@ -55,6 +55,8 @@
       <ul class="show-div shopping-cart" *ngIf='!orderDetails.length'>
         <h5>Your cart is currently empty.</h5>
       </ul>
+
+      <!-- Shopping cart -->
       <ul class="show-div shopping-cart" *ngIf='orderDetails.length'>
         <li *ngFor="let orderDetail of orderDetails">
           <div class="media">
@@ -89,6 +91,7 @@
           </div>
         </li>
       </ul>
+
     </li>
   </ul>
 </div>
