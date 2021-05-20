@@ -29,7 +29,10 @@ export class WishListService {
 
     // Remove Wishlist items
     public removeWishlistItem(product: Product): any {
-        const index = this.wishListItems.indexOf(product);
+        debugger;
+        const index = this.wishListItems.findIndex((item) => {
+            return item.id === product.id;
+        });
         this.wishListItems.splice(index, 1);
         localStorage.setItem('wishlistItems', JSON.stringify(this.wishListItems));
         // update streams
@@ -45,7 +48,6 @@ export class WishListService {
     }
 
     isWishlist(productId): boolean {
-        debugger;
         const wishlistItem = this.wishListItems.find((item) => item.id === productId);
         return wishlistItem ? true : false;
     }

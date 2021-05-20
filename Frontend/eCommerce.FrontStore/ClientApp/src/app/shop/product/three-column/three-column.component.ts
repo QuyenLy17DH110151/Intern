@@ -67,6 +67,7 @@ export class ThreeColumnComponent implements OnInit {
         this._router.params.subscribe((response) => {
             // console.log("response", response);
             this.productId = response.slug;
+            this.isWishlist = this.wishListService.isWishlist(this.productId);
             this.getProduct(response.slug);
         });
         // console.log(this._router.snapshot.params.slug);
@@ -74,9 +75,7 @@ export class ThreeColumnComponent implements OnInit {
         //set page review
     }
 
-    ngOnInit(): void {
-        this.isWishlist = this.wishListService.isWishlist(this.product.id);
-    }
+    ngOnInit(): void {}
 
     getActiveStar(index: number, numberStar: number): boolean {
         return numberStar > this.getStarResponse.startValues.length - 1 - index;
