@@ -1,5 +1,6 @@
 ﻿using eCommerce.Application.Services.DashBoard;
 using eCommerce.Application.Services.Order;
+using eCommerce.Domain.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -89,14 +90,14 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet("RevenueMonthly")]
-        public async Task<ActionResult> RevenueMonthly()
+        public async Task<ActionResult<List<LineChartModels>>> RevenueMonthly()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             var result = await _dashBoardService.RevenueMonthly();
-            return Ok(result);
+            return result;
         }
     }
 }

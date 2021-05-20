@@ -48,11 +48,7 @@ export class ExceptionInterceptor implements HttpInterceptor {
 
 
                 if (error.status === 500) {
-                    Swal.fire(
-                        'Error',
-                        'Internal Server Error',
-                        'error'
-                    );
+                    Swal.fire('Error', 'Internal Server Error', 'error');
                     return;
                 }
 

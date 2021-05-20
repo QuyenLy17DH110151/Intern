@@ -18,5 +18,15 @@ namespace eCommerce.Domain.Repositories.Models
 
         public Pagination Pagination { get; set; } = new Pagination();
         public List<SortItem> Sort { get; set; } = new List<SortItem>();
+        public SearchOrderModel(string OwnerId,string OwnerUserName,UserRoles role)
+        {
+            this.OwnerUserName = OwnerUserName;
+            this.OwnerId = OwnerId;
+            this.Role = role;
+        }
+        public SearchOrderModel()
+        {
+
+        }
     }
 }

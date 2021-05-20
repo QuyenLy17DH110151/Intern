@@ -33,7 +33,7 @@
         <i class="ti-shopping-cart"></i>
       </a>
       <a href="javascript:void(0)" title="Add to Wishlist" (click)="addToWishlist(product)">
-        <i class="ti-heart" aria-hidden="true"></i>
+        <i class="fa fa-heart" aria-hidden="true" [class.my-wishlist]='isWishlist'></i>
       </a>
       <a href="javascript:void(0)" title="Quick View" (click)="QuickView.openModal()">
         <i class="ti-search" aria-hidden="true"></i>
@@ -50,29 +50,7 @@
         <h6>{{ product?.name | titlecase }}</h6>
       </a>
       <p>{{ product?.description }}</p>
-      <h4>
-        {{
-        product?.price * currency?.price
-        | discount: product
-        | currency: currency?.currency:"symbol"
-        }}
-        <!-- <del *ngIf="product?.discount"
-          ><span class="money">
-            {{
-              product?.price * currency?.price
-                | currency: currency?.currency:"symbol"
-            }}</span
-          ></del
-        > -->
-      </h4>
-      <!-- <ul class="color-variant" *ngIf="Color(product?.variants).length">
-        <li
-          [class]="color"
-          *ngFor="let color of Color(product?.variants)"
-          [ngStyle]="{ 'background-color': color }"
-          (click)="ChangeVariants(color, product)"
-        ></li>
-      </ul> -->
+      <h4>{{ product?.price | vndCurrency }} </h4>
     </div>
   </div>
 </div>

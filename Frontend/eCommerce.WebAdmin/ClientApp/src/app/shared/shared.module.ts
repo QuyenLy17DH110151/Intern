@@ -15,6 +15,9 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { RightSidebarComponent } from './components/right-sidebar/right-sidebar.component';
 import { UserService } from './service/user.service';
 
+//pipes
+import { VndCurrencyPipe } from '../pipes/vndCurrency.pipe';
+
 @NgModule({
     declarations: [
         ToggleFullscreenDirective,
@@ -25,9 +28,14 @@ import { UserService } from './service/user.service';
         ContentLayoutComponent,
         BreadcrumbComponent,
         RightSidebarComponent,
+        VndCurrencyPipe,
     ],
     imports: [CommonModule, RouterModule],
     providers: [NavService, WINDOW_PROVIDERS, UserService],
-    exports: [FeatherIconsComponent, ToggleFullscreenDirective],
+    exports: [
+        FeatherIconsComponent,
+        ToggleFullscreenDirective,
+        VndCurrencyPipe,
+    ],
 })
 export class SharedModule {}

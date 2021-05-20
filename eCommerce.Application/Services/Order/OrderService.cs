@@ -44,6 +44,12 @@ namespace eCommerce.Application.Services.Order
             {
                 throw new EntityNotFound("Order");
             }
+
+            if (order.Status == OrderStatuses.Approved)
+            {
+                throw new BusinessException("Already approved");
+            }
+
             await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Cancelled);
             await _orderRepo.UnitOfWork.SaveChangesAsync();
             SendEmailRejectOrder("eCommerce", order.BuyerEmail, Id, order, product);
@@ -154,6 +160,12 @@ namespace eCommerce.Application.Services.Order
             {
                 throw new EntityNotFound("Order");
             }
+
+            if(order.Status == OrderStatuses.Approved)
+            {
+                throw new BusinessException("Already approved");
+            }            
+
             var product = await _productRepository.GetProductByIdAsync(order.ProductId);
 
             await CheckQuantityAsync(order.ProductId, Id);
@@ -174,7 +186,7 @@ namespace eCommerce.Application.Services.Order
                 percent = _couponService.IsValidCoupon(coupon);
             }
 
-            foreach (var product in req.Products)
+            foreach (var item in req.OrderItems)
             {
                 var order = new eCommerce.Domain.Entities.Order()
                 {
@@ -182,10 +194,11 @@ namespace eCommerce.Application.Services.Order
                     BuyerName = req.BuyerName,
                     BuyerPhone = req.BuyerPhone,
                     Address = req.Address,
-                    ProductId = product.Id,
-                    Price = product.Price,
-                    ActualPrice = product.Price - product.Price * percent / 100,
-                    Quantity = product.Quantity,
+                    ProductId = item.ProductId,
+                    Price = item.ProductPrice,
+                    ActualPrice = item.ProductPrice - item.ProductPrice * percent / 100,
+                    Quantity = item.Quantity,
+                    PropertyString = item.PropertyString,
                     Status = OrderStatuses.New,
                 };
                 _orderRepo.Add(order);

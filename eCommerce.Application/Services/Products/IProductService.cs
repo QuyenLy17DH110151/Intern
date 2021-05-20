@@ -45,5 +45,19 @@ namespace eCommerce.Application.Services.Products
         /// <param name="Id"></param>
         /// <returns></returns>
         Task<PaginatedResult<ProductReturnModels.Product>> SearchProductsPublicAsync(ProductRequestModels.Search req);
+
+        /// <summary>
+        /// Detele Product
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> DeteleProductAsync(Guid id);
+
+        /// <summary>
+        /// Update Product
+        /// </summary>
+        /// <param name="rq"></param>
+        /// <returns></returns>
+        Task<ProductReturnModels.Product> UpdateProductAsync(ProductRequestModels.Product rq);
     }
 }

@@ -94,5 +94,10 @@ namespace eCommerce.Persistence.Repositories
             countUsers = test.Count();
             return countUsers;
         }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _genericRepo.GetAllAsync();
+        }
     }
 }

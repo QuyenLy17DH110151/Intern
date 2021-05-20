@@ -85,5 +85,27 @@ namespace eCommerce.WebAPI.Controllers
 
             return product;
         }
+
+        [HttpPut]
+        public async Task<ActionResult<ProductReturnModels.Product>> UpdateAsync([FromBody] ProductRequestModels.Product rq)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var product = await _productService.UpdateProductAsync(rq);
+            return product;
+        }
+
+        [HttpDelete("{productId}")]
+        public async Task<ActionResult> DeteleAsync(Guid productId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            bool delete = await _productService.DeteleProductAsync(productId);
+            return Ok(delete);
+        }
     }
 }

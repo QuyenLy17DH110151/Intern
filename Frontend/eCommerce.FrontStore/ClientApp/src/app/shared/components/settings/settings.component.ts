@@ -6,6 +6,7 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../../api-clients/models/product.model';
 import { CartService } from '../../services/cart.service';
 import { takeUntil } from 'rxjs/operators';
+import { OrderDetail } from 'src/app/api-clients/models/order.model';
 
 @Component({
     selector: 'app-settings',
@@ -13,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-    public products: Product[] = [];
+    public orderDetails: OrderDetail[] = [];
     public search: boolean = false;
 
     public languages = [
@@ -61,7 +62,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.cartService.cart$
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((response) => (this.products = response));
+            .subscribe((response) => (this.orderDetails = response));
     }
 
     searchToggle() {
@@ -74,12 +75,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
         }
     }
 
-    get getTotal(): Observable<number> {
-        return this.productService.cartTotalAmount();
+    get getTotal(): number {
+        return this.cartService.getTotalPrice();
     }
 
-    removeItem(product: any) {
-        this.productService.removeCartItem(product);
+    removeItem(orderDetail: OrderDetail) {
+        this.cartService.removeCartItem(orderDetail);
     }
 
     changeCurrency(currency: any) {

@@ -16,6 +16,7 @@ namespace eCommerce.Application.Services.DashBoard
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
         private readonly IProductRatingRepository _productRatingRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ApplicationContext _appContext;
         public DashBoardService(IUserRepository userRepository, IOrderRepository orderRepository, IProductRepository productRepository, ApplicationContext appContext, IProductRatingRepository productRatingRepository)
         {
@@ -23,6 +24,7 @@ namespace eCommerce.Application.Services.DashBoard
             _productRepository = productRepository;
             _appContext = appContext;
             _productRatingRepository = productRatingRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<int> GetCountComment()
@@ -65,14 +67,35 @@ namespace eCommerce.Application.Services.DashBoard
             });
         }
 
-        public async Task<string> RevenueMonthly()
+        public async Task<List<LineChartModels>> RevenueMonthly()
         {
-            return await _orderRepository.RevenueMonthlyBySellerAsync(new SearchOrderModel
+
+            var users = await _userRepository.GetAllAsync();
+            List<LineChartModels> lineChartModels = new List<LineChartModels>(); ;
+            LineChartModels lineChart;
+            if (_appContext.Principal.Role == Domain.Shared.UserRoles.Admin)
             {
-                Role = _appContext.Principal.Role,
-                OwnerId = _appContext.Principal.UserId,
-                OwnerUserName = _appContext.Principal.Username
-            });
+                foreach (var item in users)
+                {
+                    lineChart = await RevenueMonthlyBySellerAsync(new SearchOrderModel(item.Id.ToString(), item.Username, item.Role));
+                    lineChartModels.Add(lineChart);
+                }
+                return lineChartModels;
+            }
+            else
+            {
+                lineChart = await RevenueMonthlyBySellerAsync(new SearchOrderModel(
+                    _appContext.Principal.UserId,
+                    _appContext.Principal.Username,
+                    _appContext.Principal.Role));
+                lineChartModels.Add(lineChart);
+            }
+            return lineChartModels;
+        }
+
+        private async Task<LineChartModels> RevenueMonthlyBySellerAsync(SearchOrderModel searchOrderModel)
+        {
+            return await _orderRepository.RevenueMonthlyBySellerAsync(searchOrderModel);
         }
 
         public async Task<string> StatisticsCategories()

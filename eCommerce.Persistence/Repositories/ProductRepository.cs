@@ -177,15 +177,21 @@ namespace eCommerce.Persistence.Repositories
         {
             var queryObject = QueryObject<Product>.Empty;
 
-            // filter by Owner
-            if (!string.IsNullOrWhiteSpace(rq.OwnerName))
+            // filter by seller
+            if (rq.Role == UserRoles.Seller)
             {
-                var keyword = rq.OwnerName;
+                var keyword = rq.UserName;
                 queryObject.And(new ProductQueryObjects.FilterBySeller(keyword));
             }
 
             var products = await _genericRepo.SearchAsync(queryObject);
             return products.Count();
+        }
+
+        public bool Delete(Product product)
+        {
+             _genericRepo.Delete(product);
+            return true;
         }
     }
 }

@@ -2,7 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 //import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Product, ProductList, } from 'src/app/api-clients/models/product.model';
+import {
+    Product,
+    ProductList,
+    UpdateProductModel,
+} from 'src/app/api-clients/models/product.model';
 import { Observable } from 'rxjs';
 import { PagedList, SearchRequestProduct } from './models/common.model';
 
@@ -12,7 +16,7 @@ import { PagedList, SearchRequestProduct } from './models/common.model';
 export class ProductClient {
     private baseUrl = `${environment.apiUrl}/Products`;
 
-    constructor(protected httpClient: HttpClient) { }
+    constructor(protected httpClient: HttpClient) {}
 
     addProduct(newProduct: Product) {
         return this.httpClient.post<Product>(this.baseUrl, newProduct);
@@ -35,6 +39,19 @@ export class ProductClient {
             params: { ...rq },
         };
 
-        return this.httpClient.get<PagedList<ProductList>>(this.baseUrl, options);
+        return this.httpClient.get<PagedList<ProductList>>(
+            this.baseUrl,
+            options
+        );
+    }
+
+    deleteProducts(productId: string) {
+        const url = `${this.baseUrl}/${productId}`;
+        return this.httpClient.delete(url);
+    }
+
+    updateProduct(rq: any): Observable<Product> {
+        const option = { params: { ...rq } };
+        return this.httpClient.put<Product>(this.baseUrl, rq);
     }
 }
