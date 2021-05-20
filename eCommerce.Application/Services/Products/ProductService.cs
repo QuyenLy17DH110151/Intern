@@ -140,6 +140,30 @@ namespace eCommerce.Application.Services.Products
             return _mapper.Map<PaginatedResult<ProductReturnModels.Product>>(products);
         }
 
+        public async Task<bool> DeteleProductAsync(Guid id)
+        {
+            var product = await _productRepo.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                throw new EntityNotFound("product");
+            }
+            _productRepo.Delete(product);
+            await _productRepo.UnitOfWork.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<ProductReturnModels.Product> UpdateProductAsync(ProductRequestModels.Product rq)
+        {
+            var product = await _productRepo.GetProductByIdAsync(rq.Id);
+            product.Name = rq.Name;
+            product.Price = rq.Price;
+            product.Description = rq.Description;
+            product.CategoryId = rq.CategoryId;
+            _productRepo.Update(product);
+            await _productRepo.UnitOfWork.SaveChangesAsync();
+            return _mapper.Map<ProductReturnModels.Product>(product);
+        }
+
 
 
 

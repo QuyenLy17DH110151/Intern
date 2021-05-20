@@ -187,5 +187,11 @@ namespace eCommerce.Persistence.Repositories
             var products = await _genericRepo.SearchAsync(queryObject);
             return products.Count();
         }
+
+        public bool Delete(Product product)
+        {
+             _genericRepo.Delete(product);
+            return true;
+        }
     }
 }

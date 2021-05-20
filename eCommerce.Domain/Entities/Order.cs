@@ -18,6 +18,7 @@ namespace eCommerce.Domain.Entities
         public decimal Price { get; set; }
         public decimal ActualPrice { get; set; }
         public int Quantity { get; set; }
+        public string PropertyString { get; set; }
         public OrderStatuses Status { get; set; }
         public byte[] RowVersion { get; set; }
         public decimal TotalAmount => Quantity * Price;

@@ -32,7 +32,7 @@ namespace eCommerce.Application.Services.ProductCategory
 
             return _mapper.Map<PaginatedResult<ProductCategoryReturnModels.ProductCategory>>(productcategories);
         }
-        
+
         async Task<Guid> IProductCategoryService.CreateProductCategoryAsync(ProductCategoryRequestModels.Create rq)
         {
             var productCategory = _mapper.Map<Domain.Entities.ProductCategory>(rq);
@@ -43,14 +43,37 @@ namespace eCommerce.Application.Services.ProductCategory
             return productCategory.Id;
         }
 
-        public async Task<Guid> UpdateProductCategoryAsync(ProductCategoryRequestModels.Update rq, Guid id)
+        public async Task<Guid> UpdateProductCategoryAsync(ProductCategoryRequestModels.Update rq)
         {
-            var productCategory = await _productCategoryRepo.GetByIdAsync(id);
-            if (productCategory == null)
+            var productCategory = await _productCategoryRepo.GetByIdAsync(rq.Id);
+            if (productCategory == null) { 
                 throw new EntityNotFound("Category");
+        }
+           
+                productCategory.Name = rq.Name;
 
-            productCategory.Name = rq.Name;
+            
+                productCategory.C1Lable = rq.C1Lable;
+                productCategory.C1Lable = rq.C1Options;
+       
+
+                productCategory.C2Lable = rq.C2Lable;
+                productCategory.C2Options = rq.C2Options;
+           
+
+                productCategory.C3Lable = rq.C3Lable;
+                productCategory.C3Options = rq.C3Options;
+        
+                productCategory.C4Lable = rq.C4Lable;
+                productCategory.C4Options = rq.C4Options;
+  
+
+                productCategory.C5Lable = rq.C5Lable;
+                productCategory.C5Options = rq.C5Options;
+
+
             _productCategoryRepo.Update(productCategory);
+
             await _productCategoryRepo.UnitOfWork.SaveChangesAsync();
 
             return productCategory.Id;
@@ -58,9 +81,9 @@ namespace eCommerce.Application.Services.ProductCategory
 
         private async Task<bool> CheckCanDeleteAsync(Guid Id)
         {
-            var category = await _productCategoryRepo.GetByIdAsync(Id);            
+            var category = await _productCategoryRepo.GetByIdAsync(Id);
             await _productCategoryRepo.CheckCanDeleteAsync(category.Id);
-            
+
             return false;
         }
 

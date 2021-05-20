@@ -1,8 +1,4 @@
-export class Category {
-    id: string;
-    name: string;
-    items: any;
-}
+
 
 export class CategoryReturnModel {
     items: object[];
@@ -20,7 +16,7 @@ export class LableOptions {
     }
 }
 
-export class CreateCategoryRequest {
+class Base {
     name: string;
     c1Lable: string;
     c1Options: string;
@@ -53,8 +49,33 @@ export class CreateCategoryRequest {
     }
 }
 
+export class CreateCategoryRequest extends Base {
+    constructor(name: string, lableOptions: LableOptions[]) {
+        super(name, lableOptions);
+    }
+}
+
+export class UpdateCategoryRequest extends Base {
+
+}
+
 export class CategoryDetails {
     id: string;
     name: string;
     lableOptions: LableOptions[];
+}
+
+export class Category extends Base {
+
+    id: string;
+    constructor(id: string, name: string, lableOptions: LableOptions[]) {
+        super(name, lableOptions);
+        this.id = id;
+    }
+}
+
+export class CategoryResponse {
+    id: string;
+    name: string;
+    items: Category[];
 }

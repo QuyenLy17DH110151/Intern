@@ -186,7 +186,7 @@ namespace eCommerce.Application.Services.Order
                 percent = _couponService.IsValidCoupon(coupon);
             }
 
-            foreach (var product in req.Products)
+            foreach (var item in req.OrderItems)
             {
                 var order = new eCommerce.Domain.Entities.Order()
                 {
@@ -194,10 +194,11 @@ namespace eCommerce.Application.Services.Order
                     BuyerName = req.BuyerName,
                     BuyerPhone = req.BuyerPhone,
                     Address = req.Address,
-                    ProductId = product.Id,
-                    Price = product.Price,
-                    ActualPrice = product.Price - product.Price * percent / 100,
-                    Quantity = product.Quantity,
+                    ProductId = item.ProductId,
+                    Price = item.ProductPrice,
+                    ActualPrice = item.ProductPrice - item.ProductPrice * percent / 100,
+                    Quantity = item.Quantity,
+                    PropertyString = item.PropertyString,
                     Status = OrderStatuses.New,
                 };
                 _orderRepo.Add(order);
