@@ -41,7 +41,11 @@ namespace eCommerce.WebAPI.Controllers
             return rp;
         }
 
-
-
+        [HttpGet("star-in-card/{idProduct}")]
+        public async Task<ActionResult<ProductRatingReturnModels.GetStarInCardResponse>> GetStarInCard(Guid idProduct)
+        {
+            var rp = await _productRatingService.GetStarInCardAsync(idProduct);
+            return Ok(rp);
+        }
     }
 }

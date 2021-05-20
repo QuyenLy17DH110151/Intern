@@ -44,8 +44,6 @@ namespace eCommerce.Application.Services.ProductRating
 
             public Guid ProductId { get; set; }
 
-            public string ProductName { get; set; }
-
             public int NumberRating { get; set; }
 
             public List<StartValue> StartValues { get; set; }
@@ -96,6 +94,14 @@ namespace eCommerce.Application.Services.ProductRating
                 var AvgValueInt = (int)AvgValueDouble;
                 AvgValueDouble = (Double)AvgValueInt / 10;
             }
+
+        }
+
+        public class GetStarInCardResponse
+        {
+            public Guid ProductId { get; set; }
+
+            public Double AvgValueDouble { get; set; }
 
         }
     }

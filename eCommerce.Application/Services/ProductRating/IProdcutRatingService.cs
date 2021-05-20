@@ -11,5 +11,6 @@ namespace eCommerce.Application.Services.ProductRating
         Task<PaginatedResult<ProductRatingReturnModels.ProductRating>> SearchProductRatingAsync(ProductRatingRequestModels.Search rq);
         Task<Guid> CreateProductRatingAsync(ProductRatingRequestModels.Create rq);
         Task<ProductRatingReturnModels.GetStarResponse> GetStarAsync(Guid idProduct);
+        Task<ProductRatingReturnModels.GetStarInCardResponse> GetStarInCardAsync(Guid idProduct);
     }
 }

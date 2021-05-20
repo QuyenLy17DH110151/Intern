@@ -53,7 +53,6 @@ export class GetProductRatingRequest {
 
 export class GetStarResponse {
     productId: string;
-    productName: string;
     numberRating: number;
     sumValue: number;
     maxStart: number;
@@ -64,4 +63,9 @@ export class GetStarResponse {
 export class StartValue {
     numberStar: number;
     numberRating: number;
+}
+
+export class GetStarInCardResponse {
+    productId: string;
+    avgValueDouble: number;
 }
