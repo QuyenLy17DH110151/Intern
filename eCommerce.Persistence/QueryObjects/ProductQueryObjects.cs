@@ -48,7 +48,7 @@ namespace eCommerce.Persistence.QueryObjects
 
             protected override Expression<Func<Product, bool>> AsExpression()
             {
-                return s => s.Owner.Username.Contains(_keyword);
+                return s => s.CreatedBy.Equals(_keyword);
             }
         }
         public class FilterByCategoryId : QueryObject<Product>

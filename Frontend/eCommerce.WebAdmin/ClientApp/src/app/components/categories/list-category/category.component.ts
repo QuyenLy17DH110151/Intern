@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class CategoryComponent implements OnInit {
 
 
-  category: Category;
+  categories: Category[];
 
   constructor(protected categoryClient: CategoryClient, private toastr: ToastrService, private router: Router) {
 
@@ -23,7 +23,7 @@ export class CategoryComponent implements OnInit {
   private getListCategory() {
     this.categoryClient.getListCategory().subscribe(category => {
 
-      this.category = category.items;
+      this.categories = category.items;
     });
   }
 
@@ -35,14 +35,21 @@ export class CategoryComponent implements OnInit {
   }
 
   onEditConfirm(event): void {
-    var data = {
-      "name": event.newData.name,
-    };
 
-    this.categoryClient.updateCategory(event.data.id, data).subscribe(() => {
-      this.toastr.success('Change Category Success!', 'Notification');
-      this.getListCategory();
+    console.log(event);
+
+    this.categories.map(category => {
+      if (category.id == event.data.id) {
+        category.name = event.newData.name;
+        this.categoryClient.updateCategory(category).subscribe(() => {
+          this.toastr.success('Change Category Success!', 'Notification');
+          this.getListCategory();
+          return;
+        })
+      }
     })
+
+
   }
 
   onCategoryRowSelected(event) {

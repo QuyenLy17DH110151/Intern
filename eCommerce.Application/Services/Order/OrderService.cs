@@ -44,6 +44,12 @@ namespace eCommerce.Application.Services.Order
             {
                 throw new EntityNotFound("Order");
             }
+
+            if (order.Status == OrderStatuses.Approved)
+            {
+                throw new BusinessException("Already approved");
+            }
+
             await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Cancelled);
             await _orderRepo.UnitOfWork.SaveChangesAsync();
             SendEmailRejectOrder("eCommerce", order.BuyerEmail, Id, order, product);
@@ -154,6 +160,12 @@ namespace eCommerce.Application.Services.Order
             {
                 throw new EntityNotFound("Order");
             }
+
+            if(order.Status == OrderStatuses.Approved)
+            {
+                throw new BusinessException("Already approved");
+            }            
+
             var product = await _productRepository.GetProductByIdAsync(order.ProductId);
 
             await CheckQuantityAsync(order.ProductId, Id);

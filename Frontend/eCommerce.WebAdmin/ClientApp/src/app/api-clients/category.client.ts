@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { PagedList, SearchRequest } from "./models/common.model";
-import { Category, CategoryDetails, CreateCategoryRequest } from "./models/category.model";
+import { Category, CategoryDetails, CategoryResponse, CreateCategoryRequest, UpdateCategoryRequest } from "./models/category.model";
 import { map } from "rxjs/operators";
 
 @Injectable()
@@ -21,8 +21,8 @@ export class CategoryClient {
         return this.httpClient.get<PagedList<Category>>(this.apiEndpoint, options);
     }
 
-    getListCategory(): Observable<Category> {
-        return this.httpClient.get<Category>(this.apiEndpoint)
+    getListCategory(): Observable<CategoryResponse> {
+        return this.httpClient.get<CategoryResponse>(this.apiEndpoint)
             .pipe(
                 map((respone: any) => respone)
             )
@@ -36,8 +36,8 @@ export class CategoryClient {
         return this.httpClient.delete<any>(this.apiEndpoint + id)
     }
 
-    updateCategory(id: string, category): Observable<Category> {
-        return this.httpClient.put<Category>(this.apiEndpoint + id, category)
+    updateCategory(category: Category): Observable<any> {
+        return this.httpClient.put<any>(this.apiEndpoint, category)
     }
 
     getCategoryDetailsById(id: string): Observable<CategoryDetails> {

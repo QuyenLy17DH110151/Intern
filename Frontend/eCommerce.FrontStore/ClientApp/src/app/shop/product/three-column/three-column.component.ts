@@ -253,31 +253,31 @@ export class ThreeColumnComponent implements OnInit {
                 //options.push(category.c1Options.split(/[ ,]+/))
                 labels.push({
                     label: category.c1Lable,
-                    options: category.c1Options.split(/[ ,]+/),
+                    options: category.c1Options.split(/[,]+/),
                 });
             }
             if (category && category.c2Lable) {
                 labels.push({
                     label: category.c2Lable,
-                    options: category.c2Options.split(/[ ,]+/),
+                    options: category.c2Options.split(/[,]+/),
                 });
             }
             if (category && category.c3Lable) {
                 labels.push({
                     label: category.c3Lable,
-                    options: category.c3Options.split(/[ ,]+/),
+                    options: category.c3Options.split(/[,]+/),
                 });
             }
             if (category && category.c4Lable) {
                 labels.push({
                     label: category.c4Lable,
-                    options: category.c4Options.split(/[ ,]+/),
+                    options: category.c4Options.split(/[,]+/),
                 });
             }
             if (category && category.c5Lable) {
                 labels.push({
                     label: category.c5Lable,
-                    options: category.c5Options.split(/[ ,]+/),
+                    options: category.c5Options.split(/[,]+/),
                 });
             }
             this.labels = labels;

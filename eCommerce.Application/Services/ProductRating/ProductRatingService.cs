@@ -104,8 +104,8 @@ namespace eCommerce.Application.Services.ProductRating
                     NumberRating = 0,
                     ProductId = product.Id,
                     ProductName = product.Name,
-                    SumValue = 5,
-                    AvgValueDouble = 5
+                    SumValue = 0,
+                    AvgValueDouble = 0
                 };
             }
             foreach (var productRating in productRatings.Items)

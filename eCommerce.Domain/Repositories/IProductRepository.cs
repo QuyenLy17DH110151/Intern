@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Domain.Repositories
 {
-    public interface IProductRepository: IRepository<Product>
+    public interface IProductRepository : IRepository<Product>
     {
         Product Add(Product product);
         void Update(Product product);
+        bool Delete(Product product);
         ProductPhoto UploadPhoto(ProductPhoto photo);
 
         Task<Product> GetProductByIdAsync(Guid id);
