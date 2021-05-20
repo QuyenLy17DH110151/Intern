@@ -66,6 +66,7 @@ export class ThreeColumnComponent implements OnInit {
     ) {
         this._router.params.subscribe((response) => {
             // console.log("response", response);
+            this.productId = response.slug;
             this.getProduct(response.slug);
         });
         // console.log(this._router.snapshot.params.slug);

@@ -1,11 +1,8 @@
+import { Router } from '@angular/router';
 import { CouponClient } from './../../api-clients/coupon.client';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
-import { environment } from '../../../environments/environment';
-import { Product } from '../../api-clients/models/product.model';
-import { OrderService } from '../../shared/services/order.service';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { OrderClient } from 'src/app/api-clients/order.client';
@@ -22,7 +19,6 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 export class CheckoutComponent implements OnInit, OnDestroy {
     public checkoutForm: FormGroup;
     public orderDetails: OrderDetail[] = [];
-    public payPalConfig?: IPayPalConfig;
     public payment: string = 'Stripe';
     private code: string;
     public discountPercent: number = 0;
@@ -31,10 +27,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     constructor(
         private fb: FormBuilder,
         public cartService: CartService,
-        private orderService: OrderService,
         private couponClient: CouponClient,
         private orderClient: OrderClient,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private router: Router
     ) {
         const address = JSON.parse(localStorage.getItem('checkoutForm'));
 
@@ -104,11 +100,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.orderClient.checkout(formData).subscribe(
             (response) => {
                 this.cartService.resetLocalStorage();
-                //this.toastr.success('Checkout is successful', 'Success');
-                //next(data);
                 this.cartService.resetLocalStorage();
                 this.storeAddressToLocalStorage();
-                this.
+                localStorage.setItem('order', JSON.stringify(formData));
+                localStorage.setItem('percent', this.discountPercent.toString());
+                this.router.navigate(['/shop/checkout/success']);
             },
             (error) => this.toastr.error('Checkout is failed', 'Error')
         );

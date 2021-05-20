@@ -79,7 +79,7 @@ export class CartComponent implements OnInit, OnDestroy {
     }
 
     checkout() {
-        this.handleCoupon(this.code);
+        debugger;
         if (this.discountPercent === 0) {
             this.code = '';
         }
