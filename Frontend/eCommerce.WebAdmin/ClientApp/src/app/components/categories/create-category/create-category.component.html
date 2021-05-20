@@ -20,7 +20,9 @@
                 <ng2-smart-table [settings]="settings" [source]="properties" (createConfirm)="onCreateConfirm($event)"
                     (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)">
                 </ng2-smart-table>
-                <button class="btn bg-success" id="btn-add" (click)="onSave()">Save</button>
+                <div>
+                    <button class="btn btn-primary mr-1" id="btn-add" (click)="onSave()">Save</button>
+                </div>
             </div>
         </div>
     </div>

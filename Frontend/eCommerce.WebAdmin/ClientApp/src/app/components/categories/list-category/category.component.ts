@@ -28,26 +28,33 @@ export class CategoryComponent implements OnInit {
   }
 
   onDeleteConfirm(event) {
-    this.categoryClient.deleteCategory(event.data.id).subscribe(() => {
-      this.toastr.success('Change Category Success!', 'Notification');
-      this.getListCategory();
-    })
+    if (window.confirm("Are you sure you want to delete?")) {
+      this.categoryClient.deleteCategory(event.data.id).subscribe(() => {
+        this.toastr.success('Change Category Success!', 'Notification');
+        this.getListCategory();
+      })
+    } else {
+      event.confirm.reject();
+    }
   }
 
   onEditConfirm(event): void {
 
-    console.log(event);
-
-    this.categories.map(category => {
-      if (category.id == event.data.id) {
-        category.name = event.newData.name;
-        this.categoryClient.updateCategory(category).subscribe(() => {
-          this.toastr.success('Change Category Success!', 'Notification');
-          this.getListCategory();
-          return;
-        })
-      }
-    })
+    if (window.confirm("Are you sure you want to edit?")) {
+      this.categories.map(category => {
+        if (category.id == event.data.id) {
+          category.name = event.newData.name;
+          this.categoryClient.updateCategory(category).subscribe(() => {
+            this.toastr.success('Change Category Success!', 'Notification');
+            this.getListCategory();
+            return;
+          })
+        }
+      })
+    }
+    else {
+      event.confirm.reject();
+    }
 
 
   }
