@@ -219,9 +219,10 @@ export class ThreeColumnComponent implements OnInit {
 
     // Buy Now
     async buyNow(productAPI: ProductAPI) {
+        productAPI.selectedProperty = this.activeLabels;
         productAPI.quantity = this.counter || 1;
         await this.cartService.addToCart(productAPI);
-        if (status) this.router.navigate(['/shop/cart']);
+        this.router.navigate(['/shop/cart']);
     }
 
     // Add to Wishlist

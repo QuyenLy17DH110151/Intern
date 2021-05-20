@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { OrderClient } from 'src/app/api-clients/order.client';
 import { takeUntil } from 'rxjs/operators';
+import { Order, OrderDetail } from 'src/app/api-clients/models/order.model';
 
 @Component({
     selector: 'app-checkout',
@@ -18,11 +19,10 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
     public checkoutForm: FormGroup;
-    public products: Product[] = [];
+    public orderDetails: OrderDetail[] = [];
     public payPalConfig?: IPayPalConfig;
     public payment: string = 'Stripe';
     public amount: any;
-    private subscription;
     private code: string;
     private discountPercent: number;
     ngUnsubscribe = new Subject<void>();
@@ -35,14 +35,22 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         private orderClient: OrderClient,
         private toastr: ToastrService
     ) {
+        const address = JSON.parse(localStorage.getItem('checkoutForm'));
+
         this.checkoutForm = this.fb.group({
-            fullName: ['', [Validators.required]],
-            phone: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-            email: ['', [Validators.required, Validators.email]],
-            province: ['', Validators.required],
-            district: ['', Validators.required],
-            ward: ['', Validators.required],
-            street: ['', [Validators.required, Validators.maxLength(50)]],
+            fullName: [address ? address.fullName : '', [Validators.required]],
+            phone: [
+                address ? address.phone : '',
+                [Validators.required, Validators.pattern('[0-9]+')],
+            ],
+            email: [address ? address.email : '', [Validators.required, Validators.email]],
+            province: [address ? address.province : '', Validators.required],
+            district: [address ? address.district : '', Validators.required],
+            ward: [address ? address.ward : '', Validators.required],
+            street: [
+                address ? address.street : '',
+                [Validators.required, Validators.maxLength(50)],
+            ],
         });
     }
 
@@ -51,11 +59,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.couponClient
             .getCouponValue(this.code)
             .subscribe((response) => (this.discountPercent = response));
-        //this.subscription = this.cartService.subscribe((response) => (this.products = response));
+
         this.cartService.cart$
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((response) => (this.products = response));
-        this.initConfig();
+            .subscribe((response) => (this.orderDetails = response));
         //this.getProductsInCart();
     }
 
@@ -67,97 +74,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         return this.cartService.cartTotalAmount(null, this.discountPercent);
     }
 
-    // Stripe Payment Gateway
-    stripeCheckout() {
-        var handler = (<any>window).StripeCheckout.configure({
-            key: environment.stripe_token, // publishble key
-            locale: 'auto',
-            token: (token: any) => {
-                // You can access the token ID with `token.id`.
-                // Get the token ID to your server-side code for use.
-                this.orderService.createOrder(
-                    this.products,
-                    this.checkoutForm.value,
-                    token.id,
-                    this.amount
-                );
-            },
-        });
-        handler.open({
-            name: 'Multikart',
-            description: 'Online Fashion Store',
-            amount: this.amount * 100,
-        });
-    }
-
-    // Paypal Payment Gateway
-    private initConfig(): void {
-        this.payPalConfig = {
-            currency: this.cartService.Currency.currency,
-            clientId: environment.paypal_token,
-            createOrderOnClient: (data) =>
-                <ICreateOrderRequest>{
-                    intent: 'CAPTURE',
-                    purchase_units: [
-                        {
-                            amount: {
-                                currency_code: this.cartService.Currency.currency,
-                                value: this.amount,
-                                breakdown: {
-                                    item_total: {
-                                        currency_code: this.cartService.Currency.currency,
-                                        value: this.amount,
-                                    },
-                                },
-                            },
-                        },
-                    ],
-                },
-            advanced: {
-                commit: 'true',
-            },
-            style: {
-                label: 'paypal',
-                size: 'small', // small | medium | large | responsive
-                shape: 'rect', // pill | rect
-            },
-            onApprove: (data, actions) => {
-                this.orderService.createOrder(
-                    this.products,
-                    this.checkoutForm.value,
-                    data.orderID,
-                    this.getTotal
-                );
-                console.log(
-                    'onApprove - transaction was approved, but not authorized',
-                    data,
-                    actions
-                );
-                actions.order.get().then((details) => {
-                    console.log(
-                        'onApprove - you can get full order details inside onApprove: ',
-                        details
-                    );
-                });
-            },
-            onClientAuthorization: (data) => {
-                console.log(
-                    'onClientAuthorization - you should probably inform your server about completed transaction at this point',
-                    data
-                );
-            },
-            onCancel: (data, actions) => {
-                console.log('OnCancel', data, actions);
-            },
-            onError: (err) => {
-                console.log('OnError', err);
-            },
-            onClick: (data, actions) => {
-                console.log('onClick', data, actions);
-            },
-        };
-    }
-
     checkout() {
         if (!this.checkoutForm.valid) {
             this.toastr.error('Please fill in the delivery address', 'Error');
@@ -165,11 +81,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         }
 
         const checkoutForm = this.checkoutForm.value;
-        const formData = {
+        const formData: Order = {
             buyerEmail: checkoutForm.email,
             buyerName: checkoutForm.fullName,
             buyerPhone: checkoutForm.phone,
-            Address:
+            address:
                 checkoutForm.street +
                 ', ' +
                 checkoutForm.ward +
@@ -177,7 +93,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
                 checkoutForm.district +
                 ', ' +
                 checkoutForm.province,
-            products: this.products,
+            orderItems: this.orderDetails,
             couponCode: this.code,
         };
 
@@ -186,9 +102,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
                 this.cartService.resetLocalStorage();
                 this.toastr.success('Checkout is successful', 'Notification');
                 this.cartService.resetLocalStorage();
+                this.storeAddressToLocalStorage();
             },
             (error) => this.toastr.error('Checkout is failed', 'Notification')
         );
+    }
+
+    storeAddressToLocalStorage() {
+        localStorage.setItem('checkoutForm', JSON.stringify(this.checkoutForm.value));
     }
 
     ngOnDestroy() {

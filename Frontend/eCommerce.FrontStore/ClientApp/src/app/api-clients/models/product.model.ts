@@ -30,7 +30,7 @@ export class ProductCategory {
     c5Options: string;
 }
 
-class User {
+export class User {
     id: string;
     username: string;
 }

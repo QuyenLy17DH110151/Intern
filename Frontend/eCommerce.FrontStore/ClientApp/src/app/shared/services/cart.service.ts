@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { OrderDetail } from 'src/app/api-clients/models/order.model';
 import { Product } from '../../api-clients/models/product.model';
 @Injectable({
     providedIn: 'root',
@@ -15,47 +16,57 @@ export class CartService {
     };
     public DELIVERY_PRICE = 9999;
     public OpenCart: boolean = false;
-    public cartItems: Product[] = JSON.parse(localStorage['cartItems'] || '[]');
-    private _cart$ = new BehaviorSubject<Product[]>(this.cartItems);
+    public cartItems: OrderDetail[] = JSON.parse(localStorage['cartItems'] || '[]');
+    private _cart$ = new BehaviorSubject<OrderDetail[]>(this.cartItems);
     cart$ = this._cart$.asObservable();
 
     constructor(private http: HttpClient, private toastrService: ToastrService) {}
 
     // Add to Cart
-    public addToCart(product: Product): void {
-        const cartItem = this.cartItems.find((item) => item.id === product.id);
-        product.quantity = product.quantity ? product.quantity : 1;
+    public addToCart(product: Product, count: number = 1): void {
+        const orderDetail = this.convertProductToOrderDetail(product, count);
+        // Check same productId or not?
+        const cartItem = this.cartItems.find((item) => item.id === orderDetail.id);
 
         if (cartItem) {
-            cartItem.quantity += product.quantity;
+            cartItem.quantity += orderDetail.quantity;
         } else {
-            this.cartItems.push(product);
+            this.cartItems.push(orderDetail);
         }
 
         this._cart$.next(this.cartItems);
         this.OpenCart = true; // If we use cart variation modal
         localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+
+        // notify
+        this.toastrService.success('Success! Item Successfully added to your cart');
     }
 
     // Remove Cart items
-    public removeCartItem(product: Product): any {
+    public removeCartItem(product: OrderDetail): any {
         const index = this.cartItems.indexOf(product);
         this.cartItems.splice(index, 1);
         localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
         // update streams
         this._cart$.next(this.cartItems);
+
+        // notify
+        this.toastrService.error('Success! Item Successfully deleted to your cart');
     }
 
     // remove all the  items added to the cart
     removeAllCartItem() {
         this.cartItems.length = 0;
         this._cart$.next(this.cartItems);
+
+        // notify
+        this.toastrService.error('Remove all product is successful', 'Success');
     }
 
     getTotalPrice() {
         let total = 0;
         this.cartItems.forEach((item) => {
-            total += item.price * item.quantity;
+            total += item.productPrice * item.quantity;
         });
 
         return total;
@@ -69,7 +80,7 @@ export class CartService {
     }
 
     // Update Cart Quantity
-    public updateCartQuantity(product: Product, quantity: number): Product | boolean {
+    public updateCartQuantity(product: OrderDetail, quantity: number): OrderDetail | boolean {
         return this.cartItems.find((items, index) => {
             if (items.id === product.id) {
                 const qty = this.cartItems[index].quantity + quantity;
@@ -99,5 +110,17 @@ export class CartService {
         localStorage.removeItem('code');
         this.cartItems = [];
         this._cart$.next(this.cartItems);
+    }
+
+    private convertProductToOrderDetail(product: Product, count: number) {
+        return new OrderDetail(
+            product.id,
+            count,
+            product.name,
+            product.price,
+            product.photos[0],
+            product.owner,
+            product.selectedProperty
+        );
     }
 }

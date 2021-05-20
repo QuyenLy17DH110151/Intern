@@ -23,15 +23,16 @@ namespace eCommerce.Application.Services.Order
             public string BuyerName { get; set; }
             public string BuyerPhone { get; set; }
             public string Address { get; set; }
-            public List<Product> Products { get; set; }
+            public List<OrderItem> OrderItems { get; set; }
             public string couponCode { get; set; }
         }
 
-        public  class Product
+        public  class OrderItem
         {
-            public Guid Id { get; set; }
+            public Guid ProductId { get; set; }
             public int Quantity { get; set; }
-            public int Price { get; set; }
+            public int ProductPrice { get; set; }
+            public string PropertyString { get; set; }
         }
     }
 }
