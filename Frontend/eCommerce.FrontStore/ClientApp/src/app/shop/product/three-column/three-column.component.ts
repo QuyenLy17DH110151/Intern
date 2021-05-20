@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductDetailsMainSlider, ProductDetailsThumbSlider } from '../../../shared/data/slider';
-import { Product as ProductAPI } from 'src/app/api-clients/models/product.model';
+import { Product as ProductAPI, Property } from 'src/app/api-clients/models/product.model';
 import { ProductService } from '../../../shared/services/product.service';
 import { SizeModalComponent } from '../../../shared/components/modal/size-modal/size-modal.component';
 import { flatten } from '@angular/compiler';
@@ -30,7 +30,7 @@ export class ThreeColumnComponent implements OnInit {
     public productAPI: ProductAPI;
     public ratingNumber: number = 5;
     public reviews: ProductRatingResponse[] = [];
-    date: Date;
+    public activeLabels: Property[];
     productId: string;
     public formReview: FormGroup;
     public displayErro: boolean = false;
@@ -50,12 +50,13 @@ export class ThreeColumnComponent implements OnInit {
     pager: any = {
         pages: [],
     };
-
+    public isWishlist: boolean = false;
+    public isSelected: boolean = false;
+    id: string;
     constructor(
         private renderer: Renderer2,
         private productRatingClient: ProductRatingClient,
         private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
         private router: Router,
         public productService: ProductService,
         private _router: ActivatedRoute,
@@ -70,6 +71,10 @@ export class ThreeColumnComponent implements OnInit {
         // console.log(this._router.snapshot.params.slug);
         this.createFromReview();
         //set page review
+    }
+
+    ngOnInit(): void {
+        this.isWishlist = this.wishListService.isWishlist(this.product.id);
     }
 
     getActiveStar(index: number, numberStar: number): boolean {
@@ -185,10 +190,6 @@ export class ThreeColumnComponent implements OnInit {
         this.isStartToTopReview = true;
     }
 
-    ngOnInit(): void {
-        this.date = this.addDays(1);
-    }
-
     addDays(days: number): Date {
         var futureDate = new Date();
         futureDate.setDate(futureDate.getDate() + days);
@@ -197,30 +198,43 @@ export class ThreeColumnComponent implements OnInit {
 
     // Increament
     increment() {
-        this.counter++;
+        if (this.counter < this.productAPI.quantity) {
+            this.counter++;
+        }
     }
 
     // Decrement
     decrement() {
-        if (this.counter > 1) this.counter--;
+        if (this.counter > 1) {
+            this.counter--;
+        }
     }
 
     // Add to cart
     async addToCart(productAPI: ProductAPI) {
-        productAPI.quantity = this.counter || 1;
+        productAPI.selectedProperty = this.activeLabels;
+        const property = (productAPI.quantity = this.counter || 1);
         await this.cartService.addToCart(productAPI);
     }
 
     // Buy Now
     async buyNow(productAPI: ProductAPI) {
+        productAPI.selectedProperty = this.activeLabels;
         productAPI.quantity = this.counter || 1;
         await this.cartService.addToCart(productAPI);
-        if (status) this.router.navigate(['/shop/cart']);
+        this.router.navigate(['/shop/cart']);
     }
 
     // Add to Wishlist
     addToWishlist(productAPI: ProductAPI) {
+        if (this.isWishlist) {
+            this.wishListService.removeWishlistItem(productAPI);
+            this.isWishlist = !this.isWishlist;
+            return;
+        }
+
         this.wishListService.addToWishlist(productAPI);
+        this.isWishlist = !this.isWishlist;
     }
 
     goToReview(): void {
@@ -228,8 +242,10 @@ export class ThreeColumnComponent implements OnInit {
     }
 
     getProduct(productId: string) {
-        this.productService.getProductDetail(productId).subscribe((response) => {
+        this.productService.getProductDetail(productId).subscribe((response: any) => {
             this.productAPI = response;
+            this.productAPI.quantity = response.inventory.quantity;
+            console.log('Product Detail: ', response);
             let labels: any[] = [];
             let category = this.productAPI.category;
 
@@ -265,8 +281,23 @@ export class ThreeColumnComponent implements OnInit {
                 });
             }
             this.labels = labels;
+            console.log('label: ', this.labels);
             this.getDataPageReview(1);
             this.getDataStar();
+            this.initializePropertyArray(this.labels);
+            console.log('activeLabel: ', this.activeLabels);
         });
+    }
+
+    initializePropertyArray(items) {
+        this.activeLabels = items.map((item, index) => {
+            return new Property(0, item.label, item.options[0]);
+        });
+    }
+
+    onSelectedProperty(indexLabel: number, indexActive: number, value) {
+        this.activeLabels[indexLabel].index = indexActive;
+        this.activeLabels[indexLabel].value = value;
+        console.log('activeLabel: ', this.activeLabels);
     }
 }

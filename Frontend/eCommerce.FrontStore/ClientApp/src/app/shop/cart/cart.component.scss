@@ -47,5 +47,17 @@
 }
 
 .cart-order__message-error {
-    color: #ee3828
+    color: #ee3828;
+}
+
+.choose-coupon {
+    color: #0b93f5;
+    font-size: 16px;
+    margin: 4px 0;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.cart-order__coupon.cart-order__block {
+    margin-top: 0;
 }

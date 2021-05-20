@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { QuickViewComponent } from '../../modal/quick-view/quick-view.component';
 import { CartModalComponent } from '../../modal/cart-modal/cart-modal.component';
-import { Product } from 'src/app/api-clients/models/product.model';
+import { Product, Property } from 'src/app/api-clients/models/product.model';
 import { ProductService } from '../../../services/product.service';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { ProductRatingClient } from 'src/app/api-clients/productRating.client';
@@ -25,8 +25,8 @@ export class ProductBoxOneComponent implements OnInit {
     @ViewChild('quickView') QuickView: QuickViewComponent;
     @ViewChild('cartModal') CartModal: CartModalComponent;
     public isWishlist: boolean = false;
-
     public ImageSrc: string;
+    public count = 1;
 
     constructor(
         private productService: ProductService,
@@ -94,7 +94,8 @@ export class ProductBoxOneComponent implements OnInit {
     }
 
     addToCart(product) {
-        this.cartService.addToCart(product);
+        this.initializeSelectedProperty(product);
+        this.cartService.addToCart(product, this.count);
     }
 
     addToWishlist(product: any) {
@@ -110,5 +111,17 @@ export class ProductBoxOneComponent implements OnInit {
 
     addToCompare(product: any) {
         this.productService.addToCompare(product);
+    }
+
+    // Initialize Selected Property with default properties have index equal 0
+    initializeSelectedProperty(product) {
+        this.product.selectedProperty = [];
+        let count = 1;
+        while (product.category[`c${count}Lable`]) {
+            let name = product.category[`c${count}Lable`];
+            let value = product.category[`c${count}Options`].split(',')[0].trim();
+            this.product.selectedProperty.push(new Property(0, name, value));
+            count++;
+        }
     }
 }

@@ -1,3 +1,4 @@
+import { OrderDetail } from './../../api-clients/models/order.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +16,7 @@ import { Product } from '../../api-clients/models/product.model';
     styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit, OnDestroy {
-    public products: Product[] = [];
+    public orderDetails: OrderDetail[] = [];
     discountPercent: number = 0;
     code: string = '';
     errorMessage: string;
@@ -31,7 +32,7 @@ export class CartComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.cartService.cart$
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((response) => (this.products = response));
+            .subscribe((response) => (this.orderDetails = response));
     }
 
     public get getTotal(): number {
