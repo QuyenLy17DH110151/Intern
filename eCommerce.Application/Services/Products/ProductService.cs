@@ -152,6 +152,18 @@ namespace eCommerce.Application.Services.Products
             return true;
         }
 
+        public async Task<ProductReturnModels.Product> UpdateProductAsync(ProductRequestModels.Product rq)
+        {
+            var product = await _productRepo.GetProductByIdAsync(rq.Id);
+            product.Name = rq.Name;
+            product.Price = rq.Price;
+            product.Description = rq.Description;
+            product.CategoryId = rq.CategoryId;
+            _productRepo.Update(product);
+            await _productRepo.UnitOfWork.SaveChangesAsync();
+            return _mapper.Map<ProductReturnModels.Product>(product);
+        }
+
 
 
 

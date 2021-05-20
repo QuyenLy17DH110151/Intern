@@ -87,13 +87,14 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpPut]
-        public ActionResult Update(Guid productId)
+        public async Task<ActionResult<ProductReturnModels.Product>> UpdateAsync([FromBody] ProductRequestModels.Product rq)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            return Ok();
+            var product = await _productService.UpdateProductAsync(rq);
+            return product;
         }
 
         [HttpDelete("{productId}")]

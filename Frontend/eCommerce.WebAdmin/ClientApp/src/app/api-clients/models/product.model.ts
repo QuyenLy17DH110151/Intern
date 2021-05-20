@@ -1,3 +1,4 @@
+import { ProfileComponent } from './../../components/setting/profile/profile.component';
 export class Product {
     name: string;
     price: number;
@@ -38,5 +39,10 @@ class User {
     username: string;
 }
 
-
-
+export class UpdateProductModel {
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    category: string;
+}
