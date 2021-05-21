@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Category, LableOptions } from "src/app/api-clients/models/_index";
 import { CategoryClient } from "src/app/api-clients/_index";
+import { UserService } from "src/app/shared/service/user.service";
 
 @Component({
     selector: 'app-category-details',
@@ -20,7 +21,10 @@ export class CategoryDetailsComponent implements OnInit {
 
     public name: string = "";
 
-    constructor(private toastr: ToastrService, private route: ActivatedRoute, private categoryClient: CategoryClient) {
+    constructor(private toastr: ToastrService,
+        private route: ActivatedRoute,
+        private userService: UserService,
+        private categoryClient: CategoryClient) {
 
         this.id = this.route.snapshot.paramMap.get('categoryId');
         this.getData();
@@ -34,14 +38,20 @@ export class CategoryDetailsComponent implements OnInit {
     }
 
     public settings = {
-        delete: {
-            confirmDelete: true,
+
+        edit: {
+            confirmSave: this.userService.getTokenInfo().role == 'Admin',
         },
         add: {
-            confirmCreate: true,
+            confirmCreate: this.userService.getTokenInfo().role == 'Admin',
         },
-        edit: {
-            confirmSave: true,
+        delete: {
+            confirmDelete: this.userService.getTokenInfo().role == 'Admin',
+        },
+        actions: {
+            edit: this.userService.getTokenInfo().role == 'Admin',
+            delete: this.userService.getTokenInfo().role == 'Admin',
+            add: this.userService.getTokenInfo().role == 'Admin'
         },
         columns: {
             lable: {
@@ -53,55 +63,55 @@ export class CategoryDetailsComponent implements OnInit {
         }
     };
 
-
     ngOnInit(): void {
 
     }
 
     onCreateConfirm(e): void {
-        let p: LableOptions[] = this.properties;
         if (this.properties.length >= 5) {
             this.toastr.error('Property can not more 5', 'Erro');
             return;
         }
 
+        let data: LableOptions[] = [];
+        data.push(e.newData);
+        this.properties.map(v => data.push(v));
+        this.updateCategory(data, e);
 
-        p.push(e.newData);
-
-
-        this.updateCategory(p, e);
 
     }
 
     onEditConfirm(e): void {
-
-        let i = 0;
-        let p: LableOptions[] = this.properties;
-        p.map(value => {
-            if (value.lable == e.data.lable && value.options == e.data.options) {
-                this.properties.splice(i, 1);
+        let data: LableOptions[] = [];
+        this.properties.map(v => {
+            if (v.lable != e.data.lable || v.options != e.data.options) {
+                data.push(v);
             }
-            i++;
+            if (v.lable == e.data.lable && v.options == e.data.options) {
+                data.push(e.newData);
+            }
         });
-        p.push(e.newData);
-        this.updateCategory(p, e);
+        this.updateCategory(data, e);
+
     }
 
     onDeleteConfirm(e): void {
-
+        console.log('delete')
+        console.log(e.data);
         let i = 0;
-        let p: LableOptions[] = this.properties;
-        p.map(value => {
-            if (value.lable == e.data.lable && value.options == e.data.options) {
-                this.properties.splice(i, 1);
+        let data: LableOptions[] = [];
+        this.properties.map(v => {
+            if (v.lable != e.data.lable || v.options != e.data.options) {
+                data.push(v);
             }
-            i++;
         });
-        this.updateCategory(p, e);
+        this.updateCategory(data, e);
+
     }
 
     updateCategory(p: LableOptions[], e: any) {
         let category: Category = new Category(this.id, this.name, p);
+
         this.categoryClient.updateCategory(category).subscribe(() => {
             e.confirm.resolve(e.newData);
             this.getData();

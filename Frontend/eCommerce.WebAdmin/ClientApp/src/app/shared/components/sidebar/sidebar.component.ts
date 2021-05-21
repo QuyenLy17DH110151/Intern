@@ -118,12 +118,9 @@ export class SidebarComponent implements OnInit {
         private userService: UserService
     ) {
         this.userService.getUrlAvatarObs().subscribe((rs) => {
-            // setTimeout(() => {
-            //     this.urlAvatar = this.userService.getUrlAvatar();
-            //     console.log(this.urlAvatar);
-            // }, 2000);
-            this.urlAvatar = this.userService.getUrlAvatar();
-            console.log(this.urlAvatar);
+            setTimeout(() => {
+                this.urlAvatar = this.userService.getUrlAvatar();
+            }, 2000);
         });
     }
     ngOnInit(): void {
