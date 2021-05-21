@@ -8,9 +8,11 @@ export class Order {
     price: number;
     totalAmount: number;
     quantity: number;
+    actualPrice: number;
     product: Product;
     status: number;
     createdDate: Date;
+    propertyString: string;
     // createBy: string;
     // lastUpdate?: Date;
     // lastUpdateBy?: string;

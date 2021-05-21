@@ -18,14 +18,16 @@ export class CreateCouponRequest {
     endDate: Date;
     minPrice: number;
     value: number;
+    code: string
 
-    constructor(name: string, description: string, startDate: Date, endDate: Date, minPrice: number, value: number) {
+    constructor(name: string, description: string, startDate: Date, endDate: Date, minPrice: number, value: number, code: string) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.minPrice = minPrice;
         this.value = value;
+        this.code = code;
     };
 }
 
