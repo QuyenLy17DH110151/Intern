@@ -27,7 +27,6 @@ export class HeaderComponent implements OnInit {
 
             setTimeout(() => {
                 this.urlAvatar = this.userService.getUrlAvatar();
-                console.log(this.urlAvatar);
             }, 2000);
 
         });

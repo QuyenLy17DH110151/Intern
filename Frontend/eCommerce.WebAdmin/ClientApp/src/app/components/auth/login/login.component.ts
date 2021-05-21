@@ -88,7 +88,6 @@ export class LoginComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
         if (this.loginForm.invalid) {
-            console.log(this.loginForm.invalid);
             return;
         }
         this.userClient
@@ -106,12 +105,6 @@ export class LoginComponent implements OnInit {
                     );
                     this.userService.startTokenTimer();
                     this.route.navigate(['dashboard/default']);
-                },
-                (err) => {
-                    console.log(err);
-
-                    // Swal.fire('Error', err.error.message, 'error');
-                    // alert(err.error.message);
                 }
             );
     }
