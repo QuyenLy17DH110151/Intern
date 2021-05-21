@@ -6,8 +6,6 @@ import { Order } from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
 import { OrderViewModel } from '../order.viewModel';
 
-import { ButtonRenderComponent } from './button.render.component';
-
 @Component({
     selector: 'app-list-order',
     templateUrl: './list-order.component.html',
@@ -43,12 +41,6 @@ export class ListOrderComponent implements OnInit {
             custom: [{ name: 'ourCustomAction' }],
         },
         columns: {
-            button: {
-                title: 'Click me',
-                type: 'custom',
-                renderComponent: ButtonRenderComponent,
-                valuePrepareFunction: (cell, row) => { return row.id }
-            },
             index: {
                 title: 'STT',
             },
@@ -56,13 +48,13 @@ export class ListOrderComponent implements OnInit {
                 title: 'Customer',
             },
             email: {
-                title: 'Email',               
+                title: 'Email',
             },
             phoneNumber: {
                 title: 'Phone',
             },
             address: {
-                title: 'Address',               
+                title: 'Address',
             },
             product: {
                 title: 'Product Name',

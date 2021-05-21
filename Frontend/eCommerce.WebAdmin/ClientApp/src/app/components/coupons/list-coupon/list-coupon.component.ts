@@ -108,8 +108,18 @@ export class ListCouponComponent implements OnInit {
 
   }
 
-  onCreateConfirm(event) {
-    this.couponClient.addCoupon(event.newData).subscribe(() => {
+  onCreateConfirm(event): void {
+    var data = {
+      "name": event.newData.name,
+      "description": event.newData.description,
+      "startDate": event.newData.startDate,
+      "endDate": event.newData.endDate,
+      "minPrice": event.newData.minPrice,
+      "value": event.newData.value,
+      "code": event.newData.code,
+    };
+    this.couponClient.addCoupon(data).subscribe(() => {
+      event.confirm.resolve(event.newData);
       this.toastr.success('Change Coupon Success!', 'Notification');
       this.loadData();
     })
