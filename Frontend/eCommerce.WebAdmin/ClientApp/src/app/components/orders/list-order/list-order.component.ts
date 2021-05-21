@@ -6,6 +6,8 @@ import { Order } from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
 import { OrderViewModel } from '../order.viewModel';
 
+import { ButtonRenderComponent } from './button.render.component';
+
 @Component({
     selector: 'app-list-order',
     templateUrl: './list-order.component.html',
@@ -41,6 +43,13 @@ export class ListOrderComponent implements OnInit {
             custom: [{ name: 'ourCustomAction' }],
         },
         columns: {
+            button: {
+                filter: false,
+                title: 'Accept',
+                type: 'custom',
+                renderComponent: ButtonRenderComponent,
+                valuePrepareFunction: (cell, row) => { return { id: row.id, status: row.statusString, e: this.loadData } }
+            },
             index: {
                 title: 'STT',
             },
@@ -122,17 +131,20 @@ export class ListOrderComponent implements OnInit {
     }
 
     async loadData() {
+
         const response: PagedList<Order> = await this.orderClient
-            .getAllOrder()
+            .searchOrder()
             .toPromise();
 
         this.orderList = response.items;
         this.totalPages = response.totalPages;
         this.totalRows = response.totalRows;
         // Custom data before render
+        console.log(this.orderList, this.totalRows, this.totalPages);
         this.orderListVM = this.orderList.map(
             (order, index) => new OrderViewModel(order, index)
         );
+        console.log(this.orderListVM);
 
     }
 
