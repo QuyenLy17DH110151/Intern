@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Product } from '../../api-clients/models/product.model';
+import { Product, Property } from '../../api-clients/models/product.model';
 import { WishListService } from 'src/app/shared/services/wishlist.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -27,14 +27,27 @@ export class WishlistComponent implements OnInit, OnDestroy {
             .subscribe((response) => (this.products = response));
     }
 
-    async addToCart(product: any) {
-        await this.cartService.addToCart(product);
+    addToCart(product: any) {
+        this.initializeSelectedProperty(product);
+        this.cartService.addToCart(product, 1);
         this.removeItem(product);
         this.router.navigate(['/shop/cart']);
     }
 
     removeItem(product: any) {
         this.wishListService.removeWishlistItem(product);
+    }
+
+    // Initialize Selected Property with default properties have index equal 0
+    initializeSelectedProperty(product) {
+        product.selectedProperty = [];
+        let count = 1;
+        while (product.category[`c${count}Lable`]) {
+            let name = product.category[`c${count}Lable`];
+            let value = product.category[`c${count}Options`].split(',')[0].trim();
+            product.selectedProperty.push(new Property(0, name, value));
+            count++;
+        }
     }
 
     ngOnDestroy() {

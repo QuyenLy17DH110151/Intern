@@ -103,7 +103,7 @@ namespace eCommerce.Persistence.Repositories
             // filter by categoryId  
             queryObject.And(new ProductQueryObjects.FilterByCategoryId(catId));
 
-            var products = await _genericRepo.SearchAsync(queryObject, x => x.Include(m => m.Photos).Include(m => m.Inventory).Include(m => m.Category).Include(m => m.Owner));
+            var products = await _genericRepo.SearchAsync(queryObject, x => x.Include(m => m.Photos).Include(m => m.Category));
             return products;
         }
 

@@ -4,19 +4,21 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="modal-body">
+<div class="modal-body scroll-bar">
     <ng-container *ngFor="let coupon of coupons">
         <div class="card mb-3" style="max-width: 600px;">
             <div class="row no-gutters">
                 <div class="col-md-4">
-                    <img src="https://via.placeholder.com/150" alt="coupon image">
+                    <img src="assets/images/coupon.png" alt="coupon image">
                 </div>
                 <div class="card-body coupon-body">
                     <div class="col-md-8 coupon-main">
                         <h5 class="card-title coupon-name">{{coupon.name}}</h5>
-                        <p class="card-text coupon-min-price"><small class="text-muted">Orders from
-                                {{coupon.minPrice}}
-                                VND</small></p>
+                        <p class="card-text coupon-min-price">
+                            <small class="text-muted">
+                                Orders from {{coupon.minPrice | vndCurrency }}
+                            </small>
+                        </p>
                         <p class="card-text"><small class="text-muted coupon-expiration-date">HSD: {{coupon.endDate |
                                 date:'dd-MM-yyyy'}}</small>
                         </p>

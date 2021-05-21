@@ -45,5 +45,11 @@ namespace eCommerce.Application.Services.Coupons
         {
             public decimal? valueOrder { get; set; }
         }
+
+        public class Verify
+        {
+            public string code { get; set; }
+            public decimal orderValue { get; set; }
+        }
     }
 }

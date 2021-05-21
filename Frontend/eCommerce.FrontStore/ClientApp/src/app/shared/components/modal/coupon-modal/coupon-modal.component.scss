@@ -39,3 +39,8 @@ button.btn.coupon-btn {
 .row.no-gutters {
     flex-wrap: nowrap;
 }
+
+.scroll-bar {
+    max-height: 500px !important;
+    overflow: auto !important;
+}

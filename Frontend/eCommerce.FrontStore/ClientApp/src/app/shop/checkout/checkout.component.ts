@@ -1,16 +1,15 @@
+import { Router } from '@angular/router';
 import { CouponClient } from './../../api-clients/coupon.client';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
-import { environment } from '../../../environments/environment';
-import { Product } from '../../api-clients/models/product.model';
-import { OrderService } from '../../shared/services/order.service';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { OrderClient } from 'src/app/api-clients/order.client';
 import { takeUntil } from 'rxjs/operators';
 import { Order, OrderDetail } from 'src/app/api-clients/models/order.model';
+import { SearchValidCouponRequest } from 'src/app/api-clients/models/coupon.model';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
     selector: 'app-checkout',
@@ -20,20 +19,18 @@ import { Order, OrderDetail } from 'src/app/api-clients/models/order.model';
 export class CheckoutComponent implements OnInit, OnDestroy {
     public checkoutForm: FormGroup;
     public orderDetails: OrderDetail[] = [];
-    public payPalConfig?: IPayPalConfig;
     public payment: string = 'Stripe';
-    public amount: any;
     private code: string;
-    private discountPercent: number;
+    public discountPercent: number = 0;
     ngUnsubscribe = new Subject<void>();
 
     constructor(
         private fb: FormBuilder,
         public cartService: CartService,
-        private orderService: OrderService,
         private couponClient: CouponClient,
         private orderClient: OrderClient,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private router: Router
     ) {
         const address = JSON.parse(localStorage.getItem('checkoutForm'));
 
@@ -56,8 +53,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.code = localStorage.getItem('code') ? localStorage.getItem('code') : '';
+        const params = new SearchValidCouponRequest(this.code, this.getTotal);
+
         this.couponClient
-            .getCouponValue(this.code)
+            .getCouponValue(params)
             .subscribe((response) => (this.discountPercent = response));
 
         this.cartService.cart$
@@ -75,8 +74,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
 
     checkout() {
-        if (!this.checkoutForm.valid) {
+        if (!this.checkoutForm.invalid) {
             this.toastr.error('Please fill in the delivery address', 'Error');
+            this.checkoutForm.markAllAsTouched();
             return;
         }
 
@@ -95,16 +95,19 @@ export class CheckoutComponent implements OnInit, OnDestroy {
                 checkoutForm.province,
             orderItems: this.orderDetails,
             couponCode: this.code,
+            orderValue: this.getTotal,
         };
 
         this.orderClient.checkout(formData).subscribe(
             (response) => {
                 this.cartService.resetLocalStorage();
-                this.toastr.success('Checkout is successful', 'Notification');
                 this.cartService.resetLocalStorage();
                 this.storeAddressToLocalStorage();
+                localStorage.setItem('order', JSON.stringify(formData));
+                localStorage.setItem('percent', this.discountPercent.toString());
+                this.router.navigate(['/shop/checkout/success']);
             },
-            (error) => this.toastr.error('Checkout is failed', 'Notification')
+            (error) => this.toastr.error('Checkout is failed', 'Error')
         );
     }
 

@@ -1,5 +1,6 @@
 import { ProfileComponent } from './../../components/setting/profile/profile.component';
 export class Product {
+    id: string;
     name: string;
     price: number;
     categoryId: string;

@@ -15,6 +15,7 @@ export class WishListService {
 
     // Add to Wishlist
     public addToWishlist(product: Product): void {
+        product.quantity = product.quantity ? product.quantity : 1;
         const wishlistItem = this.wishListItems.find((item) => item.id === product.id);
 
         if (!wishlistItem) {
@@ -28,7 +29,10 @@ export class WishListService {
 
     // Remove Wishlist items
     public removeWishlistItem(product: Product): any {
-        const index = this.wishListItems.indexOf(product);
+        debugger;
+        const index = this.wishListItems.findIndex((item) => {
+            return item.id === product.id;
+        });
         this.wishListItems.splice(index, 1);
         localStorage.setItem('wishlistItems', JSON.stringify(this.wishListItems));
         // update streams

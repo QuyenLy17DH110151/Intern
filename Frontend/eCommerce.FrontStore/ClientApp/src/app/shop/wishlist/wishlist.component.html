@@ -2,11 +2,14 @@
 <!--section start-->
 <section class="wishlist-section section-b-space">
   <div class="container">
+    <!-- empty wishlist -->
     <div class="col-md-12 empty-cart-cls text-center" *ngIf='!products.length'>
       <img src="assets/images/empty-wishlist.png" alt="Empty cart" title="Emprt cart">
       <h3 class="mt-4"><b>Wishlist is Empty</b></h3>
       <h4>Explore more shortlist some items.</h4>
     </div>
+
+    <!-- wishlist has item -->
     <div class="row" *ngIf='products.length'>
       <div class="col-sm-12">
         <table class="table cart-table table-responsive-xs">
@@ -22,18 +25,20 @@
           <tbody *ngFor="let product of products">
             <tr>
               <td>
-                <img class="item-image" [src]="product.photos[0].url" [alt]="product.photos[0].id">
+                <img [routerLink]="['/shop/product/three/column/', product.id]" class="item-image"
+                  [src]="product.photos[0].url" [alt]="product.photos[0].id">
               </td>
               <td>
                 <a [routerLink]="['/shop/product/three/column/', product.id]" class="item-name"
                   href="">{{product.name}}</a>
                 <div class="mobile-cart-content row">
                   <div class="col-xs-3">
-                    <p>{{ product.inventory.quantity > 0 ? 'in stock' : 'out of stock' }}</p>
+                    <!-- trick -->
+                    <p>{{ product.quantity > 0 ? 'in stock' : 'out of stock' }}</p>
                   </div>
                   <div class="col-xs-3">
                     <h2 class="td-color">
-                      {{ product.price | currency:cartService?.Currency.currency:'symbol' }}
+                      {{ product.price | vndCurrency }}
                     </h2>
                   </div>
                   <div class="col-xs-3">
@@ -50,11 +55,11 @@
               </td>
               <td>
                 <h2>
-                  {{ product.price | currency:cartService?.Currency.currency:'symbol' }}
+                  {{ product.price | vndCurrency }}
                 </h2>
               </td>
               <td>
-                <p>{{ product.inventory.quantity > 0 ? 'in stock' : 'out of stock' }}</p>
+                <p>{{ product.quantity > 0 ? 'in stock' : 'out of stock' }}</p>
               </td>
               <td>
                 <a href="javascript:void(0)" (click)="removeItem(product)" class="icon mr-3">
@@ -71,7 +76,7 @@
     </div>
     <div class="row wishlist-buttons" *ngIf='products.length'>
       <div class="col-12">
-        <a [routerLink]="['/shop/collection/left/sidebar']" class="btn btn-solid">continue shopping</a>
+        <a [routerLink]="['/home/fashion']" class="btn btn-solid">continue shopping</a>
         <a [routerLink]="['/shop/checkout']" class="btn btn-solid">check out</a>
       </div>
     </div>

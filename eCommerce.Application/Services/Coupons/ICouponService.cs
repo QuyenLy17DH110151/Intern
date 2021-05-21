@@ -56,7 +56,7 @@ namespace eCommerce.Application.Services.Coupons
         /// </summary>
         /// <param name="coupon"></param>
         /// <returns></returns>
-        decimal IsValidCoupon(CouponReturnModels.Coupon coupon);
+        decimal IsValidCoupon(CouponReturnModels.Coupon coupon, decimal orderValue);
 
         /// <summary>
         /// Get all valid coupon in DB

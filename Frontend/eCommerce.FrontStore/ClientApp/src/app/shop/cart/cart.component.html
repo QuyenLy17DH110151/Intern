@@ -106,9 +106,11 @@
                     </div>
                     <span (click)="open()" class="choose-coupon">Choose a coupon</span>
                     <div class="cart-order__coupon cart-order__block">
-                        <input type="text" class="cart-order__coupon-input" id="" [(ngModel)]='code'>
-                        <button (click)="handleCoupon(code)" type="button" class="btn btn-info text-right btn-coupon">Áp
-                            Dụng</button>
+                        <input type="text" class="cart-order__coupon-input" id="" [(ngModel)]='code'
+                            (input)="onCouponInput()">
+                        <button (click)="handleCoupon(code)" type="button" class="btn btn-info text-right btn-coupon">
+                            Áp Dụng
+                        </button>
                     </div>
                     <div class="cart-order__message-error">
                         {{errorMessage}}
@@ -130,7 +132,7 @@
         </div>
         <div class="row cart-buttons" *ngIf='orderDetails.length'>
             <div class="col-6">
-                <a [routerLink]="['/shop/collection/left/sidebar']" class="btn btn-solid">continue shopping</a>
+                <a [routerLink]="['/home/fashion']" class="btn btn-solid">continue shopping</a>
             </div>
             <div class="col-6">
             </div>
