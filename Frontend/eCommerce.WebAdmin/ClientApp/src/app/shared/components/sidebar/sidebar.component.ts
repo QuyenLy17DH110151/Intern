@@ -120,7 +120,6 @@ export class SidebarComponent implements OnInit {
         this.userService.getUrlAvatarObs().subscribe((rs) => {
             setTimeout(() => {
                 this.urlAvatar = this.userService.getUrlAvatar();
-                console.log(this.urlAvatar);
             }, 2000);
         });
     }
@@ -133,7 +132,7 @@ export class SidebarComponent implements OnInit {
         if (this.user.role === 'Admin') {
             this.loadMenu(menuItems);
         } else {
-            menuItems.splice(1, 2);
+            menuItems.splice(1, 1);
             this.loadMenu(menuItems);
         }
     }
