@@ -16,6 +16,7 @@ export class DigitalListComponent implements OnInit {
     constructor(protected productClient: ProductClient, private router: Router) { }
 
     async loadData() {
+        this.rq.sort = 'CreatedDate|true';
         let products = await this.productClient
             .searchProducts(this.rq)
             .toPromise();
