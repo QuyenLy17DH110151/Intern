@@ -16,6 +16,7 @@ namespace eCommerce.Application.Services.Inventories
             public int PageSize { get; set; }
 
             public string OwnerUsername { get; set; }
+            public string Sort { get; set; }
         }
 
         public class Update
