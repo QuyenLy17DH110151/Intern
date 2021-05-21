@@ -159,6 +159,7 @@ namespace eCommerce.Application.Services.Products
             product.Price = rq.Price;
             product.Description = rq.Description;
             product.CategoryId = rq.CategoryId;
+            product.Photos = rq.Photos.Select(x => new ProductPhoto { Url = x }).ToList();
             _productRepo.Update(product);
             await _productRepo.UnitOfWork.SaveChangesAsync();
             return _mapper.Map<ProductReturnModels.Product>(product);
