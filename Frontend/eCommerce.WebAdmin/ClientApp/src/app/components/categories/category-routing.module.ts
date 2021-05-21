@@ -17,7 +17,6 @@ const routes: Routes = [
                 data: {
                     title: 'Category List',
                     breadcrumb: 'Category List',
-                    expectedRole: UserRole.Admin,
                 },
             },
             {
@@ -27,7 +26,6 @@ const routes: Routes = [
                 data: {
                     title: 'Create Category',
                     breadcrumb: 'Create Category',
-                    expectedRole: UserRole.Admin,
                 },
             },
             {
@@ -46,4 +44,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class CategoryhRoutingModule {}
+export class CategoryhRoutingModule { }

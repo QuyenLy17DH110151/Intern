@@ -55,7 +55,7 @@ namespace eCommerce.Application.Services.ProductCategory
 
 
             productCategory.C1Lable = rq.C1Lable;
-            productCategory.C1Lable = rq.C1Options;
+            productCategory.C1Options = rq.C1Options;
 
 
             productCategory.C2Lable = rq.C2Lable;

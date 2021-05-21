@@ -3,6 +3,7 @@ import { Category } from 'src/app/api-clients/models/category.model';
 import { CategoryClient } from 'src/app/api-clients/category.client';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/shared/service/user.service';
 
 @Component({
   selector: 'app-category',
@@ -15,7 +16,10 @@ export class CategoryComponent implements OnInit {
 
   categories: Category[];
 
-  constructor(protected categoryClient: CategoryClient, private toastr: ToastrService, private router: Router) {
+  constructor(protected categoryClient: CategoryClient,
+    private toastr: ToastrService,
+    private userService: UserService,
+    private router: Router) {
 
 
   }
@@ -71,17 +75,20 @@ export class CategoryComponent implements OnInit {
       display: true,
       perPage: 5,
     },
-    delete: {
-      confirmDelete: true,
-    },
-
     edit: {
-      confirmSave: true,
+      confirmSave: this.userService.getTokenInfo().role == 'Admin',
+    },
+    delete: {
+      confirmDelete: this.userService.getTokenInfo().role == 'Admin',
     },
     actions: {
+      edit: this.userService.getTokenInfo().role == 'Admin',
+      delete: this.userService.getTokenInfo().role == 'Admin',
       add: false,
       position: 'left'
     },
+
+
     columns: {
       name: {
         title: 'Name',

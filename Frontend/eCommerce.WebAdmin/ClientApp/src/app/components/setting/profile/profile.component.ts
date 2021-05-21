@@ -100,7 +100,6 @@ export class ProfileComponent implements OnInit {
         this.userClient.getMyInformation().subscribe((res) => {
             this.user = res;
             this.setValueDefaultInUserForm();
-            this.userService.updatedUrlAvatar(this.user.urlImage);
         });
     }
 
@@ -143,6 +142,7 @@ export class ProfileComponent implements OnInit {
                                     this.fileUpload.url = downloadURL;
                                     this.fileUpload.name = this.fileUpload.file.name;
                                     console.log(this.fileUpload);
+                                    this.userService.updatedUrlAvatar(this.fileUpload.url);
                                     this.saveChangeImage();
 
                                 });
@@ -161,6 +161,7 @@ export class ProfileComponent implements OnInit {
             this.displayEditImg = !this.displayEditImg;
             this.displayBtnActionImg = true;
             this.getInformation();
+
             this.toastr.success('upload image success!', 'Notification');
         });
     }
