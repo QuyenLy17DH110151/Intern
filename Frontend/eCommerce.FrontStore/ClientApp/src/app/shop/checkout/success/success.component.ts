@@ -23,7 +23,7 @@ export class SuccessComponent implements OnInit, OnDestroy {
         this.order = JSON.parse(localStorage.getItem('order'));
         this.discountPercent = +JSON.parse(localStorage.getItem('percent'));
         this.discountValue = (this.order.orderValue * this.discountPercent) / 100;
-        this.totalValue = this.order.orderValue - this.discountValue;
+        this.totalValue = this.order.orderValue - this.discountValue + this.DELIVERY_PRICE;
     }
 
     ngOnDestroy() {

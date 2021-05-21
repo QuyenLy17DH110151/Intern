@@ -74,7 +74,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
 
     checkout() {
-        if (!this.checkoutForm.invalid) {
+        if (this.checkoutForm.invalid) {
             this.toastr.error('Please fill in the delivery address', 'Error');
             this.checkoutForm.markAllAsTouched();
             return;
