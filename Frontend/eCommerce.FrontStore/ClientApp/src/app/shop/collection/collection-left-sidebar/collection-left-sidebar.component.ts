@@ -47,7 +47,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
       this.rq.minPrice = params["minPrice"] ? params["minPrice"] : 0;
       this.rq.maxPrice = params["maxPrice"] ? params["maxPrice"] : 0;
       this.rq.sort = params["sortBy"] ? params["sortBy"] : "";
-      this.rq.pageSize = "4";
+      this.rq.pageSize = "8";
       this.rq.pageIndex = params["page"]
         ? (params["page"] - 1).toString()
         : "0";
