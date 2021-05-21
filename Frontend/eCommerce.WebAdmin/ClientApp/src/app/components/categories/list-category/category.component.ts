@@ -78,11 +78,8 @@ export class CategoryComponent implements OnInit {
     edit: {
       confirmSave: this.userService.getTokenInfo().role == 'Admin',
     },
-    add: {
-      confirmSave: false,
-    },
     delete: {
-      confirmSave: this.userService.getTokenInfo().role == 'Admin',
+      confirmDelete: this.userService.getTokenInfo().role == 'Admin',
     },
     actions: {
       edit: this.userService.getTokenInfo().role == 'Admin',
