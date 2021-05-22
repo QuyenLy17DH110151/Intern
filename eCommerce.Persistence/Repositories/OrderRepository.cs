@@ -171,7 +171,7 @@ namespace eCommerce.Persistence.Repositories
 
             var result = await _genericRepo.SearchAsync(queryObject);
 
-            return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o => o.Price);
+            return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o => o.ActualPrice);
         }
 
         public async Task<string> StatisticsCategoriesAsync(SearchOrderModel rq)
