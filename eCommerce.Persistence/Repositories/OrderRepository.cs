@@ -243,7 +243,7 @@ namespace eCommerce.Persistence.Repositories
                          where o.Status == OrderStatuses.Approved
                          group o by o.CreatedDate.Month into g
                          orderby g.Key
-                         select new ChartModels(g.Key, g.Sum(o => o.Price));
+                         select new ChartModels(g.Key, g.Sum(o => o.ActualPrice));
 
             var lines = await result.ToListAsync();
             decimal[] data;
