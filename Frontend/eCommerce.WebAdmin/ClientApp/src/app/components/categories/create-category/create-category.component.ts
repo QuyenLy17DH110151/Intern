@@ -52,7 +52,7 @@ export class CreateCategoryComponent implements OnInit {
         },
         columns: {
             lable: {
-                title: 'Lable',
+                title: 'Label',
             },
             options: {
                 title: 'Options',

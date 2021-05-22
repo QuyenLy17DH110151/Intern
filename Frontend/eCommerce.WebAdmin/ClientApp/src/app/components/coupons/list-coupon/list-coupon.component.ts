@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CouponClient } from 'src/app/api-clients/coupon.client';
 import { PagedList } from 'src/app/api-clients/models/common.model';
 import { Coupon } from 'src/app/api-clients/models/coupon.model';
+import { MoneyPipe } from 'src/app/shared/service/moneyPipe';
 import { SmartTableDatepickerComponent, SmartTableDatepickerRenderComponent } from '../../smart-table-datepicker/smart-table-datepicker.component';
 import { CouponViewModel } from '../coupon.viewModel';
 
@@ -26,7 +27,8 @@ export class ListCouponComponent implements OnInit {
     private datePipe: DatePipe,
     private currencyPipe: CurrencyPipe,
     private percentPipe: PercentPipe,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private moneyPipe: MoneyPipe
   ) { }
 
   public settings = {
@@ -79,16 +81,14 @@ export class ListCouponComponent implements OnInit {
       minPrice: {
         title: 'Min Price',
         valuePrepareFunction: (minPrice) => {
-          return this.currencyPipe.transform(
-            minPrice,
-            'VND',
-            'symbol',
-            '1.2-2'
-          );
+          return this.moneyPipe.MoneyPipeVND(minPrice);
         },
       },
       value: {
-        title: 'Value',
+        title: 'Discount',
+        valuePrepareFunction: (discount) => {
+          return discount + '%';
+        },
       },
     },
   };
