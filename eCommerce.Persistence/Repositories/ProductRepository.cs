@@ -187,6 +187,8 @@ namespace eCommerce.Persistence.Repositories
         {
             var queryObject = QueryObject<Product>.Empty;
 
+            fillerProductNotDeleted(queryObject);
+
             // filter by seller
             if (rq.Role == UserRoles.Seller)
             {
