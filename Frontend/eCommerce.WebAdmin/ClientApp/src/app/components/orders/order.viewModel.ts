@@ -9,10 +9,12 @@ export class OrderViewModel {
     address: string;
     product: any;
     quantity: number;
+    actualPrice: number;
     price: number;
     totalAmount: number;
     createdDate: Date;
     statusString: string;
+    propertyString: string;
 
     constructor(order: Order, index: number) {
         this.index = index + 1;
@@ -25,7 +27,9 @@ export class OrderViewModel {
         this.quantity = order.quantity;
         this.price = order.price;
         this.totalAmount = order.totalAmount;
+        this.actualPrice = order.actualPrice;
         this.createdDate = order.createdDate;
+        this.propertyString = order.propertyString;
         this.statusString = (function () {
             if (order.status === 0) return 'New';
 

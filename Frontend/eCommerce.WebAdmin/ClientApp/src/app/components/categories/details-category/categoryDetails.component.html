@@ -1,16 +1,13 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card tab2-card">
-                <div class="card-header" class="label-name">
-                    <label>Category name: {{name}} </label>
-                    <a href="#" class="ng2-smart-action ng2-smart-action-edit-edit ng-star-inserted"></a>
-                </div>
-                <label id="title-property">Properties</label>
-                <ng2-smart-table [settings]="settings" [source]="properties" (createConfirm)="onCreateConfirm($event)"
-                    (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)">
-                </ng2-smart-table>
-            </div>
+<div class="container-fluid p-5">
+    <div class="card tab2-card">
+        <div class="card-header">
+            <h5>Category name: {{name}} </h5>
+        </div>
+        <div class="card-body">
+            <label id="title-property">Properties</label>
+            <ng2-smart-table [settings]="settings" [source]="properties" (createConfirm)="onCreateConfirm($event)"
+                (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)">
+            </ng2-smart-table>
         </div>
     </div>
 </div>

@@ -51,7 +51,7 @@ export class ListOrderComponent implements OnInit {
                 title: 'Email',
             },
             phoneNumber: {
-                title: 'Number Phone',
+                title: 'Phone',
             },
             address: {
                 title: 'Address',
@@ -78,10 +78,21 @@ export class ListOrderComponent implements OnInit {
                 },
             },
             totalAmount: {
-                title: 'Total Value',
-                valuePrepareFunction: (totalValue) => {
+                title: 'Total Price',
+                valuePrepareFunction: (totalAmount) => {
                     return this.currencyPipe.transform(
-                        totalValue,
+                        totalAmount,
+                        'USD',
+                        'symbol',
+                        '1.2-2'
+                    );
+                },
+            },
+            actualPrice: {
+                title: 'Actual Total Price',
+                valuePrepareFunction: (actualPrice) => {
+                    return this.currencyPipe.transform(
+                        actualPrice,
                         'USD',
                         'symbol',
                         '1.2-2'
@@ -97,8 +108,11 @@ export class ListOrderComponent implements OnInit {
                     );
                 },
             },
+            propertyString: {
+                title: 'Property',
+            },
             statusString: {
-                title: 'statusString',
+                title: 'Status',
             },
         },
     };

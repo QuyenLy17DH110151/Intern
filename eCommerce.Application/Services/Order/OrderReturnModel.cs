@@ -19,9 +19,11 @@ namespace eCommerce.Application.Services.Order
             public decimal Price { get; set; }
             public int Quantity { get; set; }
             public decimal TotalAmount { get; set; }
+            public decimal ActualPrice { get; set; }
             public Product Product { get; set; }
             public DateTime CreatedDate { get; set; }
             public OrderStatuses Status { get; set; }
+            public string PropertyString { get; set; }
         }
 
         public class Product
