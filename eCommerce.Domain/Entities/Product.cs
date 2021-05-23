@@ -5,7 +5,7 @@ using System.Text;
 
 namespace eCommerce.Domain.Entities
 {
-    public class Product : Entity, IAuditable
+    public class Product : Entity, IAuditable, ISoftDeletable
     {
         public string Name { get; set; }
         public decimal Price { get; set; }
@@ -24,6 +24,7 @@ namespace eCommerce.Domain.Entities
         public string CreatedBy { get; set; }
         public DateTime? LastUpdated { get; set; }
         public string LastUpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
 
         //public Product(List<string> photos)
         //{
