@@ -45,22 +45,21 @@ export class DigitalListComponent implements OnInit {
                 title: 'Image',
                 type: 'html',
                 valuePrepareFunction: (photos) => {
-                    return (
-                        '<img src="' +
-                        photos[0].url +
-                        '" height="150" width="150"/>'
-                    );
+                    return '<img src="' + photos[0].url + '" width="170px"/>';
                 },
                 filter: false,
+                width: '25%',
             },
             name: {
                 title: 'Product Name',
+                width: '25%',
             },
             price: {
                 title: 'Price',
                 valuePrepareFunction: (price) => {
                     return this.moneyPipe.MoneyPipeVND(price);
                 },
+                width: '15%',
             },
             category: {
                 title: 'Category',
@@ -72,6 +71,7 @@ export class DigitalListComponent implements OnInit {
                         return true;
                     return false;
                 },
+                width: '15%',
             },
             owner: {
                 title: 'Owner',
@@ -83,6 +83,7 @@ export class DigitalListComponent implements OnInit {
                         return true;
                     return false;
                 },
+                width: '20%',
             },
         },
     };

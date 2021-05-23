@@ -47,3 +47,8 @@ export class UpdateProductModel {
     description: string;
     category: string;
 }
+
+export class GetStarInCardResponse {
+    productId: string;
+    avgValueDouble: number;
+}

@@ -32,6 +32,9 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from 'src/environments/environment';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { UpdateProductComponent } from './physical/update-product/update-product.component';
+import { SharedModule } from '../../shared/shared.module';
+import { BarRatingModule } from 'ngx-bar-rating';
+import { RouterModule } from '@angular/router';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     maxFilesize: 50,
@@ -65,7 +68,10 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
         AngularFireDatabaseModule,
         AngularFireStorageModule,
         IvyCarouselModule,
+        SharedModule,
+        BarRatingModule,
     ],
+    exports: [BarRatingModule],
     providers: [
         {
             provide: DROPZONE_CONFIG,
