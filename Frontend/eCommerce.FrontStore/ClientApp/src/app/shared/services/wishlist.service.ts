@@ -38,7 +38,7 @@ export class WishListService {
         // update streams
         this._wishList$.next(this.wishListItems);
         //Notify
-        this.toastrService.error('Product has been deleted in wishlist.');
+        this.toastrService.success('Product has been deleted in wishlist.');
     }
 
     // remove all the  items
