@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Category, LableOptions } from "src/app/api-clients/models/_index";
 import { CategoryClient } from "src/app/api-clients/_index";
+import { ConfirmService } from "src/app/shared/service/confirm.service";
 import { UserService } from "src/app/shared/service/user.service";
 
 @Component({
@@ -23,6 +24,7 @@ export class CategoryDetailsComponent implements OnInit {
 
     constructor(private toastr: ToastrService,
         private route: ActivatedRoute,
+        private confimService: ConfirmService,
         private userService: UserService,
         private categoryClient: CategoryClient) {
 
@@ -82,30 +84,38 @@ export class CategoryDetailsComponent implements OnInit {
     }
 
     onEditConfirm(e): void {
-        let data: LableOptions[] = [];
-        this.properties.map(v => {
-            if (v.lable != e.data.lable || v.options != e.data.options) {
-                data.push(v);
-            }
-            if (v.lable == e.data.lable && v.options == e.data.options) {
-                data.push(e.newData);
-            }
-        });
-        this.updateCategory(data, e);
+
+        let action = () => {
+            let data: LableOptions[] = [];
+            this.properties.map(v => {
+                if (v.lable != e.data.lable || v.options != e.data.options) {
+                    data.push(v);
+                }
+                if (v.lable == e.data.lable && v.options == e.data.options) {
+                    data.push(e.newData);
+                }
+            });
+            this.updateCategory(data, e);
+        }
+
+        this.confimService.confirmAction(action, "edit");
 
     }
 
     onDeleteConfirm(e): void {
-        console.log('delete')
-        console.log(e.data);
-        let i = 0;
-        let data: LableOptions[] = [];
-        this.properties.map(v => {
-            if (v.lable != e.data.lable || v.options != e.data.options) {
-                data.push(v);
-            }
-        });
-        this.updateCategory(data, e);
+
+        let action = () => {
+            let i = 0;
+            let data: LableOptions[] = [];
+            this.properties.map(v => {
+                if (v.lable != e.data.lable || v.options != e.data.options) {
+                    data.push(v);
+                }
+            });
+            this.updateCategory(data, e);
+        }
+
+        this.confimService.confirmAction(action, "delete");
 
     }
 

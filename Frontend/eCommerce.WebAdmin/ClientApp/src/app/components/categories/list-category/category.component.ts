@@ -4,6 +4,7 @@ import { CategoryClient } from 'src/app/api-clients/category.client';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/shared/service/user.service';
+import { ConfirmService } from 'src/app/shared/service/confirm.service';
 
 @Component({
   selector: 'app-category',
@@ -18,6 +19,7 @@ export class CategoryComponent implements OnInit {
 
   constructor(protected categoryClient: CategoryClient,
     private toastr: ToastrService,
+    private confirmService: ConfirmService,
     private userService: UserService,
     private router: Router) {
 
@@ -32,19 +34,26 @@ export class CategoryComponent implements OnInit {
   }
 
   onDeleteConfirm(event) {
-    if (window.confirm("Are you sure you want to delete?")) {
-      this.categoryClient.deleteCategory(event.data.id).subscribe(() => {
-        this.toastr.success('Change Category Success!', 'Notification');
-        this.getListCategory();
-      })
-    } else {
-      event.confirm.reject();
+
+    let action = () => {
+      this.categoryClient
+        .deleteCategory(event.data.id)
+        .subscribe((res) => {
+          this.toastr.success(
+            'delete coupon successfully!',
+            'Success...'
+          );
+          this.getListCategory();
+        });
     }
+
+    this.confirmService.confirmAction(action, "delete");
+
   }
 
   onEditConfirm(event): void {
 
-    if (window.confirm("Are you sure you want to edit?")) {
+    let action = () => {
       this.categories.map(category => {
         if (category.id == event.data.id) {
           category.name = event.newData.name;
@@ -54,12 +63,10 @@ export class CategoryComponent implements OnInit {
             return;
           })
         }
-      })
-    }
-    else {
-      event.confirm.reject();
+      });
     }
 
+    this.confirmService.confirmAction(action, "edit");
 
   }
 
