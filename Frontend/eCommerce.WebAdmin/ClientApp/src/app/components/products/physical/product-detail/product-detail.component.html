@@ -19,8 +19,14 @@
             <div class="col-sm-8">
                 <div class="product-page-details product-right mb-0">
                     <h2>{{ product?.name }}</h2>
-                    <ngb-rating iconClass="fa-star" [readonly]="true" [rate]="starAvg" class="rating-size-product">
-                    </ngb-rating>
+                    <!-- <ngb-rating iconClass="fa-star" [readonly]="true" [rate]="starAvg" class="rating-size-product"> -->
+                    <!-- </ngb-rating> -->
+                    <div style="position: relative;">
+                        <span style="font-size:16px;font-weight: 700;color: #edb867;">{{starAvg}}</span>
+                        <bar-rating [(rate)]="starAvg" [readOnly]="true" [max]="5" class="bar-rating"></bar-rating>
+                        <span class="rating-number" style="font-size:16px">({{ratingNumber}} rating)</span>
+                    </div>
+
                     <hr />
                     <div class="border-product">
                         <div style="padding: 0" class="container" *ngFor="let l of labels; index as index">

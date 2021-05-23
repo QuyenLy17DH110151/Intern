@@ -56,11 +56,11 @@ export class ProductClient {
         return this.httpClient.put<Product>(this.baseUrl, rq);
     }
 
-    getStartInCard(idProduct: string): Observable<GetStarInCardResponse> {
-        const getStartApi = `${environment.apiUrl}/api/ProductRating/star`;
+    getStartInCard(productId: string): Observable<GetStarInCardResponse> {
+        const getStartApi = `${environment.apiUrl}/ProductRating/star`;
 
         return this.httpClient.get<GetStarInCardResponse>(
-            `${getStartApi}/${idProduct}`
+            `${getStartApi}/${productId}`
         );
     }
 }

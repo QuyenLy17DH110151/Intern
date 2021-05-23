@@ -27,3 +27,16 @@ span.ng-star-inserted {
     font-size: 2.5rem !important;
     line-height: 2.5rem !important;
 }
+
+.bar-rating {
+    position: absolute;
+    top: -22px;
+    left: 30px;
+}
+
+.rating-number {
+    font-size: 16px;
+    position: absolute;
+    left: 24%;
+    top: 0;
+}

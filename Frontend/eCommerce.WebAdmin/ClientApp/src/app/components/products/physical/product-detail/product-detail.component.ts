@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
     styleUrls: ['./product-detail.component.scss'],
-    providers: [NgbRatingConfig],
+    //providers: [NgbRatingConfig],
 })
 export class ProductDetailComponent implements OnInit {
     public closeResult: string;
@@ -23,18 +23,19 @@ export class ProductDetailComponent implements OnInit {
     listUrlImage: string[] = [];
     listUrlImageTemp = [];
     property = [0, 0, 0, 0, 0];
-    starAvg = 3;
+    starAvg = 0;
+    ratingNumber = 0;
 
     constructor(
         private modalService: NgbModal,
-        config: NgbRatingConfig,
+        //config: NgbRatingConfig,
         private productClient: ProductClient,
         private _route: ActivatedRoute,
         private toastr: ToastrService,
         private location: Location
     ) {
-        config.max = 5;
-        config.readonly = false;
+        // config.max = 5;
+        // config.readonly =true;
     }
 
     open(content) {
@@ -160,8 +161,12 @@ export class ProductDetailComponent implements OnInit {
     }
 
     getStarAvg() {
-        this.productClient.getStartInCard(this.productId).subscribe((rp) => {
-            this.starAvg = (rp.avgValueDouble + 0.5) | 0;
-        });
+        this.productClient
+            .getStartInCard(this.productId)
+            .subscribe((response: any) => {
+                console.log(response);
+                this.ratingNumber = response.numberRating;
+                this.starAvg = response.avgValueDouble;
+            });
     }
 }
