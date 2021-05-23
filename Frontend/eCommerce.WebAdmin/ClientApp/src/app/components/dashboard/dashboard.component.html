@@ -97,7 +97,7 @@
                                     <th scope="col">Buyer Phone</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Price</th>
-                                    <th scope="col">Total Amount</th>
+                                    <th scope="col">Actual Total Price</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Status</th>
                                 </tr>
@@ -121,10 +121,10 @@
                                         {{ order.quantity }}
                                     </td>
                                     <td class="digits">
-                                        {{ order.price | currency }}
+                                        {{ order.price }}
                                     </td>
                                     <td class="digits">
-                                        {{ order.totalAmount }}
+                                        {{ order.actualPrice }}
                                     </td>
                                     <td class="digits">
                                         {{

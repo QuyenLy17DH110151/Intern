@@ -171,7 +171,7 @@ namespace eCommerce.Persistence.Repositories
 
             var result = await _genericRepo.SearchAsync(queryObject);
 
-            return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o => o.Price);
+            return result.Where(o => o.Status == OrderStatuses.Approved).Sum(o => o.ActualPrice);
         }
 
         public async Task<string> StatisticsCategoriesAsync(SearchOrderModel rq)
@@ -243,7 +243,7 @@ namespace eCommerce.Persistence.Repositories
                          where o.Status == OrderStatuses.Approved
                          group o by o.CreatedDate.Month into g
                          orderby g.Key
-                         select new ChartModels(g.Key, g.Sum(o => o.Price));
+                         select new ChartModels(g.Key, g.Sum(o => o.ActualPrice));
 
             var lines = await result.ToListAsync();
             decimal[] data;
