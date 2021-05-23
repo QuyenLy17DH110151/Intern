@@ -2,8 +2,12 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { PagedList } from 'src/app/api-clients/models/common.model';
-import { Order } from 'src/app/api-clients/models/order.model';
+import {
+    Order,
+    SearchRequestOrder,
+} from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
+import { MoneyPipe } from 'src/app/shared/service/moneyPipe';
 import { OrderViewModel } from '../order.viewModel';
 
 @Component({
@@ -18,12 +22,14 @@ export class ListOrderComponent implements OnInit {
     totalPages: number;
     totalRows: number;
     listCurrrentIdOrderApproved: string[] = [];
+    rq: SearchRequestOrder = {};
 
     keyWordSearch: string = '';
     constructor(
         private readonly orderClient: OrderClient,
         private datePipe: DatePipe,
         private currencyPipe: CurrencyPipe,
+        private moneyPipe: MoneyPipe,
         private toastr: ToastrService
     ) { }
 
@@ -61,7 +67,7 @@ export class ListOrderComponent implements OnInit {
                 type: 'html',
                 valuePrepareFunction: (product) => {
                     return `<a href= "/products/product-detail/${product.id}">${product.name}</a>`;
-                }
+                },
             },
             quantity: {
                 title: 'Quantity',
@@ -69,34 +75,19 @@ export class ListOrderComponent implements OnInit {
             price: {
                 title: 'Price',
                 valuePrepareFunction: (price) => {
-                    return this.currencyPipe.transform(
-                        price,
-                        'USD',
-                        'symbol',
-                        '1.2-2'
-                    );
+                    return this.moneyPipe.MoneyPipeVND(price);
                 },
             },
             totalAmount: {
                 title: 'Total Price',
                 valuePrepareFunction: (totalAmount) => {
-                    return this.currencyPipe.transform(
-                        totalAmount,
-                        'USD',
-                        'symbol',
-                        '1.2-2'
-                    );
+                    return this.moneyPipe.MoneyPipeVND(totalAmount);
                 },
             },
             actualPrice: {
                 title: 'Actual Total Price',
                 valuePrepareFunction: (actualPrice) => {
-                    return this.currencyPipe.transform(
-                        actualPrice,
-                        'USD',
-                        'symbol',
-                        '1.2-2'
-                    );
+                    return this.moneyPipe.MoneyPipeVND(actualPrice);
                 },
             },
             createdDate: {
@@ -122,8 +113,9 @@ export class ListOrderComponent implements OnInit {
     }
 
     async loadData() {
+        this.rq.orderBy = 'createdDate|true';
         const response: PagedList<Order> = await this.orderClient
-            .getAllOrder()
+            .searchOrder(this.rq)
             .toPromise();
 
         this.orderList = response.items;
@@ -133,13 +125,11 @@ export class ListOrderComponent implements OnInit {
         this.orderListVM = this.orderList.map(
             (order, index) => new OrderViewModel(order, index)
         );
-
     }
 
     async onDeleteConfirm(event) {
         this.RejectOrder(event.data.id);
     }
-
 
     async onCustomAction(event) {
         this.AcceptOrder(event.data.id);
@@ -147,30 +137,23 @@ export class ListOrderComponent implements OnInit {
 
     AcceptOrder(id: string) {
         if (this.listCurrrentIdOrderApproved.length !== 0) {
-            this.listCurrrentIdOrderApproved.map(idOrder => {
+            this.listCurrrentIdOrderApproved.map((idOrder) => {
                 if (idOrder == id) {
                     return;
                 }
-            })
+            });
         }
         this.listCurrrentIdOrderApproved.push(id);
-        this.orderClient
-            .acceptOrder(id)
-            .subscribe(() => {
-                this.toastr.success('Change Order Success!', 'Notification');
-                this.loadData();
-            })
-
+        this.orderClient.acceptOrder(id).subscribe(() => {
+            this.toastr.success('Change Order Success!', 'Notification');
+            this.loadData();
+        });
     }
 
     RejectOrder(id: string) {
-        this.orderClient
-            .rejectOrder(id)
-            .subscribe(() => {
-                this.toastr.success('Change Order Success!', 'Notification');
-                this.loadData();
-            })
+        this.orderClient.rejectOrder(id).subscribe(() => {
+            this.toastr.success('Change Order Success!', 'Notification');
+            this.loadData();
+        });
     }
-
-
 }

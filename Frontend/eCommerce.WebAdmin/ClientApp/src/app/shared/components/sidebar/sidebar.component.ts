@@ -132,7 +132,8 @@ export class SidebarComponent implements OnInit {
         if (this.user.role === 'Admin') {
             this.loadMenu(menuItems);
         } else {
-            menuItems.splice(1, 1);
+            menuItems.splice(1, 2);
+            menuItems.splice(-1);
             this.loadMenu(menuItems);
         }
     }

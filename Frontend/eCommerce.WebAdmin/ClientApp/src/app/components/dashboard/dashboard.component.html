@@ -7,23 +7,13 @@
                     <div class="media static-top-widget row">
                         <div class="icons-widgets col-4">
                             <div class="align-self-center text-center">
-                                <app-feather-icons
-                                    [icon]="'navigation'"
-                                    class="font-warning"
-                                ></app-feather-icons>
+                                <app-feather-icons [icon]="'navigation'" class="font-warning"></app-feather-icons>
                             </div>
                         </div>
                         <div class="media-body col-8">
                             <span class="m-0">Earnings</span>
                             <h3 class="mb-0">
-                                $
-                                <span
-                                    class="counter"
-                                    [CountTo]="sumEarnings"
-                                    [from]="100000"
-                                    [duration]="2"
-                                    >{{ sumEarnings | currency }}</span
-                                >
+                                <span>{{sumEarningsValue}}</span>
                             </h3>
                         </div>
                     </div>
@@ -36,22 +26,14 @@
                     <div class="media static-top-widget row">
                         <div class="icons-widgets col-4">
                             <div class="align-self-center text-center">
-                                <app-feather-icons
-                                    [icon]="'box'"
-                                    class="font-secondary"
-                                ></app-feather-icons>
+                                <app-feather-icons [icon]="'box'" class="font-secondary"></app-feather-icons>
                             </div>
                         </div>
                         <div class="media-body col-8">
                             <span class="m-0"> Total Products</span>
                             <h3 class="mb-0">
-                                <span
-                                    class="counter"
-                                    [CountTo]="countProduct"
-                                    [from]="0"
-                                    [duration]="2"
-                                    >{{ countProduct }}</span
-                                >
+                                <span class="counter" [CountTo]="countProduct" [from]="0" [duration]="2">{{ countProduct
+                                    }}</span>
                             </h3>
                         </div>
                     </div>
@@ -64,22 +46,14 @@
                     <div class="media static-top-widget row">
                         <div class="icons-widgets col-4">
                             <div class="align-self-center text-center">
-                                <app-feather-icons
-                                    [icon]="'message-square'"
-                                    class="font-primary"
-                                ></app-feather-icons>
+                                <app-feather-icons [icon]="'message-square'" class="font-primary"></app-feather-icons>
                             </div>
                         </div>
                         <div class="media-body col-8">
                             <span class="m-0">Messages</span>
                             <h3 class="mb-0">
-                                <span
-                                    class="counter"
-                                    [CountTo]="countComment"
-                                    [from]="0"
-                                    [duration]="2"
-                                    >{{ countComment }}</span
-                                >
+                                <span class="counter" [CountTo]="countComment" [from]="0" [duration]="2">{{ countComment
+                                    }}</span>
                             </h3>
                         </div>
                     </div>
@@ -92,22 +66,14 @@
                     <div class="media static-top-widget row">
                         <div class="icons-widgets col-4">
                             <div class="align-self-center text-center">
-                                <app-feather-icons
-                                    [icon]="'users'"
-                                    class="font-danger"
-                                ></app-feather-icons>
+                                <app-feather-icons [icon]="'users'" class="font-danger"></app-feather-icons>
                             </div>
                         </div>
                         <div class="media-body col-8">
                             <span class="m-0">Total Customers</span>
                             <h3 class="mb-0">
-                                <span
-                                    class="counter"
-                                    [CountTo]="countUser"
-                                    [from]="0"
-                                    [duration]="2"
-                                    >{{ countUser }}</span
-                                >
+                                <span class="counter" [CountTo]="countUser" [from]="0" [duration]="2">{{ countUser
+                                    }}</span>
                             </h3>
                         </div>
                     </div>
@@ -121,9 +87,7 @@
                     <h5>Latest Orders</h5>
                 </div>
                 <div class="card-body">
-                    <div
-                        class="user-status table-responsive latest-order-table"
-                    >
+                    <div class="user-status table-responsive latest-order-table">
                         <table class="table table-bordernone">
                             <thead>
                                 <tr>
@@ -133,18 +97,16 @@
                                     <th scope="col">Buyer Phone</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Price</th>
-                                    <th scope="col">Total Amount</th>
+                                    <th scope="col">Actual Total Price</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr
-                                    *ngFor="
+                                <tr *ngFor="
                                         let order of orderListVM;
                                         index as i
-                                    "
-                                >
+                                    ">
                                     <td>{{ i + 1 }}</td>
                                     <td class="digits">
                                         {{ order.product.name }}
@@ -159,14 +121,14 @@
                                         {{ order.quantity }}
                                     </td>
                                     <td class="digits">
-                                        {{ order.price | currency }}
+                                        {{ order.price }}
                                     </td>
                                     <td class="digits">
-                                        {{ order.totalAmount }}
+                                        {{ order.actualPrice }}
                                     </td>
                                     <td class="digits">
                                         {{
-                                            order.createdDate | date: "fullDate"
+                                        order.createdDate | date: "fullDate"
                                         }}
                                     </td>
                                     <td class="digits">
@@ -175,11 +137,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <a
-                            [routerLink]="['/orders/list-order']"
-                            class="btn btn-primary"
-                            >View All Orders</a
-                        >
+                        <a [routerLink]="['/orders/list-order']" class="btn btn-primary">View All Orders</a>
                     </div>
                 </div>
             </div>
@@ -190,10 +148,7 @@
                 <div class="card-body">
                     <div class="container">
                         <div class="row">
-                            <div
-                                id="pieChart"
-                                style="width: 100%; height: 400px"
-                            ></div>
+                            <div id="pieChart" style="width: 100%; height: 400px"></div>
                         </div>
                     </div>
                 </div>
@@ -205,10 +160,7 @@
                 <div class="card-body">
                     <div class="container">
                         <div class="row">
-                            <div
-                                id="barChart"
-                                style="width: 100%; height: 400px"
-                            ></div>
+                            <div id="barChart" style="width: 100%; height: 400px"></div>
                         </div>
                     </div>
                 </div>
@@ -220,10 +172,7 @@
                 <div class="card-body">
                     <div class="container">
                         <div class="row">
-                            <div
-                                id="lineChart"
-                                style="width: 100%; height: 400px"
-                            ></div>
+                            <div id="lineChart" style="width: 100%; height: 400px"></div>
                         </div>
                     </div>
                 </div>

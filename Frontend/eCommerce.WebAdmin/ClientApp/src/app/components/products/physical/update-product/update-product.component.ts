@@ -1,3 +1,4 @@
+import { filter, finalize } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ProductClient } from 'src/app/api-clients/product.client';
 import { Component, OnInit } from '@angular/core';
@@ -8,6 +9,8 @@ import { CategoryReturnModel } from 'src/app/api-clients/models/category.model';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { FileUpload } from 'src/app/shared/service/upload-image/uploadImage.model';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
     selector: 'app-update-product',
@@ -22,12 +25,15 @@ export class UpdateProductComponent implements OnInit {
     listUrlImageTemp = [];
     defaultUrl = 'assets/images/pro3/1.jpg';
     categories = [];
+    selectedFiles?: FileList = null;
+    fileUpload?: FileUpload;
+    private basePath = '/uploads';
     // private defaultPrice = 1000;
 
     public config1: DropzoneConfigInterface = {
         clickable: true,
-        maxFiles: 1,
-        autoReset: null,
+        maxFiles: 10,
+        autoReset: 1,
         errorReset: null,
         cancelReset: null,
     };
@@ -36,14 +42,48 @@ export class UpdateProductComponent implements OnInit {
 
     public onUploadError(args: any): void {}
 
-    public onUploadSuccess(args: any): void {}
+    public onUploadSuccess(args: any): void {
+        this.uploadSingleImage(args[0]);
+        this.toastr.success('Upload image successfully!', 'Success...');
+    }
+
+    uploadSingleImage(selectedFiles) {
+        const file: File | null = selectedFiles;
+        selectedFiles = undefined;
+
+        if (file) {
+            this.fileUpload = new FileUpload(file);
+            const filePath = `${this.basePath}/${this.fileUpload.file.name}`;
+            const storageRef = this.storage.ref(filePath);
+            const uploadTask = this.storage.upload(
+                filePath,
+                this.fileUpload.file
+            );
+
+            uploadTask
+                .snapshotChanges()
+                .pipe(
+                    finalize(() => {
+                        storageRef.getDownloadURL().subscribe((downloadURL) => {
+                            this.fileUpload.url = downloadURL;
+                            this.fileUpload.name = this.fileUpload.file.name;
+                            this.listUrlImage.push(this.fileUpload.url);
+                            console.log('list url', this.listUrlImage);
+                            console.log('list url', this.listUrlImageTemp);
+                        });
+                    })
+                )
+                .subscribe();
+        }
+    }
 
     constructor(
         private _route: ActivatedRoute,
         private _productClient: ProductClient,
         private fb: FormBuilder,
         private location: Location,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private storage: AngularFireStorage
     ) {}
 
     ngOnInit() {
@@ -57,7 +97,6 @@ export class UpdateProductComponent implements OnInit {
             .getProductDetail(productId)
             .subscribe((res) => {
                 this.product = res;
-                this.getListImage(this.product.photos);
                 this.InitForm();
                 this.setValue();
                 console.log(this.product);
@@ -96,6 +135,7 @@ export class UpdateProductComponent implements OnInit {
                 ],
             ],
         });
+        this.getListImage(this.product.photos);
         console.log(this.product);
         console.log(this.productForm);
     }
@@ -125,12 +165,14 @@ export class UpdateProductComponent implements OnInit {
     }
 
     Reset() {
+        this.listUrlImageTemp = [];
         this.InitForm();
     }
     onSubmit() {
         const formData = {
             ...this.productForm.value,
             id: this.productId,
+            photos: this.listUrlImage,
         };
         Swal.fire({
             title: 'Are you sure?',
@@ -165,5 +207,10 @@ export class UpdateProductComponent implements OnInit {
         this.productForm.setValue({
             name: this.product.name,
         });
+    }
+    deleteImage(image) {
+        this.listUrlImage = this.listUrlImage.filter((item) => item !== image);
+        console.log(this.listUrlImage);
+        this.toastr.success('Delete image successfully!', 'Success...');
     }
 }

@@ -7,20 +7,49 @@
                 </div>
                 <div class="card-body">
                     <div>
-                        <div class="img" *ngIf="listUrlImage.length > 0">
-                            <div class="img" *ngIf="listUrlImage.length > 0">
-                                <ul *ngFor="let image of listUrlImage">
-                                    <li>
-                                        <img
-                                            style="width: 320px; height: 270px"
-                                            [src]="image"
-                                            [alt]="image.id"
-                                            srcset=""
-                                        />
-                                    </li>
-                                </ul>
+                        <section>
+                            <div
+                                class="img my-carousel-view"
+                                *ngIf="listUrlImage.length > 0"
+                            >
+                                <ngb-carousel style="max-height: 600px">
+                                    <ng-template
+                                        ngbSlide
+                                        *ngFor="let image of listUrlImage"
+                                    >
+                                        <div class="picsum-img-wrapper">
+                                            <img
+                                                [src]="image"
+                                                alt="Random slide"
+                                                style="
+                                                    height: 150px;
+                                                    width: 250px;
+                                                    box-shadow: 0 4px 8px 0
+                                                            rgba(0, 0, 0, 0.2),
+                                                        0 6px 20px 0
+                                                            rgba(0, 0, 0, 0.19);
+                                                "
+                                            />
+                                        </div>
+
+                                        <div class="center">
+                                            <button
+                                                class="btn btn-danger center"
+                                                type="btn"
+                                                (click)="deleteImage(image)"
+                                                style="
+                                                    position: absolute;
+                                                    bottom: 50px;
+                                                    opacity: 0.9;
+                                                "
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </ng-template>
+                                </ngb-carousel>
                             </div>
-                        </div>
+                        </section>
                         <div
                             class="col-xl-3 col-sm-4 mb-0"
                             *ngIf="!listUrlImage.length"
@@ -36,115 +65,35 @@
                             />
                         </div>
                     </div>
-                    <!-- <div class="digital-add needs-validation">
-                        <div class="form-group">
-                            <label
-                                for="validationCustom01"
-                                class="col-form-label pt-0"
-                                ><span>*</span> Title</label
-                            >
-                            <input
-                                class="form-control"
-                                id="validationCustom01"
-                                type="text"
-                                required=""
-                            />
-                        </div>
-                        <div class="form-group">
-                            <label
-                                for="validationCustomtitle"
-                                class="col-form-label pt-0"
-                                ><span>*</span> SKU</label
-                            >
-                            <input
-                                class="form-control"
-                                id="validationCustomtitle"
-                                type="text"
-                                required=""
-                            />
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label"
-                                ><span>*</span> Categories</label
-                            >
-                            <select class="custom-select" required="">
-                                <option value="">--Select--</option>
-                                <option value="1">eBooks</option>
-                                <option value="2">Graphic Design</option>
-                                <option value="3">3D Impact</option>
-                                <option value="4">Application</option>
-                                <option value="5">Websites</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Sort Summary</label>
-                            <textarea rows="5" cols="12"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label
-                                for="validationCustom02"
-                                class="col-form-label"
-                                ><span>*</span> Product Price</label
-                            >
-                            <input
-                                class="form-control"
-                                id="validationCustom02"
-                                type="text"
-                                required=""
-                            />
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label"
-                                ><span>*</span> Status</label
-                            >
-                            <div
-                                class="
-                                    m-checkbox-inline
-                                    mb-0
-                                    custom-radio-ml
-                                    d-flex
-                                    radio-animated
-                                "
-                            >
-                                <label class="d-block" for="edo-ani">
-                                    <input
-                                        class="radio_animated"
-                                        id="edo-ani"
-                                        type="radio"
-                                        name="rdo-ani"
-                                    />
-                                    Enable
-                                </label>
-                                <label class="d-block" for="edo-ani1">
-                                    <input
-                                        class="radio_animated"
-                                        id="edo-ani1"
-                                        type="radio"
-                                        name="rdo-ani"
-                                    />
-                                    Disable
-                                </label>
-                            </div>
-                        </div>
-                        <label class="col-form-label pt-0">
-                            Product Upload</label
-                        >
-                        <div class="card-body dropzone-custom p-0">
-                            <div
-                                class="dropzone dropzone-primary"
-                                [dropzone]="config1"
-                                (error)="onUploadError($event)"
-                                (success)="onUploadSuccess($event)"
-                            >
-                                <div class="dz-message needsclick">
-                                    <i class="fa fa-cloud-upload"></i>
-                                    <h4 class="mb-0 f-w-600">
-                                        Drop files here or click to upload.
-                                    </h4>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>Add Image</h5>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <section>
+                            <div class="card-body dropzone-custom p-0 mt-3">
+                                <div
+                                    id="myDropzoneElement"
+                                    class="dropzone dropzone-primary center"
+                                    [dropzone]="config1"
+                                    (error)="onUploadError($event)"
+                                    (success)="onUploadSuccess($event)"
+                                    style="width: 270px; height: 200px"
+                                >
+                                    <div class="dz-message needsclick center">
+                                        <i class="fa fa-cloud-upload"></i>
+                                        <h4 class="mb-0 f-w-600">
+                                            Drop files here or click to upload.
+                                        </h4>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> -->
+                        </section>
+                    </div>
                 </div>
             </div>
         </div>

@@ -65,6 +65,7 @@ namespace eCommerce.Persistence.QueryObjects
                 return s => s.CategoryId == _categoryId;
             }
         }
+
         public class FilterByPrice : QueryObject<Product>
         {
             public decimal _minPrice;
@@ -78,6 +79,14 @@ namespace eCommerce.Persistence.QueryObjects
             protected override Expression<Func<Product, bool>> AsExpression()
             {
                 return p => p.Price >= _minPrice && p.Price <= _maxPrice;
+            }
+        }
+
+        public class FilterByDeleted : QueryObject<Product>
+        {
+            protected override Expression<Func<Product, bool>> AsExpression()
+            {
+                return p => p.IsDeleted == false;
             }
         }
     }
