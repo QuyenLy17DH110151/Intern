@@ -50,6 +50,11 @@ namespace eCommerce.Application.Services.Order
                 throw new BusinessException("Already approved");
             }
 
+            if (order.Status == OrderStatuses.Cancelled)
+            {
+                throw new BusinessException("Already cancelled");
+            }
+
             await _orderRepo.UpdateStatusAsync(Id, Domain.Enums.OrderStatuses.Cancelled);
             await _orderRepo.UnitOfWork.SaveChangesAsync();
             SendEmailRejectOrder("eCommerce", order.BuyerEmail, Id, order, product);
@@ -165,6 +170,11 @@ namespace eCommerce.Application.Services.Order
             {
                 throw new BusinessException("Already approved");
             }            
+
+            if (order.Status == OrderStatuses.Cancelled)
+            {
+                throw new BusinessException("Already cancelled");
+            }
 
             var product = await _productRepository.GetProductByIdAsync(order.ProductId);
 
