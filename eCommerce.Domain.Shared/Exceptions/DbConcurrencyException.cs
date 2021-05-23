@@ -7,7 +7,7 @@ namespace eCommerce.Domain.Shared.Exceptions
     public class DbConcurrencyException : Exception
     {
         public DbConcurrencyException()
-            : base("RowVersion not equals")
+            : base("Quantity has been changed, you must reload website")
         {
         }
 

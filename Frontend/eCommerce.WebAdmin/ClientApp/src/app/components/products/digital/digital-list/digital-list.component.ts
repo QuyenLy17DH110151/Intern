@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SearchRequestProduct } from 'src/app/api-clients/models/common.model';
 import { ProductClient } from 'src/app/api-clients/product.client';
+import { MoneyPipe } from 'src/app/shared/service/moneyPipe';
 
 @Component({
     selector: 'app-digital-list',
@@ -13,15 +14,16 @@ export class DigitalListComponent implements OnInit {
     public product_list: any;
     rq: SearchRequestProduct = {};
 
-    constructor(protected productClient: ProductClient, private router: Router) { }
+    constructor(protected productClient: ProductClient, private router: Router, private moneyPipe: MoneyPipe) {
+
+    }
 
     async loadData() {
         this.rq.sort = 'CreatedDate|true';
         let products = await this.productClient
             .searchProducts(this.rq)
             .toPromise();
-        console.log('Products', products);
-        console.log('Request', this.rq);
+
         this.product_list = products.items;
     }
 
@@ -54,6 +56,9 @@ export class DigitalListComponent implements OnInit {
             },
             price: {
                 title: 'Price',
+                valuePrepareFunction: (price) => {
+                    return this.moneyPipe.MoneyPipeVND(price);
+                }
             },
             category: {
                 title: 'Category',
