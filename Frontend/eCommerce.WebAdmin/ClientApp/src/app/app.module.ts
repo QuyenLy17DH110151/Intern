@@ -23,15 +23,25 @@ import { AuthModule } from './components/auth/auth.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { TokenInterceptor } from './interceptor/token.interceptor';
-import { ExceptionInterceptor } from './interceptor/exception.interceptor'
+import { ExceptionInterceptor } from './interceptor/exception.interceptor';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { CategoryModule } from './components/categories/category.module';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { SmartTableDatepickerComponent, SmartTableDatepickerRenderComponent } from './components/smart-table-datepicker/smart-table-datepicker.component'
+import {
+    SmartTableDatepickerComponent,
+    SmartTableDatepickerRenderComponent,
+} from './components/smart-table-datepicker/smart-table-datepicker.component';
+import { MyLoaderComponent } from './shared/components/my-loader/my-loader.component';
+import { LoaderService } from './shared/service/loader.service';
+import { LoaderInterceptorService } from './interceptor/loader-interceptor.service';
 
 @NgModule({
-    declarations: [AppComponent, SmartTableDatepickerComponent,
-        SmartTableDatepickerRenderComponent],
+    declarations: [
+        AppComponent,
+        SmartTableDatepickerComponent,
+        SmartTableDatepickerRenderComponent,
+        MyLoaderComponent,
+    ],
     imports: [
         BrowserAnimationsModule,
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -57,7 +67,6 @@ import { SmartTableDatepickerComponent, SmartTableDatepickerRenderComponent } fr
         ToastrModule.forRoot(),
         OwlDateTimeModule,
         OwlNativeDateTimeModule,
-
     ],
     providers: [
         AuthGuard,
@@ -71,11 +80,17 @@ import { SmartTableDatepickerComponent, SmartTableDatepickerRenderComponent } fr
             useClass: ExceptionInterceptor,
             multi: true,
         },
+        LoaderService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoaderInterceptorService,
+            multi: true,
+        },
     ],
     entryComponents: [
         SmartTableDatepickerComponent,
-        SmartTableDatepickerRenderComponent
+        SmartTableDatepickerRenderComponent,
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
