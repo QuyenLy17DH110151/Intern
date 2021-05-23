@@ -51,7 +51,7 @@ export class CartService {
         this._cart$.next(this.cartItems);
 
         // notify
-        this.toastrService.error('Success! Item Successfully deleted to your cart');
+        this.toastrService.success('Success! Item Successfully deleted to your cart');
     }
 
     // remove all the  items added to the cart
@@ -60,7 +60,7 @@ export class CartService {
         this._cart$.next(this.cartItems);
 
         // notify
-        this.toastrService.error('Remove all product is successful', 'Success');
+        this.toastrService.success('Remove all product is successful', 'Success');
     }
 
     getTotalPrice() {

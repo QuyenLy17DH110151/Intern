@@ -85,7 +85,7 @@
                             </td>
                             <td>
                                 <h2 class="td-color">
-                                    {{ orderDetail.productPrice | vndCurrency }}
+                                    {{ orderDetail.productPrice * orderDetail.quantity | vndCurrency }}
                                 </h2>
                             </td>
                         </tr>

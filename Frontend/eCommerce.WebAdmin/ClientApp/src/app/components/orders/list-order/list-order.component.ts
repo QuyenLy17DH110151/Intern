@@ -31,7 +31,7 @@ export class ListOrderComponent implements OnInit {
         private currencyPipe: CurrencyPipe,
         private moneyPipe: MoneyPipe,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     public settings = {
         pager: {
@@ -61,6 +61,7 @@ export class ListOrderComponent implements OnInit {
             },
             address: {
                 title: 'Address',
+                width: '50%',
             },
             product: {
                 title: 'Product Name',
