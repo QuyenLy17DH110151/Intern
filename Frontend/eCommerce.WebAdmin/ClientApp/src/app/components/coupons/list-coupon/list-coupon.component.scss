@@ -1,22 +1,18 @@
 :host {
-    ::ng-deep .customer .ng2-smart-title {
-        width: 200px !important;
-    }
-
     ::ng-deep .code .ng2-smart-title {
         width: 100px !important;
     }
 
     ::ng-deep .name .ng2-smart-title {
-        width: 150px !important;
-    }
-
-    ::ng-deep .description .ng2-smart-title {
         width: 200px !important;
     }
 
+    ::ng-deep .description .ng2-smart-title {
+        width: 250px !important;
+    }
+
     ::ng-deep .minPrice .ng2-smart-title {
-        width: 75px !important;
+        width: 85px !important;
     }
 
     ::ng-deep .startDate .ng2-smart-title {

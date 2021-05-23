@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 //import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
+    GetStarInCardResponse,
     Product,
     ProductList,
     UpdateProductModel,
@@ -53,5 +54,13 @@ export class ProductClient {
     updateProduct(rq: any): Observable<Product> {
         const option = { params: { ...rq } };
         return this.httpClient.put<Product>(this.baseUrl, rq);
+    }
+
+    getStartInCard(idProduct: string): Observable<GetStarInCardResponse> {
+        const getStartApi = `${environment.apiUrl}/api/ProductRating/star`;
+
+        return this.httpClient.get<GetStarInCardResponse>(
+            `${getStartApi}/${idProduct}`
+        );
     }
 }

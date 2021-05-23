@@ -22,6 +22,8 @@ export class ProductDetailComponent implements OnInit {
     public labels: string[] = [];
     listUrlImage: string[] = [];
     listUrlImageTemp = [];
+    property = [0, 0, 0, 0, 0];
+    starAvg = 3;
 
     constructor(
         private modalService: NgbModal,
@@ -73,6 +75,7 @@ export class ProductDetailComponent implements OnInit {
     async ngOnInit() {
         this.productId = this._route.snapshot.paramMap.get('productId');
         this.product = await this.getProductDetail(this.productId);
+        this.getStarAvg();
     }
 
     getCategory() {
@@ -149,6 +152,16 @@ export class ProductDetailComponent implements OnInit {
                     'success'
                 );
             }
+        });
+    }
+
+    onSelectedProperty(indexLabel: number, indexActive: number) {
+        this.property[indexLabel] = indexActive;
+    }
+
+    getStarAvg() {
+        this.productClient.getStartInCard(this.productId).subscribe((rp) => {
+            this.starAvg = (rp.avgValueDouble + 0.5) | 0;
         });
     }
 }

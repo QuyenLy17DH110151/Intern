@@ -15,33 +15,41 @@
                                     <form [formGroup]="formUser" class="needs-validation user-add" (submit)="saveUser()"
                                         novalida>
                                         <h4>Account Details</h4>
-                                        <div class="form-group row line-input">
+                                        <div class="form-group row line-input" style="position: relative;">
                                             <label for="firstName" class="col-xl-3 col-md-4"><span>*</span>
                                                 First Name</label>
                                             <input class="form-control col-xl-8 col-md-7" formControlName="firstName"
                                                 id="firstName" type="text" required="">
+
+                                            <label class="message-erro"
+                                                *ngIf="formValidators.firstName.errors  && isStart">
+                                                FirstName not null
+                                            </label>
                                         </div>
-                                        <label class="message-erro"
-                                            *ngIf="formValidators.firstName.errors  && isStart">FirstName not
-                                            null</label>
-                                        <div class="form-group row line-input">
+
+                                        <div class="form-group row line-input mt-4" style="position: relative;">
                                             <label for="lastName" class="col-xl-3 col-md-4"><span>*</span>
                                                 Last Name</label>
                                             <input class="form-control col-xl-8 col-md-7" formControlName="lastName"
                                                 id="lastName" type="text" required="">
+
+                                            <label class="message-erro"
+                                                *ngIf="formValidators.lastName.errors  && isStart">LastName not
+                                                null</label>
                                         </div>
-                                        <label class="message-erro"
-                                            *ngIf="formValidators.lastName.errors  && isStart">LastName not null</label>
-                                        <div class="form-group row line-input">
+
+                                        <div class="form-group row line-input mt-4" style="position: relative;">
                                             <label for="username" class="col-xl-3 col-md-4"><span>*</span>
                                                 User Name (Email)</label>
                                             <input class="form-control col-xl-8 col-md-7" id="username"
                                                 formControlName="username" type="email" required="">
+
+                                            <label style="left: -267px;" class="message-erro"
+                                                *ngIf="formValidators.username.errors && isStart">Username is not
+                                                email</label>
                                         </div>
-                                        <label class="message-erro"
-                                            *ngIf="formValidators.username.errors && isStart">Username is not
-                                            email</label>
-                                        <div class="pull-right line-input">
+
+                                        <div class="pull-right line-input mt-2">
                                             <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
                                     </form>
