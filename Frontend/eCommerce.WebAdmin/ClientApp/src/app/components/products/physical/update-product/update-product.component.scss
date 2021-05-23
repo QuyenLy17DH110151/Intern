@@ -57,3 +57,12 @@ img {
         min-width: 0;
     }
 }
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+#no-indicators .carousel-indicators {
+    display: none;
+}

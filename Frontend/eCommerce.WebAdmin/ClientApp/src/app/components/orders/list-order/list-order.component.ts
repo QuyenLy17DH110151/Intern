@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PagedList } from 'src/app/api-clients/models/common.model';
 import { Order, SearchRequestOrder } from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
+import { MoneyPipe } from 'src/app/shared/service/moneyPipe';
 import { OrderViewModel } from '../order.viewModel';
 
 
@@ -27,6 +28,7 @@ export class ListOrderComponent implements OnInit {
         private readonly orderClient: OrderClient,
         private datePipe: DatePipe,
         private currencyPipe: CurrencyPipe,
+        private moneyPipe: MoneyPipe,
         private toastr: ToastrService
     ) { }
 
@@ -66,6 +68,7 @@ export class ListOrderComponent implements OnInit {
             },
             address: {
                 title: 'Address',
+                width: '50%',
             },
             product: {
                 title: 'Product Name',
@@ -80,34 +83,19 @@ export class ListOrderComponent implements OnInit {
             price: {
                 title: 'Price',
                 valuePrepareFunction: (price) => {
-                    return this.currencyPipe.transform(
-                        price,
-                        'USD',
-                        'symbol',
-                        '1.2-2'
-                    );
+                    return this.moneyPipe.MoneyPipeVND(price);
                 },
             },
             totalAmount: {
                 title: 'Total Price',
                 valuePrepareFunction: (totalAmount) => {
-                    return this.currencyPipe.transform(
-                        totalAmount,
-                        'USD',
-                        'symbol',
-                        '1.2-2'
-                    );
+                    return this.moneyPipe.MoneyPipeVND(totalAmount);
                 },
             },
             actualPrice: {
                 title: 'Actual Total Price',
                 valuePrepareFunction: (actualPrice) => {
-                    return this.currencyPipe.transform(
-                        actualPrice,
-                        'USD',
-                        'symbol',
-                        '1.2-2'
-                    );
+                    return this.moneyPipe.MoneyPipeVND(actualPrice);
                 },
             },
             createdDate: {

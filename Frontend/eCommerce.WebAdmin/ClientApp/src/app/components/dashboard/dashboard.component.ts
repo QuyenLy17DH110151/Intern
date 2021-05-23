@@ -8,6 +8,7 @@ import { DashboardClient } from 'src/app/api-clients/Dashboard.client';
 import { SearchRequestOrder } from 'src/app/api-clients/models/order.model';
 import { OrderViewModel } from '../orders/order.viewModel';
 import * as HighCharts from 'highcharts';
+import { MoneyPipe } from 'src/app/shared/service/moneyPipe';
 
 @Component({
     selector: 'app-dashboard',
@@ -23,20 +24,22 @@ export class DashboardComponent implements OnInit {
     orderListVM: OrderViewModel[] = [];
     data = [];
     dataApi;
+    sumEarningsValue: string = '';
     constructor(
         private _dashBoard: DashboardClient,
         private _orderClient: OrderClient,
+        private moneyPipe: MoneyPipe,
         private _userService: UserService
     ) {
         Object.assign(this, { doughnutData, pieData });
     }
 
     // events
-    public chartClicked(e: any): void {}
-    public chartHovered(e: any): void {}
+    public chartClicked(e: any): void { }
+    public chartHovered(e: any): void { }
 
     ngOnInit() {
-        this.getSumEarnings();
+        this.loadSumEarnings();
         this.getCountComment();
         this.getCountUser();
         this.getCountProduct();
@@ -52,15 +55,18 @@ export class DashboardComponent implements OnInit {
     countProduct: number;
     countUser: number;
     countComment: number;
-    getSumEarnings() {
+    loadSumEarnings() {
         // this.sumEarnings = this._dashBoard.getSumEarnings();
         console.log(
             'sads',
             this._dashBoard.getSumEarnings().subscribe((res) => {
                 this.sumEarnings = Number(res);
+                this.sumEarningsValue = this.moneyPipe.MoneyPipeVND(this.sumEarnings)
             })
         );
     }
+
+
 
     getCountProduct() {
         this._dashBoard.getCountProduct().subscribe((res) => {

@@ -54,6 +54,8 @@ namespace eCommerce.Persistence.Repositories
             // filter
             var queryObject = QueryObject<Product>.Empty;
 
+            fillerProductNotDeleted(queryObject);
+
             if (!string.IsNullOrWhiteSpace(req.Keyword))
             {
                 var keyword = req.Keyword;
@@ -103,6 +105,8 @@ namespace eCommerce.Persistence.Repositories
             // filter by categoryId  
             queryObject.And(new ProductQueryObjects.FilterByCategoryId(catId));
 
+            fillerProductNotDeleted(queryObject);
+
             var products = await _genericRepo.SearchAsync(queryObject, x => x.Include(m => m.Photos).Include(m => m.Category));
             return products;
         }
@@ -127,6 +131,8 @@ namespace eCommerce.Persistence.Repositories
         {
             // filter
             var queryObject = QueryObject<Product>.Empty;
+
+            fillerProductNotDeleted(queryObject);
 
             if (!string.IsNullOrWhiteSpace(req.Keyword))
             {
@@ -168,14 +174,20 @@ namespace eCommerce.Persistence.Repositories
             req.Sort.ForEach(x => queryObject.AddOrderBy(x.FieldName, x.IsDescending));
 
             // execute
-            var result = await _genericRepo.SearchAsync(queryObject, req.Pagination, x => x.Include(m => m.Category).Include(m => m.Owner).Include(m => m.Photos));
+            var result = await _genericRepo.SearchAsync(queryObject, req.Pagination, x => x.Include(m => m.Category).Include(m => m.Photos));
             return result;
         }
 
+        private void fillerProductNotDeleted(QueryObject<Product> queryObject)
+        {
+            queryObject.And(new ProductQueryObjects.FilterByDeleted());
+        }
 
         public async Task<int> CountProductAsync(SearchProductModel rq)
         {
             var queryObject = QueryObject<Product>.Empty;
+
+            fillerProductNotDeleted(queryObject);
 
             // filter by seller
             if (rq.Role == UserRoles.Seller)
@@ -190,7 +202,7 @@ namespace eCommerce.Persistence.Repositories
 
         public bool Delete(Product product)
         {
-             _genericRepo.Delete(product);
+            _genericRepo.Delete(product);
             return true;
         }
     }

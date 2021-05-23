@@ -57,6 +57,7 @@ export class ExceptionInterceptor implements HttpInterceptor {
                 if (error.error instanceof ErrorEvent) {
                     // handle client-side error
                     message = `Error: ${error.error.message}`;
+
                 } else {
                     // handle server-side error
                     message = `Error Status: ${error.status}.\nMessage: ${error.message}`;
@@ -66,6 +67,8 @@ export class ExceptionInterceptor implements HttpInterceptor {
                     this.router.navigate(['/reset-password-error']);
                     return;
                 }
+
+
                 Swal.fire(
                     'Error',
                     error.error.message || error.error.errorMessage,

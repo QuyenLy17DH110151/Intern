@@ -11,7 +11,7 @@
                     id="dropdownBasic1"
                     ngbDropdownToggle
                 >
-                    IsLock Out
+                    Is LockOut
                 </button>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                     <button ngbDropdownItem (click)="ShowAll()">All</button>
@@ -22,22 +22,29 @@
                 </div>
             </div>
             <div ngbDropdown class="d-inline-block">
-                <input
+                <!-- <input
                     type="text"
                     placeholder="search"
                     class="form-control"
                     [(ngModel)]="keyWordSearch"
                     (keyup.enter)="Search(keyWordSearch)"
-                />
+                /> -->
             </div>
             <div class="btn-popup pull-right">
-                <a class="btn btn-primary mr-1" [routerLink]="'/users/create-user'"
+                <a
+                    class="btn btn-primary mr-1"
+                    [routerLink]="'/users/create-user'"
                     >Create User</a
                 >
             </div>
             <div
                 id="batchDelete"
-                class="category-table custom-datatable transcation-datatable user-image"
+                class="
+                    category-table
+                    custom-datatable
+                    transcation-datatable
+                    user-image
+                "
             >
                 <div class="table-responsive">
                     <ng2-smart-table

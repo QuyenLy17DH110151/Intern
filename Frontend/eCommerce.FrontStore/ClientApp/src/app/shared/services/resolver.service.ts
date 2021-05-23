@@ -17,6 +17,7 @@ export class Resolver implements Resolve<Product> {
     this.productService
       .getProductBySlug(route.params.slug)
       .subscribe((product) => {
+        console.log("check error", product);
         if (!product) {
           // When product is empty redirect 404
           this.router.navigateByUrl("/pages/404", { skipLocationChange: true });

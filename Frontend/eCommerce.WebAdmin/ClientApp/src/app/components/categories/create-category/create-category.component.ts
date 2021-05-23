@@ -52,7 +52,7 @@ export class CreateCategoryComponent implements OnInit {
         },
         columns: {
             lable: {
-                title: 'Lable',
+                title: 'Label',
             },
             options: {
                 title: 'Options',
@@ -82,19 +82,34 @@ export class CreateCategoryComponent implements OnInit {
 
     onSave() {
         this.isStart = true;
-
+        console.log(this.event)
         if (this.event == null) {
-            this.toastr.error('List Lable not empty', 'Error')
+            this.editData([]);
+            return;
+        }
+
+
+        if (this.event.source == null) {
+            this.editData([]);
+            return;
+        }
+
+        if (this.event.source.data == null) {
+            this.editData([]);
             return;
         }
 
         if (this.event.source.data.length == 0) {
-            this.toastr.error('List Lable not empty', 'Error')
+            this.editData([]);
             return;
         }
 
         let properties: LableOptions[] = this.event.source.data;
+        this.editData(properties)
 
+    }
+
+    editData(properties: LableOptions[]) {
         if (!this.generalForm.invalid) {
             let createCategoryRequest = new CreateCategoryRequest(this.generalForm.value.name, properties);
             this.categoryClient.addCategory(createCategoryRequest).subscribe(rp => {
