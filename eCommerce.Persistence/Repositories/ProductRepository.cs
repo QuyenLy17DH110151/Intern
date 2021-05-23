@@ -54,6 +54,8 @@ namespace eCommerce.Persistence.Repositories
             // filter
             var queryObject = QueryObject<Product>.Empty;
 
+            fillerProductNotDeleted(queryObject);
+
             if (!string.IsNullOrWhiteSpace(req.Keyword))
             {
                 var keyword = req.Keyword;
