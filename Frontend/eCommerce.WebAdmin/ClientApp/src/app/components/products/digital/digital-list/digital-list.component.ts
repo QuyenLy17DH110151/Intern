@@ -14,9 +14,11 @@ export class DigitalListComponent implements OnInit {
     public product_list: any;
     rq: SearchRequestProduct = {};
 
-    constructor(protected productClient: ProductClient, private router: Router, private moneyPipe: MoneyPipe) {
-
-    }
+    constructor(
+        protected productClient: ProductClient,
+        private router: Router,
+        private moneyPipe: MoneyPipe
+    ) {}
 
     async loadData() {
         this.rq.sort = 'CreatedDate|true';
@@ -58,7 +60,7 @@ export class DigitalListComponent implements OnInit {
                 title: 'Price',
                 valuePrepareFunction: (price) => {
                     return this.moneyPipe.MoneyPipeVND(price);
-                }
+                },
             },
             category: {
                 title: 'Category',
@@ -81,10 +83,6 @@ export class DigitalListComponent implements OnInit {
                         return true;
                     return false;
                 },
-            },
-            description: {
-                title: 'Description',
-                filter: false,
             },
         },
     };
