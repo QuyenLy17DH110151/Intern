@@ -353,6 +353,11 @@ ng2-smart-table {
                 color: #ff5370;
             }
         }
+
+        .hide-action td.ng2-smart-actions a {
+            display: none;
+        }
+        
         tr {
             th,
             td {

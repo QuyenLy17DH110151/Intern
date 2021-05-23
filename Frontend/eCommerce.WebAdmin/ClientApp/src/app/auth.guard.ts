@@ -18,20 +18,25 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot): boolean {
         let expectedRole = route.data.expectedRole;
         if (this.userService.loggedIn()) {
-            if (!expectedRole) {
-                expectedRole = this.userService.getRole();
-            }
-            if (this.userService.getRole() !== expectedRole) {
-                Swal.fire(
-                    'Error',
-                    `Authorized ${UserRole[expectedRole]} only`,
-                    'error'
-                );
-                return false;
-            }
+            this.authenRoute(expectedRole);
             return true;
         } else {
             this.router.navigate(['./auth/login']);
+            return false;
+        }
+    }
+
+    authenRoute(expectedRole) {
+        if (!expectedRole) {
+            expectedRole = this.userService.getRole();
+        }
+        if (this.userService.getRole() !== expectedRole) {
+            Swal.fire(
+                'Error',
+                `Authorized ${UserRole[expectedRole]} only`,
+                'error'
+            );
+            this.router.navigate(['dashboard/default']);
             return false;
         }
     }

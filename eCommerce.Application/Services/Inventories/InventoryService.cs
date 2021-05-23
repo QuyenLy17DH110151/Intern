@@ -31,15 +31,20 @@ namespace eCommerce.Application.Services.Inventories
 
        public async Task<PaginatedResult<InventoryReturnModels.Inventory>> SearchInventoriesAsync(InventoryRequestModels.Search rq)
         {
-            
+            List<SortItem> sortRequest = new List<SortItem>();
+            if (!String.IsNullOrEmpty(rq.Sort))
+            {
+                sortRequest = Sort.ListSort(rq.Sort);
+            }
             var inventories = await _inventoryRepo.SearchAsync(new SearchInventoryModel
             {
                 ProductName = rq.ProductName,
                 OwnerUserame = rq.OwnerUsername,
                 Pagination = new Pagination { PageIndex = rq.PageIndex, ItemsPerPage = rq.PageSize },
                 Username = _applicationContext.Principal.Username,
-                Role = _applicationContext.Principal.Role
-            }); 
+                Role = _applicationContext.Principal.Role,
+                Sort = sortRequest
+            }) ; 
 
 
             return _mapper.Map<PaginatedResult<InventoryReturnModels.Inventory>>(inventories);

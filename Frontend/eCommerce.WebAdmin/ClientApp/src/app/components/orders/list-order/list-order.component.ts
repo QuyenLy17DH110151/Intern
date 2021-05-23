@@ -2,11 +2,11 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { PagedList } from 'src/app/api-clients/models/common.model';
-import { Order } from 'src/app/api-clients/models/order.model';
+import { Order, SearchRequestOrder } from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
 import { OrderViewModel } from '../order.viewModel';
 
-import { ButtonRenderComponent } from './button.render.component';
+
 
 @Component({
     selector: 'app-list-order',
@@ -20,6 +20,7 @@ export class ListOrderComponent implements OnInit {
     totalPages: number;
     totalRows: number;
     listCurrrentIdOrderApproved: string[] = [];
+    rq: SearchRequestOrder = {};
 
     keyWordSearch: string = '';
     constructor(
@@ -30,6 +31,7 @@ export class ListOrderComponent implements OnInit {
     ) { }
 
     public settings = {
+        mode: 'external',
         pager: {
             display: true,
             perPage: 5,
@@ -37,19 +39,19 @@ export class ListOrderComponent implements OnInit {
         delete: {
             confirmDelete: true,
         },
+        rowClassFunction: (row) => {
+            if (row.data.statusString !== "New") {
+                return 'hide-action';
+            } else {
+                return '';
+            }
+        },
         actions: {
             add: false,
             edit: false,
             custom: [{ name: 'ourCustomAction' }],
         },
         columns: {
-            button: {
-                filter: false,
-                title: 'Accept',
-                type: 'custom',
-                renderComponent: ButtonRenderComponent,
-                valuePrepareFunction: (cell, row) => { return { id: row.id, status: row.statusString, e: this.loadData } }
-            },
             index: {
                 title: 'STT',
             },
@@ -70,7 +72,7 @@ export class ListOrderComponent implements OnInit {
                 type: 'html',
                 valuePrepareFunction: (product) => {
                     return `<a href= "/products/product-detail/${product.id}">${product.name}</a>`;
-                }
+                },
             },
             quantity: {
                 title: 'Quantity',
@@ -131,27 +133,23 @@ export class ListOrderComponent implements OnInit {
     }
 
     async loadData() {
-
+        this.rq.orderBy = 'createdDate|true';
         const response: PagedList<Order> = await this.orderClient
-            .searchOrder()
+            .searchOrder(this.rq)
             .toPromise();
 
         this.orderList = response.items;
         this.totalPages = response.totalPages;
         this.totalRows = response.totalRows;
-        // Custom data before render
-        console.log(this.orderList, this.totalRows, this.totalPages);
+        // Custom data before render        
         this.orderListVM = this.orderList.map(
             (order, index) => new OrderViewModel(order, index)
         );
-        console.log(this.orderListVM);
-
     }
 
     async onDeleteConfirm(event) {
         this.RejectOrder(event.data.id);
     }
-
 
     async onCustomAction(event) {
         this.AcceptOrder(event.data.id);
@@ -159,30 +157,24 @@ export class ListOrderComponent implements OnInit {
 
     AcceptOrder(id: string) {
         if (this.listCurrrentIdOrderApproved.length !== 0) {
-            this.listCurrrentIdOrderApproved.map(idOrder => {
+            this.listCurrrentIdOrderApproved.map((idOrder) => {
                 if (idOrder == id) {
                     return;
                 }
-            })
+            });
         }
         this.listCurrrentIdOrderApproved.push(id);
-        this.orderClient
-            .acceptOrder(id)
-            .subscribe(() => {
-                this.toastr.success('Change Order Success!', 'Notification');
-                this.loadData();
-            })
-
+        this.orderClient.acceptOrder(id).subscribe(() => {
+            this.toastr.success('Change Order Success!', 'Notification');
+            this.loadData();
+        });
     }
 
     RejectOrder(id: string) {
-        this.orderClient
-            .rejectOrder(id)
-            .subscribe(() => {
-                this.toastr.success('Change Order Success!', 'Notification');
-                this.loadData();
-            })
+        this.orderClient.rejectOrder(id).subscribe(() => {
+            this.toastr.success('Change Order Success!', 'Notification');
+            this.loadData();
+        });
     }
-
 
 }
