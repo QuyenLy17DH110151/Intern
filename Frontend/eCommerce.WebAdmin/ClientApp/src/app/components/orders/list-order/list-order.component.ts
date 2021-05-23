@@ -32,8 +32,7 @@ export class ListOrderComponent implements OnInit {
         private toastr: ToastrService
     ) { }
 
-    public settings = {
-        mode: 'external',
+    public settings = {        
         pager: {
             display: true,
             perPage: 5,
