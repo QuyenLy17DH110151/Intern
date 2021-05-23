@@ -39,7 +39,9 @@ export class PriceComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.max = 990000;
+  }
 
   // Range Changed
   appliedFilter(event: any) {
