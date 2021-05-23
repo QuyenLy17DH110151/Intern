@@ -82,15 +82,34 @@ export class CreateCategoryComponent implements OnInit {
 
     onSave() {
         this.isStart = true;
-
-        let properties: LableOptions[] = this.event.source.data;
-
-
+        console.log(this.event)
         if (this.event == null) {
-            properties = [];
+            this.editData([]);
+            return;
         }
 
 
+        if (this.event.source == null) {
+            this.editData([]);
+            return;
+        }
+
+        if (this.event.source.data == null) {
+            this.editData([]);
+            return;
+        }
+
+        if (this.event.source.data.length == 0) {
+            this.editData([]);
+            return;
+        }
+
+        let properties: LableOptions[] = this.event.source.data;
+        this.editData(properties)
+
+    }
+
+    editData(properties: LableOptions[]) {
         if (!this.generalForm.invalid) {
             let createCategoryRequest = new CreateCategoryRequest(this.generalForm.value.name, properties);
             this.categoryClient.addCategory(createCategoryRequest).subscribe(rp => {
