@@ -60,13 +60,7 @@ export class ProductService {
 
   // Get Products By Slug
   public getProductBySlug(slug: string): Observable<ProductAPI> {
-    return this.searchProducts().pipe(
-      map((items) => {
-        return items.items.find((item: any) => {
-          return item.id === slug;
-        });
-      })
-    );
+    return this.getProductDetail(slug);
   }
   /*
     ---------------------------------------------
