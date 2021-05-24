@@ -41,11 +41,17 @@ export class PriceComponent implements OnInit {
 
   ngOnInit(): void {
     this.max = 990000;
+    this.min = 0;
   }
 
   // Range Changed
   appliedFilter(event: any) {
     this.price = { minPrice: event.value, maxPrice: event.highValue };
     this.priceFilter.emit(this.price);
+  }
+
+  resetPrice(event: any) {
+    this.ngOnInit();
+    this.appliedFilter(event);
   }
 }
