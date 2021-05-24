@@ -2,12 +2,13 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { PagedList } from 'src/app/api-clients/models/common.model';
-import { Order, SearchRequestOrder } from 'src/app/api-clients/models/order.model';
+import {
+    Order,
+    SearchRequestOrder,
+} from 'src/app/api-clients/models/order.model';
 import { OrderClient } from 'src/app/api-clients/order.client';
 import { MoneyPipe } from 'src/app/shared/service/moneyPipe';
 import { OrderViewModel } from '../order.viewModel';
-
-
 
 @Component({
     selector: 'app-list-order',
@@ -30,9 +31,9 @@ export class ListOrderComponent implements OnInit {
         private currencyPipe: CurrencyPipe,
         private moneyPipe: MoneyPipe,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
-    public settings = {        
+    public settings = {
         pager: {
             display: true,
             perPage: 5,
@@ -41,7 +42,7 @@ export class ListOrderComponent implements OnInit {
             confirmDelete: true,
         },
         rowClassFunction: (row) => {
-            if (row.data.statusString !== "New") {
+            if (row.data.statusString !== 'New') {
                 return 'hide-action';
             } else {
                 return '';
@@ -120,6 +121,8 @@ export class ListOrderComponent implements OnInit {
     }
 
     async loadData() {
+        this.rq.pageSize = '100';
+        this.rq.pageIndex = '0';
         this.rq.orderBy = 'createdDate|true';
         const response: PagedList<Order> = await this.orderClient
             .searchOrder(this.rq)
@@ -128,7 +131,7 @@ export class ListOrderComponent implements OnInit {
         this.orderList = response.items;
         this.totalPages = response.totalPages;
         this.totalRows = response.totalRows;
-        // Custom data before render        
+        // Custom data before render
         this.orderListVM = this.orderList.map(
             (order, index) => new OrderViewModel(order, index)
         );
@@ -163,5 +166,4 @@ export class ListOrderComponent implements OnInit {
             this.loadData();
         });
     }
-
 }
