@@ -22,11 +22,14 @@ export class DigitalListComponent implements OnInit {
 
     async loadData() {
         this.rq.sort = 'CreatedDate|true';
+        this.rq.pageSize = '100';
+        this.rq.pageNumber = '0';
         let products = await this.productClient
             .searchProducts(this.rq)
             .toPromise();
 
         this.product_list = products.items;
+        console.log(this.product_list, this.rq);
     }
 
     public settings = {

@@ -29,6 +29,8 @@ export class InventoryComponent implements OnInit {
 
     getData() {
         this.rq.Sort = 'CreatedDate|true';
+        this.rq.pageSize = '100';
+        this.rq.pageIndex = '0';
         this.inventoryClient.getListInventory(this.rq).subscribe((res) => {
             this.inventories = res.items;
         });
@@ -54,6 +56,11 @@ export class InventoryComponent implements OnInit {
                 valuePrepareFunction: (product) => {
                     return product.name;
                 },
+                filterFunction(product?: any, search?: string): boolean {
+                    if (product.name.toLowerCase().indexOf(search) > -1)
+                        return true;
+                    return false;
+                },
                 editor: {
                     type: 'custom',
                     component: CustomEditorComponent,
@@ -76,9 +83,9 @@ export class InventoryComponent implements OnInit {
                 valuePrepareFunction: (lastUpdated) => {
                     return lastUpdated != null
                         ? this.datePipe.transform(
-                            new Date(lastUpdated),
-                            'dd MMM yyyy'
-                        )
+                              new Date(lastUpdated),
+                              'dd MMM yyyy'
+                          )
                         : '';
                 },
             },
@@ -116,12 +123,12 @@ export class InventoryComponent implements OnInit {
                     );
                     this.getData();
                 });
-        }
+        };
 
-        this.confirmService.confirmAction(action, "edit");
+        this.confirmService.confirmAction(action, 'edit');
     }
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     onInventoryRowSelected(event) {
         const productId = event.data.product.id;
