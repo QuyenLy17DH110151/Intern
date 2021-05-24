@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UpdateInventoryRequest } from 'src/app/api-clients/models/_index';
 import { InventoryClient } from 'src/app/api-clients/_index';
+import { ConfirmService } from 'src/app/shared/service/confirm.service';
 import { CustomEditorComponent } from './CustomEditorComponent.component';
 
 @Component({
@@ -20,7 +21,8 @@ export class InventoryComponent implements OnInit {
         private inventoryClient: InventoryClient,
         private toastr: ToastrService,
         private router: Router,
-        private datePipe: DatePipe
+        private datePipe: DatePipe,
+        private confirmService: ConfirmService
     ) {
         this.getData();
     }
@@ -74,9 +76,9 @@ export class InventoryComponent implements OnInit {
                 valuePrepareFunction: (lastUpdated) => {
                     return lastUpdated != null
                         ? this.datePipe.transform(
-                              new Date(lastUpdated),
-                              'dd MMM yyyy'
-                          )
+                            new Date(lastUpdated),
+                            'dd MMM yyyy'
+                        )
                         : '';
                 },
             },
@@ -89,7 +91,7 @@ export class InventoryComponent implements OnInit {
 
     onSaveConfirm(event) {
         let quantity = event.newData.quantity;
-        if (!/\d/.exec(quantity)) {
+        if (!RegExp('^\\d+$').exec(quantity)) {
             this.toastr.error('quantity not number', 'Erro');
             return;
         }
@@ -97,24 +99,29 @@ export class InventoryComponent implements OnInit {
             this.toastr.error('quantity not negative', 'Erro');
             return;
         }
-        this.inventoryClient
-            .updateInventory(
-                new UpdateInventoryRequest(
-                    event.data.id,
-                    quantity,
-                    event.data.rowVersion
+
+        let action = () => {
+            this.inventoryClient
+                .updateInventory(
+                    new UpdateInventoryRequest(
+                        event.data.id,
+                        quantity,
+                        event.data.rowVersion
+                    )
                 )
-            )
-            .subscribe(() => {
-                this.toastr.success(
-                    'Change Inventory Success!',
-                    'Notification'
-                );
-                this.getData();
-            });
+                .subscribe(() => {
+                    this.toastr.success(
+                        'Change Inventory Success!',
+                        'Notification'
+                    );
+                    this.getData();
+                });
+        }
+
+        this.confirmService.confirmAction(action, "edit");
     }
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     onInventoryRowSelected(event) {
         const productId = event.data.product.id;
