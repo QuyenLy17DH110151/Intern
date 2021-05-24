@@ -75,7 +75,7 @@ export class ThreeColumnComponent implements OnInit {
         //set page review
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void { }
 
     getActiveStar(index: number, numberStar: number): boolean {
         return numberStar > this.getStarResponse.startValues.length - 1 - index;
@@ -185,7 +185,7 @@ export class ThreeColumnComponent implements OnInit {
             try {
                 const errorField = this.renderer.selectRootElement('.first-review');
                 errorField.scrollIntoView();
-            } catch (err) {}
+            } catch (err) { }
         }
         this.isStartToTopReview = true;
     }
@@ -198,7 +198,7 @@ export class ThreeColumnComponent implements OnInit {
 
     // Increament
     increment() {
-        if (this.counter < this.productAPI.quantity) {
+        if (this.counter < this.productAPI.inventory.quantity) {
             this.counter++;
         }
     }
@@ -244,7 +244,7 @@ export class ThreeColumnComponent implements OnInit {
     getProduct(productId: string) {
         this.productService.getProductDetail(productId).subscribe((response: any) => {
             this.productAPI = response;
-            this.productAPI.quantity = response.inventory.quantity;
+            this.productAPI.inventory.quantity = response.inventory.quantity;
             console.log('Product Detail: ', response);
             let labels: any[] = [];
             let category = this.productAPI.category;

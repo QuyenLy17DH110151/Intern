@@ -8,11 +8,16 @@ export class Product {
     description: string;
     lastUpdated: Date;
     quantity: number;
+    inventory: inventory
     selectedProperty: Property[];
 }
 class Photos {
     id: string;
     url: string;
+}
+
+class inventory {
+    quantity: number;
 }
 
 export class ProductCategory {

@@ -95,8 +95,8 @@
             <h3>{{ productAPI?.price | vndCurrency }}</h3>
 
             <div class="product-description border-product">
-              <h5 class="avalibility" *ngIf="counter <= productAPI?.quantity; else unavailable">
-                <h5 class="notify-quantity">{{ productAPI.quantity }} products is available</h5>
+              <h5 class="avalibility" *ngIf="counter <= productAPI?.inventory?.quantity; else unavailable">
+                <h5 class="notify-quantity">{{ productAPI?.inventory?.quantity }} products is available</h5>
               </h5>
               <ng-template #unavailable>
                 <h5 class="avalibility">
