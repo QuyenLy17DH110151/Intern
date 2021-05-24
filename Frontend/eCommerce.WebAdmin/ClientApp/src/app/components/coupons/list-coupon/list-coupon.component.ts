@@ -25,12 +25,12 @@ export class ListCouponComponent implements OnInit {
 
   constructor(
     private readonly couponClient: CouponClient,
-    private readonly confirmService: ConfirmService,
     private datePipe: DatePipe,
     private currencyPipe: CurrencyPipe,
     private percentPipe: PercentPipe,
     private toastr: ToastrService,
-    private moneyPipe: MoneyPipe
+    private moneyPipe: MoneyPipe,
+    private confirmService: ConfirmService,
   ) { }
 
   public settings = {
@@ -121,26 +121,72 @@ export class ListCouponComponent implements OnInit {
       "code": event.newData.code,
     };
 
-    if (data.minPrice === "")
-      this.couponClient.addCoupon(data).subscribe(() => {
-        event.confirm.resolve(event.newData);
-        this.toastr.success('Change Coupon Success!', 'Notification');
-        this.loadData();
-      })
+    let name = event.newData.name;
+    if (name == '') {
+      this.toastr.error('Name không được để trống', 'Error');
+      return;
+    }
+
+    let code = event.newData.code;
+    if (code == '') {
+      this.toastr.error('Code không được để trống', 'Error');
+      return;
+    }
+
+    let description = event.newData.description;
+    if (description == '') {
+      this.toastr.error('Description không được để trống', 'Error');
+      return;
+    }
+
+    let minPrice = event.newData.minPrice;
+    if (!RegExp('^\\d+$').exec(minPrice)) {
+      this.toastr.error('Minprice phải là số', 'Error');
+      return;
+    }
+    if (minPrice < 0) {
+      this.toastr.error('Minprice không được phép âm', 'Error');
+      return;
+    }
+    if (minPrice == '') {
+      this.toastr.error('Minprice không được để trống', 'Error');
+      return;
+    }
+
+    let value = event.newData.value;
+    if (!RegExp('^\\d+$').exec(value)) {
+      this.toastr.error('Discount phải là số', 'Error');
+      return;
+    }
+    if (value < 0) {
+      this.toastr.error('Discount không được phép âm', 'Error');
+      return;
+    }
+    if (value == '') {
+      this.toastr.error('Discount không được để trống', 'Error');
+      return;
+    }
+
+    let startDate = event.newData.startDate;
+    let endDate = event.newData.endDate;
+    if (endDate < startDate) {
+      this.toastr.error('Ngày bắt đầu phải trước ngày kết thúc', 'Error');
+      return;
+    }
+
+    this.couponClient.addCoupon(data).subscribe(() => {
+      event.confirm.resolve(event.newData);
+      this.toastr.success('Change Coupon Success!', 'Notification');
+      this.loadData();
+    })
   }
 
   onDeleteConfirm(event) {
-
     let action = () => {
-      this.couponClient
-        .deleteCoupon(event.data.id)
-        .subscribe((res) => {
-          this.toastr.success(
-            'delete coupon successfully!',
-            'Success...'
-          );
-          this.loadData();
-        });
+      this.couponClient.deleteCoupon(event.data.id).subscribe(() => {
+        this.toastr.success('Change Coupon Success!', 'Notification');
+        this.loadData();
+      })
     }
 
     this.confirmService.confirmAction(action, "delete");
@@ -157,18 +203,71 @@ export class ListCouponComponent implements OnInit {
       "value": event.newData.value,
     };
 
-    let action = () => {
-      this.couponClient
-        .updateCoupon(event.data.id, data)
-        .subscribe((res) => {
-          this.toastr.success(
-            'Edit coupon successfully!',
-            'Success...'
-          );
-          this.loadData();
-        });
+    let name = event.newData.name;
+    if (name == '') {
+      this.toastr.error('Name không được để trống', 'Error');
+      return;
     }
 
+    let code = event.newData.code;
+    if (code == '') {
+      this.toastr.error('Code không được để trống', 'Error');
+      return;
+    }
+
+    let description = event.newData.description;
+    if (description == '') {
+      this.toastr.error('Description không được để trống', 'Error');
+      return;
+    }
+
+    let minPrice = event.newData.minPrice;
+    if (!RegExp('^\\d+$').exec(minPrice)) {
+      this.toastr.error('Minprice phải là số', 'Error');
+      return;
+    }
+    if (minPrice < 0) {
+      this.toastr.error('Minprice không được phép âm', 'Error');
+      return;
+    }
+    if (minPrice == '') {
+      this.toastr.error('Minprice không được để trống', 'Error');
+      return;
+    }
+
+    let value = event.newData.value;
+    if (!RegExp('^\\d+$').exec(value)) {
+      this.toastr.error('Discount phải là số', 'Error');
+      return;
+    }
+    if (value < 0) {
+      this.toastr.error('Discount không được phép âm', 'Error');
+      return;
+    }
+    if (value == '') {
+      this.toastr.error('Discount không được để trống', 'Error');
+      return;
+    }
+
+    let startDate = event.newData.startDate;
+    let endDate = event.newData.endDate;
+    if (endDate < startDate) {
+      this.toastr.error('Ngày bắt đầu phải trước ngày kết thúc', 'Error');
+      return;
+    }
+    let flag = true;
+    let action = () => {
+      this.couponListVM.map(category => {
+        this.couponClient.updateCoupon(event.data.id, data).subscribe(() => {
+          if (flag) {
+            flag = false;
+            this.toastr.success('Change Coupon Success!', 'Notification');
+          }
+          this.loadData();
+        })
+      });
+    }
+    
     this.confirmService.confirmAction(action, "edit");
   }
 

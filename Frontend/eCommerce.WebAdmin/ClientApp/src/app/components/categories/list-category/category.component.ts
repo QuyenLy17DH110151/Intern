@@ -34,7 +34,6 @@ export class CategoryComponent implements OnInit {
   }
 
   onDeleteConfirm(event) {
-
     let action = () => {
       this.categoryClient
         .deleteCategory(event.data.id)
@@ -53,12 +52,16 @@ export class CategoryComponent implements OnInit {
 
   onEditConfirm(event): void {
 
+    let flag = true;
     let action = () => {
       this.categories.map(category => {
         if (category.id == event.data.id) {
           category.name = event.newData.name;
           this.categoryClient.updateCategory(category).subscribe(() => {
-            this.toastr.success('Change Category Success!', 'Notification');
+            if (flag) {
+              flag = false;
+              this.toastr.success('Change Category Success!', 'Notification');
+            }            
             this.getListCategory();
             return;
           })
