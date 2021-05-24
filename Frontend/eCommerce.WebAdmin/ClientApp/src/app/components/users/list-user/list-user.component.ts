@@ -56,16 +56,20 @@ export class ListUserComponent implements OnInit {
                     );
                 },
                 filter: false,
+                editable: false,
             },
             username: {
                 title: 'User name',
                 type: 'email',
+                editable: false,
             },
             firstName: {
                 title: 'First Name',
+                editable: false,
             },
             lastName: {
                 title: 'Last Name',
+                editable: false,
             },
             lockoutEnd: {
                 title: 'Lockout End',
@@ -88,9 +92,11 @@ export class ListUserComponent implements OnInit {
                         'dd MMM yyyy'
                     );
                 },
+                editable: false,
             },
             createdBy: {
                 title: 'Created By',
+                editable: false,
             },
             lastUpdated: {
                 title: 'Last Updated',
@@ -100,15 +106,18 @@ export class ListUserComponent implements OnInit {
                         'dd MMM yyyy'
                     );
                 },
+                editable: false,
             },
             lastUpdatedBy: {
                 title: 'Last Updated By',
+                editable: false,
             },
             role: {
                 title: 'Role',
                 valuePrepareFunction: (role) => {
                     return UserRole[role];
                 },
+                editable: false,
             },
         },
     };
