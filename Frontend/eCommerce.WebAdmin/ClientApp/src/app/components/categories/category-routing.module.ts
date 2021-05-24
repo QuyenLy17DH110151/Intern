@@ -15,6 +15,7 @@ const routes: Routes = [
                 component: CategoryComponent,
                 canActivate: [AuthGuard],
                 data: {
+                    expectedRole: UserRole.Admin,
                     title: 'Category List',
                     breadcrumb: 'Category List',
                 },
@@ -24,6 +25,7 @@ const routes: Routes = [
                 component: CreateCategoryComponent,
                 canActivate: [AuthGuard],
                 data: {
+                    expectedRole: UserRole.Admin,
                     title: 'Create Category',
                     breadcrumb: 'Create Category',
                 },
@@ -44,4 +46,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class CategoryhRoutingModule { }
+export class CategoryhRoutingModule {}

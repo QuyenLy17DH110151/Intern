@@ -21,7 +21,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
   public colors: any[] = [];
   public size: any[] = [];
   public minPrice: number = 0;
-  public maxPrice: number = 0;
+  public maxPrice: number = 990000;
   public tags: any[] = [];
   public category: string;
   // public pageNo: number = 0;
@@ -45,7 +45,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
       this.rq.searchTerm = params["searchTerm"] ? params["searchTerm"] : "";
       this.rq.categoryName = params["category"] ? params["category"] : "";
       this.rq.minPrice = params["minPrice"] ? params["minPrice"] : 0;
-      this.rq.maxPrice = params["maxPrice"] ? params["maxPrice"] : 0;
+      this.rq.maxPrice = params["maxPrice"] ? params["maxPrice"] : 990000;
       this.rq.sort = params["sortBy"] ? params["sortBy"] : "";
       this.rq.pageSize = "8";
       this.rq.pageIndex = params["page"]
